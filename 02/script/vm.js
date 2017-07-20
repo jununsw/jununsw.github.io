@@ -123,7 +123,7 @@ var vm = new Vue({
             
             window.setTimeout(function() {
                 $(event.target).hide().after("<label>Note this is a sample page. In real case your mark will be sent to Moodle Gradebook.</label>");
-                $("#main-body").css("display", "block");
+                $("#main-body").css("display", "none");
                 $("#score-bar").css("display", "block");
                 $("#id-bar").css("display", "none");
             }, 500);
