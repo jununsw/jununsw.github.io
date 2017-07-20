@@ -1,0 +1,51 @@
+#svgContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 20px;
+}
+
+#sectionContainer {
+	width: 300px;
+}
+
+#scaleContainer {
+	flex-grow: 1;
+	margin-left: 10px;
+}
+
+#tooltip {
+    display: none;
+    position: absolute;
+    background: lightGray;
+    border:solid 1px #000; 
+    padding-top: 0px;
+}
+
+#tooltip p {
+	line-height: 50%;
+}
+
+.sliderTitle {
+	display: inline-block;
+}
+
+.sliderValue {
+    display: inline-block;
+	margin-left:10px;
+}
+
+.svg-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.slider {
+    display: inline-block;
+    width: 60%;
+}
+
+.sliderContainer {
+    margin-bottom: 0.5em;
+    padding-left: 10%;
+}

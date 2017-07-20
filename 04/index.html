@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Online Tutorial Course</title>
+        <link rel="shortcut icon" href="../res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <script src="../res/util.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=4"/>
+    </head>
+    <body>
+        <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;"><strong>Online Tutorial Course</strong></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div>
+                        <p class="h4" style="padding-bottom: 0.5em; font-weight: bold;">
+                            Please complete following practice question to enhance what you learnt from the lecture.<br/>
+                            You can also play with the interactive BMD module, which is an example of two point loads acting on simply supported beam.
+                        </p>
+                    </div>
+                    <div class="accordion">
+                        <h2>Practice Question</h2>
+                        <div id="q1">
+                            <div class="h4 question">
+                                <p>Please calculate the internal forces of the beam shown below, and plot the AFD, SFD and BMD.</p>
+                                <img src="resource/1.1.png" alt="image not loded"/>
+                            </div>
+                            <div class="h4">
+                                <section style="display: block">
+                                    <h4 style="font-weight: bold;">Reaction Type</h4>
+                                    <p class="answer">
+                                        Support A is
+                                        <select onchange="choice_check(event, 'pin support');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>pin support</option>
+                                            <option>roller support</option>
+                                            <option>fixed support</option>
+                                        </select>. So it has 
+                                        <select onchange="choice_check(event, 'both horizontal and vertical');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>only horizontal</option>
+                                            <option>only vertical</option>
+                                            <option>both horizontal and vertical</option>
+                                            <option>horizontal, vertical and moment</option>
+                                        </select> reactions.<br/><br/>
+                                        Support D is
+                                        <select onchange="choice_check(event, 'roller support');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>pin support</option>
+                                            <option>roller support</option>
+                                            <option>fixed support</option>
+                                        </select>. So it has 
+                                        <select onchange="choice_check(event, 'only vertical');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>only horizontal</option>
+                                            <option>only vertical</option>
+                                            <option>both horizontal and vertical</option>
+                                            <option>horizontal, vertical and moment</option>
+                                        </select> reactions.<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Calculate Reactions (press ENTER after input)</h4>
+                                    <p class="answer">
+                                        Substitute the support with the reaction forces F<sub>Ax</sub>, F<sub>Ay</sub> and F<sub>D</sub>. The free-body-diagram is shown as:
+                                    </p>
+                                    <img src="resource/1.2.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        Where the reaction forces are drawn in red.<br/><br/>
+                                        The resultant of the linear distributed load from B to D is shown as F<sub>1</sub>; The resultant of the uniformly distributed load from D to E is shown as F<sub>2</sub><br/><br/>
+                                        Thus we have F<sub>1</sub> = <input size="4" onkeypress="question_check(event, 72);"/> kN<br/>
+                                        The distance between F<sub>1</sub> and point A is <input size="4" onkeypress="question_check(event, 10);"/> m.<br/><br/>
+                                        Thus we have F<sub>2</sub> = <input size="4" onkeypress="question_check(event, 144);"/> kN<br/>
+                                        The distance between F<sub>2</sub> and point A is <input size="4" onkeypress="question_check(event, 15);"/> m.<br/><br/>
+                                        Using &Sigma;M<sub>A</sub> = 0, we have: 60 + 50 &times; 3 + F<sub>1</sub> &times; <input size="4" onkeypress="question_check(event, 10);"/> + F<sub>2</sub> &times; <input size="4" onkeypress="question_check(event, 15);"/> = F<sub>D</sub> &times; 12<br/>
+                                        Thus F<sub>D</sub> = <input size="4" onkeypress="question_check(event, 257.5);"/> kN<br/><br/>
+                                        Using &Sigma;F<sub>y</sub> = 0, we have: 50 + F<sub>1</sub> + F<sub>2</sub> = F<sub>Ay</sub> + F<sub>D</sub><br/>
+                                        Thus F<sub>Ay</sub> = <input size="4" onkeypress="question_check(event, 8.5);"/> kN<br/><br/>
+                                        Using &Sigma;F<sub>x</sub> = 0, we have: 100 + F<sub>Ax</sub> = 0<br/>
+                                        Thus F<sub>Ax</sub> = <input size="4" onkeypress="question_check(event, -100);"/> kN<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Shear force and Bending moment in segment AB</h4>
+                                    <img src="resource/1.4.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        Assume the x axis start from point A to the right.<br/>
+                                        In segement AB, e.g. 0 &le; x &le; 3 m<br/><br/>
+                                        Shear force S = F<sub>Ax</sub> = <input size="4" onkeypress="question_check(event, 8.5);"/><br/><br/>
+                                        Bending moment M = 60
+                                        <select onchange="choice_check(event, '+');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>+</option>
+                                            <option>-</option>
+                                        </select> 8.5<em>x</em><br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Shear force and Bending moment in segment BC</h4>
+                                    <img src="resource/1.5.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        In segement BC, e.g. 3 m &le; x &le; 6 m<br/><br/>
+                                        Shear force S = F<sub>Ax</sub> - 50 = <input size="4" onkeypress="question_check(event, -41.5);"/><br/><br/>
+                                        Bending moment M = 60 + 8.5<em>x</em>
+                                        <select onchange="choice_check(event, '-');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>+</option>
+                                            <option>-</option>
+                                        </select> 50(<em>x</em>-3)<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Shear force and Bending moment in segment CD</h4>
+                                    <img src="resource/1.6.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        In segement CD, e.g. 6 m &le; x &le; 12 m<br/><br/>
+                                        From point C to x, there is a linear distributed load. Its resultant's magnitude (in kN) is
+                                        <select onchange="choice_check(event, '2');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>2</option>
+                                            <option>4</option>
+                                            <option>8</option>
+                                        </select> &bull; (<em>x</em>-6)<sup>2</sup><br/><br/>
+                                        Its distance from point A is 6 +
+                                        <select onchange="choice_check(event, '2/3');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>1/3</option>
+                                            <option>2/3</option>
+                                            <option>1/2</option>
+                                        </select> &bull; (<em>x</em>-6)<br/><br/>
+                                        Shear force S = F<sub>Ax</sub> - 50 - 
+                                        <select onchange="choice_check(event, '2');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>2</option>
+                                            <option>4</option>
+                                            <option>8</option>
+                                        </select> &bull; (<em>x</em>-6)<sup>2</sup><br/><br/>
+                                        Bending moment M = 60 + 8.5<em>x</em> - 50(<em>x</em>-3) -
+                                        <select onchange="choice_check(event, '2');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>2</option>
+                                            <option>4</option>
+                                            <option>8</option>
+                                        </select> &bull; (<em>x</em>-6)<sup>2</sup> &bull; 
+                                        <select onchange="choice_check(event, '2/3');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>1/3</option>
+                                            <option>2/3</option>
+                                            <option>1/2</option>
+                                        </select> &bull; (<em>x</em>-6)<br/><br/>
+                                        Note in this segment, S is a parabola, M is a cubic curve<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Shear force and Bending moment in segment DE</h4>
+                                    <img src="resource/1.7.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        In segement DE, e.g. 6 m &le; x &le; 12 m<br/><br/>
+                                        From point D to x, there is a uniform distributed load. Its resultant's magnitude (in kN) is
+                                        <select onchange="choice_check(event, '24');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>12</option>
+                                            <option>24</option>
+                                            <option>48</option>
+                                        </select> &bull; (<em>x</em>-12)<br/><br/>
+                                        Its distance from point A is 12 +
+                                        <select onchange="choice_check(event, '1/2');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>1/3</option>
+                                            <option>2/3</option>
+                                            <option>1/2</option>
+                                        </select> &bull; (<em>x</em>-12)<br/><br/>
+                                        Shear force S = F<sub>Ax</sub> - 50 - 72 -
+                                        <select onchange="choice_check(event, '24');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>12</option>
+                                            <option>24</option>
+                                            <option>48</option>
+                                        </select> &bull; (<em>x</em>-12)<br/><br/>
+                                        Bending moment M = 60 + 8.5<em>x</em> - 50(<em>x</em>-3) - 72(<em>x</em>-10) -
+                                         <select onchange="choice_check(event, '24');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>12</option>
+                                            <option>24</option>
+                                            <option>48</option>
+                                        </select> &bull; (<em>x</em>-12) &bull; 
+                                        <select onchange="choice_check(event, '1/2');">
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option>1/3</option>
+                                            <option>2/3</option>
+                                            <option>1/2</option>
+                                        </select> &bull; (<em>x</em>-12)<br/><br/>
+                                        Note in this segment, S is linear, M is a parabora<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <h4 style="font-weight: bold;">Axial force</h4>
+                                    <img src="resource/1.3.png" alt="image not loded"/>
+                                    <p class="answer">
+                                        <br/>
+                                        Along the beam, the Aixal force satisifies: A + F<sub>Ax</sub> = 0.<br/><br/>
+                                        So A = <input size="4" onkeypress="question_check(event, 100);"/> kN<br/><br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <strong>This question is finished<br/><br/></strong>
+                                    The SFD, BMD and AFD is shown as:<br/><br/>
+                                    SFD:<br/>
+                                    <img src="resource/1.9.png" alt="image not loded"/><br/><br/>
+                                    BMD:<br/>
+                                    <img src="resource/1.10.png" alt="image not loded"/><br/><br/>
+                                    AFD:<br/>
+                                    <img src="resource/1.8.png" alt="image not loded"/><br/><br/>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion">
+                        <h2>Interactive BMD</h2>
+                        <div id="q2">
+                            <div class="h4 question">
+                                <p>
+                                    A simply supported beam of length 3m has two point loads (both 12 kN) acting on it. Move the sliders to change the location of the forces, and see how the BMD changes.
+                                </p>
+                            </div>
+                            <div class="h4">
+                                <div class="h4 question">
+                                <svg id="lshape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="700" height="300" viewBox="-50 0 700 300" style="display: block; background-color: white;">
+
+                                    <path id="p1" stroke="red" stroke-linejoin="round" stroke-width="4" stroke-linecap="round"
+                                          d="M 200 145 l -10 -20 10 20 10 -20 -10 20 0 -120"/>
+                                    <path id="p2" stroke="red" stroke-linejoin="round" stroke-width="4"
+                                          d="M 400 145 l -10 -20 10 20 10 -20 -10 20 0 -120"/>
+
+                                    <path stroke="black" stroke-linejoin="round" stroke-width="2" fill="none" d="M 0 155 l -10 10 20 0 -10 -10"/>
+                                    <path stroke="black" stroke-linejoin="round" stroke-width="2" fill="none" d="M 600 155 l -10 10 20 0 -10 -10"/>
+                                    <path stroke="black" stroke-linejoin="round" stroke-width="2" fill="none" d="M 590 170 l 20 0"/>
+
+                                    <path id="moment" stroke="blue" stroke-linejoin="round" stroke-linecap="round" stroke-width="4" fill="#fff8dc"
+                                          d="M 0 150 l 200 80 200 0 L 600 150"/>
+
+                                    <line x1="0" y1="150" x2="600" y2="150" stroke-linecap="round" stroke="black" stroke-width="10"/>
+
+                                    <text id="vp1" x="160" y="290" font-size="20">12 kNm</text>
+                                    <text id="vp2" x="360" y="290" font-size="20">12 kNm</text>
+                                </svg>
+                            </div>
+                            <br/>
+                            <p class="h4"><strong>Distance from P1 to left (0 - 3m)</strong></p>
+                            <input type="range" id="rp1" min="0" max="300" value="100" style="width: 600px; display: inline;"/>&nbsp;&nbsp;&nbsp;<span id="labelp1" style="font-weight: bold;">1 m</span>
+                            <br/>
+                            <p class="h4"><strong>Distance from P2 to left (0 - 3m)</strong></p>
+                            <input type="range" id="rp2" min="0" max="300" value="200" style="width: 600px; display: inline;"/>&nbsp;&nbsp;&nbsp;<span id="labelp2" style="font-weight: bold;">2 m</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center" style="border-top: 3px solid black; margin-top: 100px;">
+                        <button class="btn btn-danger btn-lg" onclick="window.close();">Close</button>&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-success btn-lg" onclick="window.location.reload(true);">Restart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/script.js?v=1"></script>
+    <script type="text/javascript" src="script/bmd.js?v=1"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+            $("#rp1").on("input change", onchange);
+            $("#rp2").on("input change", onchange);
+        });
+    </script>
+</html>
