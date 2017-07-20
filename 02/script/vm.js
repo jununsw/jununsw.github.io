@@ -122,7 +122,7 @@ var vm = new Vue({
             };
             
             window.setTimeout(function() {
-                final_label.hide().after("<label>Note this is a sample page. In real case your mark will be sent to Moodle Gradebook.</label>");
+                $(event.target).hide().after("<label>Note this is a sample page. In real case your mark will be sent to Moodle Gradebook.</label>");
             }, 500);
         },
         
