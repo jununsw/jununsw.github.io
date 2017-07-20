@@ -1,0 +1,97 @@
+body {
+    background-image: url("../resource/background.jpg");
+}
+
+.figure {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ol {
+    list-style-type: lower-alpha;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.ui-dialog {
+    top: 0;
+    left: 0;
+    padding: .2em;
+    border:1px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    border: 1px;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-content {
+    border: 0;
+    padding: 20px;
+    font-size: 16px;
+    color: blue;
+    background-color: white;
+    overflow: auto;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: left;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    margin-top: .5em;
+    padding: .3em 1em .5em .4em;
+    background-color: white;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 0;
+    cursor: pointer;
+}
+
+.accordion {
+    margin: 0;
+}
+
+.accordion .ui-accordion-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.accordion .ui-accordion-content {
+    background-color: transparent;
+    border: 0;
+}
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+section {
+    display: none;
+    margin: 1em;
+}
+
+.question {
+    font-weight: bold; 
+    margin-bottom: 2em;
+}
