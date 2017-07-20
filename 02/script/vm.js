@@ -121,9 +121,21 @@ var vm = new Vue({
                 "data": JSON.stringify(postData)
             };
             
-            window.setTimeout(function() {
-                $(event.target).hide().after("<label>Note this is a sample page. In real case your mark will be sent to Moodle Gradebook.</label>");
-            }, 500);
+            $.post("../query.php", submitData, function(data, status) {
+                if (data.toString() == "1") {
+                    // $(event.target).hide().after("<label> Your mark is recorded and will be sent to Moodle Gradebook after the due date. Please also keep a record of your answer by either taking a screenshot or printing it.</label>");
+                    $(event.target).hide().after("<label>&nbsp;Your answers and your mark are recorded and they will be sent to Moodle Gradebook after the due date.</label>");
+                    // final_label.hide().after(data.toString());
+                    
+                    // to hide everything
+                    $("#main-body").hide();
+                    $(".instruction").hide();
+                    $(".timer").hide();
+                } else {
+                    $(event.target).after("<label>&nbsp;We have confronted a problem when sending the mark. Please send a screenshot of this page with your zID to xiaojun.chen@unsw.edu.au</label>");
+                    $(event.target).html("Finish and Submit").prop("disabled", false);
+                }
+            });
         },
         
         tofinish: function(event) {
@@ -293,41 +305,4 @@ var vm = new Vue({
 $(document).ready(function() {
     $("#myapp").css("display", "block");
     $("#main-body").tabs();
-    $("#main-body").css("display", "block");
-    $("#score-bar").css("display", "block");
-    $("#id-bar").css("display", "none");
-    
-    count = setInterval(function() {
-
-        var min = Number($("#min").html());
-        var sec = Number($("#sec").html());
-
-        if (sec === 0) {
-            min -= 1;
-            sec = "59";
-            min = min.toFixed(0);
-        } else if (sec <= 10) {
-            sec -= 1;
-            sec = "0" + sec.toFixed(0);
-            min = min.toFixed(0);
-        } else {
-            sec -= 1;
-            sec = sec.toFixed(0);
-            min = min.toFixed(0);
-        }
-
-        $("#min").html(min);
-        $("#sec").html(sec);
-
-    }, 1000);
-
-    setTimeout(function() {
-        clearInterval(count);
-
-        // TODO disable submit
-        $(".timer").css("display", "none");
-        $("#id-submit").prop("disabled", true);
-
-        // TODO submit result
-    }, 5400000);
 });
