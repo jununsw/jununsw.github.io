@@ -7,7 +7,6 @@ var selection = [
 
 function toSubmit(event) {
     var postData = {
-        zid: id,
         week: "week05"
     };
     
