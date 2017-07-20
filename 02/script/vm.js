@@ -126,6 +126,7 @@ var vm = new Vue({
                 $("#main-body").css("display", "none");
                 $("#score-bar").css("display", "block");
                 $("#id-bar").css("display", "none");
+                $(".instruction,.timer").css("display", "none");
             }, 500);
         },
         
