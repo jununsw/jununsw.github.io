@@ -1,0 +1,115 @@
+body {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px;
+    border-width: 0px; 
+    background-color: #e0ffff;
+}
+
+.accordion {
+    margin: 0;
+}
+
+.accordion .ui-accordion-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.accordion .ui-accordion-content {
+    background-color: transparent;
+    border: 0;
+}
+
+img {
+    margin-left: 30px;
+    margin-bottom: 40px;
+    display: block;
+}
+
+#answer {
+    display: none;
+}
+
+table.table-bordered{
+    border: 1px solid black;
+}
+
+table.table-bordered > thead > tr > th{
+    border:1px solid black;
+    text-align: center;
+}
+
+table.table-bordered > tbody > tr > td{
+    border:1px solid black;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    display: block;
+}
+
+.label {
+    font-size: 20px;
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    border: 1px;
+    color: black;
+    background: #846733;
+    font-size: 16px;
+}
+
+.ui-dialog .ui-dialog-content {
+	border: 0;
+	padding-top: 20px;
+    font-size: 18px;
+    color: #CAAD75;
+    background-color: #FDF8E4;
+	overflow: auto;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: left;
+	border-width: 1px 0 0 0;
+	background-image: none;
+	margin-top: .5em;
+	padding: .3em 1em .5em .4em;
+    background-color: #846733;
+}
+
+input {
+    background: #FAFAD2;
+    border-radius: 10px;
+}
+
+input:disabled {
+    background: #d3d3d3;
+    border-radius: 10px;
+}
+
+input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #6495ED;
+    font-size: 12px;
+}
+
+input::-moz-placeholder { /* Firefox 19+ */
+    color: #6495ED;
+    font-size: 12px;
+}
+
+input:-ms-input-placeholder { /* IE 10+ */
+    color: #6495ED;
+    font-size: 12px;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+    color: #6495ED;
+    font-size: 12px;
+}
