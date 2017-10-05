@@ -1,5 +1,5 @@
 body {
-    background-image: url("../resource/background.jpg");
+    background-color: #DEB887;
     font-size: 18px;
 }
 
@@ -22,7 +22,6 @@ button {
 
 ol {
     list-style-type: lower-alpha;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }
 
 li {
@@ -30,12 +29,11 @@ li {
     margin: 5px 0 0 5px;
 }
 
-
 .list-seperate li {
     margin: 10px 0;
 }
 
 #svg-container {
     max-width: 500px;
-    max-height: 400px;
+    max-height: 600px;
 }
