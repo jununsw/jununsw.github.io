@@ -7,7 +7,13 @@ function makeModel(a, b, tau, beta) {
     this.beta = beta;
     
     this.c = getPrecision(((this.a + this.b) / 2).toString(), 3, "n");
-    this.r = getPrecision((Math.pow(Math.pow((this.a - this.b) / 2), 2) + Math.pow(this.tau, 2), 0.5).toString(), 3, "n");
+    
+    var x1 = (this.a - this.b) / 2;
+    var x2 = this.tau;
+    var x3 = x1*x1 + x2*x2;
+    var x4 = Math.pow(x3, 0.5);
+    this.r = getPrecision(x4.toString(), 3, "n");
+    
     this.s1 = getPrecision((this.c + this.r).toString(), 3, "n");
     this.s2 = getPrecision((this.c - this.r).toString(), 3, "n");
     
