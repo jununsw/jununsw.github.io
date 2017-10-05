@@ -1,0 +1,41 @@
+body {
+    background-image: url("../resource/background.jpg");
+    font-size: 18px;
+}
+
+.figure {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ol {
+    list-style-type: lower-alpha;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+#svg-container {
+    max-width: 500px;
+    max-height: 400px;
+}
