@@ -48,20 +48,24 @@ function draw_mohr(e) {
     
     if ((a_ok) && (b_ok) && (tau_ok) && (beta_ok)) {
         prob = new makeModel(a, b, tau, beta);
-        rotate_block(beta);
-        scale_arrow(a, b, tau);
         
-        $("#beta").val(beta.toString()).prop("disabled", true).prop("background-color", "white");
-        $("#a").val(a.toString()).prop("disabled", true).prop("background-color", "white");
-        $("#b").val(b.toString()).prop("disabled", true).prop("background-color", "white");
-        $("#tau").val(tau.toString()).prop("disabled", true).prop("background-color", "white");
-        
-        prepare_mohr();
-        apply_mohr();
-        
-        $("#after-draw").hide();
-        $(e.target).after("<br/><br/><br/>Mohr's Circle is plotted as follows").hide();
-        
+        if (prob.r == 0) {
+            $("#after-draw").css("color", "red").html("You have a hydrostatic condition, in which the Mohr's cricle is a point. Please re-try another stress condition!");
+        } else {
+            rotate_block(beta);
+            scale_arrow(a, b, tau);
+
+            $("#beta").val(beta.toString()).prop("disabled", true).prop("background-color", "white");
+            $("#a").val(a.toString()).prop("disabled", true).prop("background-color", "white");
+            $("#b").val(b.toString()).prop("disabled", true).prop("background-color", "white");
+            $("#tau").val(tau.toString()).prop("disabled", true).prop("background-color", "white");
+
+            prepare_mohr();
+            apply_mohr();
+
+            $("#after-draw").hide();
+            $(e.target).hide();
+        }
     } else {
         $("#after-draw").css("color", "red").html("Your input is not valid");
     }
@@ -132,7 +136,7 @@ function scale_arrow(a, b, tau) {
 }
 
 function prepare_mohr() {
-    $("#svg-mohr").css("display", "block");
+    $("#div-mohr").css("display", "block");
     
     d3.select("#svg-mohr")
       .append("path")
@@ -174,22 +178,188 @@ function prepare_mohr() {
       .style("font-size", "18px")
       .text("\u03c4 (kPa)");
     
-    (function() {
-        var lx = 600;
-        var centre = prob.c;
-        var radius = prob.r;
-    })();
+    d3.select("#svg-mohr")
+      .append("circle")
+      .attr("cx", 420)
+      .attr("cy", 250)
+      .attr("r", 180)
+      .attr("stroke-width", 3)
+      .attr("fill", "none")
+      .attr("stroke", "black")
 }
 
 function apply_mohr() {
+    d3.select("#svg-mohr")
+      .append("g")
+      .attr("id", "mohr-main");
     
+    d3.select("#mohr-main")
+      .append("line")
+      .attr("stroke-width", 3)
+      .attr("stroke", "blue")
+      .attr("stroke-dasharray", "10, 5")
+      .attr("fill", "none")
+      .attr("x1", 240)
+      .attr("x2", 600)
+      .attr("y1", 250)
+      .attr("y2", 250);
+    
+    d3.select("#mohr-main")
+      .append("circle")
+      .attr("cx", 240)
+      .attr("cy", 250)
+      .attr("r", 10)
+      .attr("stroke-width", 0)
+      .attr("fill", "red")
+      .attr("stroke", "none");
+    
+    d3.select("#mohr-main")
+      .append("circle")
+      .attr("cx", 600)
+      .attr("cy", 250)
+      .attr("r", 10)
+      .attr("stroke-width", 0)
+      .attr("fill", "blue")
+      .attr("stroke", "none");
+    
+    d3.select("#mohr-main")
+      .append("text")
+      .attr("id", "text-b")
+      .attr("text-anchor", "middle")
+      .attr("x", 210)
+      .attr("y", 260)
+      .attr("stroke-width", 0)
+      .attr("fill", "red")
+      .attr("stroke", "none")
+      .attr("font-family", "Sans-serif")
+      .style("font-size", "20px")
+      .text("B");
+    
+    d3.select("#mohr-main")
+      .append("text")
+      .attr("id", "text-a")
+      .attr("text-anchor", "middle")
+      .attr("x", 620)
+      .attr("y", 260)
+      .attr("stroke-width", 0)
+      .attr("fill", "blue")
+      .attr("stroke", "none")
+      .attr("font-family", "Sans-serif")
+      .style("font-size", "20px")
+      .text("A");
+    
+    d3.select("#mohr-main")
+      .attr("transform", "rotate(" + (prob.getTheta() * 2).toString() + " 420 250)");
+    
+    /*
+    d3.select("#text-b")
+      .attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " " + ($("#text-b").attr("x")) + " " + ($("#text-b").attr("y") - 5) + ")");
+    
+    d3.select("#text-a")
+      .attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " " + ($("#text-a").attr("x")) + " " + ($("#text-a").attr("y") - 5) + ")");
+    */
+    
+    (function () {
+        var thetad = prob.getTheta() * 2;
+        var theta = thetad / 180 * Math.PI;
+        var cx = 420;
+        var cy = 250;
+        var r = 30;
+        var end_x = cx - r*Math.cos(theta);
+        var end_y = cy - r*Math.sin(theta);
+        
+        
+        if (theta > 0) {
+            var d = "M " + (cx - r) + " " + cy + " A " + r + " " + r + " 0 0 1 " + end_x + " " + end_y;
+            var d_arrow = "M " + (cx - r) + " " + cy + " l -5 10 5 -10 5 10 -5 -10";
+            
+            d3.select("#svg-mohr")
+              .append("path")
+              .attr("stroke", "black")
+              .attr("fill", "none")
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", d);
+            d3.select("#svg-mohr")
+              .append("path")
+              .attr("stroke", "black")
+              .attr("fill", "none")
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", d_arrow)
+              .attr("transform", "rotate(" + thetad.toString() + " " + cx.toString() + " " + cy.toString() + ")");
+            d3.select("#svg-mohr")
+              .append("text")
+              .attr("text-anchor", "middle")
+              .attr("x", cx - r - 15)
+              .attr("y", cy - 10)
+              .attr("stroke-width", 0)
+              .attr("fill", "black")
+              .attr("stroke", "none")
+              .attr("font-family", "Sans-serif")
+              .style("font-size", "20px")
+              .text("2\u03b8");
+        } else if (theta < 0) {
+            var d = "M " + (cx - r) + " " + cy + " A " + r + " " + r + " 0 0 0 " + end_x + " " + end_y;
+            var d_arrow = "M " + (cx - r) + " " + cy + " l -5 -10 5 10 5 -10 -5 10";
+            
+            d3.select("#svg-mohr")
+              .append("path")
+              .attr("stroke", "black")
+              .attr("fill", "none")
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", d);
+            d3.select("#svg-mohr")
+              .append("path")
+              .attr("stroke", "black")
+              .attr("fill", "none")
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", d_arrow)
+              .attr("transform", "rotate(" + thetad.toString() + " " + cx.toString() + " " + cy.toString() + ")");
+            d3.select("#svg-mohr")
+              .append("text")
+              .attr("text-anchor", "middle")
+              .attr("x", cx - r - 15)
+              .attr("y", cy + 25)
+              .attr("stroke-width", 0)
+              .attr("fill", "black")
+              .attr("stroke", "none")
+              .attr("font-family", "Sans-serif")
+              .style("font-size", "20px")
+              .text("2\u03b8");
+        } else {
+            d3.select("#svg-mohr")
+              .append("text")
+              .attr("text-anchor", "middle")
+              .attr("x", cx - r - 35)
+              .attr("y", cy - 10)
+              .attr("stroke-width", 0)
+              .attr("fill", "black")
+              .attr("stroke", "none")
+              .attr("font-family", "Sans-serif")
+              .style("font-size", "20px")
+              .text("2\u03b8 = 0");
+        }
+        
+    })();
+    
+    $("#mohr-data ul").append($("<li style='color: blue;'> Point A: (" + prob.a + ", -" + prob.tau + ")</li>"))
+        .append($("<li style='color: red;'> Point B: (" + prob.b + ", " + prob.tau + ")</li>"))
+        .append($("<li style='color: black;'> Center of the Mohr Circle: (" + prob.c + ", 0)</li>"))
+        .append($("<li style='color: black;'> Radium of the Mohr Circle: " + prob.r + "</li>"));
 }
 
 function draw_figure() {
     d3.select("#svg-main")
       .append("line")
       .attr("stroke-width", 3)
-      .attr("stroke", "black")
+      .attr("stroke", "blue")
       .attr("fill", "none")
       .attr("x1", 100)
       .attr("x2", 350)
