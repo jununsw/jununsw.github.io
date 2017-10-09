@@ -446,7 +446,7 @@ function apply_mohr() {
     $("#mohr-data ul").append($("<li style='color: blue;'> Point A: (" + prob.a + ", -" + prob.tau + ")</li>"))
         .append($("<li style='color: red;'> Point B: (" + prob.b + ", " + prob.tau + ")</li>"))
         .append($("<li style='color: black;'> Center of the Mohr Circle: (" + prob.c + ", 0)</li>"))
-        .append($("<li style='color: black;'> Radium of the Mohr Circle: " + prob.r + "</li>"));
+        .append($("<li style='color: black;'> Radius of the Mohr Circle: " + prob.r + "</li>"));
 }
 
 function draw_figure() {
