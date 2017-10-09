@@ -37,3 +37,7 @@ li {
     max-width: 500px;
     max-height: 600px;
 }
+
+.inlet {
+    display: none;
+}

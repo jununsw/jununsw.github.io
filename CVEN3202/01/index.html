@@ -56,8 +56,8 @@
                     The Mohr's Circle is plotted as follows:
                 </div>
                 <div class="col-sm-12">
-                    <button class="btn btn-default">Inlet 1</button>
-                    <button class="btn btn-default">Inlet 2</button>
+                    <button id="btn-in1" class="btn btn-success">Inlet 1</button>
+                    <button id="btn-in2" class="btn btn-success">Inlet 2</button>
                 </div>
                 <div class="col-sm-12">
                     <svg id="svg-mohr" xmlns="http://www.w3.org/2000/svg" 
@@ -78,8 +78,11 @@
                 </div>
             </div>
         </div>
+        <div id="inlet1" class="inlet" title="inlet 1"></div>
+        <div id="inlet2" class="inlet" title="inlet 2"></div>
     </body>
-    <script type="text/javascript" src="script/script.js"></script>
+    <script type="text/javascript" src="script/script01.js"></script>
+    <script type="text/javascript" src="script/script02.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             draw_figure();
