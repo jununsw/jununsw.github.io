@@ -42,8 +42,8 @@ function draw_mohr(e) {
     var tau = getPrecision($("#tau").val(), 0, "n");
     
     var beta_ok = (beta >= -90) && (beta <= 90);
-    var a_ok = (a >= 1) && (a <= 1000);
-    var b_ok = (b >= 1) && (b <= 1000);
+    var a_ok = (a >= -1000) && (a <= 1000);
+    var b_ok = (b >= -1000) && (b <= 1000);
     var tau_ok = (tau >= -1000) && (tau <= 1000);
     
     if ((a_ok) && (b_ok) && (tau_ok) && (beta_ok)) {
@@ -63,6 +63,7 @@ function draw_mohr(e) {
             prepare_mohr();
             apply_mohr();
             prepare_inlet1();
+            prepare_inlet2();
 
             $("#after-draw").hide();
             $(e.target).hide();
@@ -96,17 +97,35 @@ function scale_arrow(a, b, tau) {
     var length = prob.getLineLength(50);
     var ltau = length[2];
     
-    d3.select("#path-sa1")
-      .attr("d", "M 245 230 l -5 -10 5 10 5 -10 -5 10 0 " + (-length[0]).toString());
+    if (a > 0) {
+        d3.select("#path-sa1")
+          .attr("d", "M 245 230 l -5 -10 5 10 5 -10 -5 10 0 " + (-length[0]).toString());
+        d3.select("#path-sa2")
+          .attr("d", "M 245 320 l -5 10 5 -10 5 10 -5 -10 0 " + length[0].toString());
+    } else if (a < 0) {
+        d3.select("#path-sa1")
+          .attr("d", "M 245 230 l 0 " + (-length[0]).toString() + " -5 10 5 -10 5 10 -5 -10");
+        d3.select("#path-sa2")
+          .attr("d", "M 245 320 l 0 " + length[0].toString() + " -5 -10 5 10 5 -10 -5 10");
+    } else {
+        $("#path-sa1").attr("opacity", "0");
+        $("#path-sa2").attr("opacity", "0");
+    }
     
-    d3.select("#path-sa2")
-      .attr("d", "M 245 320 l -5 10 5 -10 5 10 -5 -10 0 " + length[0].toString());
-    
-    d3.select("#path-sb1")
-      .attr("d", "M 200 270 l -10 -5 10 5 -10 5 10 -5 " + (-length[1]).toString() + " 0");
-    
-    d3.select("#path-sb2")
-      .attr("d", "M 290 270 l 10 -5 -10 5 10 5 -10 -5 " + length[1].toString() + " 0");
+    if (b > 0) {
+        d3.select("#path-sb1")
+          .attr("d", "M 200 270 l -10 -5 10 5 -10 5 10 -5 " + (-length[1]).toString() + " 0");
+        d3.select("#path-sb2")
+          .attr("d", "M 290 270 l 10 -5 -10 5 10 5 -10 -5 " + length[1].toString() + " 0");
+    } else if (b < 0) {
+        d3.select("#path-sb1")
+          .attr("d", "M 200 270 l " + (-length[1]).toString() + " 0 10 -5 -10 5 10 5 -10 -5");
+        d3.select("#path-sb2")
+          .attr("d", "M 290 270 l " + length[1].toString() + " 0 -10 -5 10 5 -10 5 10 -5");
+    } else {
+        $("#path-sb1").attr("opacity", "0");
+        $("#path-sb2").attr("opacity", "0");
+    }
     
     if (tau == 0) {
         $("#path-tau1").attr("opacity", "0");
@@ -171,7 +190,7 @@ function prepare_mohr() {
     d3.select("#svg-mohr")
       .append("text")
       .attr("x", 30)
-      .attr("y", 50)
+      .attr("y", 30)
       .attr("stroke-width", 0)
       .attr("fill", "black")
       .attr("stroke", "white")
@@ -186,10 +205,100 @@ function prepare_mohr() {
       .attr("r", 180)
       .attr("stroke-width", 3)
       .attr("fill", "none")
+      .attr("stroke", "black");
+    
+    d3.select("#svg-mohr")
+      .append("line")
+      .attr("stroke-width", 1)
       .attr("stroke", "black")
+      .attr("stroke-dasharray", "5, 5")
+      .attr("fill", "none")
+      .attr("x1", 420)
+      .attr("x2", 100)
+      .attr("y1", 70)
+      .attr("y2", 70);
+    
+    d3.select("#svg-mohr")
+      .append("line")
+      .attr("stroke-width", 1)
+      .attr("stroke", "black")
+      .attr("stroke-dasharray", "5, 5")
+      .attr("fill", "none")
+      .attr("x1", 420)
+      .attr("x2", 100)
+      .attr("y1", 430)
+      .attr("y2", 430);
+    
+    d3.select("#svg-mohr")
+      .append("circle")
+      .attr("cx", 240)
+      .attr("cy", 250)
+      .attr("r", 5)
+      .attr("stroke-width", 3)
+      .attr("fill", "black")
+      .attr("stroke", "black");
+    
+    d3.select("#svg-mohr")
+      .append("circle")
+      .attr("cx", 600)
+      .attr("cy", 250)
+      .attr("r", 5)
+      .attr("stroke-width", 3)
+      .attr("fill", "black")
+      .attr("stroke", "black");
 }
 
 function apply_mohr() {
+    d3.select("#svg-mohr")
+      .append("text")
+      .attr("x", 230)
+      .attr("y", 240)
+      .attr("text-anchor", "end")
+      .attr("stroke-width", 0)
+      .attr("fill", "black")
+      .attr("stroke", "white")
+      .attr("font-family", "serif")
+      .style("font-size", "18px")
+      .text(prob.s2.toString());
+    
+    d3.select("#svg-mohr")
+      .append("text")
+      .attr("x", 610)
+      .attr("y", 240)
+      .attr("text-anchor", "start")
+      .attr("stroke-width", 0)
+      .attr("fill", "black")
+      .attr("stroke", "white")
+      .attr("font-family", "serif")
+      .style("font-size", "18px")
+      .text(prob.s1.toString());
+    
+    d3.select("#svg-mohr")
+      .append("text")
+      .attr("x", 90)
+      .attr("y", 70)
+      .attr("text-anchor", "end")
+      .attr("alignment-baseline", "middle")
+      .attr("stroke-width", 0)
+      .attr("fill", "black")
+      .attr("stroke", "white")
+      .attr("font-family", "serif")
+      .style("font-size", "18px")
+      .text(Math.abs(prob.r).toString());
+    
+    d3.select("#svg-mohr")
+      .append("text")
+      .attr("x", 90)
+      .attr("y", 430)
+      .attr("text-anchor", "end")
+      .attr("alignment-baseline", "middle")
+      .attr("stroke-width", 0)
+      .attr("fill", "black")
+      .attr("stroke", "white")
+      .attr("font-family", "serif")
+      .style("font-size", "18px")
+      .text((-Math.abs(prob.r)).toString());
+    
     d3.select("#svg-mohr")
       .append("g")
       .attr("id", "mohr-main");
@@ -443,10 +552,11 @@ function apply_mohr() {
         
     })();
     
-    $("#mohr-data ul").append($("<li style='color: blue;'> Point A: (" + prob.a + ", -" + prob.tau + ")</li>"))
+    $("#mohr-data ul").append($("<li style='color: blue;'> Point A: (" + prob.a + ", " + (-prob.tau) + ")</li>"))
         .append($("<li style='color: red;'> Point B: (" + prob.b + ", " + prob.tau + ")</li>"))
         .append($("<li style='color: black;'> Center of the Mohr Circle: (" + prob.c + ", 0)</li>"))
-        .append($("<li style='color: black;'> Radius of the Mohr Circle: " + prob.r + "</li>"));
+        .append($("<li style='color: black;'> Radius of the Mohr Circle: " + prob.r + "</li>"))
+        .append($("<li style='color: black;'> In order to plot the Mohr's circle neatly, note the &tau; axis does not cross through the origin. </li>"))
 }
 
 function draw_figure() {
