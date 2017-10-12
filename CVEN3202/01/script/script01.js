@@ -208,6 +208,15 @@ function prepare_mohr() {
       .attr("stroke", "black");
     
     d3.select("#svg-mohr")
+      .append("circle")
+      .attr("cx", 420)
+      .attr("cy", 250)
+      .attr("r", 3)
+      .attr("stroke-width", 3)
+      .attr("fill", "black")
+      .attr("stroke", "black");
+    
+    d3.select("#svg-mohr")
       .append("line")
       .attr("stroke-width", 1)
       .attr("stroke", "black")
@@ -314,17 +323,6 @@ function apply_mohr() {
       .attr("y1", 250)
       .attr("y2", 250);
     
-    d3.select("#mohr-main")
-      .attr("transform", "rotate(" + (prob.getTheta() * 2).toString() + " 420 250)");
-    
-    /*
-    d3.select("#text-b")
-      .attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " " + ($("#text-b").attr("x")) + " " + ($("#text-b").attr("y") - 5) + ")");
-    
-    d3.select("#text-a")
-      .attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " " + ($("#text-a").attr("x")) + " " + ($("#text-a").attr("y") - 5) + ")");
-    */
-    
     (function () {
         var thetad = prob.getTheta() * 2;
         var theta = thetad / 180 * Math.PI;
@@ -336,6 +334,7 @@ function apply_mohr() {
         
         
         if (theta > 0) {
+            // point1 above, point2 below
             var d = "M " + (cx - r) + " " + cy + " A " + r + " " + r + " 0 0 1 " + end_x + " " + end_y;
             var d_arrow = "M " + (cx - r) + " " + cy + " l -5 10 5 -10 5 10 -5 -10";
             
@@ -370,51 +369,68 @@ function apply_mohr() {
               .style("font-size", "20px")
               .text("2\u03b8");
             
+            // left node is labeled as 1, right node if labed as 2
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-1")
               .attr("cx", 240)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none");
-
+            
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-2")
               .attr("cx", 600)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-b")
+              .attr("id", "text-1")
               .attr("text-anchor", "middle")
-              .attr("x", 210)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 215)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("B");
+              .style("font-size", "20px");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-a")
+              .attr("id", "text-2")
               .attr("text-anchor", "middle")
-              .attr("x", 620)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 625)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("A");
+              .style("font-size", "20px");
+            
+            d3.select("#text-1").attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " 215 250)");
+            d3.select("#text-2").attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " 625 250)");
+            
+            if (prob.tau > 0) {
+                // A <- 2; B <- 1;
+                d3.select("#text-1").attr("id", "text-b").text("B");
+                d3.select("#point-1").attr("id", "point-b").attr("fill", "red");
+                d3.select("#text-2").attr("id", "text-a").text("A");
+                d3.select("#point-2").attr("id", "point-a").attr("fill", "blue");
+            } else {
+                // A <- 1; B <- 2;
+                d3.select("#text-1").attr("id", "text-a").text("A");
+                d3.select("#point-1").attr("id", "point-a").attr("fill", "blue");
+                d3.select("#text-2").attr("id", "text-b").text("B");
+                d3.select("#point-2").attr("id", "point-b").attr("fill", "red");
+            }
             
         } else if (theta < 0) {
+            
             var d = "M " + (cx - r) + " " + cy + " A " + r + " " + r + " 0 0 0 " + end_x + " " + end_y;
             var d_arrow = "M " + (cx - r) + " " + cy + " l -5 -10 5 10 5 -10 -5 10";
             
@@ -449,50 +465,68 @@ function apply_mohr() {
               .style("font-size", "20px")
               .text("2\u03b8");
             
+            // left node is labeled as 1, right node if labed as 2
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-1")
               .attr("cx", 240)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none");
-
+            
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-2")
               .attr("cx", 600)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-b")
+              .attr("id", "text-1")
               .attr("text-anchor", "middle")
-              .attr("x", 210)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 215)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("A");
+              .style("font-size", "20px");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-a")
+              .attr("id", "text-2")
               .attr("text-anchor", "middle")
-              .attr("x", 620)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 625)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("B");
+              .style("font-size", "20px");
+            
+            d3.select("#text-1").attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " 215 250)");
+            d3.select("#text-2").attr("transform", "rotate(" + (-prob.getTheta() * 2).toString() + " 625 250)");
+            
+            if (prob.tau < 0) {
+                // A <- 2; B <- 1;
+                d3.select("#text-1").attr("id", "text-b").text("B");
+                d3.select("#point-1").attr("id", "point-b").attr("fill", "red");
+                d3.select("#text-2").attr("id", "text-a").text("A");
+                d3.select("#point-2").attr("id", "point-a").attr("fill", "blue");
+            } else {
+                // A <- 1; B <- 2;
+                d3.select("#text-1").attr("id", "text-a").text("A");
+                d3.select("#point-1").attr("id", "point-a").attr("fill", "blue");
+                d3.select("#text-2").attr("id", "text-b").text("B");
+                d3.select("#point-2").attr("id", "point-b").attr("fill", "red");
+            }
+            
         } else {
+            
             d3.select("#svg-mohr")
               .append("text")
               .attr("text-anchor", "middle")
@@ -505,52 +539,69 @@ function apply_mohr() {
               .style("font-size", "20px")
               .text("2\u03b8 = 0");
             
+            // left node is labeled as 1, right node if labed as 2
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-1")
               .attr("cx", 240)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none");
-
+            
             d3.select("#mohr-main")
               .append("circle")
+              .attr("id", "point-2")
               .attr("cx", 600)
               .attr("cy", 250)
               .attr("r", 10)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-b")
+              .attr("id", "text-1")
               .attr("text-anchor", "middle")
-              .attr("x", 210)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 215)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "blue")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("A");
+              .style("font-size", "20px");
 
             d3.select("#mohr-main")
               .append("text")
-              .attr("id", "text-a")
+              .attr("id", "text-2")
               .attr("text-anchor", "middle")
-              .attr("x", 620)
-              .attr("y", 260)
+              .attr("alignment-baseline", "middle")
+              .attr("x", 625)
+              .attr("y", 250)
               .attr("stroke-width", 0)
-              .attr("fill", "red")
               .attr("stroke", "none")
               .attr("font-family", "Sans-serif")
-              .style("font-size", "20px")
-              .text("B");
+              .style("font-size", "20px");
+            
+            if (prob.a > prob.b) {
+                // A <- 2; B <- 1;
+                d3.select("#text-1").attr("id", "text-b").text("B");
+                d3.select("#point-1").attr("id", "point-b").attr("fill", "red");
+                d3.select("#text-2").attr("id", "text-a").text("A");
+                d3.select("#point-2").attr("id", "point-a").attr("fill", "blue");
+            } else {
+                // A <- 1; B <- 2;
+                d3.select("#text-1").attr("id", "text-a").text("A");
+                d3.select("#point-1").attr("id", "point-a").attr("fill", "blue");
+                d3.select("#text-2").attr("id", "text-b").text("B");
+                d3.select("#point-2").attr("id", "point-b").attr("fill", "red");
+            }
         }
         
     })();
+    
+    d3.select("#mohr-main").attr("transform", "rotate(" + (prob.getTheta() * 2).toString() + " 420 250)");
+    d3.select("#text-a").attr("fill", "blue").attr("font-weight", "bold");
+    d3.select("#text-b").attr("fill", "red").attr("font-weight", "bold");
     
     $("#mohr-data ul").append($("<li style='color: blue;'> Point A: (" + prob.a + ", " + (-prob.tau) + ")</li>"))
         .append($("<li style='color: red;'> Point B: (" + prob.b + ", " + prob.tau + ")</li>"))

@@ -108,7 +108,7 @@ function prepare_inlet1() {
           .attr("stroke-width", 2)
           .attr("stroke-linejoin", "round")
           .attr("stroke-linecap", "round")
-          .attr("d", "M 250 110 l 40 0 -5 -10 5 10 -5 10 5 -10");
+          .attr("d", "M 250 110 l 40 0 -10 -5 10 5 -10 5 10 -5");
         
         g1.append("text")
           .attr("x", 260)
