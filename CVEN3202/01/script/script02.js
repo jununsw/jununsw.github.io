@@ -200,6 +200,9 @@ function prepare_inlet1() {
                 my: "left top", 
                 at: "left+100 top+100"
             },
+            create: function(){
+                $(this).parent().css({position:"fixed"});
+            },
             close: function() {
                 $("#btn-in1").prop("disabled", false);
             }
@@ -321,6 +324,9 @@ function prepare_inlet2() {
             position: { 
                 my: "left top", 
                 at: "right-600 top+100"
+            },
+            create: function(){
+                $(this).parent().css({position:"fixed"});
             },
             close: function() {
                 $("#btn-in2").prop("disabled", false);

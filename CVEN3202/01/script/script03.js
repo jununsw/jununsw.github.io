@@ -12,6 +12,46 @@ function clear_previous_btn() {
     $("#btn-info").html("");
 }
 
+function connect_line(x1, y1, x2, y2, offset1, offset2, svg_tag) {
+    // add an svg line element connecting (x1, y1) and (x2, y2) with offset (additional length) on each side to the svg_tag using d3, and return this
+    // if offset1 and offset2 are negative, line is shorter
+    var l = Math.pow((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2), 0.5);
+    var sin = Math.abs(y2 - y1) / l;
+    var cos = Math.abs(x2 - x1) / l;
+    
+    if (x1 < x2) {
+        if (y1 < y2) {
+            var ax = x1 - offset1*cos;
+            var ay = y1 - offset1*sin;
+            var bx = x2 + offset2*cos;
+            var by = y2 + offset2*sin;
+        } else {
+            var ax = x1 - offset1*cos;
+            var ay = y1 + offset1*sin;
+            var bx = x2 + offset2*cos;
+            var by = y2 - offset2*sin;
+        }
+    } else {
+        if (y1 < y2) {
+            var ax = x1 + offset1*cos;
+            var ay = y1 - offset1*sin;
+            var bx = x2 - offset2*cos;
+            var by = y2 + offset2*sin;
+        } else {
+            var ax = x1 + offset1*cos;
+            var ay = y1 + offset1*sin;
+            var bx = x2 - offset2*cos;
+            var by = y2 - offset2*sin;
+        }
+    }
+    
+    return d3.select(svg_tag).append("line")
+             .attr("x1", ax)
+             .attr("x2", bx)
+             .attr("y1", ay)
+             .attr("y2", by);
+}
+
 function point_rotate(x, y, cx, cy, ang) {
     // rotate a point about (cx, cy) with an angle
     // x, y, cx, cy are coordiate of svg (y axis downward)
@@ -94,6 +134,7 @@ function show_pole() {
           .attr("d", ib);
 
         // draw two lines
+        /*
         var da = "M " + ax.toString() + " " + ay.toString() + " l -360 0 m 360 0 l 360 0";
         var db = "M " + bx.toString() + " " + by.toString() + " l 0 -360 m 0 360 l 0 720";
 
@@ -116,6 +157,7 @@ function show_pole() {
           .attr("fill", "none")
           .attr("d", db)
           .attr("transform", "rotate(" + (-prob.beta).toString() + " " + bx.toString() + " " + by.toString()+ ")");
+        */
 
         // obtain and draw pole point
         var pole_x = bx;
@@ -128,7 +170,21 @@ function show_pole() {
 
         prob.pole_x = pole_x;
         prob.pole_y = pole_y;
+        
+        // draw two lines
+        connect_line(ax, ay, pole_x, pole_y, 40, 40, "#g-pole")
+            .attr("stroke-width", 2)
+            .attr("stroke", "blue")
+            .attr("stroke-dasharray", "2, 2")
+            .attr("fill", "none");
+        
+        connect_line(bx, by, pole_x, pole_y, 40, 40, "#g-pole")
+            .attr("stroke-width", 2)
+            .attr("stroke", "red")
+            .attr("stroke-dasharray", "2, 2")
+            .attr("fill", "none");
 
+        // draw the pole point
         d3.select("#g-pole")
           .append("circle")
           .attr("cx", pole_x)
