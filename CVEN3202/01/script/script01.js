@@ -608,6 +608,12 @@ function apply_mohr() {
         .append($("<li style='color: black;'> Center of the Mohr Circle: (" + prob.c + ", 0)</li>"))
         .append($("<li style='color: black;'> Radius of the Mohr Circle: " + prob.r + "</li>"))
         .append($("<li style='color: black;'> In order to plot the Mohr's circle neatly, note the &tau; axis does not cross through the origin. </li>"))
+        .append($("<br/>"))
+        .append($("<button id='btn-pole' class='btn btn-success'>Show Pole</button>"))
+        .append($("<div id='btn-info'></div>"));
+    
+    // assign button event
+    $("#btn-pole").on("click", show_pole);
 }
 
 function draw_figure() {

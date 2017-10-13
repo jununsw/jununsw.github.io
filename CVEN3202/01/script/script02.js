@@ -319,8 +319,8 @@ function prepare_inlet2() {
             height: 400,
             width: 400,
             position: { 
-                my: "right top", 
-                at: "right-100 top+100"
+                my: "left top", 
+                at: "right-600 top+100"
             },
             close: function() {
                 $("#btn-in2").prop("disabled", false);
