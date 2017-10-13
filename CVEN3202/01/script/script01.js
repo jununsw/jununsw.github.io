@@ -6,6 +6,10 @@ function makeModel(a, b, tau, beta) {
     this.tau = tau;
     this.beta = beta;
     
+    this.flag = {
+        pole: false
+    }
+    
     this.c = getPrecision(((this.a + this.b) / 2).toString(), 3, "n");
     
     var x1 = (this.a - this.b) / 2;

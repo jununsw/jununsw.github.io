@@ -240,7 +240,7 @@ function prepare_inlet2() {
     if (beta > 0) {
         d3.select("#svg-inlet2")
           .append("text")
-          .attr("x", 170)
+          .attr("x", 280)
           .attr("y", 140)
           .attr("text-anchor", "start")
           .attr("alignment-baseline", "baseline")
@@ -253,7 +253,7 @@ function prepare_inlet2() {
     } else if (beta < 0) {
         d3.select("#svg-inlet2")
           .append("text")
-          .attr("x", 170)
+          .attr("x", 280)
           .attr("y", 160)
           .attr("text-anchor", "start")
           .attr("alignment-baseline", "hanging")
