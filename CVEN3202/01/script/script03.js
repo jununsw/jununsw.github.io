@@ -378,7 +378,7 @@ function principal_A() {
             // A above a axis
             var theta = Math.abs(prob.getTheta());
             
-            if (ax >= 250) {
+            if (ax >= 420) {
                 d3.select("#svg-mohr")
                   .append("g")
                   .attr("id", "g-useA")
@@ -436,6 +436,30 @@ function principal_A() {
                 text_blue = " 180-2\u03b8";
             }
         }
+        
+        d3.select("#g-useA")
+          .append("text")
+          .attr("x", 600)
+          .attr("y", 430)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "red")
+          .attr("stroke", "white")
+          .style("font-size", "18px")
+          .text("Red Arc:" + text_red);
+
+        d3.select("#g-useA")
+          .append("text")
+          .attr("x", 600)
+          .attr("y", 460)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "blue")
+          .attr("stroke", "white")
+          .style("font-size", "18px")
+          .text("Blue Arc:" + text_blue);
     } else {
         $("#g-useA").attr("opacity", "1");
     }
@@ -479,30 +503,6 @@ function principal_A() {
           .style("font-size", "22px")
           .text("\u03c31");
     }
-    
-    d3.select("#g-useA")
-      .append("text")
-      .attr("x", 600)
-      .attr("y", 430)
-      .attr("text-anchor", "start")
-      .attr("alignment-baseline", "hanging")
-      .attr("stroke-width", 0)
-      .attr("fill", "red")
-      .attr("stroke", "white")
-      .style("font-size", "18px")
-      .text("Red Arc:" + text_red);
-    
-    d3.select("#g-useA")
-      .append("text")
-      .attr("x", 600)
-      .attr("y", 460)
-      .attr("text-anchor", "start")
-      .attr("alignment-baseline", "hanging")
-      .attr("stroke-width", 0)
-      .attr("fill", "blue")
-      .attr("stroke", "white")
-      .style("font-size", "18px")
-      .text("Blue Arc:" + text_blue);
     
     $("#info-principal").html("Two arcs moving from point A to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
     
