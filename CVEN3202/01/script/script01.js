@@ -7,7 +7,12 @@ function makeModel(a, b, tau, beta) {
     this.beta = beta;
     
     this.flag = {
-        pole: false
+        pole: false,
+        stress: false,
+        useA: false,
+        useB: false,
+        usePole: false,
+        rotate: false
     }
     
     this.c = getPrecision(((this.a + this.b) / 2).toString(), 3, "n");
@@ -29,6 +34,11 @@ function makeModel(a, b, tau, beta) {
         return getPrecision((deg2theta / 2).toString(), 3, "n");
     };
     
+    this.p1 = rotateCartesian(240, -250, 420, -250, -2*this.getTheta());  // rotate by sigma_3
+    this.p1[1] *= -1;
+    this.p2 = rotateCartesian(600, -250, 420, -250, -2*this.getTheta());  // rotate by sigma_1
+    this.p2[1] *= -1;
+    
     this.getLineLength = function(boxSize) {
         var max = Math.max(this.a, this.b, Math.abs(this.tau));
         var lst = [this.a / max * boxSize, this.b / max * boxSize, this.tau / max * boxSize];
@@ -36,7 +46,87 @@ function makeModel(a, b, tau, beta) {
         return lst.map(function(ele) {
             return Math.max(ele, 20);
         });
-    }
+    };
+    
+    this.x3 = function() {
+        // get sigma_3's svg coordinate in x direction
+        return 240;
+    };
+    
+    this.x1 = function() {
+        // get sigma_1's svg coordinate in x direction
+        return 600;
+    };
+    
+    this.xb = function() {
+        var p1 = this.p1;
+        var p2 = this.p2;
+        
+        // get point B's svg coordinate in x direction
+        if (this.tau == 0) {
+            if (this.a < this.b) {
+                return 600;
+            } else {
+                return 240;
+            }
+        } else {
+            if (this.tau > 0) {
+                return p1[1] < 250 ? p1[0] : p2[0];
+            } else {
+                return p1[1] > 250 ? p1[0] : p2[0];
+            }
+        }
+    };
+    
+    this.yb = function() {
+        var p1 = this.p1;
+        var p2 = this.p2;
+        
+        if (this.tau == 0) {
+            return 250;
+        } else {
+            if (this.tau > 0) {
+                return p1[1] < 250 ? p1[1] : p2[1];
+            } else {
+                return p1[1] > 250 ? p1[1] : p2[1];
+            }
+        }
+    };
+    
+    this.xa = function() {
+        var p1 = this.p1;
+        var p2 = this.p2;
+        
+        // get point A's svg coordinate in x direction
+        if (this.tau == 0) {
+            if (this.a < this.b) {
+                return 240;
+            } else {
+                return 600;
+            }
+        } else {
+            if (this.tau < 0) {
+                return p1[1] < 250 ? p1[0] : p2[0];
+            } else {
+                return p1[1] > 250 ? p1[0] : p2[0];
+            }
+        }
+    };
+    
+    this.ya = function() {
+        var p1 = this.p1;
+        var p2 = this.p2;
+        
+        if (this.tau == 0) {
+            return 250;
+        } else {
+            if (this.tau < 0) {
+                return p1[1] < 250 ? p1[1] : p2[1];
+            } else {
+                return p1[1] > 250 ? p1[1] : p2[1];
+            }
+        }
+    };
 }
 
 function draw_mohr(e) {
@@ -355,6 +445,7 @@ function apply_mohr() {
               .append("path")
               .attr("stroke", "black")
               .attr("fill", "none")
+              .attr("opacity", 0)
               .attr("stroke-width", 2)
               .attr("stroke-linejoin", "round")
               .attr("stroke-linecap", "round")
@@ -451,6 +542,7 @@ function apply_mohr() {
               .append("path")
               .attr("stroke", "black")
               .attr("fill", "none")
+              .attr("opacity", 0)
               .attr("stroke-width", 2)
               .attr("stroke-linejoin", "round")
               .attr("stroke-linecap", "round")
@@ -613,11 +705,18 @@ function apply_mohr() {
         .append($("<li style='color: black;'> Radius of the Mohr Circle: " + prob.r + "</li>"))
         .append($("<li style='color: black;'> In order to plot the Mohr's circle neatly, note the &tau; axis does not cross through the origin. </li>"));
     
-    $("#mohr-data ul").after($("<button id='btn-pole' class='btn btn-warning'>Show Pole</button>"))
-        .after($("<div id='btn-info'></div>"));
+    $("#mohr-data ul")
+        .after($("<div id='btn-info' style='margin-top: 20px;'></div>"))
+        .after($("<button id='btn-principal' class='btn btn-warning btn-postproc'>Principal directions</button>"))
+        .after($("<button id='btn-stress' class='btn btn-warning btn-postproc'>Calculate pricipal stresses</button>"))
+        .after($("<button id='btn-theta' class='btn btn-warning btn-postproc'>Calculate 2&theta;</button>"))
+        .after($("<button id='btn-pole' class='btn btn-warning btn-postproc'>Show Pole</button>"));
     
     // assign button event
     $("#btn-pole").on("click", show_pole);
+    $("#btn-theta").on("click", calculate_theta);
+    $("#btn-stress").on("click", calculate_stress);
+    $("#btn-principal").on("click", show_principal);
 }
 
 function draw_figure() {

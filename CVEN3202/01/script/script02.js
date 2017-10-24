@@ -22,6 +22,15 @@ function prepare_inlet1() {
       .attr("y1", 150)
       .attr("y2", 150);
     
+    d3.select("#svg-inlet1")
+      .append("path")
+      .attr("stroke", "black")
+      .attr("fill", "none")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("d", path_arcByEnd(190, 150, 150, 150, -beta));
+    
     var g1 = d3.select("#inlet1-g");
     
     g1.append("rect")
@@ -189,24 +198,31 @@ function prepare_inlet1() {
     
     g1.attr("transform", "rotate(" + (-beta).toString() +" 150 150)");
     
+    $("#inlet1").dialog({
+        resizable: false,
+        height: 400,
+        width: 400,
+        position: { 
+            my: "left top", 
+            at: "left+100 top+100"
+        },
+        create: function() {
+            $(this).parent().css({position:"fixed"});
+        },
+        open: function() {
+            $("#btn-in1").prop("disabled", true);
+        },
+        close: function() {
+            $("#inlet1 .group-useA").attr("opacity", "0");
+            $("#inlet1 .group-useB").attr("opacity", "0");
+            $("#inlet1 .group-usePole").attr("opacity", "0");
+            $("#inlet1 .group-stress").attr("opacity", "0");
+            $("#btn-in1").prop("disabled", false);
+        }
+    }).dialog("close");
+    
     $("#btn-in1").on("click", function(e) {
-        $(e.target).prop("disabled", true);
-        
-        $("#inlet1").dialog({
-            resizable: false,
-            height: 400,
-            width: 400,
-            position: { 
-                my: "left top", 
-                at: "left+100 top+100"
-            },
-            create: function(){
-                $(this).parent().css({position:"fixed"});
-            },
-            close: function() {
-                $("#btn-in1").prop("disabled", false);
-            }
-        });
+        $("#inlet1").dialog("open");
     });
 }
 
@@ -239,6 +255,15 @@ function prepare_inlet2() {
       .attr("stroke-width", 1)
       .attr("fill", "black")
       .attr("stroke", "black");
+    
+    d3.select("#svg-inlet2")
+      .append("path")
+      .attr("stroke", "black")
+      .attr("fill", "none")
+      .attr("stroke-width", 1)
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("d", path_arcByEnd(175, 150, 150, 150, -beta));
     
     if (beta > 0) {
         d3.select("#svg-inlet2")
@@ -314,23 +339,30 @@ function prepare_inlet2() {
     
     g1.attr("transform", "rotate(" + (-beta).toString() +" 150 150)");
     
+    $("#inlet2").dialog({
+        resizable: false,
+        height: 400,
+        width: 400,
+        position: { 
+            my: "left top", 
+            at: "right-600 top+100"
+        },
+        create: function() {
+            $(this).parent().css({position:"fixed"});
+        },
+        open: function() {
+            $("#btn-in2").prop("disabled", true);
+        },
+        close: function() {
+            $("#inlet2 .group-useA").attr("opacity", "0");
+            $("#inlet2 .group-useB").attr("opacity", "0");
+            $("#inlet2 .group-stress").attr("opacity", "0");
+            $("#inlet2 .group-usePole").attr("opacity", "0");
+            $("#btn-in2").prop("disabled", false);
+        }
+    }).dialog("close");;
+    
     $("#btn-in2").on("click", function(e) {
-        $(e.target).prop("disabled", true);
-        
-        $("#inlet2").dialog({
-            resizable: false,
-            height: 400,
-            width: 400,
-            position: { 
-                my: "left top", 
-                at: "right-600 top+100"
-            },
-            create: function(){
-                $(this).parent().css({position:"fixed"});
-            },
-            close: function() {
-                $("#btn-in2").prop("disabled", false);
-            }
-        });
+        $("#inlet2").dialog("open");
     });
 }

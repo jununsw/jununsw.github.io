@@ -1,6 +1,9 @@
 // button information
 var btn_info = {
-    pole: ""
+    pole: "",
+    theta2: "<p>&theta; can be calculate as:</p><p>&nbsp;&nbsp;&nbsp;tan 2&theta; = 2&tau; / (&sigma;<sub>A</sub> - &sigma;<sub>B</sub>)</p><p>Therefore:</p><p>&nbsp;&nbsp;&nbsp;2&theta; = <span id='theta-2'></span>&deg;, &nbsp;&nbsp;&nbsp;&theta; = <span id='theta-1'></span>&deg;</p><p>Note: 2&theta; will be between -90&deg; to 90&deg;</p>",
+    stress: "<p>centre: (&sigma;<sub>c</sub>, 0), &sigma;<sub>c</sub> = (&sigma;<sub>1</sub> + &sigma;<sub>3</sub>) / 2, and</p><p>Radius: R<sup>2</sup> = ((&sigma;<sub>1</sub> - &sigma;<sub>3</sub>) / 2)<sup>2</sup> + &tau;<sup>2</sup>, so</p><ul><li>&sigma;<sub>1</sub> = &sigma;<sub>c</sub> + R</li><li>&sigma;<sub>3</sub> = &sigma;<sub>c</sub> - R</li></ul><p>&sigma;<sub>1</sub> and &sigma;<sub>3</sub> are shown in the Mohr's Circle</p>",
+    principal: "<p>Please select the following three options to calculate principal stress and direction:</p>&nbsp;&nbsp;&nbsp;<button id='btn-usingA' class='btn btn-info btn-sm btn-postproc'>Using direction A</button><button id='btn-usingB' class='btn btn-info btn-sm btn-postproc'>Using direction B</button><button id='btn-usingPole' class='btn btn-info btn-sm btn-postproc'>Using Pole</button><div style='margin-top: 20px;' id='info-principal'></div>"
 }
 
 function clear_previous_btn() {
@@ -9,7 +12,17 @@ function clear_previous_btn() {
         $("#g-pole").attr("opacity", "0");
     }
     
+    $(".group-useA").attr("opacity", "0");
+    $(".group-useB").attr("opacity", "0");
+    $(".group-usePole").attr("opacity", "0");
+    $(".group-stress").attr("opacity", "0");
     $("#btn-info").html("");
+    
+    try {
+        $("#inlet2").dialog("close");
+    } catch (e) {
+        
+    }
 }
 
 function connect_line(x1, y1, x2, y2, offset1, offset2, svg_tag) {
@@ -133,32 +146,6 @@ function show_pole() {
           .attr("fill", "none")
           .attr("d", ib);
 
-        // draw two lines
-        /*
-        var da = "M " + ax.toString() + " " + ay.toString() + " l -360 0 m 360 0 l 360 0";
-        var db = "M " + bx.toString() + " " + by.toString() + " l 0 -360 m 0 360 l 0 720";
-
-        d3.select("#g-pole")
-          .append("path")
-          .attr("id", "pole-a")
-          .attr("stroke-width", 1)
-          .attr("stroke", "blue")
-          .attr("stroke-dasharray", "10, 5")
-          .attr("fill", "none")
-          .attr("d", da)
-          .attr("transform", "rotate(" + (-prob.beta).toString() + " " + ax.toString() + " " + ay.toString() + ")");
-
-        d3.select("#g-pole")
-          .append("path")
-          .attr("id", "pole-b")
-          .attr("stroke-width", 1)
-          .attr("stroke", "red")
-          .attr("stroke-dasharray", "10, 5")
-          .attr("fill", "none")
-          .attr("d", db)
-          .attr("transform", "rotate(" + (-prob.beta).toString() + " " + bx.toString() + " " + by.toString()+ ")");
-        */
-
         // obtain and draw pole point
         var pole_x = bx;
         var pole_y = ay;
@@ -198,10 +185,343 @@ function show_pole() {
     }
 
     // show inlet 2
-    if ($("#btn-in2").prop("disabled") == false) {
-        $("#btn-in2").trigger("click");
+    if ($("#inlet2").dialog("isOpen")) {
+        
     } else {
-        $("#inlet2").dialog("close");
         $("#btn-in2").trigger("click");
+    }
+}
+
+function calculate_theta() {
+    clear_previous_btn();
+    $("#btn-info").html(btn_info.theta2);
+    $("#theta-2").html((prob.getTheta() * 2).toFixed(2));
+    $("#theta-1").html((prob.getTheta() * 1).toFixed(2));
+}
+
+function calculate_stress() {
+    clear_previous_btn();
+    $("#btn-info").html(btn_info.stress);
+    
+    if (prob.flag.stress == true) {
+        $("#g-stress").attr("opacity", "1");
+    } else {
+        prob.flag.stress = true;
+        
+        // write sigma 1 and 3
+        d3.select("#svg-mohr")
+          .append("g")
+          .attr("id", "g-stress")
+          .attr("class", "group-stress");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 230)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "end")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c33");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 610)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c31");
+    }
+}
+
+function show_principal() {
+    clear_previous_btn();
+    $("#btn-info").html(btn_info.principal);
+    
+    $("#btn-usingA").click(principal_A);
+    $("#btn-usingB").click(principal_B);
+    $("#btn-usingPole").click(principal_Pole);
+}
+
+function clear_principal() {
+    $("#info-principal").html("");
+    $(".group-useA").attr("opacity", "0");
+    $(".group-useB").attr("opacity", "0");
+    $(".group-usePole").attr("opacity", "0");
+    $(".group-stress").attr("opacity", "0");
+}
+
+function principal_A() {
+    clear_principal();
+    if (prob.flag.useA == false) {
+        prob.flag.useA = true;
+        
+        var ax = prob.xa();
+        var ay = prob.ya();
+        
+        var text_red;
+        var text_blue;
+        
+        if (ay == 250) {
+            // tau == 0
+            if (prob.xb() < prob.xa()) {
+                // only left arc (red)
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+                  
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, 180));
+                
+                text_red = " 180\u00b0";
+                text_blue = " 0\u00b0";
+            } else {
+                // only right part
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+                  
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, -180));
+                
+                text_red = " 0\u00b0";
+                text_blue = " 180\u00b0";
+            }
+        } else if (ay > 250) {
+            // A below a axis
+            var theta = Math.abs(prob.getTheta());
+            
+            if (ax >= 420) {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, 180 - 2*theta));
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, -2*theta));
+                
+                text_red = " 180-2\u03b8";
+                text_blue = " 2\u03b8";
+            } else {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, 2*theta));
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, -180 + 2*theta));
+                
+                text_red = " 2\u03b8";
+                text_blue = " 180-2\u03b8";
+            }
+        } else {
+            // A above a axis
+            var theta = Math.abs(prob.getTheta());
+            
+            if (ax >= 250) {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, -180 + 2*theta));
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, 2*theta));
+                
+                text_red = " 180-2\u03b8";
+                text_blue = " 2\u03b8";
+            } else {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useA")
+                  .attr("class", "group-useA");
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, -2*theta));
+
+                d3.select("#g-useA")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(ax, ay, 420, 250, 180 - 2*theta));
+                
+                text_red = " 2\u03b8";
+                text_blue = " 180-2\u03b8";
+            }
+        }
+    } else {
+        $("#g-useA").attr("opacity", "1");
+    }
+    
+    if (prob.flag.stress == true) {
+        $("#g-stress").attr("opacity", "1");
+    } else {
+        prob.flag.stress = true;
+        
+        // write sigma 1 and 3
+        d3.select("#svg-mohr")
+          .append("g")
+          .attr("id", "g-stress")
+          .attr("class", "group-stress");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 230)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "end")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c33");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 610)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c31");
+    }
+    
+    d3.select("#g-useA")
+      .append("text")
+      .attr("x", 600)
+      .attr("y", 430)
+      .attr("text-anchor", "start")
+      .attr("alignment-baseline", "hanging")
+      .attr("stroke-width", 0)
+      .attr("fill", "red")
+      .attr("stroke", "white")
+      .style("font-size", "18px")
+      .text("Red Arc:" + text_red);
+    
+    d3.select("#g-useA")
+      .append("text")
+      .attr("x", 600)
+      .attr("y", 460)
+      .attr("text-anchor", "start")
+      .attr("alignment-baseline", "hanging")
+      .attr("stroke-width", 0)
+      .attr("fill", "blue")
+      .attr("stroke", "white")
+      .style("font-size", "18px")
+      .text("Blue Arc:" + text_blue);
+    
+    $("#info-principal").html("Two arcs moving from point A to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
+    
+    // plotting on inlet 1
+    
+    
+    // plotting on inlet 2
+}
+
+function principal_B() {
+    
+}
+
+function principal_Pole() {
+    clear_principal();
+    
+    if (prob.flag.pole == false) {
+        $("#info-principal").html("Please click the 'Show Pole' to plot the pole first");
+    } else {
+        
     }
 }
