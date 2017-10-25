@@ -265,6 +265,7 @@ function clear_principal() {
     try {
         $("#inlet2").dialog("close");
         $("#inlet1").dialog("close");
+        $("#g-pole").attr("opacity", "0");
     } catch (e) {
         
     }
