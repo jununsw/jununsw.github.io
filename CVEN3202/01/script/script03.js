@@ -784,7 +784,7 @@ function principal_Pole() {
         if (prob.flag.usePole == true) {
             $("#g-usePole").attr("opacity", "1");
         } else {
-            prob.flag.usePole == true;
+            prob.flag.usePole = true;
             
             d3.select("#svg-mohr")
               .append("g")
