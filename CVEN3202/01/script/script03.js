@@ -20,6 +20,7 @@ function clear_previous_btn() {
     
     try {
         $("#inlet2").dialog("close");
+        $("#inlet1").dialog("close");
     } catch (e) {
         
     }
@@ -147,6 +148,7 @@ function show_pole() {
           .attr("d", ib);
 
         // obtain and draw pole point
+        // pole usint point B's x direction and A's y direction and then rotate by 2beta
         var pole_x = bx;
         var pole_y = ay;
 
@@ -259,6 +261,13 @@ function clear_principal() {
     $(".group-useB").attr("opacity", "0");
     $(".group-usePole").attr("opacity", "0");
     $(".group-stress").attr("opacity", "0");
+    
+    try {
+        $("#inlet2").dialog("close");
+        $("#inlet1").dialog("close");
+    } catch (e) {
+        
+    }
 }
 
 function principal_A() {
@@ -513,7 +522,254 @@ function principal_A() {
 }
 
 function principal_B() {
+    clear_principal();
+    if (prob.flag.useB == false) {
+        prob.flag.useB = true;
+        
+        var bx = prob.xb();
+        var by = prob.yb();
+        
+        var text_red;
+        var text_blue;
+        
+        if (by == 250) {
+            // tau == 0
+            if (prob.xb() < prob.xa()) {
+                // only right arc (blue)
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+                  
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, 180));
+                
+                text_red = " 0\u00b0";
+                text_blue = " 180\u00b0";
+            } else {
+                // only left part (red)
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+                  
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, -180));
+                
+                text_red = " 180\u00b0";
+                text_blue = " 0\u00b0";
+            }
+        } else if (by > 250) {
+            // B below a axis
+            var theta = Math.abs(prob.getTheta());
+            
+            if (bx >= 420) {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, 180 - 2*theta));
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, -2*theta));
+                
+                text_red = " 180-2\u03b8";
+                text_blue = " 2\u03b8";
+            } else {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, 2*theta));
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 5)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, -180 + 2*theta));
+                
+                text_red = " 2\u03b8";
+                text_blue = " 180-2\u03b8";
+            }
+        } else {
+            // B above a axis
+            var theta = Math.abs(prob.getTheta());
+            
+            if (bx >= 420) {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, -180 + 2*theta));
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, 2*theta));
+                
+                text_red = " 180-2\u03b8";
+                text_blue = " 2\u03b8";
+            } else {
+                d3.select("#svg-mohr")
+                  .append("g")
+                  .attr("id", "g-useB")
+                  .attr("class", "group-useB");
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "red")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, -2*theta));
+
+                d3.select("#g-useB")
+                  .append("path")
+                  .attr("stroke", "blue")
+                  .attr("fill", "none")
+                  .attr("opacity", 1)
+                  .attr("stroke-width", 4)
+                  .attr("stroke-linejoin", "round")
+                  .attr("stroke-linecap", "round")
+                  .attr("d", path_arcByEnd(bx, by, 420, 250, 180 - 2*theta));
+                
+                text_red = " 2\u03b8";
+                text_blue = " 180-2\u03b8";
+            }
+        }
+        
+        d3.select("#g-useB")
+          .append("text")
+          .attr("x", 600)
+          .attr("y", 430)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "red")
+          .attr("stroke", "white")
+          .style("font-size", "18px")
+          .text("Red Arc:" + text_red);
+
+        d3.select("#g-useB")
+          .append("text")
+          .attr("x", 600)
+          .attr("y", 460)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "blue")
+          .attr("stroke", "white")
+          .style("font-size", "18px")
+          .text("Blue Arc:" + text_blue);
+    } else {
+        $("#g-useB").attr("opacity", "1");
+    }
     
+    if (prob.flag.stress == true) {
+        $("#g-stress").attr("opacity", "1");
+    } else {
+        prob.flag.stress = true;
+        
+        // write sigma 1 and 3
+        d3.select("#svg-mohr")
+          .append("g")
+          .attr("id", "g-stress")
+          .attr("class", "group-stress");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 230)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "end")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c33");
+        
+        d3.select("#g-stress")
+          .append("text")
+          .attr("x", 610)
+          .attr("y", 260)
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "hanging")
+          .attr("stroke-width", 0)
+          .attr("fill", "black")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "22px")
+          .text("\u03c31");
+    }
+    
+    $("#info-principal").html("Two arcs moving from point B to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
+    
+    // plotting on inlet 1
+    
+    
+    // plotting on inlet 2
 }
 
 function principal_Pole() {
@@ -522,6 +778,35 @@ function principal_Pole() {
     if (prob.flag.pole == false) {
         $("#info-principal").html("Please click the 'Show Pole' to plot the pole first");
     } else {
+        $("#g-pole").attr("opacity", "1");
         
+        if (prob.flag.usePole == true) {
+            $("#g-usePole").attr("opacity", "1");
+        } else {
+            prob.flag.usePole == true;
+            
+            d3.select("#svg-mohr")
+              .append("g")
+              .attr("id", "g-usePole")
+              .attr("class", "group-usePole");
+
+            var svg_pole = d3.select("#g-usePole");
+
+            // since pole is drawn, connect with sigma_1 and sigma_3
+            // sigma_3 (240, 250), sigma_1 (600, 250)
+            var pole_x = prob.pole_x;
+            var pole_y = prob.pole_y;
+
+            if (pole_y < 250) {
+                // pole above x axis
+
+            } else if (pole_y > 250) {
+                // pole below x axis
+
+            } else {
+                // pole on x axis
+
+            }
+        }
     }
 }
