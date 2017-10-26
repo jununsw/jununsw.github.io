@@ -800,14 +800,137 @@ function principal_Pole() {
 
             if (pole_y < 250) {
                 // pole above x axis
-
+                svg_pole.append("path")
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "green")
+                        .attr("stroke-dasharray", "10, 4")
+                        .attr("fill", "none")
+                        .attr("d", path_lineByPoint(pole_x, pole_y, 240, 250, 0, 100));
+                
+                svg_pole.append("path")
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "green")
+                        .attr("stroke-dasharray", "10, 4")
+                        .attr("fill", "none")
+                        .attr("d", path_lineByPoint(pole_x, pole_y, 600, 250, 0, 100));
+                
+                var pole_mirror1 = point_mirror(pole_x, pole_y, 240, 250);
+                svg_pole.append("path")
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "green")
+                        .attr("fill", "none")
+                        .attr("d", path_arcPointToPoint(160, 250, 240, 250, pole_mirror1[0], pole_mirror1[1]));
+                
+                var pole_mirror2 = point_mirror(pole_x, pole_y, 600, 250);
+                svg_pole.append("path")
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "green")
+                        .attr("fill", "none")
+                        .attr("d", path_arcPointToPoint(680, 250, 600, 250, pole_mirror2[0], pole_mirror2[1]));
+                
+                svg_pole.append("text")
+                        .attr("x", 150)
+                        .attr("y", 260)
+                        .attr("text-anchor", "end")
+                        .attr("alignment-baseline", "hanging")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b12");
+                
+                svg_pole.append("text")
+                        .attr("x", 690)
+                        .attr("y", 260)
+                        .attr("text-anchor", "start")
+                        .attr("alignment-baseline", "hanging")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b11");
+                
             } else if (pole_y > 250) {
                 // pole below x axis
+                svg_pole.append("path")
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "green")
+                        .attr("stroke-dasharray", "10, 4")
+                        .attr("fill", "none")
+                        .attr("d", path_lineByPoint(pole_x, pole_y, 240, 250, 0, 100));
+                
+                svg_pole.append("path")
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "green")
+                        .attr("stroke-dasharray", "10, 4")
+                        .attr("fill", "none")
+                        .attr("d", path_lineByPoint(pole_x, pole_y, 600, 250, 0, 100));
+                
+                var pole_mirror1 = point_mirror(pole_x, pole_y, 240, 250);
+                svg_pole.append("path")
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "green")
+                        .attr("fill", "none")
+                        .attr("d", path_arcPointToPoint(160, 250, 240, 250, pole_mirror1[0], pole_mirror1[1]));
+                
+                var pole_mirror2 = point_mirror(pole_x, pole_y, 600, 250);
+                svg_pole.append("path")
+                        .attr("stroke-width", 1)
+                        .attr("stroke", "green")
+                        .attr("fill", "none")
+                        .attr("d", path_arcPointToPoint(680, 250, 600, 250, pole_mirror2[0], pole_mirror2[1]));
+                
+                svg_pole.append("text")
+                        .attr("x", 150)
+                        .attr("y", 240)
+                        .attr("text-anchor", "end")
+                        .attr("alignment-baseline", "baseline")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b12");
+                
+                svg_pole.append("text")
+                        .attr("x", 690)
+                        .attr("y", 240)
+                        .attr("text-anchor", "start")
+                        .attr("alignment-baseline", "baseline")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b11");
 
             } else {
                 // pole on x axis
-
+                svg_pole.append("text")
+                        .attr("x", 150)
+                        .attr("y", 260)
+                        .attr("text-anchor", "end")
+                        .attr("alignment-baseline", "hanging")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b12 = 0");
+                
+                svg_pole.append("text")
+                        .attr("x", 690)
+                        .attr("y", 260)
+                        .attr("text-anchor", "start")
+                        .attr("alignment-baseline", "hanging")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "green")
+                        .attr("stroke", "white")
+                        .style("font-size", "20px")
+                        .text("\u03b11 = 0");
             }
         }
     }
+    
+    // plotting on inlet 1
+    
+    
+    // plotting on inlet 2
 }

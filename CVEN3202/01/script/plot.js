@@ -155,8 +155,8 @@ function path_arcPointToPoint(x1, y1, cx, cy, x2, y2) {
     
     var ratio = r / l2;
     
-    x2 = (x2 - cx) * ratio + cx;
-    y2 = (y2 - cx) * ratio + cx;
+    x2 = (x2 - cx)*ratio + cx;
+    y2 = (y2 - cy)*ratio + cy;
     
     var dx1 = x1 - cx;
     var dy1 = y1 - cy;
