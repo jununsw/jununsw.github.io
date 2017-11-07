@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+    <head>
+        <title>BMD Demo</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="http://www.lindenbaum.net.au/unsw/util/numeric.js"></script>
+        <script src="check_bmd.js"></script>
+    </head>
+    <body>
+        <div class="container" style="margin-top: 30px;">
+            <div class="row">
+                <div class="col-xs-12">
+                    <img src="demo01.png" height="121" width="467">
+                    <div id="jxgbox" class="jxgbox" style="width:600px; height:300px;"></div>
+                    <div style="margin-top: 30px;">
+                        <button class="btn btn-default" onclick="makeLine(p0, p1, p2);">Make ABC line</button>
+                        <button class="btn btn-default" onclick="makeLine(p2, p3, p4)();">Make CDE line</button><br/><br/>
+                        <button class="btn btn-default" onclick="reset();">Reset</button><br/><br/><br/><br/>
+                        <button class="btn btn-primary" onclick="check();">Check</button> <span id="check" style="font-weight: bold;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        JXG.Options.infobox.strokeColor = 'transparent';
+
+        var board= JXG.JSXGraph.initBoard('jxgbox', {
+                boundingbox:[-2, 6, 10, -3],
+                axis: false,
+                showNavigation: false,
+                keepaspectratio: false,
+                showCopyright: false});
+
+        var l0 = board.create('line', [[0, -2], [0, 5]], {straightFirst: false, straightLast: false, visible: false});
+        var l1 = board.create('line', [[2, -2], [2, 5]], {straightFirst: false, straightLast: false, visible: false});
+        var l2 = board.create('line', [[4, -2], [4, 5]], {straightFirst: false, straightLast: false, visible: false});
+        var l3 = board.create('line', [[6, -2], [6, 5]], {straightFirst: false, straightLast: false, visible: false});
+        var l4 = board.create('line', [[8, -2], [8, 5]], {straightFirst: false, straightLast: false, visible: false});
+
+        var base = board.create('line', [[0, 0], [8, 0]], {straightFirst: false, straightLast: false, strokeColor: "black", strokeWidth: 1, dash: 2});
+
+        var p0 = board.create('glider', [0, 0, l0], {name: 'A', size: 3});
+        var p1 = board.create('glider', [2, 0, l1], {name: 'B', size: 3});
+        var p2 = board.create('glider', [4, 0, l2], {name: 'C', size: 3});
+        var p3 = board.create('glider', [6, 0, l3], {name: 'D', size: 3});
+        var p4 = board.create('glider', [8, 0, l4], {name: 'E', size: 3});
+
+        var p = [p0, p1, p2, p3, p4];
+
+        var c1 = board.create('functiongraph', makeParabola(p0, p1, p2), {strokeWidth: 3});
+
+        var c2 = board.create('functiongraph', makeParabola(p2, p3, p4), {strokeWidth: 3});
+
+        /*
+        var c1 = board.create('functiongraph', [function(x) {
+                var c = getPara(p0.X(), p0.Y(), p1.X(), p1.Y(), p2.X(), p2.Y());
+                return c[0]*x*x + c[1]*x + c[2];
+            }, 0, 4], {strokeWidth: 3});
+
+        var c2 = board.create('functiongraph', [function(x) {
+                var c = getPara(p2.X(), p2.Y(), p3.X(), p3.Y(), p4.X(), p4.Y());
+                return c[0]*x*x + c[1]*x + c[2];
+            }, 4, 8], {strokeWidth: 3});
+        */
+
+        function reset() {
+            p0.moveTo([0, 0]);
+            p1.moveTo([2, 0]);
+            p2.moveTo([4, 0]);
+            p3.moveTo([6, 0]);
+            p4.moveTo([8, 0]);
+
+            $("#check").css("color", "black").html("");
+        }
+
+        function check() {
+            if ((paraType(p0, p1, p2) == -1) && isOnLine(p2, p3, p4) && (pointType(p0) == 0) && (pointType(p2) == 1) && (pointType(p4) == 0)) {
+                $("#check").css("color", "black").html("Correct!");
+            } else {
+                $("#check").css("color", "red").html("Wrong!");
+            }
+        }
+
+        p.forEach(function(e, i, a) {
+            e.on("drag", function() {
+                var x = e.X();
+                var y = e.Y();
+
+                y = Number(y.toFixed(1));
+
+                e.moveTo([x, y]);
+            });
+        });
+    </script>
+</html>
