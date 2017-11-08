@@ -16,6 +16,8 @@ function draw_coordinate() {
     var minY = -r - 0.2*r;
     var maxY = r + 0.2*r;
     
+    JXG.Options.text.fontSize = 16;
+    
     var board= JXG.JSXGraph.initBoard('coord', {
             boundingbox: [minX, maxY, maxX, minY],
             axis: true,
@@ -24,8 +26,9 @@ function draw_coordinate() {
             showCopyright: false});
     
     var o = board.create('point', [c, 0], {name: 'O', color: 'black', fixed: true, size: 1});
-    var z = board.create('point', [c + r, 0], {name: 'O', color: 'black', fixed: true, visible: false});
-    var circle = board.create('circle', [o, z], {fixed: true, strokeColor: 'black', strokeWidth: 3, highlight: false});
+    var z2 = board.create('point', [c + r, 0], {name: 'O', color: 'black', fixed: true, visible: false});
+    var z1 = board.create('point', [c - r, 0], {name: 'O', color: 'black', fixed: true, visible: false});
+    var circle = board.create('circle', [o, z2], {fixed: true, strokeColor: 'black', strokeWidth: 3, highlight: false});
     
     var pa = board.create('glider', [a, -tau, circle], {name: 'A', size: 3, color: 'blue'});
     var pb = board.create('point', [b, tau], {name: 'B', size: 3, color: 'red', fixed: true});
