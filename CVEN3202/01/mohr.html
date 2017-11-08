@@ -15,9 +15,11 @@
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
         <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
         <script src="https://jununsw.github.io/res/util.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/layout.css?v=2"/>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=8"/>
     </head>
     <body>
         <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>Mohr's Circle Tutorial</strong></div>
@@ -70,6 +72,44 @@
                 </div>
             </div>
             
+            <div id="rotation" class="rotation" title="rotation of the Mohr's circle">
+                <div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+                    <div class="col-sm-12">
+                        <p style="font-weight: bold;">
+                            Rotation of Mohr's Circle
+                        </p>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                    <div class="col-sm-12">
+                        <div style="padding-top: 10px; text-align: center;">
+                            <div id="coord" class="coord" style="width: 400px; height: 400px; margin: 0 auto;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                    <div class="col-sm-6">
+                        <svg id="rotation-left" xmlns="http://www.w3.org/2000/svg" 
+                         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" 
+                         style="background-color: white; max-width: 400px; max-height: 400px; display: block; margin: auto; border: 1px solid black;">
+                        </svg>
+                    </div>
+                    <div class="col-sm-6">
+                        <svg id="rotation-right" xmlns="http://www.w3.org/2000/svg" 
+                         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" 
+                         style="background-color: white; max-width: 400px; max-height: 400px; display: block; margin: auto; border: 1px solid black;">
+                        </svg>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                    <div class="col-sm-12">
+                        <p style="font-weight: bold;">
+                            You can drag point A to rotate
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm-12">
                     <div class="text-center" style="border-top: 3px solid black;">
@@ -81,11 +121,11 @@
         <div id="inlet1" class="inlet" title="rotated element"></div>
         <div id="inlet2" class="inlet" title="rotated cross"></div>
     </body>
-    <script type="text/javascript" src="script/plot.js?v=7"></script>
-    <script type="text/javascript" src="script/script01.js?v=7"></script>
-    <script type="text/javascript" src="script/script02.js?v=7"></script>
-    <script type="text/javascript" src="script/script03.js?v=7"></script>
-    <script type="text/javascript" src="script/script04.js?v=7"></script>
+    <script type="text/javascript" src="script/plot.js?v=8"></script>
+    <script type="text/javascript" src="script/script01.js?v=8"></script>
+    <script type="text/javascript" src="script/script02.js?v=8"></script>
+    <script type="text/javascript" src="script/script03.js?v=8"></script>
+    <script type="text/javascript" src="script/script04.js?v=8"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             draw_figure();

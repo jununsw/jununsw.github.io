@@ -27,7 +27,7 @@ function makeModel(a, b, tau, beta) {
     this.s2 = getPrecision((this.c - this.r).toString(), 3, "n");
     
     this.getTheta = function() {
-        var tan2theta = this.tau / (this.a - this.b);
+        var tan2theta = 2 * this.tau / (this.a - this.b);
         var radian2theta = Math.atan(tan2theta);
         var deg2theta = radian2theta / Math.PI * 180;
         
@@ -127,6 +127,26 @@ function makeModel(a, b, tau, beta) {
             }
         }
     };
+    
+    this.getPole = function() {
+        // return Cartesian Coordinate of the pole
+        var p = [this.b, -this.tau];
+        var beta2 = 2 * this.beta / 180 * Math.PI;
+        
+        var sin = Math.sin(beta2);
+        var cos = Math.cos(beta2);
+        
+        var cx = (this.a + this.b) / 2;
+        var cy = 0;
+        
+        var dpx = p[0] - cx;
+        var dpy = p[1] - cy;
+        
+        var dpx1 = dpx*cos - dpy*sin;
+        var dpy1 = dpx*sin + dpy*cos;
+        
+        return [cx + dpx1, cy + dpy1];
+    }
 }
 
 function draw_mohr(e) {
@@ -142,6 +162,7 @@ function draw_mohr(e) {
     
     if ((a_ok) && (b_ok) && (tau_ok) && (beta_ok)) {
         prob = new makeModel(a, b, tau, beta);
+        draw_coordinate();
         
         if (prob.r == 0) {
             $("#after-draw").css("color", "red").html("You have a hydrostatic condition, in which the Mohr's cricle is a point. Please re-try another stress condition!");
@@ -706,6 +727,7 @@ function apply_mohr() {
         .append($("<li style='color: black;'> In order to plot the Mohr's circle neatly, note the &tau; axis does not cross through the origin. </li>"));
     
     $("#mohr-data ul")
+        .after($("<button id='btn-rotate' class='btn btn-warning btn-postproc'>Rotate Mohr's Circle</button>"))
         .after($("<div id='btn-info' style='margin-top: 20px;'></div>"))
         .after($("<button id='btn-principal' class='btn btn-warning btn-postproc'>Principal directions</button>"))
         .after($("<button id='btn-stress' class='btn btn-warning btn-postproc'>Calculate pricipal stresses</button>"))
@@ -713,6 +735,7 @@ function apply_mohr() {
         .after($("<button id='btn-pole' class='btn btn-warning btn-postproc'>Show Pole</button>"));
     
     // assign button event
+    $("#btn-rotate").on("click", show_rotate);
     $("#btn-pole").on("click", show_pole);
     $("#btn-theta").on("click", calculate_theta);
     $("#btn-stress").on("click", calculate_stress);

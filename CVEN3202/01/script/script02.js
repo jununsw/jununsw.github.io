@@ -360,7 +360,7 @@ function prepare_inlet2() {
             $("#inlet2 .group-usePole").attr("opacity", "0");
             $("#btn-in2").prop("disabled", false);
         }
-    }).dialog("close");;
+    }).dialog("close");
     
     $("#btn-in2").on("click", function(e) {
         $("#inlet2").dialog("open");
