@@ -30,8 +30,8 @@ function draw_coordinate() {
     var z1 = board.create('point', [c - r, 0], {name: 'O', color: 'black', fixed: true, visible: false});
     var circle = board.create('circle', [o, z2], {fixed: true, strokeColor: 'black', strokeWidth: 3, highlight: false});
     
-    var pa = board.create('glider', [a, -tau, circle], {name: 'A', size: 3, color: 'blue'});
-    var pb = board.create('point', [b, tau], {name: 'B', size: 3, color: 'red', fixed: true});
+    var pa = board.create('glider', [a, -tau, circle], {name: 'A', size: 4, color: 'blue'});
+    var pb = board.create('point', [b, tau], {name: 'B', size: 4, color: 'red', fixed: true});
     var l = board.create('line', [pa, pb], {straightFirst: false, straightLast: false, strokeColor: "black", strokeWidth: 1});
     
     var pole = board.create('point', prob.getPole(), {name: 'Pole', size: 3, color: 'black', fixed: true});
@@ -39,14 +39,26 @@ function draw_coordinate() {
     var l1 = board.create('line', [pa, pole], {straightFirst: false, straightLast: false, strokeColor: "blue", dash: 1, strokeWidth: 1});
     var l2 = board.create('line', [pb, pole], {straightFirst: false, straightLast: false, strokeColor: "red", dash: 1, strokeWidth: 1});
     
+    $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
+    $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
+    
     pa.on("drag", function() {
         var x = pa.X();
         var y = pa.Y();
 
         pb.moveTo([2*c - x, -y]);
+        
+        $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
+        $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
     });
 }
 
 function show_rotate() {
+    draw_rotation_block();
+    
     $("#rotation").css("display", "block");
+}
+
+function draw_rotation_block() {
+    
 }
