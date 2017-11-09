@@ -99,7 +99,7 @@ function draw_coordinate() {
                 }
             }], {name: 'end', visible: false});
     
-    angle = board.create('angle', [start_point, o, end_point], {name: "θ", radius:2});
+    angle = board.create('angle', [start_point, o, end_point], {name: "2θ", radius:2});
     
     var theta = (function() {
         var eng_point = pa.X() <= o.X() ? pa : pb;
@@ -118,7 +118,7 @@ function draw_coordinate() {
     
     $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
     $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
-    $("#rotation-theta").html("&theta;: " + theta.toFixed(2) + "&deg;");
+    $("#rotation-theta").html("&theta;: " + (theta / 2).toFixed(2) + "&deg;");
     
     pa.on("drag", function() {
         var x = pa.X();
@@ -143,7 +143,7 @@ function draw_coordinate() {
         
         $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
         $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
-        $("#rotation-theta").html("&theta;: " + theta.toFixed(2) + "&deg;");
+        $("#rotation-theta").html("&theta;: " + (theta / 2).toFixed(2) + "&deg;");
     });
 }
 
