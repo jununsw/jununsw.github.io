@@ -39,8 +39,86 @@ function draw_coordinate() {
     var l1 = board.create('line', [pa, pole], {straightFirst: false, straightLast: false, strokeColor: "blue", dash: 1, strokeWidth: 1});
     var l2 = board.create('line', [pb, pole], {straightFirst: false, straightLast: false, strokeColor: "red", dash: 1, strokeWidth: 1});
     
+    var start_point = board.create('point', [function() {
+                if (pa.X() <= o.X()) {
+                    if (pa.Y() >= 0) {
+                        return pa.X();
+                    } else {
+                        return z1.X()
+                    }
+                } else {
+                    if (pb.Y() >= 0) {
+                        return pb.X();
+                    } else {
+                        return z1.X();
+                    }
+                }
+            }, function() {
+                if (pa.X() <= o.X()) {
+                    if (pa.Y() >= 0) {
+                        return pa.Y();
+                    } else {
+                        return z1.Y()
+                    }
+                } else {
+                    if (pb.Y() >= 0) {
+                        return pb.Y();
+                    } else {
+                        return z1.Y();
+                    }
+                }
+            }], {name: 'start', visible: false});
+    
+    var end_point = board.create('point', [function() {
+                if (pa.X() <= o.X()) {
+                    if (pa.Y() < 0) {
+                        return pa.X();
+                    } else {
+                        return z1.X()
+                    }
+                } else {
+                    if (pb.Y() < 0) {
+                        return pb.X();
+                    } else {
+                        return z1.X();
+                    }
+                }
+            }, function() {
+                if (pa.X() <= o.X()) {
+                    if (pa.Y() < 0) {
+                        return pa.Y();
+                    } else {
+                        return z1.Y()
+                    }
+                } else {
+                    if (pb.Y() < 0) {
+                        return pb.Y();
+                    } else {
+                        return z1.Y();
+                    }
+                }
+            }], {name: 'end', visible: false});
+    
+    angle = board.create('angle', [start_point, o, end_point], {name: "θ", radius:2});
+    
+    var theta = (function() {
+        var eng_point = pa.X() <= o.X() ? pa : pb;
+        var sign = eng_point.Y() >= 0 ? 1 : -1;
+        
+        var dy = Math.abs(eng_point.Y());
+        var dx = Math.abs(eng_point.X() - o.X());
+        
+        if (dx == 0) {
+            return 90;
+        } else {
+            t = Math.atan(dy / dx);
+            return sign * (t / Math.PI * 180);
+        }
+    })();
+    
     $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
     $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
+    $("#rotation-theta").html("&theta;: " + theta.toFixed(2) + "&deg;");
     
     pa.on("drag", function() {
         var x = pa.X();
@@ -48,8 +126,24 @@ function draw_coordinate() {
 
         pb.moveTo([2*c - x, -y]);
         
+        var theta = (function() {
+        var eng_point = pa.X() <= o.X() ? pa : pb;
+        var sign = eng_point.Y() >= 0 ? 1 : -1;
+        
+        var dy = Math.abs(eng_point.Y());
+        var dx = Math.abs(eng_point.X() - o.X());
+        
+        if (dx == 0) {
+            return 90;
+        } else {
+            t = Math.atan(dy / dx);
+            return sign * (t / Math.PI * 180);
+        }
+    })();
+        
         $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
         $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
+        $("#rotation-theta").html("&theta;: " + theta.toFixed(2) + "&deg;");
     });
 }
 
