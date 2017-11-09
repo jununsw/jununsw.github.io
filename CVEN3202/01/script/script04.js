@@ -99,7 +99,7 @@ function draw_coordinate() {
                 }
             }], {name: 'end', visible: false});
     
-    angle = board.create('angle', [start_point, o, end_point], {name: "θ", radius: prob.r / 8});
+    angle = board.create('angle', [start_point, o, end_point], {name: "2θ", radius: prob.r / 10});
     
     var theta = (function() {
         var eng_point = pa.X() <= o.X() ? pa : pb;
