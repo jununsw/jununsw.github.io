@@ -99,7 +99,7 @@ function draw_coordinate() {
                 }
             }], {name: 'end', visible: false});
     
-    angle = board.create('angle', [start_point, o, end_point], {name: "2θ", radius: prob.r / 10});
+    angle = board.create('angle', [start_point, o, end_point], {name: "2θ", radius: prob.r / 10, orthoType: "sector"});
     
     var theta = (function() {
         var eng_point = pa.X() <= o.X() ? pa : pb;
@@ -118,7 +118,7 @@ function draw_coordinate() {
     
     $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
     $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
-    $("#rotation-theta").html("&theta;: " + (theta / 2).toFixed(2) + "&deg;");
+    $("#rotation-theta").html("&theta;: <span id='new-theta'> " + (theta / 2).toFixed(2) + "</span>&deg;");
     
     pa.on("drag", function() {
         var x = pa.X();
@@ -127,32 +127,77 @@ function draw_coordinate() {
         pb.moveTo([2*c - x, -y]);
         
         var theta = (function() {
-        var eng_point = pa.X() <= o.X() ? pa : pb;
-        var sign = eng_point.Y() >= 0 ? 1 : -1;
+            var eng_point = pa.X() <= o.X() ? pa : pb;
+            var sign = eng_point.Y() >= 0 ? 1 : -1;
+
+            var dy = Math.abs(eng_point.Y());
+            var dx = Math.abs(eng_point.X() - o.X());
+
+            if (dx == 0) {
+                return 90;
+            } else {
+                t = Math.atan(dy / dx);
+                return sign * (t / Math.PI * 180);
+            }
+        })();
         
-        var dy = Math.abs(eng_point.Y());
-        var dx = Math.abs(eng_point.X() - o.X());
+        $("#rotation-a").html("A: (<span id='new-a'>" + pa.X().toFixed(2) + "</span>, " + pa.Y().toFixed(2) + ")");
+        $("#rotation-b").html("B: (<span id='new-b'>" + pb.X().toFixed(2) + "</span>, <span id='new-tau'>" + pb.Y().toFixed(2) + "</span>)");
+        $("#rotation-theta").html("&theta;: <span id='new-theta'>" + (theta / 2).toFixed(2) + "</span>&deg;");
         
-        if (dx == 0) {
-            return 90;
-        } else {
-            t = Math.atan(dy / dx);
-            return sign * (t / Math.PI * 180);
-        }
-    })();
-        
-        $("#rotation-a").html("A: (" + pa.X().toFixed(2) + ", " + pa.Y().toFixed(2) + ")");
-        $("#rotation-b").html("B: (" + pb.X().toFixed(2) + ", " + pb.Y().toFixed(2) + ")");
-        $("#rotation-theta").html("&theta;: " + (theta / 2).toFixed(2) + "&deg;");
+        draw_rotation_block1();
+        draw_rotation_block2();
     });
 }
 
 function show_rotate() {
-    draw_rotation_block();
+    draw_rotation_block1();
+    draw_rotation_block2();
     
     $("#rotation").css("display", "block");
 }
 
-function draw_rotation_block() {
+function draw_rotation_block1() {
+    $("#rotation-left").html("");
+    var rot1_div = d3.select("#rotation-left");
+    var principle_angle = prob.beta + Number(prob.getTheta().toFixed(2));
+    var rotate_angle = Number($("#new-theta").html());
+    
+    var sigma_a = Number($("#new-a").html());
+    var sigma_b = Number($("#new-b").html());
+    var tau = Number($("#new-tau").html());
+    
+    rot1_div.append("line")
+            .attr("stroke-width", 2)
+            .attr("stroke", "black")
+            .attr("stroke-linecap", "round")
+            .attr("fill", "none")
+            .attr("x1", 200)
+            .attr("x2", 380)
+            .attr("y1", 200)
+            .attr("y2", 200);
+    
+    rot1_div.append("g").attr("id", "rotation")
+    
+    rot1_div.select("#rotation")
+            .append("rect")
+            .attr("stroke-width", 1)
+            .attr("stroke", "blue")
+            .attr("fill", "none")
+            .attr("x", 200)
+            .attr("y", 120)
+            .attr("width", 80)
+            .attr("height", 80);
+    
+    rot1_div.select("#rotation").attr("transform", "rotate(" + (rotate_angle - principle_angle).toString() + " 200 200)");
+    
+    rot1_div.append("path")
+            .attr("stroke", "none")
+            .attr("fill", "#00BFFF")
+            .attr("opacity", 0.5)
+            .attr("d", path_arcByEnd(220, 200, 200, 200, rotate_angle - principle_angle) + " L 200 200 220 200");
+}
+
+function draw_rotation_block2() {
     
 }
