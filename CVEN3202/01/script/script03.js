@@ -517,9 +517,10 @@ function principal_A() {
     $("#info-principal").html("Two arcs moving from point A to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
     
     // plotting on inlet 1
-    
+    principal_inlet1();
     
     // plotting on inlet 2
+    principal_inlet2();
 }
 
 function principal_B() {
@@ -768,9 +769,10 @@ function principal_B() {
     $("#info-principal").html("Two arcs moving from point B to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
     
     // plotting on inlet 1
-    
+    principal_inlet1();
     
     // plotting on inlet 2
+    principal_inlet2();
 }
 
 function principal_Pole() {
@@ -930,7 +932,54 @@ function principal_Pole() {
     }
     
     // plotting on inlet 1
-    
+    principal_inlet1();
     
     // plotting on inlet 2
+    principal_inlet2();
+}
+
+function principal_inlet1() {
+    if ($("#inlet1-principal").length == 0) {
+        var grp_inl1 = d3.select("#svg-inlet1")
+                         .append("g")
+                         .attr("id", "inlet1-principal")
+                         .attr("class", "group-useA group-useB group-usePole");
+        
+        grp_inl1.append("path")
+                .attr("stroke", "blue")
+                .attr("fill", "none")
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 230 150 l -80 0 0 -80");
+        
+        grp_inl1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+    } else {
+        d3.select("#inlet1-principal").attr("opacity", "1");
+    }
+    
+    $("#inlet1").dialog("open");
+}
+
+function principal_inlet2() {
+    if ($("#inlet2-principal").length == 0) {
+        var grp_inl2 = d3.select("#svg-inlet2")
+                         .append("g")
+                         .attr("id", "inlet2-principal")
+                         .attr("class", "group-useA group-useB group-usePole");
+        
+        grp_inl2.append("path")
+                .attr("stroke", "blue")
+                .attr("fill", "none")
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 150 150 l 120 0 -240 0 120 0 0 -120 0 240 0 -120");
+        
+        grp_inl2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+    } else {
+        d3.select("#inlet2-principal").attr("opacity", "1");
+    }
+    
+    $("#inlet2").dialog("open");
 }
