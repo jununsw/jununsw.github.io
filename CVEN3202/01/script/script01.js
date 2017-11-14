@@ -162,11 +162,11 @@ function draw_mohr(e) {
     
     if ((a_ok) && (b_ok) && (tau_ok) && (beta_ok)) {
         prob = new makeModel(a, b, tau, beta);
-        draw_coordinate();
         
         if (prob.r == 0) {
             $("#after-draw").css("color", "red").html("You have a hydrostatic condition, in which the Mohr's cricle is a point. Please re-try another stress condition!");
         } else {
+            draw_coordinate();
             rotate_block(beta);
             scale_arrow(a, b, tau);
 

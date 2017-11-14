@@ -780,6 +780,7 @@ function principal_Pole() {
     
     if (prob.flag.pole == false) {
         $("#info-principal").html("Please click the 'Show Pole' to plot the pole first");
+        return;
     } else {
         $("#g-pole").attr("opacity", "1");
         
@@ -946,14 +947,71 @@ function principal_inlet1() {
                          .attr("class", "group-useA group-useB group-usePole");
         
         grp_inl1.append("path")
-                .attr("stroke", "blue")
+                .attr("stroke", "green")
                 .attr("fill", "none")
                 .attr("stroke-width", 2)
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
-                .attr("d", "M 230 150 l -80 0 0 -80");
+                .attr("d", "M 150 150 l 80 0");
+        
+        grp_inl1.append("path")
+                .attr("stroke", "purple")
+                .attr("fill", "none")
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 150 150 l 0 -80");
+        
+        grp_inl1.append("path")
+                .attr("stroke", "none")
+                .attr("fill", "#00BFFF")
+                .attr("opacity", 0.4)
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
         
         grp_inl1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+        
+        d3.select("#svg-inlet1")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 260)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "green")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Green line for \u03c31");
+        
+        d3.select("#svg-inlet1")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 280)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "purple")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Purple line for \u03c33");
+        
+        d3.select("#svg-inlet1")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 300)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "blue")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Blue angle for \u03b8");
+          
     } else {
         d3.select("#inlet1-principal").attr("opacity", "1");
     }
@@ -969,14 +1027,73 @@ function principal_inlet2() {
                          .attr("class", "group-useA group-useB group-usePole");
         
         grp_inl2.append("path")
-                .attr("stroke", "blue")
+                .attr("stroke", "green")
                 .attr("fill", "none")
                 .attr("stroke-width", 2)
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
-                .attr("d", "M 150 150 l 120 0 -240 0 120 0 0 -120 0 240 0 -120");
+                .attr("d", "M 150 150 l 120 0 -240 0");
+        
+        grp_inl2.append("path")
+                .attr("stroke", "purple")
+                .attr("fill", "none")
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 150 150 l 0 -120 0 240");
+        
+        grp_inl2.append("path")
+                .attr("stroke", "none")
+                .attr("fill", "#00BFFF")
+                .attr("opacity", 0.4)
+                .attr("stroke-width", 2)
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
         
         grp_inl2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+        
+        d3.select("#svg-inlet2")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 260)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "green")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Green line for \u03c31");
+        
+        d3.select("#svg-inlet2")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 280)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "purple")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Purple line for \u03c33");
+        
+        d3.select("#svg-inlet2")
+          .append("text")
+          .attr("x", 2)
+          .attr("y", 300)
+          .attr("text-anchor", "start")
+          .attr("alignment-baseline", "baseline")
+          .attr("stroke-width", 0)
+          .attr("fill", "blue")
+          .attr("stroke", "white")
+          .attr("font-family", "serif")
+          .style("font-size", "16px")
+          .text("Blue angle for \u03b8");
+        
+        d3.select("#svg-inlet1")
+          .append("text");
     } else {
         d3.select("#inlet2-principal").attr("opacity", "1");
     }

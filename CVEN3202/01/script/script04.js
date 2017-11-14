@@ -3,7 +3,7 @@
 // Use two layers of group so that rotation can be performed after rotation
 
 // draw coordinate
-function draw_coordinate() {
+function draw_coordinate() {  // invoked immediately after prob is created
     var a = prob.a;
     var b = prob.b;
     var tau = prob.tau;
@@ -151,6 +151,9 @@ function draw_coordinate() {
 }
 
 function show_rotate() {
+    $("#inlet1").dialog("close");
+    $("#inlet2").dialog("close");
+    
     draw_rotation_block1();
     draw_rotation_block2();
     
