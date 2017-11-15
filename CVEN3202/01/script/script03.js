@@ -2,7 +2,7 @@
 var btn_info = {
     pole: "",
     theta2: "<p>&theta; can be calculate as:</p><p>&nbsp;&nbsp;&nbsp;tan 2&theta; = 2&tau; / (&sigma;<sub>A</sub> - &sigma;<sub>B</sub>)</p><p>Therefore:</p><p>&nbsp;&nbsp;&nbsp;2&theta; = <span id='theta-2'></span>&deg;, &nbsp;&nbsp;&nbsp;&theta; = <span id='theta-1'></span>&deg;</p><p>Note: 2&theta; will be between -90&deg; to 90&deg;</p>",
-    stress: "<p>centre: (&sigma;<sub>c</sub>, 0), &sigma;<sub>c</sub> = (&sigma;<sub>1</sub> + &sigma;<sub>3</sub>) / 2, and</p><p>Radius: R<sup>2</sup> = ((&sigma;<sub>1</sub> - &sigma;<sub>3</sub>) / 2)<sup>2</sup> + &tau;<sup>2</sup>, so</p><ul><li>&sigma;<sub>1</sub> = &sigma;<sub>c</sub> + R</li><li>&sigma;<sub>3</sub> = &sigma;<sub>c</sub> - R</li></ul><p>&sigma;<sub>1</sub> and &sigma;<sub>3</sub> are shown in the Mohr's Circle</p>",
+    stress: "<p>centre: (&sigma;<sub>c</sub>, 0), &sigma;<sub>c</sub> = (&sigma;<sub>1</sub> + &sigma;<sub>3</sub>) / 2, and</p><p>Radius: R<sup>2</sup> = ((&sigma;<sub>1</sub> - &sigma;<sub>3</sub>) / 2)<sup>2</sup> + &tau;<sup>2</sup>, so</p><ul><li>&sigma;<sub>1</sub> = &sigma;<sub>c</sub> + R = <span id='info-s1'></span> MPa</li><li>&sigma;<sub>3</sub> = &sigma;<sub>c</sub> - R = <span id='info-s3'></span> MPa</li></ul><p>&sigma;<sub>1</sub> and &sigma;<sub>3</sub> are shown in the Mohr's Circle</p>",
     principal: "<p>Please select the following three options to calculate principal stress and direction:</p>&nbsp;&nbsp;&nbsp;<button id='btn-usingA' class='btn btn-info btn-sm btn-postproc'>Using direction A</button><button id='btn-usingB' class='btn btn-info btn-sm btn-postproc'>Using direction B</button><button id='btn-usingPole' class='btn btn-info btn-sm btn-postproc'>Using Pole</button><div style='margin-top: 20px;' id='info-principal'></div>"
 }
 
@@ -183,6 +183,20 @@ function show_pole() {
           .attr("fill", "black")
           .attr("stroke", "black");
         
+        // draw the text pole (circle center 420, 250)
+        var text_pole_x = 420 + (pole_x - 420) * 1.15;
+        var text_pole_y = 250 + (pole_y - 250) * 1.15;
+        
+        d3.select("#g-pole")
+          .append("text")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("x", text_pole_x)
+          .attr("y", text_pole_y)
+          .attr("stroke-width", 0)
+          .attr("stroke", "none")
+          .text("Pole")
+        
         prob.flag.pole = true;
     }
 
@@ -204,6 +218,8 @@ function calculate_theta() {
 function calculate_stress() {
     clear_previous_btn();
     $("#btn-info").html(btn_info.stress);
+    $("#info-s1").html(prob.s1.toFixed(3));
+    $("#info-s3").html(prob.s2.toFixed(3));
     
     if (prob.flag.stress == true) {
         $("#g-stress").attr("opacity", "1");
@@ -514,13 +530,13 @@ function principal_A() {
           .text("\u03c31");
     }
     
-    $("#info-principal").html("Two arcs moving from point A to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
+    $("#info-principal").html("Two arcs moving from point A to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted<br/>2&theta; = " + prob.getTheta().toFixed(2) + "&deg;, 180-2&theta; = " + (180 - 2*prob.getTheta()).toFixed(2) + "&deg;.");
     
     // plotting on inlet 1
-    principal_inlet1();
+    principal_inlet1("a");
     
     // plotting on inlet 2
-    principal_inlet2();
+    principal_inlet2("a");
 }
 
 function principal_B() {
@@ -766,13 +782,13 @@ function principal_B() {
           .text("\u03c31");
     }
     
-    $("#info-principal").html("Two arcs moving from point B to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted");
+    $("#info-principal").html("Two arcs moving from point B to &sigma;<sub>1</sub> and &sigma;<sub>3</sub> are plotted<br/>2&theta; = " + prob.getTheta().toFixed(2) + "&deg;, 180-2&theta; = " + (180 - 2*prob.getTheta()).toFixed(2) + "&deg;.");
     
     // plotting on inlet 1
-    principal_inlet1();
+    principal_inlet1("b");
     
     // plotting on inlet 2
-    principal_inlet2();
+    principal_inlet2("b");
 }
 
 function principal_Pole() {
@@ -932,6 +948,13 @@ function principal_Pole() {
         }
     }
     
+    (function (){
+        var theta = prob.getTheta();
+        var alpha1 = prob.beta + theta;
+        var alpha2 = 90 - alpha1;
+        $("#info-principal").html("&theta; = " + theta.toFixed(2) +"&deg;, &alpha;<sub>1</sub> = " + alpha2.toFixed(2) + "&deg;, &alpha;<sub>2</sub> = " + alpha1.toFixed(2) + "&deg;.<br/>&sigma;<sub>1</sub> = " + prob.s1.toFixed(3) + "MPa, &sigma;<sub>3</sub> = " + prob.s2.toFixed(3) + " MPa.");
+    })();
+    
     // plotting on inlet 1
     principal_inlet1("pole");
     
@@ -968,15 +991,6 @@ function principal_inlet1(additional) {
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("d", "M 150 150 l 0 -80");
-        
-        grp_inl1.append("path")
-                .attr("stroke", "none")
-                .attr("fill", "#00BFFF")
-                .attr("opacity", 0.4)
-                .attr("stroke-width", 2)
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
         
         grp_inl1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
         
@@ -1019,16 +1033,72 @@ function principal_inlet1(additional) {
         d3.select("#inlet1-principal").attr("opacity", "1");
         d3.select("#inlet1-text").attr("opacity", "1");
     }
+    
+    if (additional == "a") {
+        if ($("#svg-inlet1-additional-a").length == 0) {
+            var p1 = d3.select("#svg-inlet1")
+                       .append("g")
+                       .attr("id", "svg-inlet1-additional-a")
+                       .attr("class", "group-useA");
+            
+            p1.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
+        
+            p1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+            
+        } else {
+            $("#svg-inlet1-additional-a").attr("opacity", "1");
+        }
+    }
+    
+    if (additional == "b") {
+        if ($("#svg-inlet1-additional-b").length == 0) {
+            var p1 = d3.select("#svg-inlet1")
+                       .append("g")
+                       .attr("id", "svg-inlet1-additional-b")
+                       .attr("class", "group-useB");
+            
+            p1.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
+        
+            p1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta() - 90).toString() + " 150 150)");
+            
+        } else {
+            $("#svg-inlet1-additional-b").attr("opacity", "1");
+        }
+    }
 
     if (additional == "pole") {
-        if ($("#svg-inlet1-additional").length == 0) {
+        if ($("#svg-inlet1-additional-pole").length == 0) {
             var alpha1 = prob.beta + prob.getTheta();
             var alpha2 = 90 - alpha1;
 
             var p1 = d3.select("#svg-inlet1")
                        .append("g")
-                       .attr("id", "svg-inlet1-additional")
+                       .attr("id", "svg-inlet1-additional-pole")
                        .attr("class", "group-usePole");
+            
+            p1.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150")
+              .attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
 
             p1.append("path")
               .attr("stroke", "none")
@@ -1072,7 +1142,7 @@ function principal_inlet1(additional) {
               .style("font-size", "16px")
               .text("Red angle for \u03b12");
         } else {
-            $("#svg-inlet1-additional").attr("opacity", "1");
+            $("#svg-inlet1-additional-pole").attr("opacity", "1");
         }
     }
 }
@@ -1106,15 +1176,6 @@ function principal_inlet2(additional) {
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("d", "M 150 150 l 0 -120 0 240");
-        
-        grp_inl2.append("path")
-                .attr("stroke", "none")
-                .attr("fill", "#00BFFF")
-                .attr("opacity", 0.4)
-                .attr("stroke-width", 2)
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
         
         grp_inl2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
         
@@ -1162,15 +1223,71 @@ function principal_inlet2(additional) {
         d3.select("#inlet2-text").attr("opacity", "1");
     }
     
+    if (additional == "a") {
+        if ($("#svg-inlet2-additional-a").length == 0) {
+            var p2 = d3.select("#svg-inlet2")
+                       .append("g")
+                       .attr("id", "svg-inlet2-additional-a")
+                       .attr("class", "group-useA");
+            
+            p2.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
+        
+            p2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
+            
+        } else {
+            $("#svg-inlet2-additional-a").attr("opacity", "1");
+        }
+    }
+    
+    if (additional == "b") {
+        if ($("#svg-inlet2-additional-b").length == 0) {
+            var p2 = d3.select("#svg-inlet2")
+                       .append("g")
+                       .attr("id", "svg-inlet2-additional-b")
+                       .attr("class", "group-useB");
+            
+            p2.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150");
+        
+            p2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta() - 90).toString() + " 150 150)");
+            
+        } else {
+            $("#svg-inlet2-additional-b").attr("opacity", "1");
+        }
+    }
+    
     if (additional == "pole") {
-        if ($("#svg-inlet2-additional").length == 0) {
+        if ($("#svg-inlet2-additional-pole").length == 0) {
             var alpha1 = prob.beta + prob.getTheta();
             var alpha2 = 90 - alpha1;
 
             var p2 = d3.select("#svg-inlet2")
                        .append("g")
-                       .attr("id", "svg-inlet2-additional")
+                       .attr("id", "svg-inlet2-additional-pole")
                        .attr("class", "group-usePole");
+            
+            p2.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#00BFFF")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(200, 150, 150, 150, prob.getTheta()) + " L 150 150")
+              .attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
 
             p2.append("path")
               .attr("stroke", "none")
@@ -1214,7 +1331,7 @@ function principal_inlet2(additional) {
               .style("font-size", "16px")
               .text("Red angle for \u03b12");
         } else {
-            $("#svg-inlet2-additional").attr("opacity", "1");
+            $("#svg-inlet2-additional-pole").attr("opacity", "1");
         }
     }
 }

@@ -23,6 +23,17 @@ function prepare_inlet1() {
       .attr("y2", 150);
     
     d3.select("#svg-inlet1")
+      .append("line")
+      .attr("stroke-width", 1)
+      .attr("stroke", "black")
+      .attr("fill", "none")
+      .attr("stroke-dasharray", "2, 2")
+      .attr("x1", 150)
+      .attr("x2", 0)
+      .attr("y1", 150)
+      .attr("y2", 150);
+    
+    d3.select("#svg-inlet1")
       .append("path")
       .attr("stroke", "black")
       .attr("fill", "none")
@@ -244,6 +255,17 @@ function prepare_inlet2() {
       .attr("fill", "none")
       .attr("x1", 150)
       .attr("x2", 300)
+      .attr("y1", 150)
+      .attr("y2", 150);
+    
+    d3.select("#svg-inlet2")
+      .append("line")
+      .attr("stroke-width", 1)
+      .attr("stroke", "black")
+      .attr("fill", "none")
+      .attr("stroke-dasharray", "2, 2")
+      .attr("x1", 150)
+      .attr("x2", 0)
       .attr("y1", 150)
       .attr("y2", 150);
     
