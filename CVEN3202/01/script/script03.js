@@ -948,6 +948,11 @@ function principal_inlet1(additional) {
                          .attr("id", "inlet1-principal")
                          .attr("class", "group-useA group-useB group-usePole");
         
+        var t1 = d3.select("#svg-inlet1")
+                   .append("g")
+                   .attr("id", "inlet1-text")
+                   .attr("class", "group-useA group-useB group-usePole");
+        
         grp_inl1.append("path")
                 .attr("stroke", "green")
                 .attr("fill", "none")
@@ -975,8 +980,7 @@ function principal_inlet1(additional) {
         
         grp_inl1.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
         
-        d3.select("#svg-inlet1")
-          .append("text")
+        t1.append("text")
           .attr("x", 2)
           .attr("y", 260)
           .attr("text-anchor", "start")
@@ -988,8 +992,7 @@ function principal_inlet1(additional) {
           .style("font-size", "16px")
           .text("Green line for \u03c31");
         
-        d3.select("#svg-inlet1")
-          .append("text")
+        t1.append("text")
           .attr("x", 2)
           .attr("y", 280)
           .attr("text-anchor", "start")
@@ -1001,8 +1004,7 @@ function principal_inlet1(additional) {
           .style("font-size", "16px")
           .text("Purple line for \u03c33");
         
-        d3.select("#svg-inlet1")
-          .append("text")
+        t1.append("text")
           .attr("x", 2)
           .attr("y", 300)
           .attr("text-anchor", "start")
@@ -1015,6 +1017,7 @@ function principal_inlet1(additional) {
           .text("Blue angle for \u03b8");
     } else {
         d3.select("#inlet1-principal").attr("opacity", "1");
+        d3.select("#inlet1-text").attr("opacity", "1");
     }
 
     if (additional == "pole") {
@@ -1075,11 +1078,18 @@ function principal_inlet1(additional) {
 }
 
 function principal_inlet2(additional) {
+    $("#inlet2").dialog("open");
+    
     if ($("#inlet2-principal").length == 0) {
         var grp_inl2 = d3.select("#svg-inlet2")
                          .append("g")
                          .attr("id", "inlet2-principal")
                          .attr("class", "group-useA group-useB group-usePole");
+        
+        var t2 = d3.select("#svg-inlet2")
+                   .append("g")
+                   .attr("id", "inlet2-text")
+                   .attr("class", "group-useA group-useB group-usePole");
         
         grp_inl2.append("path")
                 .attr("stroke", "green")
@@ -1108,8 +1118,7 @@ function principal_inlet2(additional) {
         
         grp_inl2.attr("transform", "rotate(" + (-prob.beta - prob.getTheta()).toString() + " 150 150)");
         
-        d3.select("#svg-inlet2")
-          .append("text")
+        t2.append("text")
           .attr("x", 2)
           .attr("y", 260)
           .attr("text-anchor", "start")
@@ -1121,8 +1130,7 @@ function principal_inlet2(additional) {
           .style("font-size", "16px")
           .text("Green line for \u03c31");
         
-        d3.select("#svg-inlet2")
-          .append("text")
+        t2.append("text")
           .attr("x", 2)
           .attr("y", 280)
           .attr("text-anchor", "start")
@@ -1134,8 +1142,7 @@ function principal_inlet2(additional) {
           .style("font-size", "16px")
           .text("Purple line for \u03c33");
         
-        d3.select("#svg-inlet2")
-          .append("text")
+        t2.append("text")
           .attr("x", 2)
           .attr("y", 300)
           .attr("text-anchor", "start")
@@ -1152,7 +1159,62 @@ function principal_inlet2(additional) {
         }
     } else {
         d3.select("#inlet2-principal").attr("opacity", "1");
+        d3.select("#inlet2-text").attr("opacity", "1");
     }
     
-    $("#inlet2").dialog("open");
+    if (additional == "pole") {
+        if ($("#svg-inlet2-additional").length == 0) {
+            var alpha1 = prob.beta + prob.getTheta();
+            var alpha2 = 90 - alpha1;
+
+            var p2 = d3.select("#svg-inlet2")
+                       .append("g")
+                       .attr("id", "svg-inlet2-additional")
+                       .attr("class", "group-usePole");
+
+            p2.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#ff0000")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(220, 150, 150, 150, (-alpha1).toString()) + " L 150 150");
+
+            p2.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#ffd700")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(80, 150, 150, 150, (alpha2).toString()) + " L 150 150");
+
+            p2.append("text")
+              .attr("x", 295)
+              .attr("y", 280)
+              .attr("text-anchor", "end")
+              .attr("alignment-baseline", "baseline")
+              .attr("stroke-width", 0)
+              .attr("fill", "#ffd700")
+              .attr("stroke", "white")
+              .attr("font-family", "serif")
+              .style("font-size", "16px")
+              .text("Gold angle for \u03b11");
+
+            p2.append("text")
+              .attr("x", 295)
+              .attr("y", 300)
+              .attr("text-anchor", "end")
+              .attr("alignment-baseline", "baseline")
+              .attr("stroke-width", 0)
+              .attr("fill", "#ff0000")
+              .attr("stroke", "white")
+              .attr("font-family", "serif")
+              .style("font-size", "16px")
+              .text("Red angle for \u03b12");
+        } else {
+            $("#svg-inlet2-additional").attr("opacity", "1");
+        }
+    }
 }
