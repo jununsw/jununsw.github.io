@@ -933,13 +933,15 @@ function principal_Pole() {
     }
     
     // plotting on inlet 1
-    principal_inlet1();
+    principal_inlet1("pole");
     
     // plotting on inlet 2
-    principal_inlet2();
+    principal_inlet2("pole");
 }
 
-function principal_inlet1() {
+function principal_inlet1(additional) {
+    $("#inlet1").dialog("open");
+    
     if ($("#inlet1-principal").length == 0) {
         var grp_inl1 = d3.select("#svg-inlet1")
                          .append("g")
@@ -1011,15 +1013,68 @@ function principal_inlet1() {
           .attr("font-family", "serif")
           .style("font-size", "16px")
           .text("Blue angle for \u03b8");
-          
     } else {
         d3.select("#inlet1-principal").attr("opacity", "1");
     }
-    
-    $("#inlet1").dialog("open");
+
+    if (additional == "pole") {
+        if ($("#svg-inlet1-additional").length == 0) {
+            var alpha1 = prob.beta + prob.getTheta();
+            var alpha2 = 90 - alpha1;
+
+            var p1 = d3.select("#svg-inlet1")
+                       .append("g")
+                       .attr("id", "svg-inlet1-additional")
+                       .attr("class", "group-usePole");
+
+            p1.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#ff0000")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(220, 150, 150, 150, (-alpha1).toString()) + " L 150 150");
+
+            p1.append("path")
+              .attr("stroke", "none")
+              .attr("fill", "#ffd700")
+              .attr("opacity", 0.4)
+              .attr("stroke-width", 2)
+              .attr("stroke-linejoin", "round")
+              .attr("stroke-linecap", "round")
+              .attr("d", "M 150 150 L 180 150 " + path_arcByEnd(80, 150, 150, 150, (alpha2).toString()) + " L 150 150");
+
+            p1.append("text")
+              .attr("x", 295)
+              .attr("y", 280)
+              .attr("text-anchor", "end")
+              .attr("alignment-baseline", "baseline")
+              .attr("stroke-width", 0)
+              .attr("fill", "#ffd700")
+              .attr("stroke", "white")
+              .attr("font-family", "serif")
+              .style("font-size", "16px")
+              .text("Gold angle for \u03b11");
+
+            p1.append("text")
+              .attr("x", 295)
+              .attr("y", 300)
+              .attr("text-anchor", "end")
+              .attr("alignment-baseline", "baseline")
+              .attr("stroke-width", 0)
+              .attr("fill", "#ff0000")
+              .attr("stroke", "white")
+              .attr("font-family", "serif")
+              .style("font-size", "16px")
+              .text("Red angle for \u03b12");
+        } else {
+            $("#svg-inlet1-additional").attr("opacity", "1");
+        }
+    }
 }
 
-function principal_inlet2() {
+function principal_inlet2(additional) {
     if ($("#inlet2-principal").length == 0) {
         var grp_inl2 = d3.select("#svg-inlet2")
                          .append("g")
@@ -1092,8 +1147,9 @@ function principal_inlet2() {
           .style("font-size", "16px")
           .text("Blue angle for \u03b8");
         
-        d3.select("#svg-inlet1")
-          .append("text");
+        if (additional == "pole") {
+
+        }
     } else {
         d3.select("#inlet2-principal").attr("opacity", "1");
     }
