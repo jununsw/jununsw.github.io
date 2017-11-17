@@ -167,77 +167,7 @@ function FlowNet(board, options) {
     }
     
     this.curveFun = function(lst) {
-        return JXG.Math.Numerics.bspline(lst, 2);
-        
-        // return parametric function for x, y and its range
-        /*
-        function zeros(m, n) {
-            // create zero matrix
-            var base = Array.from(Array(m), () => 0);
-            
-            return base.map(function(ele, idx, arr) {
-                return Array.from(Array(n), () => 0);
-            });
-        }
-        
-        var nPoints = lst.length;
-        var tmin = 0;
-        var nSeg = nPoints - 1;
-        var tmax = nPoints - 1;
-        
-        // calculate coefficient matrix for D
-        
-        var A = zeros(nPoints, nPoints);
-        var i;
-        for (i = 0; i <= nPoints - 1; i++) {
-            if (i == 0) {
-                A[i][i] = 2;
-                A[i][i+1] = 1;
-            } else if (i == nPoints - 1) {
-                A[i][i] = 2;
-                A[i][i-1] = 1;
-            } else {
-                A[i][i] = 4;
-                A[i][i+1] = 1;
-                A[i][i-1] = 1;
-            }
-        }
-        
-        // calculate D matrix for X
-        
-        var X = zeros(nPoints, 1).map(function(ele, idx, arr) {
-            if (idx == 0) {
-                return lst[idx+1].X() - lst[idx].X();
-            } else if (idx == nPoints - 1) {
-                return lst[idx].X() - lst[idx-1].X();
-            } else {
-                return lst[idx+1].X() - lst[idx-1].X();
-            }
-        });
-        
-        // calculate D matrix for Y
-        
-        var Y = zeros(nPoints, 1).map(function(ele, idx, arr) {
-            if (idx == 0) {
-                return lst[idx+1].Y() - lst[idx].Y();
-            } else if (idx == nPoints - 1) {
-                return lst[idx].Y() - lst[idx-1].Y();
-            } else {
-                return lst[idx+1].Y() - lst[idx-1].Y();
-            }
-        });
-        
-        var funX = function(t) {
-            if (t == tmax) {
-                var iPoint = t - 1;
-            } else {
-                var iPoint = Math.floor(t);
-            }
-            
-            var a = lst[iPoint].X();
-            var b = 
-        }
-        */
+        return JXG.Math.Numerics.CardinalSpline(lst, 0.5);
     }
     
     this.checkBound = function(point) {
