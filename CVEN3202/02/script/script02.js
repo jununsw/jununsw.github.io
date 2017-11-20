@@ -1,7 +1,7 @@
 JXG.Options.infobox.fontSize = 0;
 
 var board = JXG.JSXGraph.initBoard('main-plot', {
-    boundingbox: [0, 500, 800, 0],
+    boundingbox: [0, 550, 400, -50],
     showNavigation: false,
     keepaspectratio: true,
     showCopyright: false,
@@ -10,52 +10,52 @@ var board = JXG.JSXGraph.initBoard('main-plot', {
 
 var linelist = [];
 linelist.push(createCustomCurve(board, function(t) {
-    if (t < 300) {
-        return 100;
-    } else if (t < 900) {
-        return t - 200;
-    } else {
-        return 700;
-    }
+    return 50;
 }, function(t) {
-    if (t < 300) {
-        return 400 - t;
-    } else if (t < 900) {
-        return 100;
-    } else {
-        return 100 + (t - 900);
-    }
-}, 1200, 'blue'));
+    return t + 100;
+}, 300, 'blue'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    if (t < 350) {
-        return 350;
-    } else if (t < 450) {
+    if (t < 50) {
+        return 50;
+    } else if (t < 350) {
         return t;
     } else {
-        return 450;
+        return 350;
     }
 }, function(t) {
-    if (t < 350) {
-        return 400 - t/2;
-    } else if (t < 450) {
-        return 225;
+    if (t < 50) {
+        return 50 - t;
+    } else if (t < 350) {
+        return 0;
     } else {
-        return 225 + (t - 450)/2;
+        return t - 350;
     }
-}, 800, 'blue'));
+}, 750, 'blue'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    return t + 100;
+    if (t < 50) {
+        return 100 - t;
+    } else if (t < 100) {
+        return 100;
+    } else {
+        return 100 - (t - 100);
+    }
+}, function(t) {
+    if (t < 50) {
+        return 100;
+    } else if (t < 100) {
+        return 100 - (t - 50);
+    } else {
+        return 50;
+    }
+}, 150, 'red'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return t + 50;
 }, function(t) {
     return 400;
-}, 250, 'red'));
-
-linelist.push(createCustomCurve(board, function(t) {
-    return 700 - t;
-}, function(t) {
-    return 400
-}, 250, 'red'));
+}, 300, 'red'));
 
 var net = createFlowNet(board, linelist);
 
@@ -79,11 +79,11 @@ $(document).keyup(function() {
 });
 
 function toFeedStream() {
-    net.feedlines(150, 450, 650, 450, 5, "stream");
+    net.feedlines(50, 480, 350, 480, 5, "stream");
 }
 
 function toFeedPotential() {
-    net.feedlines(150, 450, 650, 450, 5, "potential");
+    net.feedlines(50, 480, 350, 480, 5, "potential");
 }
 
 function toCalculate() {
