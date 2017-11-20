@@ -1,42 +1,85 @@
+JXG.Options.infobox.fontSize = 0;
+
 var board = JXG.JSXGraph.initBoard('main-plot', {
-    boundingbox:[0, 600, 800, 0],
+    boundingbox: [0, 500, 800, 0],
     showNavigation: false,
     keepaspectratio: true,
     showCopyright: false,
     axis: false
 });
 
-var p11 = board.create('point', [10, 590], {name:'', size:3, fixed: true});
-var p12 = board.create('point', [790, 590], {name:'', size:3, fixed: true});
-var p21 = board.create('point', [10, 10], {name:'', size:3, fixed: true});
-var p22 = board.create('point', [790, 10], {name:'', size:3, fixed: true});
+var linelist = [];
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < 300) {
+        return 100;
+    } else if (t < 900) {
+        return t - 200;
+    } else {
+        return 700;
+    }
+}, function(t) {
+    if (t < 300) {
+        return 400 - t;
+    } else if (t < 900) {
+        return 100;
+    } else {
+        return 100 + (t - 900);
+    }
+}, 1200, 'blue'));
 
-var row1 = board.create('line', [p11, p12], {straightFirst:false, straightLast:false, strokeWidth:2});
-var row2 = board.create('line', [p21, p22], {straightFirst:false, straightLast:false, strokeWidth:2});
-var column1 = board.create('line', [p11, p21], {straightFirst:false, straightLast:false, strokeWidth:2});
-var column2 = board.create('line', [p12, p22], {straightFirst:false, straightLast:false, strokeWidth:2});
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < 350) {
+        return 350;
+    } else if (t < 450) {
+        return t;
+    } else {
+        return 450;
+    }
+}, function(t) {
+    if (t < 350) {
+        return 400 - t/2;
+    } else if (t < 450) {
+        return 225;
+    } else {
+        return 225 + (t - 450)/2;
+    }
+}, 800, 'blue'));
 
-var net = new FlowNet(board, {
-    p11: p11,
-    p12: p12,
-    p21: p21,
-    p22: p22,
-    row1: row1,
-    row2: row2,
-    column1: column1,
-    column2: column2,
-    
-    jsxoption_line: {
-        straightFirst: false, 
-        straightLast: false
-    },
-    
-    jsxoption_point: {
-        name: '', 
-        size: 3
+linelist.push(createCustomCurve(board, function(t) {
+    return t + 100;
+}, function(t) {
+    return 400;
+}, 250, 'red'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return 700 - t;
+}, function(t) {
+    return 400
+}, 250, 'red'));
+
+var net = createFlowNet(board, linelist);
+
+var cntrlIsPressed = false;
+var editable = true;
+
+$(document).keydown(function(event) {
+    if ((event.which=="17") && (editable == true)) {
+        cntrlIsPressed = true;
     }
 });
 
-function toFeedLine() {
-    net.feedlines();
+$(document).keyup(function() {
+    cntrlIsPressed = false;
+});
+
+function toFeedStream() {
+    net.feedlines(150, 450, 650, 450, 5, "stream");
+}
+
+function toFeedPotential() {
+    net.feedlines(150, 450, 650, 450, 5, "potential");
+}
+
+function toCalculate() {
+    net.calculate();
 }
