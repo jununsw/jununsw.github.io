@@ -114,6 +114,15 @@ function createIntersection(brd, l1, l2, row, col) {
     }
 }
 
+function calculateSlope(brd, l, p) {
+    var i = brd.create('glider', [p.X(), p.Y(), l]);
+    var t = brd.create('tangent', [i]);
+    brd.removeObject(i);
+    brd.removeObject(t);
+    
+    return t.getSlope();
+}
+
 function createFlowNet(board, lineList) {
     return {
         board: board,
