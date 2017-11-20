@@ -33,8 +33,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12">
-                    <div id="btn-group" class="text-center">
+                <div id="btn-group">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-sm btn-success" onclick="toAddNode();" style="margin-right: 15px;">Add one control point to the current curve</button>
+                        <button type="button" class="btn btn-sm btn-success" onclick="toRemoveNode();" style="margin-left: 15px;">Remove one control point from the current curve</button>
+                    </div>
+                    <div class="col-sm-12 text-center">
                         <button type="button" class="btn btn-primary" onclick="toFeedStream();">Feed Stream line</button>
                         <button type="button" class="btn btn-primary" onclick="toFeedPotential();">Feed Equipotential line</button>
                         <button type="button" class="btn btn-primary" onclick="toCalculate();" id="btn-finish">Finish and Check</button>

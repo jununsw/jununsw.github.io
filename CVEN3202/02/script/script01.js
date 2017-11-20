@@ -57,13 +57,24 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
         highlight: false
     });
     
-    return {
+    var dispatch = {
         p: p,
         curve: curve,
         
-        funX: JXG.Math.Numerics.CardinalSpline(p, 0.5)[0],
-        funY: JXG.Math.Numerics.CardinalSpline(p, 0.5)[1],
-        range: JXG.Math.Numerics.CardinalSpline(p, 0.5)[3](),
+        funX: function(t) {
+            var pt = this.p;
+            return JXG.Math.Numerics.CardinalSpline(pt, 0.5)[0](t);
+        },
+        
+        funY: function(t) {
+            var pt = this.p;
+            return JXG.Math.Numerics.CardinalSpline(pt, 0.5)[1](t);
+        },
+        
+        range: function() {
+            var pt = this.p;
+            return JXG.Math.Numerics.CardinalSpline(pt, 0.5)[3]();
+        },
         
         deriv: function(t) {
             return JXG.Math.Numerics.D(this.funY)(t) / JXG.Math.Numerics.D(this.funX)(t);
@@ -85,6 +96,8 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
             })
         }
     }
+    
+    return dispatch;
 }
 
 function createIntersection(brd, l1, l2, row, col) {
@@ -142,6 +155,97 @@ function createFlowNet(board, lineList) {
         potential_end: lineList[3],
         potential_end_intersection: [],
         active: "",
+        
+        changeNode: function(type) {
+            /*
+             * type: either "add" or "remove"
+            **/
+            try {
+                var c = this.active;
+                var p = c.p;
+                var n = p.length;
+                
+                var self = this;
+            } catch (e) {
+                return;
+            }
+            
+            if (type == "add") {
+                var last_point = p[n-1];
+                last_point.setAttribute({
+                    name: (n + 1).toString()
+                });
+                p[n-1] = this.board.create('point', [c.funX(c.range() - 0.5), c.funY(c.range() - 0.5)], {
+                    name: (n).toString(),
+                    strokeColor: 'red',
+                    fillColor: 'red',
+                });
+                p.push(last_point);
+                var color = c.curve.getAttribute('strokecolor');
+                this.board.removeObject(c.curve);
+                c.curve = this.board.create('curve', JXG.Math.Numerics.CardinalSpline(p, 0.5), {
+                    strokecolor: color, 
+                    strokeOpacity: 0.6, 
+                    strokeWidth: 2,
+                    highlight: false
+                });
+                
+                c.curve.on("down", function() {
+                    if (!cntrlIsPressed) {
+                        return;
+                    }
+
+                    if (self.active == c) {
+                        return;
+                    }
+
+                    self.active = c;
+                    self.stream.forEach(function(ele) {
+                        ele.hidePoint();
+                    });
+                    self.potential.forEach(function(ele) {
+                        ele.hidePoint();
+                    });
+                    c.showPoint();
+                });
+            } else if (type == "remove") {
+                if (n <= 3) {
+                    return;
+                }
+                
+                this.board.removeObject(p[n-1]);
+                p.pop();
+                var color = c.curve.getAttribute('strokecolor');
+                this.board.removeObject(c.curve);
+                c.curve = this.board.create('curve', JXG.Math.Numerics.CardinalSpline(p, 0.5), {
+                    strokecolor: color, 
+                    strokeOpacity: 0.6, 
+                    strokeWidth: 2,
+                    highlight: false
+                });
+                
+                c.curve.on("down", function() {
+                    if (!cntrlIsPressed) {
+                        return;
+                    }
+
+                    if (self.active == c) {
+                        return;
+                    }
+
+                    self.active = c;
+                    self.stream.forEach(function(ele) {
+                        ele.hidePoint();
+                    });
+                    self.potential.forEach(function(ele) {
+                        ele.hidePoint();
+                    });
+                    c.showPoint();
+                });
+            } else {
+                
+            }
+        },
         
         feedlines: function(x1, y1, x2, y2, n, type) {
             var self = this;

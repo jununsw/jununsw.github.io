@@ -89,3 +89,11 @@ function toFeedPotential() {
 function toCalculate() {
     net.calculate();
 }
+
+function toAddNode() {
+    net.changeNode('add');
+}
+
+function toRemoveNode() {
+    net.changeNode('remove');
+}
