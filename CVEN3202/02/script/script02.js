@@ -68,6 +68,12 @@ $(document).keydown(function(event) {
     }
 });
 
+$(document).keydown(function(event) {
+    if ((event.which=="17") && (editable == true)) {
+        cntrlIsPressed = true;
+    }
+});
+
 $(document).keyup(function() {
     cntrlIsPressed = false;
 });

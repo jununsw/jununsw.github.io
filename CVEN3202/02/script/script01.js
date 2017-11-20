@@ -2,7 +2,8 @@ function createCustomCurve(brd, xFun, yFun, range, color) {
     var curve = brd.create('curve', [xFun, yFun, 0, range], {
         strokecolor: color, 
         strokeOpacity: 0.6, 
-        strokeWidth: 3
+        strokeWidth: 3,
+        highlight: false
     });
     
     return {
@@ -40,17 +41,20 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
     }
     
     var p = xList.map(function(ele, idx, arr) {
-        return brd.create('point', [xList[idx], yList[idx]], {
+        var control =  brd.create('point', [xList[idx], yList[idx]], {
             name: (idx + 1).toString(),
             strokeColor: 'red',
-            fillColor: 'red'
+            fillColor: 'red',
         });
+        
+        return control;
     });
     
     var curve = brd.create('curve', JXG.Math.Numerics.CardinalSpline(p, 0.5), {
         strokecolor: color, 
         strokeOpacity: 0.6, 
-        strokeWidth: 2
+        strokeWidth: 2,
+        highlight: false
     });
     
     return {
@@ -96,7 +100,8 @@ function createIntersection(brd, l1, l2, row, col) {
         var point = brd.create('intersection', [l1.curve, l2.curve, s], {
             color: 'black',
             name: row.toString() + ", " + col.toString(),
-            size: 2
+            size: 2,
+            highlight: false
         });
         
         if ((isNaN(point.X())) | (isNaN(point.Y()))) {
