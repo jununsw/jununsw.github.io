@@ -192,6 +192,8 @@ function createFlowNet(board, lineList) {
             // Step 1
             $("#feedback").html("Initializing...");
             
+            editable = false;
+            
             self.stream.forEach(function(ele) {
                 ele.hidePoint();
             });
@@ -224,6 +226,9 @@ function createFlowNet(board, lineList) {
             });
             
             if (stop == true) {
+                editable = true;
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
                 return;
             }
             
@@ -249,6 +254,9 @@ function createFlowNet(board, lineList) {
             });
             
             if (stop == true) {
+                editable = true;
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
                 return;
             }
             
@@ -271,6 +279,9 @@ function createFlowNet(board, lineList) {
             });
             
             if (stop == true) {
+                editable = true;
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
                 return;
             }
             
@@ -293,6 +304,9 @@ function createFlowNet(board, lineList) {
             });
             
             if (stop == true) {
+                editable = true;
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
                 return;
             }
             
@@ -315,6 +329,9 @@ function createFlowNet(board, lineList) {
             });
             
             if (stop == true) {
+                editable = true;
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
                 return;
             }
             
