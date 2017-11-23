@@ -93,12 +93,12 @@ $(document).keyup(function() {
     cntrlIsPressed = false;
 });
 
-function toFeedStream() {
-    net.feedlines(150, 450, 650, 450, 5, "stream");
+function toFeedStream(x1, y1, x2, y2) {
+    net.feedlines(x1, y1, x2, y2, 5, "stream");
 }
 
-function toFeedPotential() {
-    net.feedlines(150, 450, 650, 450, 5, "potential");
+function toFeedPotential(x1, y1, x2, y2) {
+    net.feedlines(x1, y1, x2, y2, 5, "potential");
 }
 
 function toCalculate() {
