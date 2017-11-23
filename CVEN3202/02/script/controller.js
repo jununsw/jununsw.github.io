@@ -19,7 +19,7 @@ function createCustomCurve(brd, xFun, yFun, range, color) {
     }
 }
 
-function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
+function createFlowCurve(brd, x1, y1, x2, y2, n, color, order, type) {
     var nPoint = n || 5;
     
     var xList = [x1];
@@ -42,7 +42,7 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
     
     var p = xList.map(function(ele, idx, arr) {
         var control =  brd.create('point', [xList[idx], yList[idx]], {
-            name: (idx + 1).toString(),
+            name: order.toString(),
             strokeColor: 'red',
             fillColor: 'red',
         });
@@ -60,6 +60,7 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
     var dispatch = {
         p: p,
         curve: curve,
+        type: type,
         
         funX: function(t) {
             var pt = this.p;
@@ -101,12 +102,12 @@ function createFlowCurve(brd, x1, y1, x2, y2, n, color) {
 }
 
 function createIntersection(brd, l1, l2, row, col) {
-    /*
+    /**
      * calculate te first intersection of l1 and l2 according to parameter t
      * l1, l2 must be object created by FlowCurve, BoundaryCurve or CustomCurve
      * which contains method: funX and funY
      * if intersection does not existed, return undefined
-    **/
+     */
     var s = 0;
     var points = [];
     while (true) {
@@ -141,7 +142,7 @@ function calculateSlope(brd, l, p) {
     return t.getSlope();
 }
 
-function createFlowNet(board, lineList) {
+function createFlowNet(board, lineList, irregular) {
     return {
         board: board,
         stream: [],
@@ -155,11 +156,12 @@ function createFlowNet(board, lineList) {
         potential_end: lineList[3],
         potential_end_intersection: [],
         active: "",
+        irregular: (irregular == undefined) ? [] : irregular,
         
         changeNode: function(type) {
-            /*
+            /**
              * type: either "add" or "remove"
-            **/
+             */
             try {
                 var c = this.active;
                 var p = c.p;
@@ -260,12 +262,12 @@ function createFlowNet(board, lineList) {
             
             if (type == "stream") {
                 var color = "blue";
-                var c = createFlowCurve(this.board, x1, y1, x2, y2, n, color);
+                var c = createFlowCurve(this.board, x1, y1, x2, y2, n, color, self.stream.length + 1, 'stream');
                 this.active = c;
                 this.stream.push(c);
             } else if (type = "potential") {
                 var color = "red";
-                var c = createFlowCurve(this.board, x1, y1, x2, y2, n, color);
+                var c = createFlowCurve(this.board, x1, y1, x2, y2, n, color, self.potential.length + 1, 'potential');
                 this.active = c;
                 this.potential.push(c);
             } else {
@@ -292,13 +294,46 @@ function createFlowNet(board, lineList) {
             });
         },
         
+        delete: function() {
+            if (this.active == "") {
+                return;
+            }
+            
+            var idx = this[this.active.type].indexOf(this.active);
+            
+            if (idx !== -1) {
+                this.board.removeObject(this[this.active.type][idx].curve);
+                
+                this[this.active.type][idx].p.forEach(function(ele) {
+                    this.board.removeObject(ele);
+                }, this);
+                
+                this[this.active.type].forEach(function(ele) {
+                    ele.hidePoint();
+                });
+                
+                for (var i = idx; i < this[this.active.type].length - 1; i++) {
+                    this[this.active.type][i] = this[this.active.type][i+1];
+                    this[this.active.type][i].p.forEach(function(ele) {
+                        ele.setAttribute({
+                            name: (i + 1).toString()
+                        });
+                    }, this);
+                }
+                this[this.active.type].pop();
+                
+                this.active = "";
+            }
+        },
+        
         calculate: function() {
             var stop = false;
             var self = this;
+            self.active = "";
             $("#btn-group button").prop("disabled", true);
             $("#btn-finish").html("Processing...");
             
-            // Step 1
+            // Step 1: 2 stream 3 potential
             $("#feedback").html("Initializing...");
             
             editable = false;
@@ -311,6 +346,14 @@ function createFlowNet(board, lineList) {
                 ele.hidePoint();
             });
             
+            if ((self.stream.length < 2) || (self.potential.length < 3)) {
+                editable = true;
+                $("#feedback").html("Not enough flow line (2 minimum) or equipotential line (3 minimum)");
+                $("#btn-group button").prop("disabled", false);
+                $("#btn-finish").html("Finish and Check");
+                return;
+            }
+            
             // Step 2
             $("#feedback").html("Plotting Intersection ...");
             
@@ -322,11 +365,11 @@ function createFlowNet(board, lineList) {
                     
                     if (list_intersection.points.length == 0) {
                         // Incorrect Answer: no intersection
-                        $("#feedback").html("Incorrect: Each stream line and equipotential line must have at least one intersection");
+                        $("#feedback").html("Incorrect: Each flow line and equipotential line must have at least one intersection");
                         stop = true;
                     } else if (list_intersection.points.length > 1) {
                         // Incorrect Answer: more than 1 intersection
-                        $("#feedback").html("Incorrect: There are stream line and equipotential line with more than one intersection");
+                        $("#feedback").html("Incorrect: There are flow line and equipotential line with more than one intersection");
                         stop = true;
                     } else {
                         stream_ele.intersection.push(list_intersection.points[0]);
@@ -351,11 +394,11 @@ function createFlowNet(board, lineList) {
                     
                 if (list_intersection.points.length == 0) {
                     // Incorrect Answer: no intersection
-                    $("#feedback").html("Incorrect: Each stream line and equipotential line must have at least one intersection");
+                    $("#feedback").html("Incorrect: Each flow line and equipotential line must have at least one intersection");
                     stop = true;
                 } else if (list_intersection.points.length > 1) {
                     // Incorrect Answer: more than 1 intersection
-                    $("#feedback").html("Incorrect: There are stream line and equipotential line with more than one intersection");
+                    $("#feedback").html("Incorrect: There are flow line and equipotential line with more than one intersection");
                     stop = true;
                 } else {
                     self.stream_start_intersection.push(list_intersection.points[0]);
@@ -376,11 +419,11 @@ function createFlowNet(board, lineList) {
                     
                 if (list_intersection.points.length == 0) {
                     // Incorrect Answer: no intersection
-                    $("#feedback").html("Incorrect: Each stream line and equipotential line must have at least one intersection");
+                    $("#feedback").html("Incorrect: Each flow line and equipotential line must have at least one intersection");
                     stop = true;
                 } else if (list_intersection.points.length > 1) {
                     // Incorrect Answer: more than 1 intersection
-                    $("#feedback").html("Incorrect: There are stream line and equipotential line with more than one intersection");
+                    $("#feedback").html("Incorrect: There are flow line and equipotential line with more than one intersection");
                     stop = true;
                 } else {
                     self.stream_start_intersection.push(list_intersection.points[0]);
@@ -401,11 +444,11 @@ function createFlowNet(board, lineList) {
                     
                 if (list_intersection.points.length == 0) {
                     // Incorrect Answer: no intersection
-                    $("#feedback").html("Incorrect: Each stream line and equipotential line must have at least one intersection");
+                    $("#feedback").html("Incorrect: Each flow line and equipotential line must have at least one intersection");
                     stop = true;
                 } else if (list_intersection.points.length > 1) {
                     // Incorrect Answer: more than 1 intersection
-                    $("#feedback").html("Incorrect: There are stream line and equipotential line with more than one intersection");
+                    $("#feedback").html("Incorrect: There are flow line and equipotential line with more than one intersection");
                     stop = true;
                 } else {
                     self.potential_start_intersection.push(list_intersection.points[0]);
@@ -426,11 +469,11 @@ function createFlowNet(board, lineList) {
                     
                 if (list_intersection.points.length == 0) {
                     // Incorrect Answer: no intersection
-                    $("#feedback").html("Incorrect: Each stream line and equipotential line must have at least one intersection");
+                    $("#feedback").html("Incorrect: Each flow line and equipotential line must have at least one intersection");
                     stop = true;
                 } else if (list_intersection.points.length > 1) {
                     // Incorrect Answer: more than 1 intersection
-                    $("#feedback").html("Incorrect: There are stream line and equipotential line with more than one intersection");
+                    $("#feedback").html("Incorrect: There are flow line and equipotential line with more than one intersection");
                     stop = true;
                 } else {
                     self.potential_start_intersection.push(list_intersection.points[0]);
@@ -446,6 +489,8 @@ function createFlowNet(board, lineList) {
             
             // Step 4
             $("#feedback").html("All intersections are plotted, ready to verify ...");
+            
+            // calculate number of intersections and number of cells
         }
     }
 }
