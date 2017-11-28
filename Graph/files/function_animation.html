@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Finite Element Method Online"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Function Animation</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <style>
+        .row {
+            margin-top: 4em;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <input type="text" id="input" value="sin(x)*x">
+                    <button class="btn btn-sm btn-primary" onClick="plotter()">plot</button>
+                    <button class="btn btn-sm btn-primary" onClick="clearAll()">clear all</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3" id="main-plot">
+                    <div id="plot" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $("#plot").height($("#plot").width());
+
+        var board = JXG.JSXGraph.initBoard('plot', {
+            boundingbox:[-5, 8, 8, -5], 
+            showNavigation: true,
+            keepaspectratio: false,
+            showCopyright: false,
+            axis: true
+        });
+
+        function plotter() {
+            var txtraw = $("input").val();
+            f = board.jc.snippet(txtraw, true, 'x', true); //Jessie Code -> CA
+            
+            var start = -4,
+                end = 7,
+                x = start,
+                step = 0.05,
+                turtle = board.create('turtle', [x, f(x)], {strokecolor: 'red', strokeWidth: 2});
+            
+            var moveForward = function() {
+                x += step;
+                if (x > end) {
+                    return;
+                }
+                turtle.moveTo([x, f(x)]);
+                setTimeout(moveForward, 30);
+            };
+
+            turtle.hideTurtle();
+            moveForward();
+        }
+
+        function clearAll() {
+            JXG.JSXGraph.freeBoard(board);
+            board = JXG.JSXGraph.initBoard('plot', {
+                boundingbox: [-5, 8, 8, -5], 
+                showNavigation: true,
+                keepaspectratio: false,
+                showCopyright: false,
+                axis: true
+            });
+        }
+    </script>
+</html>

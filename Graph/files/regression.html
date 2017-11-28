@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Finite Element Method Online"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Polynomial Regression</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+    </head>
+    <style>
+        .row {
+            margin-top: 2em;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <p><strong>Data is randomly generated here. It can be imported from external source</strong></p>
+                </div>
+            </div>
+            <div class="row" style="display: none;">
+                <div class="col-sm-6 col-sm-offset-3">
+                    Function: <input type="text" id="input_f" value="sin(x)*x" size="8"/>
+                    Integrate from: <input type="text" id="input_s" value="-3" size="4"/>
+                    <button class="btn btn-sm btn-primary" onClick="plotter()">plot</button>
+                    <button class="btn btn-sm btn-primary" onClick="clearAll()">clear all</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="main-plot">
+                    <div id="plot" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $("#plot").height($("#plot").width() / 3 * 2);
+
+        var data_raw = [421, 357, 363, 339, 394, 385, 415, 411, 416, 381, 396, 412, 415, 408, 409, 412, 413, 412, 402, 388, 394, 395, 378, 372, 362, 362, 361, 343, 338, 316, 302, 292, 297, 305, 312, 299, 287, 290, 288, 265, 250, 243, 254, 245, 261, 250, 243, 269, 268, 255, 257, 261, 248, 260, 270, 262, 266, 306, 367, 330, 329, 333, 330, 327, 314, 304, 306, 291, 289, 272, 274, 277, 280, 282, 290, 292, 303, 313, 298, 288, 294, 296, 301, 298, 294, 314, 321, 331, 337, 347, 350, 354, 332, 323, 328, 337, 333, 337, 341, 333, 334, 331, 320, 307, 293, 296, 292, 277, 288, 288, 274, 278, 272, 272, 261, 265, 257, 254, 251, 238, 228, 229, 234, 249, 234, 239, 239, 227, 221, 228, 220, 217, 225, 230, 228, 232, 227, 234, 233, 229, 232, 239, 248, 247, 248, 244, 238, 232, 223, 211, 204, 202, 208, 216, 235, 230, 233, 243, 226, 230, 221, 214, 221, 220, 217, 218, 229, 232, 237, 252, 253, 243, 243, 243, 248, 256, 295, 334, 247, 242, 244, 230, 235, 222, 217, 214, 204, 209, 209, 207, 207, 210, 214, 205, 193, 180, 168, 168, 170, 170, 161, 163, 163, 156, 158, 151, 152, 158, 153, 160, 154, 161, 149, 145, 153, 148, 155, 152, 156, 172, 183, 186, 184, 178, 190, 141, 190, 172, 160, 141, 133, 139, 129, 116, 112, 117, 121, 115, 109, 109, 106, 99, 111, 114, 131, 132, 131, 122, 115, 113, 103, 96, 89, 82, 75, 68]
+        var datax = [];
+        var datay = data_raw.map(function(ele) {
+            return 100 - (ele - 50) / 2;
+        });
+        for (i = 0; i < datay.length; i++)  {
+            datax[i] = i;
+        }
+
+        var brd = JXG.JSXGraph.initBoard('plot', {boundingbox:[-2, 100, datax.length + 2, -100], grid: false, axis:true, showCopyright: false});
+        brd.suspendUpdate();
+        var s = brd.create('slider',[[10, 70],[80, 70],[0, 1, 1]], {name:'scale'});     
+        var deg = brd.create('slider',[[10, 90],[80, 90],[1, 1, 10]], {name:'degree', snapWidth:1});  
+        var curve = brd.create('curve', [[0], [0]], {
+            strokecolor: 'black', 
+            strokeWidth: 1,
+            dash: 2,
+            opacity: 0.6
+        });
+        
+        curve.updateDataArray = function() {
+            var i, len = datax.length;
+            for (i = 0; i < len; i++) {
+                this.dataX[i] = datax[i];
+                this.dataY[i] = s.Value()*datay[i]; 
+            }
+        }
+        curve.update(); // Needed for correct glider position
+
+        var regressionPolynomial = JXG.Math.Numerics.regressionPolynomial(deg, datax, curve.dataY);
+        var reg = brd.create('functiongraph',[regressionPolynomial],{strokeColor:'blue', strokeWidth:4});     
+        brd.create('glider',[100,30,reg],{strokeColor:'black'});     
+
+        t = brd.create('text',[20, 40,
+                function(){ 
+                    return "r(x) = " + regressionPolynomial.getTerm();
+            }], {
+                strokeColor: 'red',
+                fontSize: 18
+            });     
+        brd.unsuspendUpdate();
+    </script>
+</html>
