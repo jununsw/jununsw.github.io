@@ -51,8 +51,8 @@
         var t2 = brd.create('turtle');
         var i = 0;
 
-        t1.setPos(200,0);
-        t2.setPos(0,0);
+        t1.setPos(200, 0);
+        t2.setPos(0, 0);
         
         t1.setAttribute({strokeColor:'red', strokeWidth:2});
         t2.setAttribute({strokeColor:'blue', strokeWidth:2});
@@ -62,6 +62,11 @@
             if (i >= 50) {
                 t1.lt(Math.floor(Math.random()*180));
                 i = 0;
+            }
+            if (Math.sqrt(Math.pow(t1.X() - t2.X(), 2) + Math.pow(t1.Y() - t2.Y(), 2)) <= 40) {
+                t1.penUp();
+                t1.moveTo([Math.random()*400 - 200, Math.random()*400 - 200]);
+                t1.penDown();
             }
             t2.lookTo(t1.pos);
             t2.fd(1);
