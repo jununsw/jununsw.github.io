@@ -30,7 +30,8 @@
                     <p style="font-weight: bold;">
                         This example is used to demostrated the capacity of randomly generated dynamic animation
                     </p>
-                    <button class="btn btn-sm btn-primary" onClick="chase()">Start Chasing</button>
+                    <button class="btn btn-sm btn-primary" onClick="chase(event);">Start</button>
+                    <button class="btn btn-sm btn-primary" onClick="stop(event);">Stop</button>
                 </div>
             </div>
             <div class="row">
@@ -42,6 +43,7 @@
     </body>
     <script type="text/javascript">
         $("#plot").height($("#plot").width());
+        var action;
         
         var brd = JXG.JSXGraph.initBoard('plot', {
             boundingbox: [-300, 300, 300, -300], 
@@ -57,16 +59,25 @@
         t1.setPos(200, 0);
         t2.setPos(0, 0);
         
-        t1.setAttribute({strokeColor:'red', strokeWidth:2});
-        t2.setAttribute({strokeColor:'blue', strokeWidth:2});
+        t1.setAttribute({strokeColor: 'red', strokeWidth: 2});
+        t2.setAttribute({strokeColor: 'blue', strokeWidth: 2});
+        t1.arrow.setAttribute({
+            strokeColor: 'red',
+            strokeWidth: 4
+        });
+        t2.arrow.setAttribute({
+            strokeColor: 'blue',
+            strokeWidth: 4
+        });
         
-        function chase() {
+        function chase(e) {
             t1.fd(1);
             if (i >= 50) {
                 t1.lt(Math.floor(Math.random()*180));
                 i = 0;
             }
             if (Math.sqrt(Math.pow(t1.X() - t2.X(), 2) + Math.pow(t1.Y() - t2.Y(), 2)) <= 40) {
+                t1.clean();
                 t1.penUp();
                 t1.moveTo([Math.random()*400 - 200, Math.random()*400 - 200]);
                 t1.penDown();
@@ -75,6 +86,15 @@
             t2.fd(1);
             i += 1;
             action = requestAnimationFrame(chase);
+        }
+        
+        function stop(e) {
+            if ($(e.target).html() == "Stop") {
+                window.cancelAnimationFrame(action);
+                $(e.target).html("Reset");
+            } else {
+                location.reload();
+            }
         }
     </script>
 </html>

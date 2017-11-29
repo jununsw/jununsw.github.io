@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Finite Element Method Online"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Escaping</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+    </head>
+    <style>
+        .row {
+            margin-top: 4em;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <p style="font-weight: bold;">
+                        This example is used to demostrated the capacity of randomly generated dynamic animation with user control (red arrow, left to turn left, right to turn right)
+                    </p>
+                    <button class="btn btn-sm btn-primary" onClick="start(event);">Start</button>
+                    <button class="btn btn-sm btn-primary" onClick="stop(event);">Stop</button>
+                    <br/><span id="time"></span><span id="over"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3" id="main-plot">
+                    <div id="plot" style="width: 100%; border: 1px solid black"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        $("#plot").height($("#plot").width());
+        var action;
+        var i = 0;
+        
+        var brd = JXG.JSXGraph.initBoard('plot', {
+            boundingbox: [-300, 300, 300, -300], 
+            showNavigation: true,
+            keepaspectratio: false,
+            showCopyright: false,
+            axis: false
+        });
+        var t1 = brd.create('turtle');
+        var t2 = brd.create('turtle');
+        var t3 = brd.create('turtle');
+        var t4 = brd.create('turtle');
+        var t5 = brd.create('turtle');
+
+        t1.setPos(0, 0);
+        t2.setPos(0, -200);
+        t3.setPos(0, 200);
+        t4.setPos(200, 0);
+        t5.setPos(-200, 0);
+        
+        chase = [t2, t3, t4, t5];
+        
+        t1.setAttribute({strokeColor: 'red', strokeWidth: 2});
+        t1.arrow.setAttribute({
+            strokeColor: 'red',
+            strokeWidth: 4
+        });
+        
+        chase.forEach(function(ele) {
+            ele.setAttribute({strokeColor: 'blue', strokeWidth: 2});
+            ele.arrow.setAttribute({
+                strokeColor: 'blue',
+                strokeWidth: 4
+            });
+            ele.lookTo(t1.pos);
+        });
+        
+        function start(e) {
+            var t = (new Date()).getTime();
+            var event = e;
+            
+            function run() {
+                t1.fd(1.2);
+                chase.forEach(function(ele) {
+                    ele.lookTo(t1.pos);
+                    ele.fd(1);
+                });
+                
+                var d = chase.map(function(ele) {
+                    return Math.sqrt(Math.pow(t1.X() - ele.X(), 2) + Math.pow(t1.Y() - ele.Y(), 2));
+                }).reduce(function(o, n) {
+                    return Math.min(o, n);
+                });
+                
+                if (d <= 5) {
+                    window.cancelAnimationFrame(action);
+                    $("#over").html("Game Over");
+                    $(document).off("keydown");
+                    $(event.target).prop("disabled", true);
+                    return
+                }
+                
+                if ((Math.abs(t1.X()) > 300) || (Math.abs(t1.Y()) > 300)) {
+                    window.cancelAnimationFrame(action);
+                    $("#over").html("Game Over");
+                    $(document).off("keydown");
+                    $(event.target).prop("disabled", true);
+                    return
+                }
+                
+                if (i >= 150) {
+                    chase.forEach(function(ele, idx, arr) {
+                        ele.clean();
+                        ele.penUp();
+                        if (idx == 0) {
+                            ele.moveTo([t1.X(), t1.Y() - 200]);
+                        } else if (idx == 1) {
+                            ele.moveTo([t1.X(), t1.Y() + 200]);
+                        } else if (idx == 2) {
+                            ele.moveTo([t1.X() + 200, t1.Y()]);
+                        } else {
+                            ele.moveTo([t1.X() - 200, t1.Y()]);
+                        }
+                        ele.penDown();
+                    });
+                    t1.clean();
+                    
+                    i = 0;
+                }
+                
+                $("#time").html(((new Date()).getTime() - t).toFixed(1) + " ms ");
+                
+                i += 1;
+                
+                action = requestAnimationFrame(run);
+            }
+            
+            $(document).keydown(function(e) {
+                if (e.which == 37) {
+                    t1.lt(10);
+                } else if (e.which == 39) {
+                    t1.rt(10);
+                }
+            });
+            
+            run();
+        }
+        
+        function stop(e) {
+            if ($(e.target).html() == "Stop") {
+                window.cancelAnimationFrame(action);
+                $(e.target).html("Reset");
+                
+                $(document).off("keydown");
+            } else {
+                location.reload();
+            }
+        }
+    </script>
+</html>
