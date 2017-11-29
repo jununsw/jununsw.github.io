@@ -17,7 +17,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
         <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
-        <link rel="stylesheet" href="css/style.css"/>
     </head>
     <style>
         .row {
@@ -28,9 +27,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3">
-                    <input type="text" id="input" value="sin(x)*x">
+                    <input type="text" id="input" value="sin(x)*x"/>
                     <button class="btn btn-sm btn-primary" onClick="plotter()">plot</button>
                     <button class="btn btn-sm btn-primary" onClick="clearAll()">clear all</button>
+                    <strong>Color:</strong> <input type="color" id="color"><br/><br/>
+                    From <input type="text" id="x-start" value="-4" size="5"/>
+                    To <input type="text" id="x-end" value="7" size="5"/>
                 </div>
             </div>
             <div class="row">
@@ -55,11 +57,11 @@
             var txtraw = $("input").val();
             f = board.jc.snippet(txtraw, true, 'x', true); //Jessie Code -> CA
             
-            var start = -4,
-                end = 7,
+            var start = isFinite(Number($("#x-start").val())) ? Number($("#x-start").val()): -4,
+                end = isFinite(Number($("#y-start").val())) ? Number($("#y-start").val()): 7,
                 x = start,
                 step = 0.05,
-                turtle = board.create('turtle', [x, f(x)], {strokecolor: 'red', strokeWidth: 2});
+                turtle = board.create('turtle', [x, f(x)], {strokecolor: $("#color").val(), strokeWidth: 2});
             
             var moveForward = function() {
                 x += step;
