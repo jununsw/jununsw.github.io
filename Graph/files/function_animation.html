@@ -58,7 +58,7 @@
             f = board.jc.snippet(txtraw, true, 'x', true); //Jessie Code -> CA
             
             var start = isFinite(Number($("#x-start").val())) ? Number($("#x-start").val()): -4,
-                end = isFinite(Number($("#y-start").val())) ? Number($("#y-start").val()): 7,
+                end = isFinite(Number($("#x-end").val())) ? Number($("#x-end").val()): 7,
                 x = start,
                 step = 0.05,
                 turtle = board.create('turtle', [x, f(x)], {strokecolor: $("#color").val(), strokeWidth: 2});

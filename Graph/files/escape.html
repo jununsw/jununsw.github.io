@@ -36,9 +36,16 @@
                         <li>Chasing arrows will reset their positions periodically</li>
                         <li>If you touch the boundary, you lose. Press START, and the game will begin in 3 seconds</li>
                     </ul>
-                    <button class="btn btn-sm btn-primary" onClick="start(event);">Start</button>
-                    <button class="btn btn-sm btn-primary" onClick="stop(event);">Stop</button>
-                    <br/><span id="time">Ready</span><span id="over"></span><br/>
+                    <button class="btn btn-sm btn-primary" id="start" onClick="start(event);">Start</button>
+                    <button class="btn btn-sm btn-primary" id="reset" onClick="reset(event);">Reset</button>
+                    Difficulty: 
+                    <select id="difficulty" onchange="choice();">
+                        <option value="1.2" selected>Easy</option>
+                        <option value="2">Medium</option>
+                        <option value="2.5">Hard</option>
+                    </select>
+                    <br/><span id="time">Ready</span><span id="over"></span>
+                    <br/>Highest score: <span id="score">0</span> ms
                 </div>
             </div>
             <div class="row">
@@ -51,14 +58,17 @@
     <script type="text/javascript">
         $("#plot").height($("#plot").width());
         
-        var action;
-        var i = 0;
+        window.action = null;
+        window.i1 = 0;
+        window.i2 = 0;
+        window.speed = Number($("#difficulty").find(":selected").attr("value"));
         
-        var brd = JXG.JSXGraph.initBoard('plot', {
+        window.brd = JXG.JSXGraph.initBoard('plot', {
             boundingbox: [-300, 300, 300, -300], 
             showNavigation: true,
             keepaspectratio: false,
             showCopyright: false,
+            showNavigation: false,
             axis: false
         });
         var t1 = brd.create('turtle');
@@ -68,12 +78,12 @@
         var t5 = brd.create('turtle');
 
         t1.setPos(0, 0);
-        t2.setPos(0, -200);
+        t2.setPos(200, 0);
         t3.setPos(0, 200);
-        t4.setPos(200, 0);
-        t5.setPos(-200, 0);
+        t4.setPos(-200, 0);
+        t5.setPos(0, -200);
         
-        var chase = [t2, t3, t4, t5];
+        window.chase = [t2, t3, t4, t5];
         
         t1.setAttribute({strokeColor: 'red', strokeWidth: 2});
         t1.arrow.setAttribute({
@@ -81,7 +91,7 @@
             strokeWidth: 4
         });
         
-        chase.forEach(function(ele) {
+        window.chase.forEach(function(ele) {
             ele.setAttribute({strokeColor: 'blue', strokeWidth: 2});
             ele.arrow.setAttribute({
                 strokeColor: 'blue',
@@ -91,19 +101,11 @@
         });
         
         function start(e) {
-            var t = (new Date()).getTime();
-            var event = e;
-            try {
-                window.cancelAnimationFrame(action);
-            } catch(e) {
-                
-            }
-            
             function run() {
                 t1.fd(1);
                 chase.forEach(function(ele) {
                     ele.lookTo(t1.pos);
-                    ele.fd(1.2);
+                    ele.fd(speed);
                 });
                 
                 var d = chase.map(function(ele) {
@@ -116,7 +118,8 @@
                     window.cancelAnimationFrame(action);
                     $("#over").html("Game Over");
                     $(document).off("keydown");
-                    $(event.target).prop("disabled", true);
+                    $(e.target).prop("disabled", true);
+                    gameover((new Date()).getTime() - t);
                     return
                 }
                 
@@ -124,49 +127,54 @@
                     window.cancelAnimationFrame(action);
                     $("#over").html("Game Over");
                     $(document).off("keydown");
-                    $(event.target).prop("disabled", true);
+                    $(e.target).prop("disabled", true);
+                    gameover((new Date()).getTime() - t);
                     return
                 }
                 
-                if (i >= 150) {
-                    chase.forEach(function(ele, idx, arr) {
-                        ele.clean();
-                        ele.penUp();
-                        if (idx == 0) {
-                            ele.moveTo([t1.X(), t1.Y() - 200]);
-                        } else if (idx == 1) {
-                            ele.moveTo([t1.X(), t1.Y() + 200]);
-                        } else if (idx == 2) {
-                            ele.moveTo([t1.X() + 200, t1.Y()]);
-                        } else {
-                            ele.moveTo([t1.X() - 200, t1.Y()]);
-                        }
-                        ele.penDown();
-                    });
-                    t1.clean();
+                if (i1 >= 150) {
+                    if (d > 20) {
+                        var dir = t1.dir / 180 * Math.PI;
+                        var sign = [-1, 1];
+                        var x = t1.X();
+                        var y = t1.Y();
+                        sign = sign[Math.random() * sign.length >> 0];
+                        dir = dir + 5*Math.random()/180*Math.PI*sign;
+                        
+                        window.chase.forEach(function(ele, idx, arr) {
+                            ele.clean();
+                            ele.clean();
+                            ele.pu();
+                            ele.moveTo([x + 200*Math.cos(dir + idx*Math.PI/2), y + 200*Math.sin(dir + idx*Math.PI/2)]);
+                            ele.pd();
+                        });
+                    }
                     
-                    i = 0;
+                    i1 = 0;
+                }
+                
+                if (i2 >= 200) {
+                    t1.clean();
+                    i2 = 0;
                 }
                 
                 $("#time").html(((new Date()).getTime() - t).toFixed(1) + " ms ");
                 
-                i += 1;
+                i1 += 1;
+                i2 += 1;
                 
                 action = requestAnimationFrame(run);
             }
             
-            $(document).keydown(function(e) {
-                if (e.which == 37) {
-                    t1.lt(10);
-                } else if (e.which == 39) {
-                    t1.rt(10);
-                } else if (e.which == 38) {
-                    t1.clean();
-                    t1.penUp();
-                    t1.fd(50);
-                    t1.penDown();
-                }
-            });
+            $("button").prop("disabled", true);
+            $("select").prop("disabled", true);
+            var t = (new Date()).getTime();
+            
+            try {
+                window.cancelAnimationFrame(action);
+            } catch(e) {
+                
+            }
             
             setTimeout(function() {
                 $("#time").html("3");
@@ -176,6 +184,17 @@
                         $("#time").html("1");
                         setTimeout(function() {
                             $("#time").html("");
+                            
+                            $(document).keydown(function(e) {
+                                if (e.which == 37) {
+                                    t1.lt(10);
+                                } else if (e.which == 39) {
+                                    t1.rt(10);
+                                } else if (e.which == 38) {
+                                    t1.fd(50);
+                                }
+                            });
+                            
                             run();
                         }, 1000);
                     }, 1000);
@@ -183,15 +202,48 @@
             }, 0);
         }
         
-        function stop(e) {
-            if ($(e.target).html() == "Stop") {
-                window.cancelAnimationFrame(action);
-                $(e.target).html("Reset");
-                
-                $(document).off("keydown");
-            } else {
-                location.reload();
+        function gameover(t) {
+            var oldTime = Number($("#score").html());
+            
+            if (t > oldTime) {
+                $("#score").html(t.toString());
             }
+            
+            $("#reset").prop("disabled", false);
+            $(document).off("keydown");
+        }
+        
+        function reset(e) {
+            function clear() {
+                t1.moveTo([0, 0]);
+                t1.clean();
+                t1.lookTo([0, 200]);
+
+                t2.moveTo([200, 0]);
+                t3.moveTo([0, 200]);
+                t4.moveTo([-200, 0]);
+                t5.moveTo([0, -200]);
+
+                window.chase.forEach(function(ele) {
+                    ele.clean();
+                    ele.lookTo(t1.pos);
+                });
+
+                window.action = null;
+                window.i = 0;
+
+                $("button").prop("disabled", false);
+                $("select").prop("disabled", false);
+                $("#over").html("");
+                $("#time").html("Ready");
+            }
+            
+            clear();
+            clear();
+        }
+        
+        function choice() {
+            window.speed = Number($("#difficulty").find(":selected").attr("value"));
         }
     </script>
 </html>
