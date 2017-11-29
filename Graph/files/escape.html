@@ -28,11 +28,17 @@
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3">
                     <p style="font-weight: bold;">
-                        This example is used to demostrated the capacity of randomly generated dynamic animation with user control (red arrow, left to turn left, right to turn right)
+                        This example is used to demostrated the capacity of randomly generated dynamic animation with user control.     
                     </p>
+                    <ul>
+                        <li>You control the red arrow. Use LEFT arrow key to turn left, and Right arrow key to turn right.</li>
+                        <li>Blue arrows are the chasing arrows. They are faster than you. But you can press UP arrow key to jump forward</li>
+                        <li>Chasing arrows will reset their positions periodically</li>
+                        <li>If you touch the boundary, you lose. Press START, and the game will begin in 3 seconds</li>
+                    </ul>
                     <button class="btn btn-sm btn-primary" onClick="start(event);">Start</button>
                     <button class="btn btn-sm btn-primary" onClick="stop(event);">Stop</button>
-                    <br/><span id="time"></span><span id="over"></span>
+                    <br/><span id="time">Ready</span><span id="over"></span><br/>
                 </div>
             </div>
             <div class="row">
@@ -44,6 +50,7 @@
     </body>
     <script type="text/javascript">
         $("#plot").height($("#plot").width());
+        
         var action;
         var i = 0;
         
@@ -66,7 +73,7 @@
         t4.setPos(200, 0);
         t5.setPos(-200, 0);
         
-        chase = [t2, t3, t4, t5];
+        var chase = [t2, t3, t4, t5];
         
         t1.setAttribute({strokeColor: 'red', strokeWidth: 2});
         t1.arrow.setAttribute({
@@ -86,12 +93,17 @@
         function start(e) {
             var t = (new Date()).getTime();
             var event = e;
+            try {
+                window.cancelAnimationFrame(action);
+            } catch(e) {
+                
+            }
             
             function run() {
-                t1.fd(1.2);
+                t1.fd(1);
                 chase.forEach(function(ele) {
                     ele.lookTo(t1.pos);
-                    ele.fd(1);
+                    ele.fd(1.2);
                 });
                 
                 var d = chase.map(function(ele) {
@@ -100,7 +112,7 @@
                     return Math.min(o, n);
                 });
                 
-                if (d <= 5) {
+                if (d <= 10) {
                     window.cancelAnimationFrame(action);
                     $("#over").html("Game Over");
                     $(document).off("keydown");
@@ -148,10 +160,27 @@
                     t1.lt(10);
                 } else if (e.which == 39) {
                     t1.rt(10);
+                } else if (e.which == 38) {
+                    t1.clean();
+                    t1.penUp();
+                    t1.fd(50);
+                    t1.penDown();
                 }
             });
             
-            run();
+            setTimeout(function() {
+                $("#time").html("3");
+                setTimeout(function() {
+                    $("#time").html("2");
+                    setTimeout(function() {
+                        $("#time").html("1");
+                        setTimeout(function() {
+                            $("#time").html("");
+                            run();
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 0);
         }
         
         function stop(e) {
