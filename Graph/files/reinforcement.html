@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Concrete Design</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+    </head>
+    <body>
+        <div class="container" style="margin-top: 30px;">
+            <div class="row">
+                <ul>
+                    <li>Select a bar type, and drag it to the corresponding location</li>
+                    <li>Ctrl + Click a bar to delete</li>
+                </ul>
+                <div class="col-xs-12">
+                    <strong>Reinforcement Bar: </strong>
+                    <select>
+                        <option value="4">8</option>
+                        <option value="5">10</option>
+                        <option value="6">12</option>
+                        <option value="7">16</option>
+                        <option value="8">20</option>
+                        <option value="9">24</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="toAdd(event);">Add</button>
+                </div>
+                <div class="col-xs-12" style="margin-top: 30px;">
+                    <div id="plot" class="plot" style="width: 600px; height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        function Model(board) {
+            this.board = board;
+            this.bars = [];
+            this.addBar = function(point_size) {
+                var p = this.board.create('point', [0, 22.5], {
+                    name: "",
+                    color: 'blue',
+                    size: point_size,
+                    highlight: false
+                });
+                
+                p.on('up', function() {
+                    if (window.cntrlIsPressed == true) {
+                        var idx = this.bars.indexOf(p);
+                        if (idx !== -1) {
+                            this.bars.splice(idx, 1);
+                            this.board.removeObject(p);
+                        }
+                    }
+                }, this);
+                
+                p.on('drag', function() {
+                    var ox = Number(p.X().toFixed(2));
+                    var oy = Number(p.Y().toFixed(2));
+                    p.moveTo([ox, oy]);
+                });
+                
+                this.bars.push(p);
+            };
+        }
+        
+        var brd = JXG.JSXGraph.initBoard('plot', {
+            boundingbox: [-20, 25, 20, -15], 
+            showNavigation: false,
+            keepaspectratio: false,
+            showCopyright: false,
+            axis: false
+        });
+        
+        var axisX = brd.create('axis', [[0, 0], [1, 0]]);
+        var axisY = brd.create('axis', [[0, 0], [0, 1]]);
+        
+        axisX.ticks.forEach(function(ele) {
+            ele.setAttribute({
+                strokeColor: "transparent"
+            });
+        });
+        
+        axisY.ticks.forEach(function(ele) {
+            ele.setAttribute({
+                strokeColor: "transparent"
+            });
+        });
+        
+        var p = [];
+        
+        p.push(brd.create("point", [-15, 20], {visible: false}));
+        p.push(brd.create("point", [-15, 10], {visible: false}));
+        p.push(brd.create("point", [-5, 10], {visible: false}));
+        p.push(brd.create("point", [-5, -10], {visible: false}));
+        p.push(brd.create("point", [5, -10], {visible: false}));
+        p.push(brd.create("point", [5, 10], {visible: false}));
+        p.push(brd.create("point", [15, 10], {visible: false}));
+        p.push(brd.create("point", [15, 20], {visible: false}));
+        
+        var cross = brd.create("polygon", p, {
+            highlight: false,
+            fillColor: "transparent",
+            fixed: true
+        });
+        
+        cross.borders.forEach(function(ele) {
+            ele.setAttribute({
+                strokeColor: "black",
+                strokeWidth: 3,
+                highlight: false,
+                fixed: true
+            });
+        });
+        
+        var cntrlIsPressed = false;
+        
+        $(document).keydown(function(event) {
+            if (event.which == "17") {
+                cntrlIsPressed = true;
+            }
+        });
+        
+        $(document).keyup(function() {
+            cntrlIsPressed = false;
+        });
+        
+        var model = new Model(brd);
+        
+        function toAdd(e) {
+            var size = $(e.target).closest("div").find("select").find(":selected").attr("value");
+            size = (isFinite(Number(size))) ? Number(size) : 0;
+            
+            if (size == 0) {
+                return
+            } else {
+                model.addBar(size);
+            }
+        }
+    </script>
+</html>
