@@ -43,7 +43,9 @@
                     name: "",
                     color: 'blue',
                     size: point_size,
-                    highlight: false
+                    highlight: false,
+                    infoboxDigits: 1, 
+                    showInfox: true
                 });
                 
                 p.on('up', function() {
@@ -57,8 +59,8 @@
                 }, this);
                 
                 p.on('drag', function() {
-                    var ox = Number(p.X().toFixed(2));
-                    var oy = Number(p.Y().toFixed(2));
+                    var ox = Number(p.X().toFixed(1));
+                    var oy = Number(p.Y().toFixed(1));
                     p.moveTo([ox, oy]);
                 });
                 
