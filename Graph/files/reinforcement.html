@@ -14,6 +14,7 @@
                 <ul>
                     <li>Select a bar type, and drag it to the corresponding location</li>
                     <li>Ctrl + Click a bar to delete</li>
+                    <li>You can drag or zoom the coordinate system while pressing SHIFT</li>
                 </ul>
                 <div class="col-xs-12">
                     <strong>Reinforcement Bar: </strong>
@@ -70,7 +71,14 @@
             showNavigation: false,
             keepaspectratio: false,
             showCopyright: false,
-            axis: false
+            axis: false,
+            zoom: {
+                factorX: 1.25,
+                factorY: 1.25,
+                wheel: true,
+                needshift: true,
+                eps: 0.1
+            }
         });
         
         var axisX = brd.create('axis', [[0, 0], [1, 0]]);
