@@ -1,0 +1,40 @@
+#plot {
+    width: 100%;
+    padding: 0px;
+}
+
+body {
+    width: 100%;
+}
+
+.tabs-nohdr { 
+    padding: 0px; 
+    background: none; 
+    border: none !important; 
+} 
+.tabs-nohdr .ui-tabs-nav { 
+    padding-left: 5px; 
+    background: transparent; 
+    border: none; 
+    -moz-border: none; 
+    -webkit-border: none;
+} 
+.tabs-nohdr .ui-tabs-panel {
+    border-top: 1px #D3D3D3 solid;
+}
+
+.panel {
+    display: none;
+    border: none;
+    padding: 0 0 0 5px;
+    margin: 0px;
+}
+
+.no-bullet {
+    list-style: none;
+    padding-left: 5px;
+}
+
+#option-panel {
+    font-size: 18px;
+}

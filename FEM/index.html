@@ -2,18 +2,104 @@
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>Start...</title>
-        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <meta name="description" content="Finite Element Method Online"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>FEM Online</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" href="css/style.css"/>
     </head>
-    <body onload="toLoad();">
+    <body onload="load(event);" onresize="resize(event);" id="body">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">FEM Online</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Basic Geometry <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Option 1</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Option 2</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Option 3</a></li>
+                            </ul>
+                        </li>
+                        <li><button type="button" class="btn btn-primary navbar-btn">Mesh <span class="glyphicon glyphicon-play"></span></button></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Option 4</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Option 5</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Option 6</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 panel" id="control-panel">
+                    <div class="tabs-nohdr" id="control-tabs">
+                        <ul>
+                            <li><a href="#tabs-coord">Plot</a></li>
+                        </ul>
+                        
+                        <div id="tabs-coord">
+                            <ul class="no-bullet">
+                                <li>X-min: <input class="form-control" type="text" size="4" id="xmin"></li>
+                                <li>X-max: <input class="form-control" type="text" size="4" id="xmax"></li>
+                                <li>Y-max: <input class="form-control" type="text" size="4" id="ymax"></li>
+                                <li><button type="button" class="btn btn-sm navbar-btn" onclick="setArea(event);">Set/Reset Plotting Area</button></li>
+                                <li><span></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="main-plot" onmouseout="mouseout(event);">
+                    <div id="plot"></div>
+                </div>
+                
+                <div class="col-sm-3 panel" id="option-panel">
+                    <p>
+                        <input type="checkbox" value="" onclick="snap_check(event);"> Snap to Grid:
+                        <select onchange="snap_check(event);">
+                            <option value="0" selected>1</option>
+                            <option value="1">0.1</option>
+                            <option value="2">0.01</option>
+                        </select> Unit
+                    </p>
+                    <ul class="no-bullet">
+                        <li>x: <span id="x-pos"></span></li>
+                        <li>y: <span id="y-pos"></span></li>
+                    </ul>
+                    <p>
+                        Zoom by holding SHIFT
+                    </p>
+                </div>
+            </div>
+        </div>
     </body>
-    <script>
-        var pool = ["01"];
-
-        var q = pool[Math.random() * pool.length >> 0]
-
-        function toLoad() {
-            window.location.href = q + ".html?v=" + (Math.random() * 10000).toFixed(0);
-        }
-    </script>
+    <script type="text/javascript" src="script/model.js"></script>
+    <script type="text/javascript" src="script/controller.js"></script>
+    <script type="text/javascript" src="script/gui.js"></script>
+    <script type="text/javascript" src="script/event.js"></script>
 </html>
