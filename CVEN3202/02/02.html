@@ -36,6 +36,14 @@
                         <li>Drag the point to change the shape of the curve</li>
                         <li>By Ctrl + clicking the curve you can switch between the curves you want to edit (make sure only the curve you want to edit is highlighted)</li>
                         <li>Use W, S, A, D to move the whole current curve (since up and down key is occupied by scrolling)</li>
+                        <li>Please keep the flow lines and equipotential lines in order (their order number will show when you Ctrl + click them), and
+                            <ul>
+                                <li>Arrange the flow lines from left to right, from top to bottom</li>
+                                <li>Arrange the equipotential lines from high potential to low potential</li>
+                                <li>You must plot at least 2 flow lines and 3 equipotential lines</li>
+                            </ul>
+                        </li>
+                        <li>In order to improve the graphic performance, please use as less control points as possible for each flow and equipotential line</li>
                     </ul>
                 </div>
             </div>
@@ -49,11 +57,8 @@
                     <div class="col-sm-12 text-center">
                         <button type="button" class="btn btn-primary" onclick="toFeedStream(50, 480, 350, 480);">Feed Flow line</button>
                         <button type="button" class="btn btn-primary" onclick="toFeedPotential(50, 480, 350, 480);">Feed Equipotential line</button>
-                        <button type="button" class="btn btn-primary" onclick="toCalculate();" id="btn-finish">Finish and Check</button>
+                        <button type="button" class="btn btn-primary" onclick="toDuplicate();">Copy Current Curve</button>
                     </div>
-                </div>
-                <div class="col-sm-12 text-center" style="margin-top: 10px;">
-                    <span id="feedback" style="margin-left: 1em; color: red; font-weight: bold;"></span>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 20px;">
@@ -61,6 +66,17 @@
                     <div style="text-align: center;">
                         <div id="main-plot" style="width: 400px; height: 600px; margin: 0 auto;"></div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="button" class="btn btn-danger btn-lg" onclick="toCalculate();" id="btn-finish">Finish and Check</button>
+                </div>
+                <div class="col-sm-9 text-center" style="margin-top: 10px;">
+                    <span id="feedback" style="margin-left: 1em; color: red; font-weight: bold;"></span>
+                </div>
+                <div class="col-sm-3" style="margin-top: 10px;">
+                    <ul id="record"></ul>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
@@ -72,9 +88,9 @@
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/controller.min.js?v=1"></script>
-    <script type="text/javascript" src="script/view02.min.js?v=1"></script>
-    <script type="text/javascript" src="script/events.min.js?v=1"></script>
+    <script type="text/javascript" src="script/controller.js?v=1"></script>
+    <script type="text/javascript" src="script/view02.js?v=1"></script>
+    <script type="text/javascript" src="script/events.js?v=1"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             
