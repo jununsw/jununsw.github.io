@@ -32,18 +32,19 @@
             <div class="row">
                 <div class="col-sm-12">
                     <h4>Instruction</h4>
-                    <ul>
+                    <ul style="font-size: 0.85em;">
                         <li>Drag the point to change the shape of the curve</li>
                         <li>By Ctrl + clicking the curve you can switch between the curves you want to edit (make sure only the curve you want to edit is highlighted)</li>
                         <li>Use W, S, A, D to move the whole current curve (since up and down key is occupied by scrolling)</li>
+                        <li>You must plot at least 2 flow lines and 3 equipotential lines</li>
                         <li>Please keep the flow lines and equipotential lines in order (their order number will show when you Ctrl + click them), and
                             <ul>
-                                <li>Arrange the flow lines from left to right, from top to bottom</li>
-                                <li>Arrange the equipotential lines from high potential to low potential</li>
-                                <li>You must plot at least 2 flow lines and 3 equipotential lines</li>
+                                <li>As water level is indicated by the dashed <span style="color: green; font-weight: bold;">GREEN</span> line, equipotential lines should be arranged so that its potential is from high to low</li>
+                                <li>Two flow lines are drawn in blue as two boundaries. Flow lines should be arranged so that the one in <span style="color: deepskyblue; font-weight: bold;">SKY BlUE</span> is the first and the one in <span style="color: navy; font-weight: bold;">NAVY BlUE</span> is the last</li>
                             </ul>
                         </li>
                         <li>In order to improve the graphic performance, please use as less control points as possible for each flow and equipotential line</li>
+                        <li>Please make sure every flow line and equipotential line must have one and only one, including with the boundaries. You can draw the lines slightly beyond the boundaries to guarantee there is a intersection</li>
                     </ul>
                 </div>
             </div>
@@ -64,7 +65,7 @@
             <div class="row" style="margin-bottom: 20px;">
                 <div class="col-sm-12">
                     <div style="text-align: center;">
-                        <div id="main-plot" style="width: 900px; height: 600px; margin: 0 auto;"></div>
+                        <div id="main-plot" style="width: 1000px; height: 600px; margin: 0 auto;"></div>
                     </div>
                 </div>
             </div>
