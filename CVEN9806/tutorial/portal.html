@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body onload="init()">
+        <div style="margin: 30px;">
+            <h3><strong>Online Module List</strong></h3>
+            <ul class="list-group">
+                <li class="list-group-item"><a id="m01" href="#">Module 01</a></li>
+                <li class="list-group-item"><a id="m02"href="#">Module 02</a></li>
+                <li class="list-group-item"><a id="m03" href="#">Module 03</a></li>
+                <li class="list-group-item"><a id="m04" href="#">Module 04</a></li>
+            </ul>
+            <h4>Note: use zid: "z3243398" for testing</h4>
+        </div>
+    </body>
+    <script>
+        function init() {
+            var random = (Math.random() * 10000).toFixed(0);
+            $("#m01").attr("href", "01/index.html?v=" + random);
+        }
+    </script>
+</html>
