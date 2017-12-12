@@ -1,0 +1,56 @@
+body {
+    background-color: #e0ffff;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+ol.lower {
+    list-style-type: lower-alpha;
+}
+
+ol.upper {
+    list-style-type: upper-alpha;
+}
+
+ol.monospace {
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+section {
+    display: none;
+    margin: 1em;
+}
+
+.block {
+    display: block;
+}
+
+.question {
+    font-weight: bold; 
+    margin-bottom: 2em;
+}
+
+img {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

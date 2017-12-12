@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Tutorial 01</title>
+        <link rel="shortcut icon" href="http://www.lindenbaum.net.au/unsw/util/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <script src="http://www.lindenbaum.net.au/unsw/util/angular.min.js"></script>
+        <script src="http://www.lindenbaum.net.au/unsw/util/util.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body>
+        <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
+            <strong>Module 01 Prestress and Eccentricity</strong>
+            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+        </div>
+        <div class="container" ng-app="app" ng-controller="Controller">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="h4 question">
+                        <p>
+                            Design a fully prestressed simply supported pretensioned concrete plank, {{prob.width}} mm wide, to span {{prob.span}} m. Use only {{prob.diameter}} mm diameter pretensioning wires. The service live load is {{prob.live}} kPa. Assume that the time dependent losses are of the order of {{prob.loss * 100}}%. The minimum cover to the tendons is {{prob.cover}} mm.
+                        </p>
+                        <img src="resource/fig01.png"/>
+                        <p>
+                            Take \(f'_c\) = {{prob.fc}} MPa; \(f'_{cp}\) = {{prob.fcp}} Mpa; \(f_p\) = {{prob.fp}} MPa; Minimal Breaking Load = {{prob.break}} kN.
+                        </p>
+                        <p>
+                            Make sure the deflections are within acceptable limits
+                        </p>
+                    </div>
+                    <div class="h4">
+                        <button class="btn btn-primary" ng-click="start($event);">Click Here to Start</button>
+                        <section>
+                            <h4 class="bold">Step 01</h4> 
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/event.js"></script>
+    <script type="text/javascript" src="script/model.js"></script>
+    <script type="text/javascript" src="script/app.js"></script>
+</html>
