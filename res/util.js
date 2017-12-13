@@ -33,3 +33,30 @@ function isEqual() {
         }
     }
 }
+
+function isPrecise(input, answer, exponential) {
+    // i.e. input = 1.234e10, answer = 1.233e10, exponential = 3
+
+    // obtain answer's exponential value
+    if (answer == 0) {
+        var tol = 2 * Math.pow(10, -exponential);
+        var diff = Math.abs(input);
+
+        if (diff <= tol) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        // obtain answer's exponential value
+        var e = Math.floor(Math.log(Math.abs(answer)) / Math.log(10));
+        var tol = 2 * Math.pow(10, -exponential) * Math.pow(10, e);
+        var diff = Math.abs(input - answer);
+
+        if (diff <= tol) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
