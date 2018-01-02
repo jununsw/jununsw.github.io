@@ -1,8 +1,71 @@
-/***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
-/***************************************************************************/
-var _$_b243=["\x66\x6F\x6E\x74\x53\x69\x7A\x65","\x69\x6E\x66\x6F\x62\x6F\x78","\x4F\x70\x74\x69\x6F\x6E\x73","\x6D\x61\x69\x6E\x2D\x70\x6C\x6F\x74","\x69\x6E\x69\x74\x42\x6F\x61\x72\x64","\x4A\x53\x58\x47\x72\x61\x70\x68","\x72\x61\x6E\x64\x6F\x6D","\x23\x30\x30\x62\x66\x66\x66","\x70\x75\x73\x68","\x23\x30\x30\x30\x30\x38\x30","\x72\x65\x64","\x73\x65\x67\x6D\x65\x6E\x74","\x67\x72\x65\x65\x6E","\x63\x72\x65\x61\x74\x65"];JXG[_$_b243[2]][_$_b243[1]][_$_b243[0]]= 0;var board=JXG[_$_b243[5]][_$_b243[4]](_$_b243[3],{boundingbox:[-50,550,450,-50],showNavigation:false,keepaspectratio:true,showCopyright:false,axis:false});var width=[40,50,60,70,80];var depth=[90,100,60,70,80];var width=Math[_$_b243[6]]()* 40+ 40;var depth=Math[_$_b243[6]]()* 40+ 60;var length=400- width- depth;var linelist=[];linelist[_$_b243[8]](createCustomCurve(board,function(_0x104B6){return 50},function(_0x104B6){return _0x104B6+ width+ depth},length,_$_b243[7]));linelist[_$_b243[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< depth){return 50}else {if(_0x104B6< 300+ depth){return 50+ _0x104B6- depth}else {return 350}}},function(_0x104B6){if(_0x104B6< depth){return depth- _0x104B6}else {if(_0x104B6< 300+ depth){return 0}else {return _0x104B6- 300- depth}}},700+ depth,_$_b243[9]));linelist[_$_b243[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< width){return 50+ _0x104B6}else {if(_0x104B6< 2* width){return 50+ width}else {return 50+ (_0x104B6- 2* width)}}},function(_0x104B6){if(_0x104B6< width){return depth+ width}else {if(_0x104B6< 2* width){return depth+ width- (_0x104B6- width)}else {return depth}}},3* width,_$_b243[10]));linelist[_$_b243[8]](createCustomCurve(board,function(_0x104B6){return _0x104B6+ 50},function(_0x104B6){return 400},300,_$_b243[10]));var net=createFlowNet(board,linelist,[]);board[_$_b243[13]](_$_b243[11],[[50,400],[-50,400]],{strokecolor:_$_b243[12],strokewidth:2,dash:2,highlight:false,fixed:true});board[_$_b243[13]](_$_b243[11],[[350,400],[450,400]],{strokecolor:_$_b243[12],strokewidth:2,dash:2,highlight:false,fixed:true})
+JXG.Options.infobox.fontSize = 0;
+
+var board = JXG.JSXGraph.initBoard('main-plot', {
+    boundingbox: [-50, 550, 450, -50],
+    showNavigation: false,
+    keepaspectratio: true,
+    showCopyright: false,
+    axis: false
+});
+
+var width = [40, 50, 60, 70, 80];
+var depth = [90, 100, 60, 70, 80];
+
+var width = Math.random() * 40 + 40;
+var depth = Math.random() * 40 + 60;
+
+var length = 400 - width - depth;
+
+var linelist = [];
+linelist.push(createCustomCurve(board, function(t) {
+    return 50;
+}, function(t) {
+    return t + width + depth;
+}, length, '#00bfff'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < depth) {
+        return 50;
+    } else if (t < 300 + depth) {
+        return 50 + t - depth;
+    } else {
+        return 350;
+    }
+}, function(t) {
+    if (t < depth) {
+        return depth - t;
+    } else if (t < 300 + depth) {
+        return 0;
+    } else {
+        return t - 300 - depth;
+    }
+}, 700 + depth, '#000080'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < width) {
+        return 50 + t;
+    } else if (t < 2 * width) {
+        return 50 + width;
+    } else {
+        return 50 + (t - 2*width);
+    }
+}, function(t) {
+    if (t < width) {
+        return depth + width;
+    } else if (t < 2 * width) {
+        return depth + width - (t - width);
+    } else {
+        return depth;
+    }
+}, 3 * width, 'red'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return t + 50;
+}, function(t) {
+    return 400;
+}, 300, 'red'));
+
+var net = createFlowNet(board, linelist, []);
+
+board.create('segment', [[50, 400], [-50, 400]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
+board.create('segment', [[350, 400], [450, 400]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});

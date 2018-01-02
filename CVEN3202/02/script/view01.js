@@ -1,8 +1,95 @@
-/***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
-/***************************************************************************/
-var _$_67e7=["\x66\x6F\x6E\x74\x53\x69\x7A\x65","\x69\x6E\x66\x6F\x62\x6F\x78","\x4F\x70\x74\x69\x6F\x6E\x73","\x6D\x61\x69\x6E\x2D\x70\x6C\x6F\x74","\x69\x6E\x69\x74\x42\x6F\x61\x72\x64","\x4A\x53\x58\x47\x72\x61\x70\x68","\x72\x61\x6E\x64\x6F\x6D","\x23\x30\x30\x62\x66\x66\x66","\x70\x75\x73\x68","\x23\x30\x30\x30\x30\x38\x30","\x72\x65\x64","\x70\x6F\x6C\x79\x67\x6F\x6E","\x67\x72\x65\x79","\x63\x72\x65\x61\x74\x65","\x73\x65\x74\x41\x74\x74\x72\x69\x62\x75\x74\x65","\x66\x6F\x72\x45\x61\x63\x68","\x76\x65\x72\x74\x69\x63\x65\x73","\x62\x6F\x72\x64\x65\x72\x73","\x73\x65\x67\x6D\x65\x6E\x74","\x67\x72\x65\x65\x6E"];JXG[_$_67e7[2]][_$_67e7[1]][_$_67e7[0]]= 0;var board=JXG[_$_67e7[5]][_$_67e7[4]](_$_67e7[3],{boundingbox:[-50,600,950,0],showNavigation:false,keepaspectratio:true,showCopyright:false,axis:false});var depth=[90,100,110,120,130];var width=[20,30,40,50,60];var depth=Math[_$_67e7[6]]()* 40+ 90;var width=Math[_$_67e7[6]]()* 40+ 20;var trenchStart=50+ (800- width)/ 2;var trenchEnd=50+ (800- width)/ 2+ width;var linelist=[];linelist[_$_67e7[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< 300){return 50}else {if(_0x104B6< 1100){return 50+ (_0x104B6- 300)}else {return 850}}},function(_0x104B6){if(_0x104B6< 300){return 400- _0x104B6}else {if(_0x104B6< 1100){return 100}else {return 100+ (_0x104B6- 1100)}}},300+ 800+ 300,_$_67e7[7]));linelist[_$_67e7[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< depth){return trenchStart}else {if(_0x104B6< depth+ width){return trenchStart+ (_0x104B6- depth)}else {return trenchEnd}}},function(_0x104B6){if(_0x104B6< depth){return 400- _0x104B6}else {if(_0x104B6< depth+ width){return 400- depth}else {return 400- depth+ (_0x104B6- depth- width)}}},2* depth+ width,_$_67e7[9]));linelist[_$_67e7[8]](createCustomCurve(board,function(_0x104B6){return _0x104B6+ 50},function(_0x104B6){return 400},trenchStart- 50,_$_67e7[10]));linelist[_$_67e7[8]](createCustomCurve(board,function(_0x104B6){return 850- _0x104B6},function(_0x104B6){return 400},trenchStart- 50,_$_67e7[10]));var net=createFlowNet(board,linelist);var shadow=board[_$_67e7[13]](_$_67e7[11],[[trenchStart,400+ 100],[trenchStart,400- depth],[trenchStart+ width,400- depth],[trenchStart+ width,400+ 100]],{fillColor:_$_67e7[12],highlight:false});shadow[_$_67e7[16]][_$_67e7[15]](function(_0x10429){_0x10429[_$_67e7[14]]({visible:false})});shadow[_$_67e7[17]][_$_67e7[15]](function(_0x10429){_0x10429[_$_67e7[14]]({visible:false})});board[_$_67e7[13]](_$_67e7[18],[[trenchStart,480],[50,480]],{strokecolor:_$_67e7[19],strokewidth:2,dash:2,highlight:false,fixed:true});board[_$_67e7[13]](_$_67e7[18],[[trenchEnd,420],[850,420]],{strokecolor:_$_67e7[19],strokewidth:2,dash:2,highlight:false,fixed:true})
+JXG.Options.infobox.fontSize = 0;
+
+var board = JXG.JSXGraph.initBoard('main-plot', {
+    boundingbox: [-50, 600, 950, 0],
+    showNavigation: false,
+    keepaspectratio: true,
+    showCopyright: false,
+    axis: false
+});
+
+var depth = [90, 100, 110, 120, 130];
+var width = [20, 30, 40, 50, 60];
+
+var depth = Math.random() * 40 + 90;
+var width = Math.random() * 40 + 20;
+
+var trenchStart = 50 + (800 - width) / 2;
+var trenchEnd = 50 + (800 - width) / 2 + width;
+
+var linelist = [];
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < depth) {
+        return trenchStart;
+    } else if (t < depth + width) {
+        return trenchStart + (t - depth);
+    } else {
+        return trenchEnd;
+    }
+}, function(t) {
+    if (t < depth) {
+        return 400 - t;
+    } else if (t < depth + width) {
+        return 400 - depth;
+    } else {
+        return 400 - depth + (t - depth - width);
+    }
+}, 2*depth + width, '#00bfff'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < 300) {
+        return 50;
+    } else if (t < 1100) {
+        return 50 + (t - 300);
+    } else {
+        return 850;
+    }
+}, function(t) {
+    if (t < 300) {
+        return 400 - t;
+    } else if (t < 1100) {
+        return 100;
+    } else {
+        return 100 + (t - 1100);
+    }
+}, 300 + 800 + 300, '#000080'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return t + 50;
+}, function(t) {
+    return 400;
+}, trenchStart - 50, 'red'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return 850 - t;
+}, function(t) {
+    return 400;
+}, trenchStart - 50, 'red'));
+
+var net = createFlowNet(board, linelist);
+
+var shadow = board.create('polygon', [
+    [trenchStart, 400 + 100],
+    [trenchStart, 400 - depth],
+    [trenchStart + width, 400 - depth],
+    [trenchStart + width, 400 + 100]
+], {
+    fillColor: 'grey',
+    highlight: false
+});
+
+shadow.vertices.forEach(function(ele) {
+    ele.setAttribute({
+        visible: false
+    });
+});
+
+shadow.borders.forEach(function(ele) {
+    ele.setAttribute({
+        visible: false
+    });
+});
+
+board.create('segment', [[trenchStart, 480], [50, 480]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
+board.create('segment', [[trenchEnd, 420], [850, 420]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});

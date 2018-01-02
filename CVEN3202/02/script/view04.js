@@ -1,8 +1,74 @@
-/***************************************************************************/
-/*                                                                         */
-/*  This obfuscated code was created by Javascript Obfuscator Free Version.*/
-/*  Javascript Obfuscator Free Version can be downloaded here              */
-/*  http://javascriptobfuscator.com                                        */
-/*                                                                         */
-/***************************************************************************/
-var _$_a2d5=["\x66\x6F\x6E\x74\x53\x69\x7A\x65","\x69\x6E\x66\x6F\x62\x6F\x78","\x4F\x70\x74\x69\x6F\x6E\x73","\x6D\x61\x69\x6E\x2D\x70\x6C\x6F\x74","\x69\x6E\x69\x74\x42\x6F\x61\x72\x64","\x4A\x53\x58\x47\x72\x61\x70\x68","\x72\x61\x6E\x64\x6F\x6D","\x23\x30\x30\x62\x66\x66\x66","\x70\x75\x73\x68","\x23\x30\x30\x30\x30\x38\x30","\x72\x65\x64","\x73\x65\x67\x6D\x65\x6E\x74","\x67\x72\x65\x65\x6E","\x63\x72\x65\x61\x74\x65"];JXG[_$_a2d5[2]][_$_a2d5[1]][_$_a2d5[0]]= 0;var board=JXG[_$_a2d5[5]][_$_a2d5[4]](_$_a2d5[3],{boundingbox:[-50,600,950,0],showNavigation:false,keepaspectratio:true,showCopyright:false,axis:false});var height=100;var depth=Math[_$_a2d5[6]]()* 30+ 20;var width=Math[_$_a2d5[6]]()* 40+ 200;var trenchStart=50+ (800- width)/ 2;var trenchEnd=trenchStart+ width;var k=Math[_$_a2d5[6]]()* 100+ 20;var linelist=[];linelist[_$_a2d5[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< 400){return 50}else {if(_0x104B6< 1200){return 50+ (_0x104B6- 400)}else {return 850}}},function(_0x104B6){if(_0x104B6< 400){return 500- _0x104B6}else {if(_0x104B6< 1200){return 100+ (_0x104B6- 400)* k/ 800}else {return 100+ k+ (_0x104B6- 1200)}}},400+ 800+ 400- height- k,_$_a2d5[7]));linelist[_$_a2d5[8]](createCustomCurve(board,function(_0x104B6){if(_0x104B6< height+ depth){return trenchStart}else {if(_0x104B6< height+ depth+ width){return trenchStart+ (_0x104B6- height- depth)}else {return trenchEnd}}},function(_0x104B6){if(_0x104B6< height+ depth){return 500- _0x104B6}else {if(_0x104B6< height+ depth+ width){return 500- height- depth}else {return 500- height- (_0x104B6- width- height- depth)}}},height+ depth+ width+ depth,_$_a2d5[9]));linelist[_$_a2d5[8]](createCustomCurve(board,function(_0x104B6){return _0x104B6+ 50},function(_0x104B6){return 500},trenchStart- 50,_$_a2d5[10]));linelist[_$_a2d5[8]](createCustomCurve(board,function(_0x104B6){return 850- _0x104B6},function(_0x104B6){return 500- height},trenchStart- 50,_$_a2d5[10]));var net=createFlowNet(board,linelist);board[_$_a2d5[13]](_$_a2d5[11],[[50,500],[-50,500]],{strokecolor:_$_a2d5[12],strokewidth:3,dash:2,highlight:false,fixed:true});board[_$_a2d5[13]](_$_a2d5[11],[[850,500- height],[950,500- height]],{strokecolor:_$_a2d5[12],strokewidth:3,dash:2,highlight:false,fixed:true})
+JXG.Options.infobox.fontSize = 0;
+
+var board = JXG.JSXGraph.initBoard('main-plot', {
+    boundingbox: [-50, 600, 950, 0],
+    showNavigation: false,
+    keepaspectratio: true,
+    showCopyright: false,
+    axis: false
+});
+
+var height = 100;
+
+var depth = Math.random() * 30 + 20;
+var width = Math.random() * 40 + 200;
+
+var trenchStart = 50 + (800 - width) / 2;
+var trenchEnd = trenchStart + width;
+
+var k = Math.random() * 100 + 20;
+
+var linelist = [];
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < height + depth) {
+        return trenchStart;
+    } else if (t < height + depth + width) {
+        return trenchStart + (t - height - depth);
+    } else {
+        return trenchEnd;
+    }
+}, function(t) {
+    if (t < height + depth) {
+        return 500 - t;
+    } else if (t < height + depth + width) {
+        return 500 - height - depth;
+    } else {
+        return 500 - height - (t - width - height - depth);
+    }
+}, height + depth + width + depth, '#00bfff'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    if (t < 400) {
+        return 50;
+    } else if (t < 1200) {
+        return 50 + (t - 400);
+    } else {
+        return 850;
+    }
+}, function(t) {
+    if (t < 400) {
+        return 500 - t;
+    } else if (t < 1200) {
+        return 100 + (t - 400) * k / 800;
+    } else {
+        return 100 + k + (t - 1200);
+    }
+}, 400 + 800 + 400 - height - k, '#000080'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return t + 50;
+}, function(t) {
+    return 500;
+}, trenchStart - 50, 'red'));
+
+linelist.push(createCustomCurve(board, function(t) {
+    return 850 - t;
+}, function(t) {
+    return 500 - height;
+}, trenchStart - 50, 'red'));
+
+var net = createFlowNet(board, linelist);
+
+board.create('segment', [[50, 500], [-50, 500]], {strokecolor: "green", strokewidth: 3, dash: 2, highlight: false, fixed: true});
+board.create('segment', [[850, 500 - height], [950, 500 - height]], {strokecolor: "green", strokewidth: 3, dash: 2, highlight: false, fixed: true});
