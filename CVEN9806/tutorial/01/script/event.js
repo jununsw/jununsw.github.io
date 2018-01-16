@@ -20,7 +20,7 @@ $(document).ready(function() {
             $("#elimit").text(model.elimit().toFixed(2));
             $("#emax").text(model.emax().toFixed(2));
             $("#pi").text(model.pi().toFixed(0));
-            $("#e").text(model.e()).toFixed(2);
+            $("#e").text(model.e().toFixed(2));
         },
         slide: function(event, ui) {
             handle.text(ui.value);
