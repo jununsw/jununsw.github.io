@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Tutorial 03</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>  
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body onload="init();">
+        <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
+            <strong>Module 03 Ultimate Moment Capacity</strong>
+            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+        </div>
+        
+        <div class="container" id="myapp">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="h4 question">
+                        
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="h4 question">
+                        
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="h4 question">
+                        <div id="svg-cross" style="width: 400px; height: 600px;"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="h4 question">
+                        <div id="svg-cross" style="width: 800px; height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="h4">
+                    <button class="btn btn-primary">Click Here to Start</button>
+                    <section>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/event.js?v=1"></script>
+    <script type="text/javascript" src="script/model.js?v=1"></script>
+    <script type="text/javascript" src="script/vm.js?v=1"></script>
+</html>

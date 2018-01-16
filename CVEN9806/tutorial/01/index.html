@@ -36,7 +36,7 @@
                         </p>
                         <img src="resource/fig01.png"/>
                         <p>
-                            Take \(f'_c\) = {{prob.fc}} MPa; \(f'_{cp}\) = {{prob.fcp}} Mpa; \(f_p\) = {{prob.fp}} MPa; Minimal Breaking Load = {{prob.break}} kN.
+                            Take \(f'_c\) = {{prob.fc}} MPa; \(f'_{cp}\) = {{prob.fcp}} MPa; \(f_p\) = {{prob.fp}} MPa; Minimal Breaking Load = {{prob.break}} kN.
                         </p>
                         <p>
                             Make sure the deflections are within acceptable limits
@@ -45,7 +45,27 @@
                     <div class="h4">
                         <button class="btn btn-primary" ng-click="start($event);">Click Here to Start</button>
                         <section>
-                            <h4 class="bold">Step 01</h4> 
+                            <h4 class="bold">Step 01 - Select D</h4>
+                            <p>
+                                Use the following slider to change the value of \( D \), and see how \( M_{t} \) and \( (z_{b})_{min} \) changes. \( D \) = <span id='d'></span> mm
+                            </p>
+                            <div id="slider" style="width: 50%; margin-top: 1.2em; margin-bottom: 1.2em;">
+                                <div id="custom-handle" class="ui-slider-handle"></div>
+                            </div>
+                            <ul>
+                                <li>\( M_{t}= \) <span id="mt"></span> \( kg/m \)</li>
+                                <li>\( (Z_{b})_{min}=\frac{M_{T}}{F_{t}-R\times F_{ci}}= \) <span id="zbmin"></span> \( mm^{4} \)</li>
+                            </ul>
+                            <p style="display: block;">
+                                Based on the above calculated values, you can choose an appropriate value for \( D \):
+                            </p>
+                            <p style="display: none;">
+                                \( D \) =
+                                <select id="select-D" onchange="toSelectD(event);">
+                                    <option disabled selected value> -- select a value -- </option>
+                                </select>
+                                mm
+                            </p>
                         </section>
                     </div>
                 </div>
