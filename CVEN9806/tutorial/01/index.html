@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
         <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
         <script src="https://jununsw.github.io/res/util.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
@@ -27,7 +27,7 @@
             <strong>Module 01 Prestress and Eccentricity</strong>
             <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
         </div>
-        <div class="container" ng-app="app" ng-controller="Controller">
+        <div class="container" id="myapp" style="margin-bottom: 30px;">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="h4 question">
@@ -43,7 +43,7 @@
                         </p>
                     </div>
                     <div class="h4">
-                        <button class="btn btn-primary" ng-click="start($event);">Click Here to Start</button>
+                        <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
                         <section>
                             <h4 class="bold">Step 01 - Select D</h4>
                             <p>
@@ -53,19 +53,46 @@
                                 <div id="custom-handle" class="ui-slider-handle"></div>
                             </div>
                             <ul>
-                                <li>\( M_{t}= \) <span id="mt"></span> \( kg/m \)</li>
-                                <li>\( (Z_{b})_{min}=\frac{M_{T}}{F_{t}-R\times F_{ci}}= \) <span id="zbmin"></span> \( mm^{4} \)</li>
+                                <li>\( M_{T}= \) <span class="cal" id="mt"></span> \( kg/m \)</li>
+                                <li>\( (Z_{b})_{min}=\frac{M_{T}}{F_{t}-R\times F_{ci}}= \) <span class="cal" id="zbmin"></span> \( mm^{3} \)</li>
+                                <li>\( D_{min} \) satisfies \( Z_{top}=Z_{btm}\geqslant (Z_{b})_{min} \), so \( D_{min}= \) <span class="cal" id="dmin"></span> \( mm \)</li>
                             </ul>
-                            <p style="display: block;">
-                                Based on the above calculated values, you can choose an appropriate value for \( D \):
-                            </p>
-                            <p style="display: none;">
-                                \( D \) =
-                                <select id="select-D" onchange="toSelectD(event);">
-                                    <option disabled selected value> -- select a value -- </option>
-                                </select>
-                                mm
-                            </p>
+                            <div>
+                                At both transfer (\( M_{0}=0 \), at end of the slab) and at full service (mid-span), the maxium stress in the concrete must be smaller than the stress limit
+                                \[ @transfer\; -\frac{P_{i}}{A}+\frac{P_{i}\times e}{Z_{top}}\leqslant F_{ti}\;\;\;(1) \]
+                                \[ @full\: service\; -\frac{R\times P_{i}}{A}-\frac{R\times P_{i}\times e}{Z_{btm}}+\frac{M_{T}}{Z_{btm}}\leqslant F_{t}\;\;\;(2) \]
+                            </div>
+                            <div>
+                                Use \( (Z_{b})_{min} \) to select an appropreate \( D \), calculate \( P_{i} \) and \( e \). Then if
+                                \[ e_{limit}\leqslant e \leqslant e_{max} \]
+                            </div>
+                            <div>
+                                where
+                                \[ e_{max}=\frac{D}{2}-cover-\frac{\Phi_{wire}}{2} \]
+                                \[ e_{limit}=\frac{1-\alpha}{\alpha_{top}-\alpha\times \alpha_{btm}} \]
+                            </div>
+                            <div>
+                                where
+                                \[ \alpha =\frac{A\times R \times F_{ti}}{-A \times F_{t}+\alpha_{btm}\times M_{T}} \]
+                                \[ \alpha_{top}=\frac{A}{Z_{top}},\;\;\; \alpha_{btm}=\frac{A}{Z_{btm}} \]
+                            </div>
+                            <div>
+                                By moving the slider above, following values are calculated:
+                            </div>
+                            <ul>
+                                <li>\( e_{limit}= \) <span class="cal" id="elimit"></span> \( mm \)</li>
+                                <li>\( e_{max}= \) <span class="cal" id="emax"></span> \( mm \)</li>
+                            </ul>
+                            <div>
+                                Solving Equation (1) and (2):
+                            </div>
+                            <ul>
+                                <li>\( P_{i}= \) <span class="cal" id="pi"></span> \( kN \)</li>
+                                <li>\( e= \) <span class="cal" id="e"></span> \( mm \)</li>
+                            </ul>
+                            <div>
+                                Then the spacing and number of the wires can be determined
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -74,5 +101,5 @@
     </body>
     <script type="text/javascript" src="script/event.js?v=1"></script>
     <script type="text/javascript" src="script/model.js?v=1"></script>
-    <script type="text/javascript" src="script/app.js?v=1"></script>
+    <script type="text/javascript" src="script/vm.js?v=1"></script>
 </html>

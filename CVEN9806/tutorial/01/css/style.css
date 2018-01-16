@@ -63,3 +63,8 @@ img {
     text-align: center;
     line-height: 1.6em;
 }
+
+.cal {
+    color: red;
+    font-weight: bold;
+}

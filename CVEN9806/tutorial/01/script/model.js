@@ -78,20 +78,6 @@ Problem.prototype.pi = function() {
     return Number((pi / 1000).toFixed(0));
 }
 
-Problem.prototype.n = function() {
-    return Math.ceil(this.pi() / (1 - this.loss) / this.break);
-}
-
-Problem.prototype.s = function() {
-    var s = this.width / this.n();
-    
-    return Number(s.toExponential(1));
-}
-
-/**
- * MAGNEL'S DIAGRAM
- */
-
 Problem.prototype.e = function() {
     var a = this.width * this.assumption.depth / 1e6;  // mm^2 -> m^2
     var r = 1 - this.loss;  // dimenisonless
@@ -105,6 +91,42 @@ Problem.prototype.e = function() {
     
     return Number((e * 1000).toFixed(2));
 }
+
+/**
+ * RANGE OF e
+ */
+
+Problem.prototype.emax = function() {
+    return this.assumption.depth/2 - this.cover - this.diameter/2;
+}
+
+Problem.prototype.elimit = function() {
+    var alpha1 = this.width * this.assumption.depth / this.z();
+    var r = 1 - this.loss;
+    
+    var alpha = (this.width * this.assumption.depth * r * this.fti()) / (-this.width*this.assumption.depth*this.ft() + alpha1*this.mt()*1e6);
+    var result = (1 + alpha1) / (alpha1 - alpha*alpha1);
+    
+    return Number(result.toFixed(2));
+}
+
+/**
+ * DESIGN PRESTRESS WIRE
+ */
+
+Problem.prototype.n = function() {
+    return Math.ceil(this.pi() / (1 - this.loss) / this.break);
+}
+
+Problem.prototype.s = function() {
+    var s = this.width / this.n();
+    
+    return Number(s.toExponential(1));
+}
+
+/**
+ * MAGNEL'S DIAGRAM
+ */
 
 Problem.prototype.alpha = function() {
     return this.width * this.assumption.depth / this.z();

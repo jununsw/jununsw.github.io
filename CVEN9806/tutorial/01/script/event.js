@@ -6,7 +6,7 @@ function changeColor(e) {
 $(document).ready(function() {
     var handle = $("#custom-handle");
     $("#slider").slider({
-        value: 100,
+        value: 150,
         min: 50,
         max: 150,
         step: 5,
@@ -16,6 +16,11 @@ $(document).ready(function() {
             model.assumeDepth(Number($(this).slider("value")));
             $("#mt").text(model.mt());
             $("#zbmin").text(model.zbmin().toExponential(3));
+            $("#dmin").text((Math.sqrt(model.zbmin() * 6 / model.width)).toFixed(2));
+            $("#elimit").text(model.elimit().toFixed(2));
+            $("#emax").text(model.emax().toFixed(2));
+            $("#pi").text(model.pi().toFixed(0));
+            $("#e").text(model.e()).toFixed(2);
         },
         slide: function(event, ui) {
             handle.text(ui.value);
@@ -23,14 +28,14 @@ $(document).ready(function() {
             model.assumeDepth(Number(ui.value));
             $("#mt").text(model.mt());
             $("#zbmin").text(model.zbmin().toExponential(3));
+            $("#dmin").text(model.z().toExponential(3));
+            $("#dmin").text((Math.sqrt(model.zbmin() * 6 / model.width)).toFixed(2));
+            $("#elimit").text(model.elimit().toFixed(2));
+            $("#emax").text(model.emax().toFixed(2));
+            $("#pi").text(model.pi().toFixed(0));
+            $("#e").text(model.e().toFixed(2));
         }
     });
-    
-    $selectD = $("#select-D");
-    var i;
-    for (i = 50; i <= 150; i += 10) {
-        $("<option>" + i.toString() + "</option>").appendTo($selectD);
-    }
 });
 
 function toSelectD(e) {
