@@ -13,6 +13,7 @@
             <h3><strong>Online Module List</strong></h3>
             <ul class="list-group">
                 <li class="list-group-item"><a id="m01" href="#">Module 01</a></li>
+                <li class="list-group-item"><a id="m02" href="#">Module 02</a></li>
                 <li class="list-group-item"><a id="m03" href="#">Module 03</a></li>
                 <li class="list-group-item"><a id="m04" href="#">Module 04</a></li>
             </ul>
@@ -22,6 +23,7 @@
         function init() {
             var random = (Math.random() * 10000).toFixed(0);
             $("#m01").attr("href", "01/index.html?v=" + random);
+            $("#m02").attr("href", "02/index.html?v=" + random);
             $("#m03").attr("href", "03/index.html?v=" + random);
             $("#m04").attr("href", "04/index.html?v=" + random);
         }
