@@ -60,13 +60,14 @@ function plot_profile() {
     }));
     
     window.plot.keypoint[1].on('drag', function() {
-        var y = window.plot.keypoint[1].Y();
+        var y = -window.plot.keypoint[1].Y();
         var round = y - y%10;
         
         round = round > 390 ? 390 : round;
+        round = round < 10 ? 10 : round;
         
-        window.plot.keypoint[1].moveTo([prob.span / 2, round]);
-        prob.e = -round;
+        window.plot.keypoint[1].moveTo([prob.span / 2, -round]);
+        prob.e = round;
         vm.$forceUpdate();
     });
     
