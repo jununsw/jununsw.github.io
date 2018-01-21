@@ -69,11 +69,48 @@ function plot_profile() {
         window.plot.keypoint[1].moveTo([prob.span / 2, -round]);
         prob.e = round;
         vm.$forceUpdate();
+        
+        var slope = vm.slope(window.plot.slider.Value());
+        $("#theta").html(-slope.toFixed(3));
+        
+        var alpha = vm.alpha(window.plot.slider.Value());
+        $("#alpha").html(alpha.toFixed(3));
     });
     
-    window.plot.tendon = window.plot.brd.create('curve', JXG.Math.Numerics.CardinalSpline(window.plot.keypoint, 0.5), {
+    window.plot.tendon = window.plot.brd.create('curve', [function(t) {
+        return t;
+    }, function(t) {
+        return (-4 * window.plot.keypoint[1].Y() / prob.span / prob.span) * Math.pow(t - prob.span/2, 2) + window.plot.keypoint[1].Y();
+    }, 0, prob.span], {
         strokeWidth: 3,
         strokeColor: 'blue',
         highlight: false
+    });
+}
+
+function createSlider() {
+    window.plot.slider = window.plot.brd.create('slider', [[0, -600], [prob.span, -600], [0, 0, prob.span]], {
+        snapWidth: 0.1,
+        name: 'x'
+    });
+        
+    window.plot.reference_line = window.plot.brd.create('line', [[function() {
+        return window.plot.slider.Value();
+    }, 400], [function() {
+        return window.plot.slider.Value();
+    }, -400]], {
+        straightLast: false, 
+        straightFirst: false,
+        dash: 2,
+        strokeWidth: 2,
+        color: 'red'
+    });
+    
+    window.plot.slider.on("drag", function() {
+        var slope = vm.slope(window.plot.slider.Value());
+        $("#theta").html(-slope.toFixed(3));
+        
+        var alpha = vm.alpha(window.plot.slider.Value());
+        $("#alpha").html(alpha.toFixed(3));
     });
 }

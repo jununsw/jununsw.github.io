@@ -35,17 +35,6 @@
                         A simply supported post-tensioned beam has a parablic cable with zero eccentricity and the ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. Duct is bright and zinc coated metal
                     </div>
                 </div>
-                <div class="col-sm-12 text-center">
-                    <div style="text-align: center;">
-                        <div id="svg-profile" style="width: 800px; height: 100px; margin: 0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        You can drag the red point at the middle of the span to change the eccentricity<br/>
-                        eccentricity is {{prob.e}} mm
-                    </div>
-                </div>
             </div>
             
             <div class="row" style="font-weight: bold; font-size: 1.2em;">
@@ -72,10 +61,28 @@
             </div>
             
             <div class="row">
-                <div class="h4">
-                    <button class="btn btn-primary">Click Here to Start</button>
+                <div class="col-sm-12 text-center">
+                    <div style="text-align: center;">
+                        <div id="svg-profile" style="width: 800px; height: 100px; margin: 0 auto;"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="h4 question">
+                        You can drag the red point at the middle of the span to change the eccentricity<br/>
+                        eccentricity is {{prob.e}} mm
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-12 h4 section">
+                    <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
                     <section>
-                        
+                        In the figure above, a slider is shown below the tendon profle. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
+                        <ul>
+                            <li>\( \theta= \) <span id="theta">{{-slope0.toFixed(3)}}</span></li>
+                            <li>\( \alpha_{tot}= \) <span id="alpha">0.000</span></li>
+                        </ul>
                     </section>
                 </div>
             </div>
