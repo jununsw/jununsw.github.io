@@ -35,7 +35,8 @@ function plot_profile() {
         ele.setAttribute({
             strokeColor: 'black',
             strokeWidth: 2,
-            highlight: false
+            highlight: false,
+            fixed: true
         });
     });
     
@@ -70,11 +71,15 @@ function plot_profile() {
         prob.e = round;
         vm.$forceUpdate();
         
-        var slope = vm.slope(window.plot.slider.Value());
-        $("#theta").html(-slope.toFixed(3));
-        
-        var alpha = vm.alpha(window.plot.slider.Value());
-        $("#alpha").html(alpha.toFixed(3));
+        try {
+            var slope = vm.slope(window.plot.slider.Value());
+            $("#theta").html(-slope.toFixed(3));
+
+            var alpha = vm.alpha(window.plot.slider.Value());
+            $("#alpha").html(alpha.toFixed(3));
+        } catch(e) {
+            
+        }
     });
     
     window.plot.tendon = window.plot.brd.create('curve', [function(t) {
