@@ -26,6 +26,12 @@ var vm = new Vue({
                 
                 $("<p>Use 4.75 mm sieve to determine the percentage of the gravel:<br/>Gravel: " + this.prob.Fg.toFixed(2) + "% </p>").appendTo($(e.target).closest('div'));
                 
+                if (this.prob.F < 12) {
+                    prob.plot.arrow10.setAttribute({visible: true});
+                    prob.plot.arrow30.setAttribute({visible: true});
+                    prob.plot.arrow60.setAttribute({visible: true});
+                }
+                
                 
             }
 
