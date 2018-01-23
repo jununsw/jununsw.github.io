@@ -1,0 +1,56 @@
+body {
+    background-color: white;
+    font-size: 18px;
+}
+
+.figure {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ol {
+    list-style-type: lower-alpha;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+#svg-container {
+    max-width: 500px;
+    max-height: 600px;
+}
+
+.inlet {
+    display: none;
+}
+
+.btn-postproc {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.rotation {
+    display: none;
+}
+
+.main-body {
+    display: none;
+}
