@@ -383,7 +383,7 @@ function calculate() {
     
     prob.plot.line75 = prob.distribution.create('line', [[Math.log10(0.075), 0], [Math.log10(0.075), 100]], {
         strokeColor: 'green',
-        strokeWidth: 3,
+        strokeWidth: 0,
         highlight: false,
         straightFirst: false, 
         straightLast: false,
@@ -418,30 +418,60 @@ function calculate() {
         size: 4
     });
     
-    try {
+    if (prob.controls[4].X() <= Math.log10(0.075)) {
+        prob.F = 100;
+        vm.F = vm.prob.F;
+    } else if (prob.controls[0].X() >= Math.log10(0.075)) {
+        prob.F = 0;
+        vm.F = vm.prob.F;
+    } else {
         prob.plot.p75 = prob.distribution.create('intersection', [prob.plot.line75, prob.curve, 0], {
             name: '',
             strokeColor: 'transparent',
             fillColor: 'blue',
-            size: 4
+            size: 4,
+            visible: false
         });
         
-        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.plot.p75.Y()], prob.plot.p75], {strokeColor: 'blue', straightFirst: false, straightLast: false, fixed: true, dash: 2});
+        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.plot.p75.Y()], prob.plot.p75], {strokeColor: 'blue', straightFirst: false, straightLast: false, fixed: true, dash: 2, visible: false});
         
-        prob.F = prob.plot.p75.Y().toFixed(3);
-    } catch (e) {
-        if (prob.plot.p60.X() <= Math.log10(0.075)) {
-            prob.F = 100;
-        } else {
-            prob.F = 0;
-        }
+        prob.F = Number(prob.plot.p75.Y().toFixed(3));
+        vm.F = vm.prob.F;
     }
     
     if (prob.F <= 50) {
         try {
-            prob.plot.p10.setAttribute({visible: true});
-            prob.plot.p30.setAttribute({visible: true});
-            prob.plot.p60.setAttribute({visible: true});
+            if (prob.F <= 12) {
+                prob.plot.arrow10 = prob.distribution.create("arrow", [prob.plot.p10, [prob.plot.p10.X(), 0]], {
+                    strokeColor: 'red',
+                    strokeWidth: 3,
+                    straightFirst: false, 
+                    straightLast: false,
+                    fixed: true,
+                    highlight: false,
+                    visible: false
+                });
+                
+                prob.plot.arrow30 = prob.distribution.create("arrow", [prob.plot.p30, [prob.plot.p30.X(), 0]], {
+                    strokeColor: 'red',
+                    strokeWidth: 3,
+                    straightFirst: false, 
+                    straightLast: false,
+                    fixed: true,
+                    highlight: false,
+                    visible: false
+                });
+                
+                prob.plot.arrow60 = prob.distribution.create("arrow", [prob.plot.p60, [prob.plot.p60.X(), 0]], {
+                    strokeColor: 'red',
+                    strokeWidth: 3,
+                    straightFirst: false, 
+                    straightLast: false,
+                    fixed: true,
+                    highlight: false,
+                    visible: false
+                });
+            }
 
             prob.d10 = Math.pow(10, prob.plot.p10.X());
             prob.d30 = Math.pow(10, prob.plot.p30.X());
@@ -452,13 +482,156 @@ function calculate() {
             prob.d60 = 0;
         }
         
-        $("#fine-plot").css("display", "none");
+        calculate_coarse();
+    } else {
+        prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+            name: '',
+            strokeColor: 'red',
+            strokeWidth: 2,
+            fillColor: 'yellow',
+            size: 4,
+            highlight: false,
+            fixed: true
+        });
+        
+        calculate_fine();
+    }
+    
+    $("#final").html(prob.final());
+}
+
+function calculate_coarse() {
+    prob.plot.line = {};
+    prob.plot.line = prob.distribution.create('line', [[Math.log10(4.75), 0], [Math.log10(4.75), 100]], {
+        strokeColor: 'green',
+        strokeWidth: 0,
+        highlight: false,
+        straightFirst: false, 
+        straightLast: false,
+        fixed: true
+    });
+    
+    if (prob.controls[4].X() <= Math.log10(4.75)) {
+        prob.Fg = 0;
+    } else if (prob.controls[0].X() >= Math.log10(4.75)) {
+        prob.Fg = 100;
+    } else {
+        prob.plot.point = prob.distribution.create('intersection', [prob.plot.line, prob.curve, 0], {visible: false});
+        
+        prob.Fg = Number((100 - prob.plot.point.Y()).toFixed(3));
+    }
+    
+    prob.result[0] = (prob.Fg > (100 - prob.F)/2) ? 'G' : 'S';
+    
+    if (prob.F >= 5) {
+        if (prob.F > 12) {  // 3.2.2
+            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+                name: '',
+                strokeColor: 'red',
+                strokeWidth: 2,
+                fillColor: 'yellow',
+                size: 4,
+                highlight: false,
+                fixed: true
+            });
+            
+            prob.result[1] = check_mc(prob.plot.soil_point);
+        } else {  // 3.2.3
+            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+                name: '',
+                strokeColor: 'red',
+                strokeWidth: 2,
+                fillColor: 'yellow',
+                size: 4,
+                highlight: false,
+                fixed: true
+            });
+            
+            prob.cu = Number((prob.d60 / prob.d10).toFixed(2));
+            prob.cc = Number((prob.d30 * prob.d30 / prob.d60 / prob.d10).toFixed(2));
+            
+            if (prob.result[0] == "G") {
+                if ((prob.cu > 4) && (prob.cc > 1) && (prob.cc < 3)) {
+                    prob.result[1] = "W";
+                } else {
+                    prob.result[1] = "P";
+                }
+            } else {
+                if ((prob.cu > 6) && (prob.cc > 1) && (prob.cc < 3)) {
+                    prob.result[1] = "W";
+                } else {
+                    prob.result[1] = "P";
+                }
+            }
+            
+            var r = check_mc(prob.plot.soil_point);
+            prob.result[2] = prob.result[0] + r;
+        }
+    } else {  // 3.2.1
+        prob.cu = Number((prob.d60 / prob.d10).toFixed(2));
+        prob.cc = Number((prob.d30 * prob.d30 / prob.d60 / prob.d10).toFixed(2));
+        
+        if (prob.result[0] == "G") {
+            if ((prob.cu > 4) && (prob.cc > 1) && (prob.cc < 3)) {
+                prob.result[1] = "W";
+            } else {
+                prob.result[1] = "P";
+            }
+        } else {
+            if ((prob.cu > 6) && (prob.cc > 1) && (prob.cc < 3)) {
+                prob.result[1] = "W";
+            } else {
+                prob.result[1] = "P";
+            }
+        }
+    }
+}
+
+function calculate_fine() {
+    var r = check_fine(prob.plot.soil_point);
+    prob.result[0] = r;
+}
+
+function check_fine(point) {  // => str
+    var x = point.X();
+    var y = point.Y();
+    
+    if ((y >= 4) && (y <= 7)) {
+        if (y >= (0.73 * (x - 20))) {
+            return "CL-ML";
+        }
+    } else if (y < 4) {
+        if (y >= (0.73 * (x - 20))) {
+            return "ML";
+        }
+    }
+    
+    if (x >= 50) {
+        if (y >= (0.73 * (x - 20))) {
+            return "CH";
+        } else {
+            return "MH";
+        }
+    } else {
+        if (y >= (0.73 * (x - 20))) {
+            return "CL";
+        } else {
+            return "ML";
+        }
+    }
+}
+
+function check_mc(point) {
+    var x = point.X();
+    var y = point.Y();
+    
+    if (y >= (0.73 * (x - 20))) {
+        return "C";
+    } else {
+        return "M";
     }
 }
 
 function clear_previous() {
-    for (var key in prob.plot) {
-        prob.distribution.removeObject(prob.plot[key]);
-        delete prob.plot[key];
-    }
+    location.reload();
 }

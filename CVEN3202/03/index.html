@@ -40,11 +40,10 @@
                         <li>By holding CTRL key, five control points will be shown in the chart. Move these points horizontally to change the shape of the curve</li>
                         <li>You should move the red points first and then the purple points</li>
                         <li>Press the 'Confirm' button to start the classification of the soil.</li>
-                        <li>At any stage of the tutorial, you can press 'Re-start' to edit the soil again, but the progress of the tutorial will be lost</li>
                     </ul>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-bottom: 20px;">
                 <div class="col-sm-12">
                     <div style="text-align: center;">
                         <div id="distribution-plot" style="width: 812px; height: 580px; margin: 0 auto;"></div>
@@ -55,16 +54,33 @@
                         <button type="button" class="btn btn-primary" onclick="toggle_confirm(event);">Confirm</button>
                     </div>
                 </div>
+                <div>
+                    <p>
+                        Assume PL = {{prob.pl}}, &nbsp;&nbsp;&nbsp;&nbsp; LL = {{prob.ll}}
+                    </p>
+                </div>
             </div>
             
             <div class="row main-body">
                 <div class="col-sm-12">
+                    <p>
+                        <strong>Step 1:</strong> Determine the percentage of fines (0.075 mm sieve) (F)
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-primary btn-xs" v-on:click="start($event);">draw point for F</button>
+                    </p>
                 </div>
             </div>
             
             <div class="row">
-                <div class="col-sm-12 main-body">
+                <div id="plot" class="col-sm-12" style="display: none;">
                     <div id="fine-plot" style="width: 600px; height: 400px; margin: 0 auto;"></div>
+                </div>
+            </div>
+            
+            <div class="row final" style="display: none;">
+                <div class="col-sm-12">
+                    Therefore group name is <span id='final' style='font-weight: bold;'></span>.
                 </div>
             </div>
         </div>
@@ -72,4 +88,5 @@
     <script type="text/javascript" src="script/event.js?v=1"></script>
     <script type="text/javascript" src="script/model.js?v=1"></script>
     <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/calculate.js?v=1"></script>
 </html>
