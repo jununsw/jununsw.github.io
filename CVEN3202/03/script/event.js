@@ -421,9 +421,29 @@ function calculate() {
     if (prob.controls[4].X() <= Math.log10(0.075)) {
         prob.F = 100;
         vm.F = vm.prob.F;
+        
+        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
+            strokeColor: 'blue',
+            strokeWidth: 4,
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true, 
+            dash: 3, 
+            visible: false
+        });
     } else if (prob.controls[0].X() >= Math.log10(0.075)) {
         prob.F = 0;
         vm.F = vm.prob.F;
+        
+        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.controls[0].Y()], prob.controls[0]], {
+            strokeColor: 'blue',
+            strokeWidth: 4,
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true, 
+            dash: 3, 
+            visible: false
+        });
     } else {
         prob.plot.p75 = prob.distribution.create('intersection', [prob.plot.line75, prob.curve, 0], {
             name: '',
@@ -433,7 +453,15 @@ function calculate() {
             visible: false
         });
         
-        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.plot.p75.Y()], prob.plot.p75], {strokeColor: 'blue', straightFirst: false, straightLast: false, fixed: true, dash: 2, visible: false});
+        prob.plot.d75 = prob.distribution.create('line', [[-4, prob.plot.p75.Y()], prob.plot.p75], {
+            strokeColor: 'blue',
+            strokeWidth: 4,
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true, 
+            dash: 3, 
+            visible: false
+        });
         
         prob.F = Number(prob.plot.p75.Y().toFixed(3));
         vm.F = vm.prob.F;
@@ -501,7 +529,6 @@ function calculate() {
 }
 
 function calculate_coarse() {
-    prob.plot.line = {};
     prob.plot.line = prob.distribution.create('line', [[Math.log10(4.75), 0], [Math.log10(4.75), 100]], {
         strokeColor: 'green',
         strokeWidth: 0,
@@ -513,12 +540,41 @@ function calculate_coarse() {
     
     if (prob.controls[4].X() <= Math.log10(4.75)) {
         prob.Fg = 0;
+        
+        prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
+            strokeColor: 'green', 
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true,
+            strokeWidth: 4,
+            dash: 3, 
+            visible: false
+        });
     } else if (prob.controls[0].X() >= Math.log10(4.75)) {
         prob.Fg = 100;
-    } else {
-        prob.plot.point = prob.distribution.create('intersection', [prob.plot.line, prob.curve, 0], {visible: false});
         
-        prob.Fg = Number((100 - prob.plot.point.Y()).toFixed(3));
+        prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[0].Y()], prob.controls[4]], {
+            strokeColor: 'green', 
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true,
+            strokeWidth: 4,
+            dash: 3, 
+            visible: false
+        });
+    } else {
+        prob.plot.point_gravel = prob.distribution.create('intersection', [prob.plot.line, prob.curve, 0], {visible: false});
+        prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.plot.point_gravel.Y()], prob.plot.point_gravel], {
+            strokeColor: 'green', 
+            straightFirst: false, 
+            straightLast: false, 
+            fixed: true,
+            strokeWidth: 4,
+            dash: 3, 
+            visible: false
+        });
+        
+        prob.Fg = Number((100 - prob.plot.point_gravel.Y()).toFixed(3));
     }
     
     prob.result[0] = (prob.Fg > (100 - prob.F)/2) ? 'G' : 'S';

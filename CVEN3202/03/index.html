@@ -67,7 +67,12 @@
                         <strong>Step 1:</strong> Determine the percentage of fines (0.075 mm sieve) (F)
                     </p>
                     <p>
-                        <button type="button" class="btn btn-primary btn-xs" v-on:click="start($event);">draw point for F</button>
+                        <button type="button" class="btn btn-primary" v-on:click="start($event);">Plot line for F</button>
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p>
+                        <button id="btn-second" type="button" class="btn btn-primary" v-on:click="second($event);" style="display: none;">Determine suffix</button>
                     </p>
                 </div>
             </div>
