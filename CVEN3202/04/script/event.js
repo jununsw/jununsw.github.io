@@ -68,25 +68,27 @@ function plot_soil() {
         }
     }
     
-    prob.load_dash1 = prob.plot.brd.create('line', [[4, 0], [1, -3]], {
+    prob.load_dash1 = prob.plot.brd.create('line', [[4, 0], [1, -6]], {
         strokeColor: 'black',
         strokeWidth: 1,
         dash: 2,
         straightFirst: false,
+        straightLast: false,
         highlight: false,
         fixed: true
     });
     
-    prob.load_dash2 = prob.plot.brd.create('line', [[7, 0], [10, -3]], {
+    prob.load_dash2 = prob.plot.brd.create('line', [[7, 0], [10, -6]], {
         strokeColor: 'black',
         strokeWidth: 1,
         dash: 2,
         straightFirst: false,
+        straightLast: false,
         highlight: false,
         fixed: true
     });
     
-    prob.load_dash3 = prob.plot.brd.create('segment', [[8, 1], [11, -0.5]], {
+    prob.load_dash3 = prob.plot.brd.create('segment', [[8, 1], [10, -1]], {
         strokeColor: 'black',
         strokeWidth: 1,
         dash: 2,
@@ -116,8 +118,9 @@ function plot_soil() {
         size: 10,
         face: '>',
         name: '',
-        strokeColor: 'blue',
-        fillColor: 'blue'
+        strokeColor: 'black',
+        fillColor: 'black',
+        visible: false
     });
     
     prob.plot.level_handler.on('drag', function() {
@@ -262,7 +265,7 @@ function plot_soil() {
         fixed: true
     });
     
-    prob.plot.brd.create('text', [11, -prob.d1 / 2, 'Gravel'], {
+    prob.plot.brd.create('text', [11, -prob.d1 / 2, 'Layer1. Gravel'], {
         anchorX: 'right', 
         anchorY: 'middle',
         color: 'black',
@@ -274,7 +277,7 @@ function plot_soil() {
     
     prob.plot.brd.create('text', [11, function() {
         return (prob.plot.level_handler.Y() + 2) / 2 - 2;
-    }, 'Clay'], {
+    }, 'Layer2. Clay'], {
         anchorX: 'right', 
         anchorY: 'middle',
         color: 'black',
@@ -286,7 +289,7 @@ function plot_soil() {
     
     prob.plot.brd.create('text', [11, function() {
         return (prob.plot.level_handler.Y() + 2) - 3;
-    }, 'Sand'], {
+    }, 'Layer3. Sand'], {
         anchorX: 'right', 
         anchorY: 'middle',
         color: 'black',
@@ -320,5 +323,44 @@ function plot_soil() {
         highlight: false,
         fixed: true,
         visible: false
+    });
+    
+    prob.plot.triangle = prob.plot.brd.create('polygon', [[8.5, -3], [9, -3], [9, -4]], {
+        fillColor: 'transparent',
+        highlight: false,
+        fixed: true
+    });
+    
+    prob.plot.triangle.vertices.forEach(function(ele) {
+        ele.setAttribute({
+            visible: false
+        });
+    });
+
+    prob.plot.triangle.borders.forEach(function(ele) {
+        ele.setAttribute({
+            strokeColor: 'black',
+            strokeWidth: 1,
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    prob.plot.brd.create('text', [8.75, -3, '1'], {
+        anchorX: 'middle', 
+        anchorY: 'bottom',
+        color: 'black',
+        fontSize: 12,
+        highlight: false,
+        fixed: true
+    });
+    
+    prob.plot.brd.create('text', [9.05, -3.5, '2'], {
+        anchorX: 'left', 
+        anchorY: 'middle',
+        color: 'black',
+        fontSize: 12,
+        highlight: false,
+        fixed: true
     });
 }

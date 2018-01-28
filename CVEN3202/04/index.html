@@ -33,13 +33,23 @@
         <div class="container" id="myapp" style="margin-bottom: 20px; margin-top: 20px;">
             <div class="row">
                 <div class="col-sm-4">
-                    <p><strong>Calculate the settlement of the soil with the following properties</strong></p>
-                    <ul style="font-size: 0.85em;">
-                        <li>\( G_{s}= \) {{prob.gs}} kg/m<sup>3</sup></li>
-                        <li>{{sigma_0}}</li>
-                        <li>{{sigma_delta}}</li>
-                        <li>{{sigma_f}}</li>
+                    <p>The three-layered soil shown on the right has the following properties</p>
+                    <ul style="font-size: 1em;">
+                        <li>\( G_{s}= \) &nbsp; {{prob.gs}} kg/m<sup>3</sup></li>
+                        <br/>
+                        <li>\( {\sigma _{pc}}'= \) &nbsp; {{prob.pc}} kPa</li>
+                        <li>\( C _{c}= \) &nbsp; {{prob.cc}}</li>
+                        <li>\( C _{r}= \) &nbsp; {{prob.cr}}</li>
+                        <br/>
+                        <li>\( \gamma _{t1}= \) &nbsp; {{prob.gamma1}} kg/m<sup>3</sup></li>
+                        <li>\( \gamma _{t2}= \) &nbsp; {{prob.gamma2}} kg/m<sup>3</sup></li>
+                        <li>\( \omega _{clay}= \) &nbsp; 57.0 %</li>
                     </ul>
+                    <br/>
+                    <p>The water level is located at the interface between the grave and clay</p>
+                    <p style="style=text-align: justify;">
+                        Assume there is a {{prob.q}} kN/m<sup>2</sup> surcharge load is applied on a {{prob.b}} m &times; {{prob.l}} m area. Please calculate the settlement of the soil based on a one-point settlement calculation using conditions at the middle of the layer.<br/>(\( g= \) 9.8 m/s<sup>2</sup>) 
+                    </p>
                 </div>
                 <div class="col-sm-8" style="text-align: center;">
                     <div id="soil-plot" style="width: 600px; height: 700px; margin: 0 auto;"></div>
