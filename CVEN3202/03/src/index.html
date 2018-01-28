@@ -30,7 +30,7 @@
             Module Creator: Dr Xiaojun Chen<br/>
             All Rights Reserved by UNSW<br/>
         </div>
-        <div class="container" id="myapp" style="margin-bottom: 20px;">
+        <div class="container" id="myapp">
             <div class="row">
                 <div class="col-sm-12">
                     <h4>Instruction</h4>
@@ -39,14 +39,15 @@
                         <li>You can freely edit the shape of the soil</li>
                         <li>By holding CTRL key, five control points will be shown in the chart. Move these points horizontally to change the shape of the curve</li>
                         <li>You should move the red points first and then the purple points</li>
-                        <li>Press the 'Confirm' button to start the classification of the soil.</li>
+                        <li>Please note, in order to keep the curve realistic, range of the control points are limited subject to the shape of the curve</li>
+                        <li>After finish editing the curve, press the 'Confirm' button below. You can re-edit the curve by pressing the 'Restart' button</li>
                     </ul>
                 </div>
             </div>
-            <div class="row" style="margin-bottom: 20px;">
+            <div class="row">
                 <div class="col-sm-12">
                     <div style="text-align: center;">
-                        <div id="distribution-plot" style="width: 812px; height: 580px; margin: 0 auto;"></div>
+                        <div id="distribution-plot" style="width: 800px; height: 500px; margin: 0 auto;"></div>
                     </div>
                 </div>
                 <div class="col-sm-12">
@@ -54,39 +55,10 @@
                         <button type="button" class="btn btn-primary" onclick="toggle_confirm(event);">Confirm</button>
                     </div>
                 </div>
-                <div>
-                    <p>
-                        Assume PL = {{prob.pl}}, &nbsp;&nbsp;&nbsp;&nbsp; LL = {{prob.ll}}
-                    </p>
-                </div>
-            </div>
-            
-            <div class="row main-body">
-                <div class="col-sm-12">
-                    <p>
-                        <strong>Step 1:</strong> Determine the percentage of fines (0.075 mm sieve) (F)
-                    </p>
-                    <p>
-                        <button type="button" class="btn btn-primary btn-xs" v-on:click="start($event);">draw point for F</button>
-                    </p>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div id="plot" class="col-sm-12" style="display: none;">
-                    <div id="fine-plot" style="width: 600px; height: 400px; margin: 0 auto;"></div>
-                </div>
-            </div>
-            
-            <div class="row final" style="display: none;">
-                <div class="col-sm-12">
-                    Therefore group name is <span id='final' style='font-weight: bold;'></span>.
-                </div>
             </div>
         </div>
     </body>
     <script type="text/javascript" src="script/event.js?v=1"></script>
     <script type="text/javascript" src="script/model.js?v=1"></script>
     <script type="text/javascript" src="script/vm.js?v=1"></script>
-    <script type="text/javascript" src="script/calculate.js?v=1"></script>
 </html>
