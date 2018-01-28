@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>1D Consolidation</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=9"/>
+    </head>
+    <body onload="init();">
+        <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>1D Consolidation</strong></div>
+        <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+            E-learning Module for CVEN 3202 Soil Mechanics<br/>
+            Course Coordinator: Dr Arman Khoshghalb<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        <div class="container" id="myapp" style="margin-bottom: 20px; margin-top: 20px;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <p><strong>Calculate the settlement of the soil with the following properties</strong></p>
+                    <ul style="font-size: 0.85em;">
+                        <li>\( G_{s}= \) {{prob.gs}} kg/m<sup>3</sup></li>
+                        <li>{{sigma_0}}</li>
+                        <li>{{sigma_delta}}</li>
+                        <li>{{sigma_f}}</li>
+                    </ul>
+                </div>
+                <div class="col-sm-8" style="text-align: center;">
+                    <div id="soil-plot" style="width: 600px; height: 700px; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/event.js?v=1"></script>
+    <script type="text/javascript" src="script/model.js?v=1"></script>
+    <script type="text/javascript" src="script/vm.js?v=1"></script>
+</html>
