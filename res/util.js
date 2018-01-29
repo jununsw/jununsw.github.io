@@ -60,3 +60,15 @@ function isPrecise(input, answer, exponential) {
         }
     }
 }
+
+Array.prototype.random = function() {
+    if (arguments.length >= 1) {
+        var n = arguments[0];
+        var diff = this[1] - this[0];
+        var r = this[0] + Math.random()*diff;
+
+        return Number(r.toFixed(n));
+    } else {
+        return this[Math.random() * this.length >> 1];
+    }
+}
