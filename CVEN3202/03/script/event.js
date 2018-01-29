@@ -53,6 +53,9 @@ function plot_chart() {
         });
     });
     
+    prob.distribution.create('text', [-1, -12, 'Particle Size (mm)'], {anchorX: 'middle', anchorY: 'bottom', fontSize: 18, fontWeight: 'bold', highlight: false, fixed: true});
+    prob.distribution.create('text', [-4.5, 50, 'Finer %'], {anchorX: 'middle', anchorY: 'middle', fontSize: 20, highlight: false, display: 'internal', rotate: '90', fixed: true});
+    
     var y = 10;
     while (y < 100) {
         prob.distribution.create('line', [[-4, y], [2, y]], {strokeColor: 'black', strokeWidth: 1, straightFirst: false, straightLast: false, highlight: false, dash: 1, fixed: true});
@@ -463,6 +466,16 @@ function calculate() {
             visible: false
         });
         
+        prob.plot.arrow75 = prob.distribution.create("arrow", [prob.plot.p75, [prob.plot.p75.X(), 0]], {
+            strokeColor: 'blue',
+            strokeWidth: 3,
+            straightFirst: false, 
+            straightLast: false,
+            fixed: true,
+            highlight: false,
+            visible: false
+        });
+        
         prob.F = Number(prob.plot.p75.Y().toFixed(3));
         vm.F = vm.prob.F;
     }
@@ -539,7 +552,7 @@ function calculate_coarse() {
     });
     
     if (prob.controls[4].X() <= Math.log10(4.75)) {
-        prob.Fg = 0;
+        prob.Fg = 100;
         
         prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
             strokeColor: 'green', 
@@ -551,9 +564,9 @@ function calculate_coarse() {
             visible: false
         });
     } else if (prob.controls[0].X() >= Math.log10(4.75)) {
-        prob.Fg = 100;
+        prob.Fg = 0;
         
-        prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[0].Y()], prob.controls[4]], {
+        prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
             strokeColor: 'green', 
             straightFirst: false, 
             straightLast: false, 
@@ -571,6 +584,16 @@ function calculate_coarse() {
             fixed: true,
             strokeWidth: 4,
             dash: 3, 
+            visible: false
+        });
+        
+        prob.plot.arrow_gravel = prob.distribution.create("arrow", [prob.plot.point_gravel, [prob.plot.point_gravel.X(), 0]], {
+            strokeColor: 'green',
+            strokeWidth: 3,
+            straightFirst: false, 
+            straightLast: false,
+            fixed: true,
+            highlight: false,
             visible: false
         });
         

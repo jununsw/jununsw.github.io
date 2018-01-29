@@ -10,38 +10,48 @@ var vm = new Vue({
         start: function(e) {
             try {
                 this.prob.plot.d75.setAttribute({visible: true});
+                this.prob.plot.arrow75.setAttribute({visible: true});
             } catch(e) {
 
             }
 
-            $("<p>From the chart above (blue dashed line), we have F = " + prob.F.toFixed(2) + "% </p>").appendTo($(e.target).closest('div'));
+            $("<p>From the chart above (blue dashed line), we have F = " + prob.F.toFixed(1) + "% </p>").appendTo($(e.target).closest('div'));
 
             if (this.prob.F >= 50) {
                 $("<p>Since F &ge; 50%, it is a fine-grained soil,<br/>classification is purely based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = PL - LL = " + (this.prob.pl - this.prob.ll) + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>Therefore the classification of the soil is " + this.prob.final() + "</p>").appendTo($(e.target).closest('div'));
                 $("#plot").show();
             } else {
-                try {
-                    prob.plot.line_gravel.setAttribute({visible: true});
-                } catch(e) {
-                    
-                }
-                
                 $("<p>Since F &lt; 50%, it is a coarse-grained soil,</p>").appendTo($(e.target).closest('div'));
                 $("<p>Use 4.75 mm sieve to determine the percentage of the gravel.</p>").appendTo($(e.target).closest('div'));
-                $("<p style='border-bottom: 1px solid black;'>From the chart above (green dashed line), percentage of gravel: " + this.prob.Fg.toFixed(2) + "% </p>").appendTo($(e.target).closest('div'));
-                $("<p><br/><strong>Step 2. </strong>Determine the primary letter (prefix)</p>").appendTo($(e.target).closest('div'));
                 
-                if (this.prob.Fg > (100 - this.prob.F) / 2) {  // Gravel
-                    $("<p style='border-bottom: 1px solid black;'>More than 50% of F<sub>c</sub> = 100 - F is gravel, prefix if G</p>").appendTo($(e.target).closest('div'));
-                } else {  // Sand
-                    $("<p style='border-bottom: 1px solid black;'>50% or more of F<sub>c</sub> = 100 - F is sand, prefix if S</p>").appendTo($(e.target).closest('div'));
-                }
-                
-                $("#btn-second").show();
+                $("#btn-half").show();
             }
 
             $(e.target).hide();
+        },
+        
+        half: function(e) {
+            $(e.target).hide();
+            
+            try {
+                prob.plot.line_gravel.setAttribute({visible: true});
+                prob.plot.arrow_gravel.setAttribute({visible: true});
+            } catch(e) {
+
+            }
+            
+            $("<p style='border-bottom: 1px solid black;'>From the chart above (green dashed line), percentage of gravel: " + this.prob.Fg.toFixed(1) + "%, percentage of sand: " + (100 - this.prob.Fg - this.prob.F).toFixed(1) + "% </p>").appendTo($(e.target).closest('div'));
+            
+            $("<p><br/><strong>Step 2. </strong>Determine the primary letter (prefix)</p>").appendTo($(e.target).closest('div'));
+
+            if (this.prob.Fg > (100 - this.prob.F) / 2) {  // Gravel
+                $("<p style='border-bottom: 1px solid black;'>There are more gravel than sand, prefix is G</p>").appendTo($(e.target).closest('div'));
+            } else {  // Sand
+                $("<p style='border-bottom: 1px solid black;'>There are more sand than gravel, prefix is S</p>").appendTo($(e.target).closest('div'));
+            }
+            
+            $("#btn-second").show();
         },
         
         second: function(e) {
@@ -77,9 +87,21 @@ var vm = new Vue({
         plot_arrow: function(e) {
             $('<p>D<sub>10</sub>, D<sub>30</sub> and D<sub>60</sub> are indicated as the red arrow in the chart above. Their values are:</p>').appendTo($(e.target).closest('div'));
             try {
-                this.prob.plot.d75.setAttribute({visible: false});
-                this.prob.plot.line_gravel.setAttribute({visible: false});
+                prob.plot.d75.setAttribute({visible: false});
+                prob.plot.line_gravel.setAttribute({visible: false});
             } catch(e) {
+                
+            }
+            
+            try {
+                prob.plot.arrow75.setAttribute({visible: false});
+            } catch (e) {
+                
+            }
+            
+            try {
+                prob.plot.arrow_gravel.setAttribute({visible: false});
+            } catch (e) {
                 
             }
             
@@ -104,18 +126,18 @@ var vm = new Vue({
             
             if (prefix == "G") {
                 if ((this.prob.cu > 4) && (this.prob.cc > 1) && (this.prob.cc < 3)) {
-                    $('<p>For gravel, since C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
+                    $('<p>For gravel, if C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
                     $('<p>the suffix for this soil is W</p>').appendTo($(e.target).closest('div'));
                 } else {
-                    $('<p>For gravel, since C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
+                    $('<p>For gravel, if C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
                     $('<p>the suffix for this soil is P</p>').appendTo($(e.target).closest('div'));
                 }
             } else if (prefix == "S") {
                 if ((this.prob.cu > 6) && (this.prob.cc > 1) && (this.prob.cc < 3)) {
-                    $('<p>For sand, since C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
+                    $('<p>For sand, if C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
                     $('<p>the suffix for this soil is W</p>').appendTo($(e.target).closest('div'));
                 } else {
-                    $('<p>For sand, since C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
+                    $('<p>For sand, if C<sub>u</sub> &gt; 4 and 1 &lt; C<sub>c</sub> &lt; 3, the suffix is W, otherwise P</p>').appendTo($(e.target).closest('div'));
                     $('<p>the suffix for this soil is P</p>').appendTo($(e.target).closest('div'));
                 }
             }
