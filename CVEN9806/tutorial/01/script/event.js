@@ -37,9 +37,3 @@ $(document).ready(function() {
         }
     });
 });
-
-function toSelectD(e) {
-    var d = $(e.target).find(":selected").text();
-    d = Number(d);
-    submission.assumeDepth(d);
-}
