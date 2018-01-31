@@ -148,3 +148,15 @@ function plot_beam() {
         fixed: true
     });
 }
+
+function show_handle() {
+    window.plot.glider_line.setAttribute({visible: true});
+    window.plot.glider.setAttribute({visible: true});
+    window.plot.height_text.setAttribute({visible: true});
+}
+
+function hide_handle() {
+    window.plot.glider_line.setAttribute({visible: false});
+    window.plot.glider.setAttribute({visible: false});
+    window.plot.height_text.setAttribute({visible: false});
+}

@@ -67,7 +67,7 @@ var vm = new Vue({
         toStart: function(e) {
             $(e.target).closest("div").find("section").first().css("display", "block");
             $(e.target).css("display", "none");
-            
+            show_handle();
             $("#answer-tabs").tabs();
         }
     }
