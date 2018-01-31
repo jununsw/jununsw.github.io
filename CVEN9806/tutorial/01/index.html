@@ -22,7 +22,7 @@
         <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
         <link rel="stylesheet" href="css/style.css"/>
     </head>
-    <body>
+    <body onload="init();">
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
             <strong>Module 01 Prestress and Eccentricity</strong>
             <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
@@ -32,66 +32,63 @@
                 <div class="col-sm-12">
                     <div class="h4 question">
                         <p>
-                            Design a fully prestressed simply supported pretensioned concrete plank, {{prob.width}} mm wide, to span {{prob.span}} m. Use only {{prob.diameter}} mm diameter pretensioning wires. The service live load is {{prob.live}} kPa. Assume that the time dependent losses are of the order of {{prob.loss * 100}}%. The minimum cover to the tendons is {{prob.cover}} mm.
+                            
                         </p>
                         <img src="resource/fig01.png"/>
+                        <div style="text-align: center;">
+                            <div id="svg-profile" style="width: 600px; height: 200px; border: 0px solid black;"></div>
+                        </div>
                         <p>
-                            Take \(f'_c\) = {{prob.fc}} MPa; \(f'_{cp}\) = {{prob.fcp}} MPa; \(f_p\) = {{prob.fp}} MPa; Minimal Breaking Load = {{prob.break}} kN.
+                            
                         </p>
                         <p>
-                            Make sure the deflections are within acceptable limits
+                            
                         </p>
                     </div>
                     <div class="h4">
                         <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
                         <section>
-                            <h4 class="bold">Step 01 - Select D</h4>
-                            <p>
-                                Use the following slider to change the value of \( D \), and see how \( M_{t} \) and \( (z_{b})_{min} \) changes. \( D \) = <span id='d'></span> mm
-                            </p>
-                            <div id="slider" style="width: 50%; margin-top: 1.2em; margin-bottom: 1.2em;">
-                                <div id="custom-handle" class="ui-slider-handle"></div>
-                            </div>
-                            <ul>
-                                <li>\( M_{T}= \) <span class="cal" id="mt"></span> \( kg/m \)</li>
-                                <li>\( (Z_{b})_{min}=\frac{M_{T}}{F_{t}-R\times F_{ci}}= \) <span class="cal" id="zbmin"></span> \( mm^{3} \)</li>
-                                <li>\( D_{min} \) satisfies \( Z_{top}=Z_{btm}\geqslant (Z_{b})_{min} \), so \( D_{min}= \) <span class="cal" id="dmin"></span> \( mm \)</li>
-                            </ul>
-                            <div>
-                                At both transfer (\( M_{0}=0 \), at end of the slab) and at full service (mid-span), the maxium stress in the concrete must be smaller than the stress limit
-                                \[ @transfer\; -\frac{P_{i}}{A}+\frac{P_{i}\times e}{Z_{top}}\leqslant F_{ti}\;\;\;(1) \]
-                                \[ @full\: service\; -\frac{R\times P_{i}}{A}-\frac{R\times P_{i}\times e}{Z_{btm}}+\frac{M_{T}}{Z_{btm}}\leqslant F_{t}\;\;\;(2) \]
-                            </div>
-                            <div>
-                                Use \( (Z_{b})_{min} \) to select an appropreate \( D \), calculate \( P_{i} \) and \( e \). Then if
-                                \[ e_{limit}\leqslant e \leqslant e_{max} \]
-                            </div>
-                            <div>
-                                where
-                                \[ e_{max}=\frac{D}{2}-cover-\frac{\Phi_{wire}}{2} \]
-                                \[ e_{limit}=\frac{1-\alpha}{\alpha_{top}-\alpha\times \alpha_{btm}} \]
-                            </div>
-                            <div>
-                                where
-                                \[ \alpha =\frac{A\times R \times F_{ti}}{-A \times F_{t}+\alpha_{btm}\times M_{T}} \]
-                                \[ \alpha_{top}=\frac{A}{Z_{top}},\;\;\; \alpha_{btm}=\frac{A}{Z_{btm}} \]
-                            </div>
-                            <div>
-                                By moving the slider above, following values are calculated:
-                            </div>
-                            <ul>
-                                <li>\( e_{limit}= \) <span class="cal" id="elimit"></span> \( mm \)</li>
-                                <li>\( e_{max}= \) <span class="cal" id="emax"></span> \( mm \)</li>
-                            </ul>
-                            <div>
-                                Solving Equation (1) and (2):
-                            </div>
-                            <ul>
-                                <li>\( P_{i}= \) <span class="cal" id="pi"></span> \( kN \)</li>
-                                <li>\( e= \) <span class="cal" id="e"></span> \( mm \)</li>
-                            </ul>
-                            <div>
-                                Thus the spacing and numbers of the prestressed wires can be determined, according to the \( D \) we choose.
+                            <div id="answer-tabs">
+                                <ul>
+                                    <li style="font-size: 14px;"><a href="#t0">Parameters</a></li>
+                                    <li style="font-size: 14px;"><a href="#t1">Stress Limit Fomula</a></li>
+                                    <li style="font-size: 14px;"><a href="#t2">Stress Limit Plot</a></li>
+                                    <li style="font-size: 14px;"><a href="#t3">Cable Probfile</a></li>
+                                    <li style="font-size: 14px;"><a href="#t4">Limit on Eccentricity</a></li>
+                                    <li style="font-size: 14px;"><a href="#t5">Magnel Diagram</a></li>
+                                </ul>
+
+                                <div id="t0"></div>
+                                
+                                <div id="t1">
+                                    <strong>At transfer, the top fiber stress must not exceed tensile stress limit:</strong>
+                                    
+                                    \[ \sigma _{t} = -\frac{P _{i}}{A} + \frac{P _{i} \times e}{Z _{top}} - \frac{M _{o}}{Z _{top}} \leq F _{ti} \;\;\;(1) \]
+                                    
+                                    <strong>At transfer, the bottom fiber stress must not exceed compressive stress limit:</strong>
+                                    
+                                    \[ \sigma _{b} = -\frac{P _{i}}{A} - \frac{P _{i} \times e}{Z _{btm}} + \frac{M _{o}}{Z _{btm}} \geq F _{ci} \;\;\;(2) \]
+                                    
+                                    <strong>At transfer, the bottom fiber stress must not exceed tensile stress limit:</strong>
+                                    
+                                    \[ \sigma _{b} = -\frac{R \times P _{i}}{A} - \frac{R \times P _{i} \times e}{Z _{btm}} + \frac{M _{T}}{Z _{btm}} \geq F _{t} \;\;\;(3) \]
+                                    
+                                    <strong>At transfer, the top fiber stress must not exceed compressive stress limit:</strong>
+                                    
+                                    \[ \sigma _{t} = -\frac{R \times P _{i}}{A} + \frac{R \times P _{i} \times e}{Z _{top}} - \frac{M _{T}}{Z _{top}} \geq F _{c} \;\;\;(4) \]
+                                    
+                                    <strong>Note:</strong> in the 4 equations above, the first term is contribution of the axial force \( P _{i} \), the second term is contribution of the bending moment due to \( P _{i} \), the third term is the contribution of the bending moment due to either \( M _{o} \) or \( M _{t} \).
+                                </div>
+                                
+                                <div id="t2"></div>
+                                
+                                <div id="t3"></div>
+                                
+                                <div id="t4"></div>
+                                
+                                <div id="t5">
+                                    <div id="svg-profile" style="width: 600px; height: 400px; border: 1px solid black;"></div>
+                                </div>
                             </div>
                         </section>
                     </div>
