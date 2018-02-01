@@ -261,7 +261,7 @@ function plot_diagram() {
     });
     
     window.diagram.linaD = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p4(0)]], {
-        strokeColor: 'yellow',
+        strokeColor: '#DAA520',
         strokeWidth: 2,
         straightFirst: false,
         visible: true,
@@ -550,7 +550,7 @@ function plot_stress() {
     
     window.stress[1].stress_top = window.stress[1].brd.create('spline', window.stress[1].top, {
         strokeWidth: 3,
-        strokeColor: 'brown',
+        strokeColor: '#DAA520',
         fixed: true,
         highlight: false
     });
