@@ -7,118 +7,77 @@
         <meta name="author" content="Dr Xiaojun Chen"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <title>Tutorial 01</title>
+        <title>1D Consolidation</title>
         <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
         <script src="https://unpkg.com/vue"></script>
-        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=9"/>
     </head>
     <body onload="init();">
-        <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
-            <strong>Module 01 Prestress and Eccentricity</strong>
-            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+        <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>1D Consolidation</strong></div>
+        <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+            E-learning Module for CVEN 3202 Soil Mechanics<br/>
+            Course Coordinator: Dr Arman Khoshghalb<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
         </div>
-        <div class="container" id="myapp" style="margin-bottom: 30px;">
+        <div class="container" id="myapp" style="margin-bottom: 20px; margin-top: 20px;">
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        <p>
-                            
-                        </p>
-                        <img src="resource/fig01.png"/>
-                        <div style="text-align: center;">
-                            <div id="svg-profile" style="width: 600px; height: 200px; border: 0px solid black;"></div>
-                        </div>
-                        <p>
-                            
-                        </p>
-                        <p>
-                            
-                        </p>
-                    </div>
-                    <div class="h4">
-                        <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
-                        <section>
-                            <div id="answer-tabs">
-                                <ul>
-                                    <li><a href="#t1">Stress Limit Fomula</a></li>
-                                    <li><a href="#t2">Stress Distribution</a></li>
-                                    <!--li><a href="#t3">Cable Probfile</a></li-->
-                                    <li><a href="#t4">Limit on Eccentricity</a></li>
-                                    <li><a href="#t5">Magnel Diagram</a></li>
-                                    <li><a href="#t6">Deflection Check</a></li>
+                <div class="col-sm-4">
+                    <div id='question'>
+                        <h4 id='title' style="display: none;">Click here to expand question</h4>
+                        <div>
+                            <p>
+                                The three-layered soil shown on the right<br/>
+                                Soil properties are shown in the figure
+                            </p>
+                            <div style='display: none;'>
+                                <p>Layer 1: Gravel</p>
+                                <ul style="font-size: 1em;">
+                                    <li>\( G_{s}= \) &nbsp; {{prob.gs}} kg/m<sup>3</sup></li>
+                                    <li>\( {\sigma _{pc}}'= \) &nbsp; {{prob.pc}} kPa</li>
+                                    <li>\( \gamma _{t1}= \) &nbsp; {{prob.gamma1}} kg/m<sup>3</sup></li>
                                 </ul>
-                                
-                                <div id="t1" style="font-size: 0.7em;">
-                                    <strong>At transfer, the top fiber stress must not exceed tensile stress limit:</strong>
-                                    
-                                    \[ \sigma _{t} = -\frac{P _{i}}{A} + \frac{P _{i} \times e}{Z _{top}} - \frac{M _{o}}{Z _{top}} \leq F _{ti} \;\;\;(1) \]
-                                    
-                                    <strong>At transfer, the bottom fiber stress must not exceed compressive stress limit:</strong>
-                                    
-                                    \[ \sigma _{b} = -\frac{P _{i}}{A} - \frac{P _{i} \times e}{Z _{btm}} + \frac{M _{o}}{Z _{btm}} \geq F _{ci} \;\;\;(2) \]
-                                    
-                                    <strong>At transfer, the bottom fiber stress must not exceed tensile stress limit:</strong>
-                                    
-                                    \[ \sigma _{b} = -\frac{R \times P _{i}}{A} - \frac{R \times P _{i} \times e}{Z _{btm}} + \frac{M _{T}}{Z _{btm}} \geq F _{t} \;\;\;(3) \]
-                                    
-                                    <strong>At transfer, the top fiber stress must not exceed compressive stress limit:</strong>
-                                    
-                                    \[ \sigma _{t} = -\frac{R \times P _{i}}{A} + \frac{R \times P _{i} \times e}{Z _{top}} - \frac{M _{T}}{Z _{top}} \geq F _{c} \;\;\;(4) \]
-                                    
-                                    <strong>Note:</strong> in the 4 equations above, the first term is contribution of the axial force \( P _{i} \), the second term is contribution of the bending moment due to \( P _{i} \), the third term is the contribution of the bending moment due to either \( M _{o} \) or \( M _{t} \).
-                                </div>
-                                
-                                <div id="t2"></div>
-                                
-                                <!--div id="t3"></div-->
-                                
-                                <div id="t4"></div>
-                                
-                                <div id="t5">
-                                    <div class="row">
-                                        <div class="col-sm-4" style="font-size: 1em;">
-                                            <p><strong>Magnel diagram is plotted</strong></p>
-                                            <p>Equations referred to the first tab</p>
-                                            <p>Following four lines are obtained from Eq (1)-(4) for the load at mid-span</p>
-                                            <ul>
-                                                <li><span style="font-weight: bold; color: green;">&#8212;&#8212;</span> Eq (1) for \( F _{ti} \)</li>
-                                                <li><span style="font-weight: bold; color: red;">&#8212;&#8212;</span> Eq (2) for \( F _{ci} \)</li>
-                                                <li><span style="font-weight: bold; color: blue;">&#8212;&#8212;</span> Eq (3) for \( F _{t} \)</li>
-                                                <li><span style="font-weight: bold; color: yellow;">&#8212;&#8212;</span> Eq (4) for \( F _{c} \)</li>
-                                            </ul>
-                                            <p>If the checkbox is ticked, two additional lines are plotted from from Eq (1), (2) for the load at the end</p>
-                                            <ul>
-                                                <li><span style="font-weight: bold; color: green;">&mdash;&nbsp;&nbsp;&mdash;</span> Eq (1) for \( F _{ti} \)</li>
-                                                <li><span style="font-weight: bold; color: red;">&mdash;&nbsp;&nbsp;&mdash;</span> Eq (2) for \( F _{ci} \)</li>
-                                            </ul>
-                                            <p>You can change the depth of the plank to see how the diagram changes</p>
-                                            <p>You can choose a pair of (\( P _{i} ,\; e \)) to see if it is in the acceptable area</p>
-                                            <ul>
-                                                <li>\( P _{i}= \) <input size='6' id="try-pi"/> kN</li>
-                                                <li>\( e= \) <input size='6' id="try-e"/> mm</li>
-                                            </ul>
-                                            <p><button class="btn btn-primary btn-xs" onclick="show_pe(event);">Show on the diagram</button></p>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <div id="svg-diagram" style="width: 600px; height: 400px; border: 0px solid black;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div id="t6"></div>
+                                <p>Layer 2: Clay</p>
+                                <ul style="font-size: 1em;">
+                                    <li>\( G_{s}= \) &nbsp; {{prob.gs}} kg/m<sup>3</sup></li>
+                                    <li>\( {\sigma _{pc}}'= \) &nbsp; {{prob.pc}} kPa</li>
+                                    <li>\( \gamma _{t2}= \) &nbsp; {{prob.gamma2}} kg/m<sup>3</sup></li>
+                                    <li>\( w _{clay}= \) &nbsp; {{prob.omega}} %</li>
+                                    <li>\( C _{c}= \) &nbsp; {{prob.cc}}</li>
+                                    <li>\( C _{r}= \) &nbsp; {{prob.cr}}</li>  
+                                </ul>
                             </div>
-                        </section>
+                            <p>The water level is located at the interface between the gravel and clay</p>
+                            <p style="style=text-align: justify;">
+                                Assume there is a q = {{prob.q}} kN/m<sup>2</sup> surcharge load is applied on a B &times; L rectangle area.
+                                <br/>
+                                Use 2:1 method to calculate stress increase in the middle of the clay layer and calculate the settlement due to the loading<br/>(\( g= \) 9.8 m/s<sup>2</sup>) 
+                            </p>
+                            <p>
+                                <button type="button" class="btn btn-primary" v-on:click="start($event);">Start</button>
+                            </p>
+                        </div>
                     </div>
+                    <div id="answer1" style="margin-top: 20px; font-weight: normal;">
+                        <h4 id='title1' style="display: none;">Click here to expand step1</h4>
+                        <div id='step1'>
+                        
+                        </div>
+                    </div>
+                    <div id="soil-chart" style="width: 350px; height: 350px; margin-left: 0;"></div>
+                </div>
+                <div class="col-sm-8" style="text-align: center;">
+                    <div id="soil-plot" style="width: 600px; height: 700px; margin: 0 auto;"></div>
                 </div>
             </div>
         </div>
