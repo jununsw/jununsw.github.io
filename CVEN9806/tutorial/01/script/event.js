@@ -53,6 +53,7 @@ function plot_beam() {
         // change diagram
         
         window.stress[0].control.moveTo([vm.d, 0]);
+        window.stress[1].control.moveTo([vm.d, 0]);
         
         // line A
         window.diagram.linaA_dot.point1.moveTo([1/vm.alpha, 0]);
@@ -519,8 +520,8 @@ function plot_stress() {
     }], {visible: false}));
     
     window.stress[1].top.push(window.stress[1].brd.create("point", [vm.prob.span / 2, function() {
-        var p = window.stress[1].p.X();  // in kN
-        var e = window.stress[1].e.X();  // in mm
+        var p = window.stress[1].p.X();
+        var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
         var z = vm.z;
         
