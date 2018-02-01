@@ -64,6 +64,70 @@ var vm = new Vue({
     },
     
     methods: {
+        p1: function(e) {
+            var nom = 1 * (this.alpha*e - 1);
+            var A = this.prob.b * this.d;
+            var denom = A * this.prob.fti + this.alpha*this.m0*1e6;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        p2: function(e) {
+            var nom = 1 * (this.alpha*e + 1);
+            var A = this.prob.b * this.d;
+            var denom = -A * this.prob.fci + this.alpha*this.m0*1e6;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        p3: function(e) {
+            var nom = this.prob.R * (this.alpha*e + 1);
+            var A = this.prob.b * this.d;
+            var denom = -A * this.prob.ft + this.alpha*this.mt*1e6;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        p4: function(e) {
+            var nom = this.prob.R * (this.alpha*e - 1);
+            var A = this.prob.b * this.d;
+            var denom = A * this.prob.fc + this.alpha*this.mt*1e6;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        p1e: function(e) {
+            var nom = 1 * (this.alpha*e - 1);
+            var A = this.prob.b * this.d;
+            var denom = A * this.prob.fti;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        p2e: function(e) {
+            var nom = 1 * (this.alpha*e + 1);
+            var A = this.prob.b * this.d;
+            var denom = -A * this.prob.fci;
+            
+            return (nom / denom) * 1e6;
+        },
+        
+        stress_t1: function(x) {
+            
+        },
+        
+        stress_b1: function(x) {
+            
+        },
+        
+        stress_t2: function(x) {
+            
+        },
+        
+        stress_b2: function(x) {
+            
+        },
+        
         toStart: function(e) {
             $(e.target).closest("div").find("section").first().css("display", "block");
             $(e.target).css("display", "none");

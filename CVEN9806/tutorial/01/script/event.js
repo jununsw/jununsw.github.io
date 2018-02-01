@@ -4,6 +4,7 @@ function changeColor(e) {
 }
 
 function init() {
+    plot_diagram();
     plot_beam();
 }
 
@@ -46,6 +47,36 @@ function plot_beam() {
         window.plot.glider.moveTo([x, y]);
         
         vm.d = depth;
+        
+        // change diagram
+        
+        // line A
+        window.diagram.linaA_dot.point1.moveTo([1/vm.alpha, 0]);
+        window.diagram.linaA_dot.point2.moveTo([0, vm.p1(0)]);
+        
+        window.diagram.linaA.point1.moveTo([1/vm.alpha, 0]);
+        
+        // line B
+        window.diagram.linaB.point1.moveTo([-1/vm.alpha, 0]);
+        window.diagram.linaB.point2.moveTo([0, vm.p2(0)]);
+        
+        // line C
+        window.diagram.linaC.point1.moveTo([-1/vm.alpha, 0]);
+        window.diagram.linaC.point2.moveTo([0, vm.p3(0)]);
+        
+        // line D
+        window.diagram.linaD.point1.moveTo([1/vm.alpha, 0]);
+        window.diagram.linaD.point2.moveTo([0, vm.p4(0)]);
+        
+        // line Ae
+        window.diagram.linaAe_dot.point1.moveTo([1/vm.alpha, 0]);
+        window.diagram.linaAe_dot.point2.moveTo([0, vm.p1e(0)]);
+        
+        window.diagram.linaAe.point1.moveTo([1/vm.alpha, 0]);
+        
+        // line Be
+        window.diagram.linaBe.point1.moveTo([-1/vm.alpha, 0]);
+        window.diagram.linaBe.point2.moveTo([0, vm.p2e(0)]);
     });
     
     window.plot.profile = window.plot.brd.create('polygon', [[0, 75], [4, 75], [4, function() {
@@ -159,4 +190,153 @@ function hide_handle() {
     window.plot.glider_line.setAttribute({visible: false});
     window.plot.glider.setAttribute({visible: false});
     window.plot.height_text.setAttribute({visible: false});
+}
+
+function plot_diagram() {
+    window.diagram = {};
+    
+    window.diagram.brd = JXG.JSXGraph.initBoard('svg-diagram', {
+        boundingbox: [-40, Number(vm.p1(100).toFixed(0)) + 1, 100, -1],
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: true,
+        zoom: {
+            factorX: 1.25,
+            factorY: 1.25,
+            wheel: true,
+            needshift: true,
+            eps: 0.1
+	    }
+    });
+    
+    window.diagram.checkBox = window.diagram.brd.create('checkbox', [-35, 5.5, '<span> for M<sub>o</sub>=0</span>'], {
+        fontSize: 16,
+        fontWeight: 'bold',
+        fixed: true
+    });
+    
+    window.diagram.brd.create('text', [5, 5.5, '<span> 1/P<sub>i</sub> (10<sup>-6</sup> N<sup>-1</sup>)</span>'], {
+        anchorX: 'left',
+        anchorY: 'bottom',
+        fontSize: 20,
+        fontWeight: 'bold',
+        fixed: true
+    });
+    
+    window.diagram.brd.create('text', [100, 0.1, '<span> e (mm)</span>'], {
+        anchorX: 'right',
+        anchorY: 'bottom',
+        fontSize: 20,
+        fontWeight: 'bold',
+        fixed: true
+    });
+    
+    window.diagram.linaA_dot = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p1(0)]], {
+        strokeColor: 'green',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: false,
+        fixed: true
+    });
+    
+    window.diagram.linaB = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2(0)]], {
+        strokeColor: 'red',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: true,
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.linaC = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p3(0)]], {
+        strokeColor: 'blue',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: true,
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.linaD = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p4(0)]], {
+        strokeColor: 'yellow',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: true,
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.pointAC = window.diagram.brd.create('intersection', [window.diagram.linaA_dot, window.diagram.linaC, 0], {
+        visible: false                                               
+    });
+    
+    window.diagram.linaA = window.diagram.brd.create('line', [[1/vm.alpha, 0], window.diagram.pointAC], {
+        strokeColor: 'green',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: true,
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.linaAe_dot = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p1e(0)]], {
+        strokeColor: 'green',
+        strokeWidth: 2,
+        straightFirst: false,
+        visible: false,
+        fixed: true
+    });
+    
+    window.diagram.linaBe = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2e(0)]], {
+        strokeColor: 'red',
+        strokeWidth: 2,
+        straightFirst: false,
+        dash: 2,
+        visible: function() {
+            return window.diagram.checkBox.Value();
+        },
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.pointACe = window.diagram.brd.create('intersection', [window.diagram.linaAe_dot, window.diagram.linaC, 0], {
+        visible: false                                               
+    });
+    
+    window.diagram.linaAe = window.diagram.brd.create('line', [[1/vm.alpha, 0], window.diagram.pointACe], {
+        strokeColor: 'green',
+        strokeWidth: 2,
+        straightFirst: false,
+        dash: 2,
+        visible: function() {
+            return window.diagram.checkBox.Value();
+        },
+        fixed: true,
+        highlight: true,
+    });
+    
+    window.diagram.trial = window.diagram.brd.create('point', [0, 0], {
+        size: 5,
+        strokeColor: 'black',
+        fillColor: 'blue',
+        name: '',
+        highlight: false,
+        fixed: true,
+        visible: false
+    });
+}
+
+function show_pe(e) {
+    var x = Number($("#try-pi").val());
+    var y = Number($("#try-e").val());
+    
+    if (isNaN(x) || isNaN(y) || (x == 0)) {
+        return
+    } else {
+        x = 1 / x;
+        x = x * 1e3;
+        window.diagram.trial.moveTo([y, x]);
+        window.diagram.trial.setAttribute({visible: true});
+    }
 }
