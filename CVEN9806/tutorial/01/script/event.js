@@ -56,10 +56,8 @@ function plot_beam() {
         window.stress[1].control.moveTo([vm.d, 0]);
         
         // line A
-        window.diagram.linaA_dot.point1.moveTo([1/vm.alpha, 0]);
-        window.diagram.linaA_dot.point2.moveTo([0, vm.p1(0)]);
-        
         window.diagram.linaA.point1.moveTo([1/vm.alpha, 0]);
+        window.diagram.linaA.point2.moveTo([100, vm.p1(100)]);
         
         // line B
         window.diagram.linaB.point1.moveTo([-1/vm.alpha, 0]);
@@ -74,10 +72,8 @@ function plot_beam() {
         window.diagram.linaD.point2.moveTo([0, vm.p4(0)]);
         
         // line Ae
-        window.diagram.linaAe_dot.point1.moveTo([1/vm.alpha, 0]);
-        window.diagram.linaAe_dot.point2.moveTo([0, vm.p1e(0)]);
-        
         window.diagram.linaAe.point1.moveTo([1/vm.alpha, 0]);
+        window.diagram.linaAe.point2.moveTo([100, vm.p1e(100)]);
         
         // line Be
         window.diagram.linaBe.point1.moveTo([-1/vm.alpha, 0]);
@@ -201,7 +197,7 @@ function plot_diagram() {
     window.diagram = {};
     
     window.diagram.brd = JXG.JSXGraph.initBoard('svg-diagram', {
-        boundingbox: [-40, Number(vm.p1(100).toFixed(0)) + 1, 100, -1],
+        boundingbox: [-40, 6, 100, -1],
         showNavigation: false,
         keepaspectratio: false,
         showCopyright: false,
@@ -237,12 +233,13 @@ function plot_diagram() {
         fixed: true
     });
     
-    window.diagram.linaA_dot = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p1(0)]], {
+    window.diagram.linaA = window.diagram.brd.create('line', [[1/vm.alpha, 0], [100, vm.p1(100)]], {
         strokeColor: 'green',
         strokeWidth: 2,
         straightFirst: false,
-        visible: false,
-        fixed: true
+        visible: true,
+        fixed: true,
+        highlight: false,
     });
     
     window.diagram.linaB = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2(0)]], {
@@ -272,29 +269,8 @@ function plot_diagram() {
         highlight: false,
     });
     
-    window.diagram.pointAC = window.diagram.brd.create('intersection', [window.diagram.linaA_dot, window.diagram.linaC, 0], {
-        visible: false                                               
-    });
-    
-    window.diagram.linaA = window.diagram.brd.create('line', [[1/vm.alpha, 0], window.diagram.pointAC], {
+    window.diagram.linaAe = window.diagram.brd.create('line', [[1/vm.alpha, 0], [100, vm.p1e(100)]], {
         strokeColor: 'green',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: true,
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.linaAe_dot = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p1e(0)]], {
-        strokeColor: 'green',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: false,
-        fixed: true
-    });
-    
-    window.diagram.linaBe = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2e(0)]], {
-        strokeColor: 'red',
         strokeWidth: 2,
         straightFirst: false,
         dash: 2,
@@ -305,12 +281,8 @@ function plot_diagram() {
         highlight: false,
     });
     
-    window.diagram.pointACe = window.diagram.brd.create('intersection', [window.diagram.linaAe_dot, window.diagram.linaC, 0], {
-        visible: false                                               
-    });
-    
-    window.diagram.linaAe = window.diagram.brd.create('line', [[1/vm.alpha, 0], window.diagram.pointACe], {
-        strokeColor: 'green',
+    window.diagram.linaBe = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2e(0)]], {
+        strokeColor: 'red',
         strokeWidth: 2,
         straightFirst: false,
         dash: 2,
@@ -329,6 +301,33 @@ function plot_diagram() {
         highlight: false,
         visible: false,
         showInfobox: false
+    });
+    
+    window.diagram.trial.on('drag', function() {
+        var x = window.diagram.trial.X();
+        var y = window.diagram.trial.Y();
+
+        var pi = 1/y*1e6/1000;
+        var e = x;
+
+        pi = Number(pi.toFixed(0));
+        e = Number(e.toFixed(0));
+
+        x = pi;
+        y = e;
+
+        $("#try-pi").val(x.toString());
+        $("#try-e").val(y.toString());
+
+        window.stress[0].p.moveTo([x, 0]);
+        window.stress[0].e.moveTo([y, 0]);
+
+        window.stress[1].p.moveTo([x, 0]);
+        window.stress[1].e.moveTo([y, 0]);
+
+        x = 1 / x;
+        x = x * 1e3;
+        window.diagram.trial.moveTo([y, x]);
     });
 }
 
@@ -351,33 +350,6 @@ function show_pe(e) {
         window.diagram.trial.setAttribute({visible: true});
         
         $("#stress-distribution").show();
-        
-        window.diagram.trial.on('drag', function() {
-            var x = window.diagram.trial.X();
-            var y = window.diagram.trial.Y();
-            
-            var pi = 1/y*1e6/1000;
-            var e = x;
-            
-            pi = Number(pi.toFixed(0));
-            e = Number(e.toFixed(0));
-            
-            x = pi;
-            y = e;
-            
-            $("#try-pi").val(x.toString());
-            $("#try-e").val(y.toString());
-            
-            window.stress[0].p.moveTo([x, 0]);
-            window.stress[0].e.moveTo([y, 0]);
-
-            window.stress[1].p.moveTo([x, 0]);
-            window.stress[1].e.moveTo([y, 0]);
-
-            x = 1 / x;
-            x = x * 1e3;
-            window.diagram.trial.moveTo([y, x]);
-        });
     }
 }
 
@@ -431,7 +403,8 @@ function plot_stress() {
         var p = window.stress[0].p.X();
         var e = window.stress[0].e.X();
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[0].control.X() / 6;
         
         return -p/A*1e3 + p*e/z*1e3;
     }], {visible: false}));
@@ -440,16 +413,19 @@ function plot_stress() {
         var p = window.stress[0].p.X();  // in kN
         var e = window.stress[0].e.X();  // in mm
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
         
-        return -p/A*1e3 + p*e/z*1e3 - vm.m0/z*1e6;
+        var z = A * window.stress[0].control.X() / 6;
+        var m0 = A / 1e6 * 24 * vm.prob.span * vm.prob.span / 8;
+        
+        return -p/A*1e3 + p*e/z*1e3 - m0/z*1e6;
     }], {visible: false}));
     
     window.stress[0].top.push(window.stress[0].brd.create("point", [vm.prob.span, function() {
         var p = window.stress[0].p.X();
         var e = window.stress[0].e.X();
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[0].control.X() / 6;
         
         return -p/A*1e3 + p*e/z*1e3;
     }], {visible: false}));
@@ -467,7 +443,8 @@ function plot_stress() {
         var p = window.stress[0].p.X();
         var e = window.stress[0].e.X();
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[0].control.X() / 6;
         
         return -p/A*1e3 - p*e/z*1e3;
     }], {visible: false}));
@@ -476,16 +453,19 @@ function plot_stress() {
         var p = window.stress[0].p.X();
         var e = window.stress[0].e.X();
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
         
-        return -p/A*1e3 - p*e/z*1e3 + vm.m0/z*1e6;
+        var z = A * window.stress[0].control.X() / 6;
+        var m0 = A / 1e6 * 24 * vm.prob.span * vm.prob.span / 8;
+        
+        return -p/A*1e3 - p*e/z*1e3 + m0/z*1e6;
     }], {visible: false}));
     
     window.stress[0].bottom.push(window.stress[0].brd.create("point", [vm.prob.span, function() {
         var p = window.stress[0].p.X();
         var e = window.stress[0].e.X();
         var A = window.stress[0].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[0].control.X() / 6;
         
         return -p/A*1e3 - p*e/z*1e3;
     }], {visible: false}));
@@ -541,7 +521,8 @@ function plot_stress() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[1].control.X() / 6;
         
         return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3;
     }], {visible: false}));
@@ -550,23 +531,26 @@ function plot_stress() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
         
-        return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3 - vm.mt/z*1e6;
+        var z = A * window.stress[1].control.X() / 6;
+        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
+        
+        return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3 - mt/z*1e6;
     }], {visible: false}));
     
     window.stress[1].top.push(window.stress[1].brd.create("point", [vm.prob.span, function() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[1].control.X() / 6;
         
         return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3;
     }], {visible: false}));
     
     window.stress[1].stress_top = window.stress[1].brd.create('spline', window.stress[1].top, {
         strokeWidth: 3,
-        strokeColor: 'green',
+        strokeColor: 'brown',
         fixed: true,
         highlight: false
     });
@@ -577,7 +561,8 @@ function plot_stress() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[1].control.X() / 6;
         
         return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3;
     }], {visible: false}));
@@ -586,23 +571,26 @@ function plot_stress() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
         
-        return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3 + vm.mt/z*1e6;
+        var z = A * window.stress[1].control.X() / 6;
+        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
+        
+        return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3 + mt/z*1e6;
     }], {visible: false}));
     
     window.stress[1].bottom.push(window.stress[1].brd.create("point", [vm.prob.span, function() {
         var p = window.stress[1].p.X();
         var e = window.stress[1].e.X();
         var A = window.stress[1].control.X() * vm.prob.b;
-        var z = vm.z;
+        
+        var z = A * window.stress[1].control.X() / 6;
         
         return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3;
     }], {visible: false}));
     
     window.stress[1].stress_bottom = window.stress[1].brd.create('spline', window.stress[1].bottom, {
         strokeWidth: 3,
-        strokeColor: 'red',
+        strokeColor: 'blue',
         fixed: true,
         highlight: false
     });
