@@ -327,8 +327,8 @@ function plot_diagram() {
         fillColor: 'blue',
         name: '',
         highlight: false,
-        fixed: true,
-        visible: false
+        visible: false,
+        showInfobox: false
     });
 }
 
@@ -351,6 +351,33 @@ function show_pe(e) {
         window.diagram.trial.setAttribute({visible: true});
         
         $("#stress-distribution").show();
+        
+        window.diagram.trial.on('drag', function() {
+            var x = window.diagram.trial.X();
+            var y = window.diagram.trial.Y();
+            
+            var pi = 1/y*1e6/1000;
+            var e = x;
+            
+            pi = Number(pi.toFixed(0));
+            e = Number(e.toFixed(0));
+            
+            x = pi;
+            y = e;
+            
+            $("#try-pi").val(x.toString());
+            $("#try-e").val(y.toString());
+            
+            window.stress[0].p.moveTo([x, 0]);
+            window.stress[0].e.moveTo([y, 0]);
+
+            window.stress[1].p.moveTo([x, 0]);
+            window.stress[1].e.moveTo([y, 0]);
+
+            x = 1 / x;
+            x = x * 1e3;
+            window.diagram.trial.moveTo([y, x]);
+        });
     }
 }
 
