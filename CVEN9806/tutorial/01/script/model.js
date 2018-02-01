@@ -1,47 +1,20 @@
-class Model {
+class Problem {
     constructor() {
-        this.gs = 2.7;
-        this.d1 = 2
-        this.d2 = 5;
-        this.d3 = 2;
+        this.b = 1200;
+        this.span = 4;
         
-        this.omega = 57.5;
+        this.ll = 6;
         
-        this.boundingbox = [-1, 2, 11, -11];
+        this.R = 0.8;
         
-        this.plot = {};
-        this.chart = {};
+        this.dia = 7;
+        this.cover = 20;
         
-        this.q = 40;
-        this.b = 5;
-        this.l = 5;
+        this.break = 65.5;
         
-        this.gamma1 = 20;
-        this.gamma2 = 16;
-        
-        this.cc = 0.7;
-        this.cr = 0.2;
-        
-        this.sigma0 = (function(gamma1, gamma2, d1, d2) {
-            var r = gamma1*d1 + gamma2*d2/2 - d2/2*9.8;
-            
-            r = Number(r.toFixed(2));
-            
-            return r;
-        })(this.gamma1, this.gamma2, this.d1, 4);
-        
-        this.sigma1 = (function(gamma1, gamma2, d1, d2, q, b, l) {
-            var r0 = gamma1*d1 + gamma2*d2/2 - d2/2*9.8;
-            
-            var r = q * b * l;
-            r /= b + d1 + d2/2;
-            r /= l + d1 + d2/2;
-            
-            var r1 = Number((r + r0).toFixed(2));
-            
-            return r1;
-        })(this.gamma1, this.gamma2, this.d1, 4, this.q, this.b, this.l);
-        
-        this.pc = [this.sigma0, this.sigma1].random(0);
+        this.fti = 1.4
+        this.ft = 1.4;
+        this.fci = -16;
+        this.fc = -16;
     }
 }
