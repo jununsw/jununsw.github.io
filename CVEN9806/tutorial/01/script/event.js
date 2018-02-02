@@ -78,6 +78,9 @@ function plot_beam() {
         // line Be
         window.diagram.linaBe.point1.moveTo([-1/vm.alpha, 0]);
         window.diagram.linaBe.point2.moveTo([0, vm.p2e(0)]);
+        
+        // calculate displacement
+        calculate_disp();
     });
     
     window.plot.profile = window.plot.brd.create('polygon', [[0, 75], [4, 75], [4, function() {
@@ -349,8 +352,36 @@ function show_pe(e) {
         window.diagram.trial.moveTo([y, x]);
         window.diagram.trial.setAttribute({visible: true});
         
-        $("#stress-distribution").show();
+        // $("#stress-distribution").show();
+        $("#btn-stress").show()
+        $("#stress-distribution").dialog({
+            resizable: false,
+            height: 400,
+            width: 850,
+            position: { 
+                my: "right top", 
+                at: "right-50 top+50"
+            },
+            create: function() {
+                $(this).parent().css({position:"fixed"});
+                $(this).css("background-color", $("#select-color").val().toString());
+            },
+            open: function() {
+                $("#btn-stress").prop("disabled", true);
+                $(this).css("background-color", $("#select-color").val().toString());
+            },
+            close: function() {
+                $("#btn-stress").prop("disabled", false);
+            }
+        });
+        
+        $("#after-btn").html("<strong>The corresponding point is plotted on the Mignel Diagram and you can drag it.<br/><br/>A dialog for stress distribution is pop-up.</strong>")
     }
+}
+
+function show_stress(e) {
+    $("#stress-distribution").dialog("open");
+    $(e.target).prop("disabled", true);
 }
 
 function plot_stress() {
@@ -594,4 +625,23 @@ function plot_stress() {
         fixed: true,
         highlight: false
     });
+}
+
+function show_disp(e) {
+    var x = Number($("#disp-pi").val());
+    var y = Number($("#disp-e").val());
+    
+    if (isNaN(x) || isNaN(y) || (x == 0)) {
+        $("#after-disp").html("Invalid inputs");
+    } else {
+        $("#after-disp").html("");
+        $("#disp").show();
+        $("#pe").html((x * vm.prob.R).toFixed(2));
+        
+        calculate_disp();
+    }
+}
+
+function calculate_disp() {
+    var d = vm.d;
 }

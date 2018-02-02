@@ -25,7 +25,7 @@
     <body onload="init();">
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
             <strong>Module 01 Prestress and Eccentricity</strong>
-            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <div class="h6 bold">Background Color: <input id="select-color" type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
         </div>
         <div class="container" id="myapp" style="margin-bottom: 30px;">
             <div class="row">
@@ -50,11 +50,11 @@
                         <section>
                             <div id="answer-tabs">
                                 <ul>
-                                    <li><a href="#t1">Stress Limit Fomula</a></li>
-                                    <li><a href="#t4">Cross-section Limit</a></li>
-                                    <li><a href="#t5">Magnel Diagram &amp; Stress Distribution</a></li>
-                                    <li><a href="#t6">Deflection Check</a></li>
-                                    <li><a href="#t7" style="font-weight: bold; color: red;">Answer and Submission</a></li>
+                                    <li class="list"><a href="#t1">Stress Limit Fomula</a></li>
+                                    <li class="list"><a href="#t4">Cross-section Limit</a></li>
+                                    <li class="list"><a href="#t5">Magnel Diagram &amp; Stress Distribution</a></li>
+                                    <li class="list"><a href="#t6">Deflection Check</a></li>
+                                    <li class="list"><a href="#t7" style="font-weight: bold; color: red;">Answer and Submission</a></li>
                                 </ul>
                                 
                                 <div id="t1" style="font-size: 0.7em;">
@@ -109,24 +109,38 @@
                                                 <li>\( P _{i}= \) <input size='6' id="try-pi"/> kN</li>
                                                 <li>\( e= \) <input size='6' id="try-e"/> mm</li>
                                             </ul>
-                                            <p><button class="btn btn-primary btn-xs" onclick="show_pe(event);">Show on the diagram</button></p>
+                                            <p>
+                                                <button class="btn btn-primary btn-xs" onclick="show_pe(event);">Show on the diagram</button><br/>
+                                                <button id="btn-stress" class="btn btn-success btn-xs" onclick="show_stress(event);" style="display: none;">Show stress distribution dialog</button>
+                                            </p>
                                             <p id="after-btn"></p>
                                         </div>
                                         <div class="col-sm-8">
                                             <div id="svg-diagram" style="width: 600px; height: 400px; border: 0px solid black;"></div>
                                         </div>
                                     </div>
-                                    <div id="stress-distribution" class="row" style="display: none;">
-                                        <div class="col-sm-12" style="font-size: 1.2em;">
-                                            <p style="margin-top: 20px;">
-                                                <strong>Stress Distribution</strong>
-                                            </p>
+                                    <div id="stress-distribution" title="Stress Distribution (Two Figures, Please Scroll)" class="" style="display: none;">
+                                        <div class="" style="font-size: 1em;">
                                             <p style="margin-top: 10px;">
-                                                Stress at transfer
+                                                <strong>Stress at transfer</strong>
+                                            </p>
+                                            <ul>
+                                                <li>The <span style="color: green; font-weight: bold;">green</span> line shows the stress at top fiber through the span</li>
+                                                <li>The <span style="color: red; font-weight: bold;">red</span> line shows the stress at bottom fiber through the span</li>
+                                            </ul>
+                                            <p>
+                                                You can move the point in the Magnel Diagram and change the depth of the plank to see how the stress distribution changes
                                             </p>
                                             <div id="svg-stress1" style="width: 800px; height: 200px; margin: auto; display: block;"></div>
                                             <p style="margin-top: 10px;">
-                                                Stress at full service
+                                                <strong>Stress at full service</strong>
+                                            </p>
+                                            <ul>
+                                                <li>The <span style="color: blue; font-weight: bold;">blue</span> line shows the stress at top fiber through the span</li>
+                                                <li>The <span style="color: #DAA520; font-weight: bold;">brown</span> line shows the stress at bottom fiber through the span</li>
+                                            </ul>
+                                            <p>
+                                                You can move the point in the Magnel Diagram and change the depth of the plank to see how the stress distribution changes
                                             </p>
                                             <div id="svg-stress2" style="width: 800px; height: 200px; margin: auto; display: block;"></div>
                                         </div>
@@ -134,11 +148,69 @@
                                 </div>
                                 
                                 <div id="t6">
-                                
+                                    <p class="h4">
+                                        <strong>Use the \( P _{i} \) and \( e \) in the previous tab as input:</strong>
+                                    </p>
+                                    <ul style="font-size: 1em;">
+                                        <li>\( P _{i}= \) <input size='6' id="disp-pi"/> kN</li>
+                                        <li>\( e= \) <input size='6' id="disp-e"/> mm</li>
+                                    </ul>
+                                    <p>
+                                        <button class="btn btn-primary btn-xs" onclick="show_disp(event);">Calculate Displacement</button>&nbsp;&nbsp;
+                                        <span id="after-disp" style="color: red; font-weight: bold;"></span>
+                                    </p>
+                                    <section id="disp" style="display: none;">
+                                        <ul>
+                                            <li>Effective prestress force: \( P _{e}= R \times P _{i} = \) <span id="pe"></span> kN</li>
+                                            <li>\( E _{ci}= E _{c} = \) 30,100 kN</li>
+                                            <li><span style="font-weight: bold; font-style: italic;">I<sub>g</sub></span> = {{(Math.pow(d, 3) * prob.b / 12).toExponential(3)}} mm<sup>4</sup></li>
+                                        </ul>
+                                        <p>
+                                            Taking loading factors for deflection: \( \phi _{s}=1.0 \), \( \phi _{l}=0.6 \), \( k _{cs}=2.5 \)
+                                        </p>
+                                        <p>
+                                            <strong>Formula for displacement:</strong>
+                                            \[ \Delta _{p} = -\frac{1}{8}\frac{P _{i} e L ^{2}}{E _{ci} I _{g}} \]
+                                            \[ \Delta _{sw} = \frac{5}{384}\frac{G _{sw} L ^{4}}{E _{ci} I _{g}} \]
+                                            \[ \Delta _{load} = \frac{5}{384}\frac{w _{sw} L ^{4}}{E _{ci} I _{g}} \]
+                                            \[ \Delta _{ST} = \Delta _{load} + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                            \[ \Delta _{sus} = \frac{5}{384}\frac{w _{sus} L ^{4}}{E _{c} I _{g}} + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                            \[ \Delta _{LT} = k _{cs} \Delta _{sus} + \Delta _{st} \]
+                                        </p>
+                                        <p style="font-weight: bold;">
+                                            According to AS 5100-2 &amp; AS 3600:
+                                        </p>
+                                        <ul style="">
+                                            <li>Camber Limit = L / 300 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                            <li>Short Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                            <li>Long Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                        </ul>
+                                        <p>
+                                            <strong>Therefore the displacement for the given inputs are calculated as</strong>
+                                        </p>
+                                        <ul style="font-weight: bold;">
+                                            <li>\( \Delta _{p}= \) <span id="dp"></span> mm</li>
+                                            <li>\( \Delta _{ST}= \) <span id="dst"></span> mm</li>
+                                            <li>\( \Delta _{LT}= \) <span id="dlt"></span> mm</li>
+                                        </ul>
+                                        <p>
+                                            <strong>If the displacements are not satisfied, please change the inputs and recalculate</strong>
+                                        </p>
+                                    </section>
                                 </div>
                                 
                                 <div id="t7">
-                                
+                                    <p class="h4">
+                                        <strong>Based on the calculation in the previous three tabs, your final answer for \( D \), \( P _{i} \) and \( e \) are:</strong>
+                                    </p>
+                                    <ul style="font-size: 1em;">
+                                        <li>\( D= \) <input size='6'/> mm</li>
+                                        <li>\( P _{i}= \) <input size='6'/> kN</li>
+                                        <li>\( e= \) <input size='6'/> mm</li>
+                                    </ul>
+                                    <p>
+                                        <button class="btn btn-primary">Finish and Submit</button>
+                                    </p>
                                 </div>
                             </div>
                         </section>
