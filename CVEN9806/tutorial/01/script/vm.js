@@ -119,10 +119,8 @@ var vm = new Vue({
             $("#answer-tabs").tabs();
         },
         
-        update_input: function() {
-            $("input .update").each(function(idx, ele) {
-                $(ele).html(this[$(ele).attr("id")]);
-            });
+        toFinish: function(e) {
+            
         }
     }
 });

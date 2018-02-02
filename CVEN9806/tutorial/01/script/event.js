@@ -48,7 +48,6 @@ function plot_beam() {
         window.plot.glider.moveTo([x, y]);
         
         vm.d = depth;
-        vm.update_input();
         
         // change diagram
         

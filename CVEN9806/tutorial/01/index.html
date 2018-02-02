@@ -26,28 +26,37 @@
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
             <strong>Module 01 Prestress and Eccentricity</strong>
             <div class="h6 bold">Background Color: <input id="select-color" type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+                E-learning Module for CVEN 9806 Prestressed Concrete<br/>
+                Course Coordinator: A/Prof Mario Attard<br/>
+                Module Creator: Dr Xiaojun Chen<br/>
+                All Rights Reserved by UNSW<br/>
+            </div>
         </div>
         <div class="container" id="myapp" style="margin-bottom: 30px;">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="h4 question">
                         <p>
-                            
+                            Design the prestressing for a simply supported fully prestressed pretensioned concrete bridge plank with the cross-section shown below. The plank is {{prob.b}} mm wide and you need to choose a depth D for it. Make sure the deflections are within acceptable limits.
+                        </p>
+                        <p>
+                            The span of the planks is {{prob.span}} m, Use only {{prob.dia}} mm diameter strands and the cable profile is straight. The service live load is {{prob.ll}} kN/m. No instantaneous losses and the time dependent losses R = {{prob.R}}. The minimum cover to the tendons is {{prob.cover}} mm.
                         </p>
                         <img src="resource/fig01.png"/>
                         <div style="text-align: center;">
                             <div id="svg-profile" style="width: 600px; height: 200px; border: 0px solid black;"></div>
                         </div>
-                        <p>
-                            
-                        </p>
-                        <p>
-                            
+                        <p style="margin-top: 20px">
+                            Take \( f_{c}=32MPa,\; f_{ci}=32MPa\) and Breaking load is {{prob.break}} kN. Use only one layer of cables.
                         </p>
                     </div>
                     <div class="h4">
                         <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
                         <section>
+                            <p style="margin-bottom: 15px;">
+                                <strong>Instruction:</strong> <span style="font-weight: normal;">A blue point is shown right the the cross-section of the plank above. Move the point vertically to change the depth of the plank. Go through the tabs below in sequence to design the depth \( D \), as well as \( P{i} \) and \( e \). Finally you need to answer the last tab (in red) and submit.</span>
+                            </p>
                             <div id="answer-tabs">
                                 <ul>
                                     <li class="list"><a href="#t1">Stress Limit Fomula</a></li>
@@ -58,6 +67,11 @@
                                 </ul>
                                 
                                 <div id="t1" style="font-size: 0.7em;">
+                                    <strong>Stress limits are:</strong>
+                                    
+                                    \[ F _{ti} = 0.25 \sqrt{f _{ci}}= 1.4MPa,\;\;F _{t} = 0.25 \sqrt{f _{c}}= 1.4MPa,\;\; \]
+                                    \[ F _{ci} = -0.5 \sqrt{f _{ci}}= -16MPa,\;\;F _{c} = -0.5 \sqrt{f _{c}}= -16MPa,\;\; \]
+                                    
                                     <strong>At transfer, the top fiber stress must not exceed tensile stress limit:</strong>
                                     
                                     \[ \sigma _{t} = -\frac{P _{i}}{A} + \frac{P _{i} \times e}{Z _{top}} - \frac{M _{o}}{Z _{top}} \leq F _{ti} \;\;\;(1) \]
@@ -78,12 +92,30 @@
                                 </div>
                                 
                                 <div id="t4">
+                                    <p>
+                                        <strong>Moving the slider to change the depth of the plank, <span style="font-style: italic;">D</span> = {{d}} mm</strong>
+                                    </p>
+                                    <p>
+                                        <strong>The depth of the plank <span style="font-style: italic;">D</span> should be chosen so that the section modules (for rectangle cross-section \( Z _{top} = Z _{btm} = Z = \frac{b \times D ^{2}}{6} \)) must be larger than Z<sub>b,required</sub>:</strong>
+                                        \[ Z \geq Z _{b,required} = \frac{M _{t}}{F _{t} - R F_{ci}} \]
+                                    </p>
                                     <ul>
-                                        <li>\( Z _{b,required}= \) <span class="update" id='zb_min'>{{zb_min}}</span> mm<sup>3</sup></li>
+                                        <li><strong style="font-style: italic;">Z<sub>b,required</sub> = {{(zb_min).toExponential(3)}} mm<sup>3</sup></strong></li>
                                     </ul>
                                     <ul>
-                                        <li>\( Z = \) <span class="update" id='z'>{{z}}</span> mm<sup>3</sup></li>
+                                        <li><strong>Z = {{(z).toExponential(3)}} mm<sup>3</sup></strong></li>
                                     </ul>
+                                    <p>
+                                        <strong>The eccentricity must not exceed the maximum allowable eccentricity</strong>
+                                    </p>
+                                    <ul>
+                                        <li><strong style="font-style: italic;">e<sub>max</sub> = D/2 - cover - &Phi;/2 = {{(d/2 - prob.cover - prob.dia/2).toFixed(1)}} mm</strong></li>
+                                    </ul>
+                                    <p>
+                                        <strong>
+                                            \( P _{i} \) and \( e \) are determined from the Magnel Diagram, which is shown in the next tab.
+                                        </strong>
+                                    </p>
                                 </div>
                                 
                                 <div id="t5">
@@ -148,7 +180,15 @@
                                 </div>
                                 
                                 <div id="t6">
-                                    <p class="h4">
+                                    <p>
+                                        <strong>Taking loading factors for deflection: \( \varphi _{s}=1.0 \), \( \varphi _{l}=0.6 \), \( k _{cs}=2.5 \), we have:</strong>
+                                    </p>
+                                    <ul>
+                                        <li>G<sub>sw</sub> = 24 &times; Area = {{(prob.b / 1000 * d / 1000 * 24).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>st</sub> = G + &phi;<sub>s</sub>Q = {{(prob.b/1000*d/1000*24 + prob.ll).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>sus</sub> = G + &phi;<sub>L</sub>Q = {{(prob.b/1000*d/1000*24 + 0.6*prob.ll).toFixed(3)}} kN/m</li>
+                                    </ul>
+                                    <p>
                                         <strong>Use the \( P _{i} \) and \( e \) in the previous tab as input:</strong>
                                     </p>
                                     <ul style="font-size: 1em;">
@@ -165,9 +205,6 @@
                                             <li>\( E _{ci}= E _{c} = \) 30,100 kN</li>
                                             <li><span style="font-weight: bold; font-style: italic;">I<sub>g</sub></span> = {{(Math.pow(d, 3) * prob.b / 12).toExponential(3)}} mm<sup>4</sup></li>
                                         </ul>
-                                        <p>
-                                            Taking loading factors for deflection: \( \phi _{s}=1.0 \), \( \phi _{l}=0.6 \), \( k _{cs}=2.5 \)
-                                        </p>
                                         <p>
                                             <strong>Formula for displacement:</strong>
                                             \[ \Delta _{p} = -\frac{1}{8}\frac{P _{i} e L ^{2}}{E _{ci} I _{g}} \]
@@ -207,9 +244,10 @@
                                         <li>\( D= \) <input size='6'/> mm</li>
                                         <li>\( P _{i}= \) <input size='6'/> kN</li>
                                         <li>\( e= \) <input size='6'/> mm</li>
+                                        <li>Adopt <input size='4'/> wires @ <input size='6'/> mm</li>
                                     </ul>
                                     <p>
-                                        <button class="btn btn-primary">Finish and Submit</button>
+                                        <button class="btn btn-primary" v-on:click="toFinish($event);">Finish and Submit</button>
                                     </p>
                                 </div>
                             </div>
