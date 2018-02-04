@@ -120,7 +120,7 @@ var vm = new Vue({
         },
         
         toFinish: function(e) {
-            
+            $(e.target).append($("<span><br/><strong>This module is completed. you can close the page at any time.</strong></span>")).hide();
         }
     }
 });
