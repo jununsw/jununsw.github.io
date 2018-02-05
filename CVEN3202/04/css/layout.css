@@ -54,3 +54,21 @@ li {
 .main-body {
     display: none;
 }
+
+.accordion {
+    margin: 0;
+}
+
+.accordion .ui-accordion-header {
+    font-size: 16px;
+}
+
+.accordion .ui-accordion-content {
+    font-size: 16px;
+    background-color: transparent;
+    border: 0;
+}
+
+.pointFont {
+    font-weight: bold;
+}
