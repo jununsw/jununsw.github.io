@@ -41,14 +41,22 @@ var vm = new Vue({
         
         text_compare: function() {
             if (this.sigma_0 <= prob.pc) {
-                return "σ0 < σpc";
+                return "σ\'0 < σ\'pc";
             } else {
-                return "σ0 > σpc";
+                return "σ\'0 = σ\'pc";
             }
         },
         
         e0: function() {
-            return Number((this.prob.omega * this.prob.gs / 100).toFixed(4));
+            if (this.prob.pc > 50) {
+                var r = (this.prob.oedometer['100'] - this.prob.oedometer['50']) / 50 * (this.prob.pc - 50) + this.prob.oedometer['50'];
+                
+                return Number(r.toFixed(4));
+            } else {
+                var r = (this.prob.oedometer['50'] - this.prob.oedometer['25']) / 25 * (this.prob.pc - 25) + this.prob.oedometer['25'];
+                
+                return Number(r.toFixed(4));
+            }
         },
         
         result: function() {

@@ -19,7 +19,16 @@ class Model {
         this.gamma1 = 20;
         this.gamma2 = 16;
         
-        this.cc = 0.7;
+        this.oedometer = {
+            '5': 1.5894,
+            '25': 1.4365,
+            '50': 1.2924,
+            '100': 1.1188,
+            '200': 0.9216,
+            '5.1': 1.1903
+        };
+        
+        this.cc = Number(((this.oedometer['100'] - this.oedometer['200']) / (Math.log10(200) - Math.log10(100))).toFixed(1));
         this.cr = 0.2;
         
         this.sigma0 = (function(gamma1, gamma2, d1, d2) {
@@ -28,7 +37,7 @@ class Model {
             r = Number(r.toFixed(2));
             
             return r;
-        })(this.gamma1, this.gamma2, this.d1, 4);
+        })(this.gamma1, this.gamma2, this.d1, 6);
         
         this.sigma1 = (function(gamma1, gamma2, d1, d2, q, b, l) {
             var r0 = gamma1*d1 + gamma2*d2/2 - d2/2*9.8;

@@ -73,19 +73,16 @@
                         <div id='step1' style="display: none;">
                             <p>The stress at the middle of the clay layer (red point in the figure) before surcharge is</p>
                             <p>
-                                \[ \sigma _{0} = \gamma _{t1} d_{1} + \gamma _{t2} \frac{d _{2}}{2} \]
+                                \[ \sigma '_{0} = \gamma _{t1} d_{1} + \gamma _{t2} \frac{d _{2}}{2} \]
                             </p>
-                            <p>Thererfore &sigma;<sub>0</sub> = {{sigma_0}} kPa</p>
+                            <p>Therefore &sigma;'<sub>0</sub> = {{sigma_0}} kPa</p>
                             <p>The stress at the middle of the clay layer (red point in the figure) before surcharge is</p>
                             <p>
-                                \[ \sigma _{f}= \frac{qBL}{(B +d _{1} + \frac{d _{2}}{2})L +d _{1} + \frac{d _{2}}{2})} \]
+                                \[ \sigma '_{f}= \frac{qBL}{(B +d _{1} + \frac{d _{2}}{2})L +d _{1} + \frac{d _{2}}{2})} \]
                             </p>
-                            <p>Therefore &sigma;<sub>f</sub> = {{sigma_f}} kPa</p>
+                            <p>Therefore &sigma;'<sub>f</sub> = {{sigma_f}} kPa &gt; &sigma;'<sub>pc</sub></p>
                             <p>
-                                Since {{ text_compare }}, the soil is {{(sigma_0 &lt; prob.pc) ? 'over-consolidated' : 'normal consolidated'}}
-                            </p>
-                            <p>
-                                Use log(&sigma;)-e chart to find the change of e
+                                Use log(&sigma;')-e chart to find the change of e
                             </p>
                             <p>
                                 <button type="button" class="btn btn-primary" v-on:click="step2($event);">Next Step</button>
@@ -99,21 +96,27 @@
                                 {{ text_compare }}, {{(sigma_0 &lt; prob.pc) ? 'over-consolidated' : 'normal consolidated'}} soil.
                             </p>
                             <p>
-                                In the following plot, the x axis is log(&sigma;) (kPa) and the y-axis is the void ratio e.
+                                In the following plot, the x axis is log(&sigma;') (kPa) and the y-axis is the void ratio e.
                             </p>
                             <ul>
                                 <li>Slope of the <span style="color: blue;">blue</span> line is C<sub>r</sub></li>
                                 <li>Slope of the <span style="color: green;">green</span> line is C<sub>c</sub></li>
                             </ul>
                             <p>
-                                &sigma;<sub>pc</sub>, &sigma;<sub>0</sub> and &sigma;<sub>f</sub> are shown on the chart
+                                From the oedometer result test, the void ratio at &sigma;<sub>pc</sub> is {{e0}}.
+                            </p>
+                            <p>
+                                &sigma;'<sub>0</sub> and &sigma;'<sub>f</sub> are shown on the chart
                             </p>
                             <div id="soil-chart" style="width: 350px; height: 350px; margin-left: 0;"></div>
                             <p id="soil-chart-label" style="text-align: center; display: none;">Pressure (kPa) log scale</p>
                             <ul>
-                                <li>&sigma;<sub>pc</sub> = {{prob.pc}} kPa</li>
-                                <li>&sigma;<sub>0</sub> = {{sigma_0}} kPa (first black point from left)</li>
-                                <li>&sigma;<sub>f</sub> = {{sigma_f}} kPa (second black point from left)</li>
+                                <li>&sigma;'<sub>pc</sub> = {{prob.pc}} kPa</li>
+                                <li>&sigma;'<sub>0</sub> = {{sigma_0}} kPa</li>
+                                <li>&sigma;'<sub>f</sub> = {{sigma_f}} kPa</li>
+                                <li>
+                                    \[ \Delta e = C _{r} log \left ( \frac{\sigma ' _{pc}}{\sigma ' _{0}} \right ) + C _{c} log \left ( \frac{\sigma ' _{f}}{\sigma ' _{pc}} \right )\]
+                                </li>
                                 <li>Therefore &Delta;<sub>e</sub> = {{delta_e}}</li>
                             </ul>
                             <p>
@@ -123,20 +126,34 @@
                             <p>
                                 <strong>Therefore S = {{result}} mm</strong>
                             </p>
+                            <p>
+                                <strong>
+                                    Now you can change the depth of layer 2 by moving the black triangle located at the interface between layer 2 and 3.<br/>
+                                </strong>
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-8" style="text-align: center;">
                     <div id="soil-plot" style="width: 600px; height: 700px; margin: 0 auto;"></div>
-                    <div id="handle-info" class='row' style="display: none;">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8">
-                            <p>
-                                <strong>Note:</strong> There is a triangle-shaple handle shown at the interface between layer 2 and 3.<br/><br/>
-                                Moving the handle vertically to change the depth of Layer 2, and see how the information on the lefthand side changes
-                            </p>
+                    <div class='row'>
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <table class="table">
+                                <caption><strong>Oedometer test results</strong></caption>
+                                <thead>
+                                    <tr>
+                                        <th>Pressure(kPa)</th>
+                                        <th>Void ratio (e)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(value, key) in prob.oedometer">
+                                        <th>{{Number(key).toFixed(0)}}</th>
+                                        <th>{{value}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-sm-2"></div>
                     </div>
                 </div>
             </div>

@@ -430,13 +430,15 @@ function plot_soil() {
     $("#text-lvl2-1").html("G<sub>s</sub> = 2.7 kg/m<sup>3<sup>");
     $("#text-lvl2-2").html("&sigma;<sub>pc</sub>\'= " + prob.pc + " kPa");
     $("#text-lvl2-3").html("&gamma;<sub>t2</sub> = " + prob.gamma2 + " kg/m<sup>3</sup>, w = " + prob.omega + " %");
-    $("#text-lvl2-4").html("C<sub>c</sub> = " + prob.cc + " , C<sub>r</sub> = " + prob.cr + "");
+    $("#text-lvl2-4").html("C<sub>c</sub> = " + "<span id='plot-cc'></span>" + " , C<sub>r</sub> = " + prob.cr + "");
     
     prob.plot.dash = [prob.plot.load_dash1, prob.plot.load_dash2, prob.plot.load_dash3, prob.plot.triangle1, prob.plot.triangle2];
+    
+    $("#plot-cc").html(vm.prob.cc.toString());
 }
 
 function plot_chart(brd, pc, cr, cc, omega) {
-    var e0 = omega * 2.7 / 100;
+    var e0 = vm.e0;
     var y_top = vm.e(prob.pc * 0.5);
     var y_btn = vm.e(prob.pc * 1.54);
     var x_left = Math.log10(prob.pc * 0.5);
@@ -482,7 +484,7 @@ function plot_chart(brd, pc, cr, cc, omega) {
     prob.chart.point_pc = prob.chart.brd.create('point', [Math.log10(prob.pc), e0], {
         size: 4,
         color: 'red',
-        name: '\u03c3pc',
+        name: '\u03c3\'pc',
         highlight: false,
         fixed: true
     });
@@ -562,7 +564,7 @@ function plot_chart(brd, pc, cr, cc, omega) {
         return vm.e(prob.chart.slider.X())
     }], {
         fixed: true,
-        name: '\u03c30',
+        name: '\u03c3\'0',
         fontSize: 20,
         color: 'black',
         label: { 
@@ -576,7 +578,7 @@ function plot_chart(brd, pc, cr, cc, omega) {
         return vm.e(prob.chart.slider.Y())
     }], {
         fixed: true,
-        name: '\u03c3f',
+        name: '\u03c3\'f',
         color: 'black',
         label: { 
            cssClass: 'pointFont'
@@ -689,6 +691,4 @@ function plot_chart(brd, pc, cr, cc, omega) {
     $("#soil-chart-label").show();
     
     vm.delta_e = Number((prob.chart.p0.Y() - prob.chart.pf.Y()).toFixed(4));
-    
-    $("#handle-info").show();
 }
