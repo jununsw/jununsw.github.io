@@ -43,13 +43,13 @@
                         <p>
                             The span of the planks is {{prob.span}} m, Use only {{prob.dia}} mm diameter strands and the cable profile is straight. The service live load is {{prob.ll}} kN/m. No instantaneous losses and the time dependent losses R = {{prob.R}}. The minimum cover to the tendons is {{prob.cover}} mm.
                         </p>
+                        <p>
+                            Assume \( E _{ci} = E _{c}=30,100MPa \), and take \( f_{c}=32MPa,\; f_{ci}=32MPa\) . The Breaking load is {{prob.break}} kN. Use only one layer of cables.
+                        </p>
                         <img src="resource/fig01.png"/>
                         <div style="text-align: center;">
                             <div id="svg-profile" style="width: 600px; height: 200px; border: 0px solid black;"></div>
                         </div>
-                        <p style="margin-top: 20px">
-                            Take \( f_{c}=32MPa,\; f_{ci}=32MPa\) and Breaking load is {{prob.break}} kN. Use only one layer of cables.
-                        </p>
                     </div>
                     <div class="h4">
                         <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
@@ -69,7 +69,7 @@
                                 <div id="t1" style="font-size: 0.7em;">
                                     <strong>Stress limits are:</strong>
                                     
-                                    \[ F _{ti} = 0.25 \sqrt{f _{ci}}= 1.4MPa,\;\;F _{t} = 0.25 \sqrt{f _{c}}= 1.4MPa,\;\; \]
+                                    \[ F _{ti} = 0.25 \sqrt{f _{ci}}= 1.41MPa,\;\;F _{t} = 0.25 \sqrt{f _{c}}= 1.41MPa,\;\; \]
                                     \[ F _{ci} = -0.5 \sqrt{f _{ci}}= -16MPa,\;\;F _{c} = -0.5 \sqrt{f _{c}}= -16MPa,\;\; \]
                                     
                                     <strong>At transfer, the top fiber stress must not exceed tensile stress limit:</strong>
@@ -185,8 +185,23 @@
                                     </p>
                                     <ul>
                                         <li>G<sub>sw</sub> = 24 &times; Area = {{(prob.b / 1000 * d / 1000 * 24).toFixed(3)}} kN/m</li>
-                                        <li>w<sub>st</sub> = G + &phi;<sub>s</sub>Q = {{(prob.b/1000*d/1000*24 + prob.ll).toFixed(3)}} kN/m</li>
-                                        <li>w<sub>sus</sub> = G + &phi;<sub>L</sub>Q = {{(prob.b/1000*d/1000*24 + 0.6*prob.ll).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>st</sub> = G<sub>sw</sub> + &phi;<sub>s</sub>Q = {{(prob.b/1000*d/1000*24 + prob.ll*1.2).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>sus</sub> = G<sub>sw</sub> + &phi;<sub>L</sub>Q = {{(prob.b/1000*d/1000*24 + 0.6*prob.ll*1.2).toFixed(3)}} kN/m</li>
+                                    </ul>
+                                    <p>
+                                        <strong>Formula for displacement:</strong>
+                                        \[ \delta\;\;(@tranfser) = \frac{5}{384}\frac{G _{sw} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{i} e L ^{2}}{E _{ci} I _{g}} \]
+                                        \[ \Delta _{ST} = \left (\frac{5}{384}\frac{w _{sw} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{e} e L ^{2}}{E _{ci} I _{g}} \right ) + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                        \[ \Delta _{sus} = \left (\frac{5}{384}\frac{w _{sus} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{e} e L ^{2}}{E _{ci} I _{g}} \right ) + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                        \[ \Delta _{LT} = k _{cs} \Delta _{sus} + \Delta _{ST} \]
+                                    </p>
+                                    <p style="font-weight: bold;">
+                                        According to AS 5100-2 &amp; AS 3600:
+                                    </p>
+                                    <ul style="">
+                                        <li>Camber Limit = L / 300 = {{(prob.span * 1000 / 300).toFixed(0)}} mm</li>
+                                        <li>Short Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                        <li>Long Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
                                     </ul>
                                     <p>
                                         <strong>Use the \( P _{i} \) and \( e \) in the previous tab as input:</strong>
@@ -202,31 +217,14 @@
                                     <section id="disp" style="display: none;">
                                         <ul>
                                             <li>Effective prestress force: \( P _{e}= R \times P _{i} = \) <span id="pe"></span> kN</li>
-                                            <li>\( E _{ci}= E _{c} = \) 30,100 kN</li>
+                                            <li>\( E _{ci}= E _{c} = \) 30,100 MPa</li>
                                             <li><span style="font-weight: bold; font-style: italic;">I<sub>g</sub></span> = {{(Math.pow(d, 3) * prob.b / 12).toExponential(3)}} mm<sup>4</sup></li>
-                                        </ul>
-                                        <p>
-                                            <strong>Formula for displacement:</strong>
-                                            \[ \Delta _{p} = -\frac{1}{8}\frac{P _{i} e L ^{2}}{E _{ci} I _{g}} \]
-                                            \[ \Delta _{sw} = \frac{5}{384}\frac{G _{sw} L ^{4}}{E _{ci} I _{g}} \]
-                                            \[ \Delta _{load} = \frac{5}{384}\frac{w _{sw} L ^{4}}{E _{ci} I _{g}} \]
-                                            \[ \Delta _{ST} = \Delta _{load} + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
-                                            \[ \Delta _{sus} = \frac{5}{384}\frac{w _{sus} L ^{4}}{E _{c} I _{g}} + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
-                                            \[ \Delta _{LT} = k _{cs} \Delta _{sus} + \Delta _{st} \]
-                                        </p>
-                                        <p style="font-weight: bold;">
-                                            According to AS 5100-2 &amp; AS 3600:
-                                        </p>
-                                        <ul style="">
-                                            <li>Camber Limit = L / 300 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
-                                            <li>Short Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
-                                            <li>Long Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
                                         </ul>
                                         <p>
                                             <strong>Therefore the displacement for the given inputs are calculated as</strong>
                                         </p>
                                         <ul style="font-weight: bold;">
-                                            <li>\( \Delta _{p}= \) <span id="dp"></span> mm</li>
+                                            <li>\( \delta = \) <span id="dp"></span> mm</li>
                                             <li>\( \Delta _{ST}= \) <span id="dst"></span> mm</li>
                                             <li>\( \Delta _{LT}= \) <span id="dlt"></span> mm</li>
                                         </ul>
@@ -241,14 +239,15 @@
                                         <strong>Based on the calculation in the previous three tabs, your final answer for \( D \), \( P _{i} \) and \( e \) are:</strong>
                                     </p>
                                     <ul style="font-size: 1em;">
-                                        <li>\( D= \) <input size='6'/> mm</li>
-                                        <li>\( P _{i}= \) <input size='6'/> kN</li>
-                                        <li>\( e= \) <input size='6'/> mm</li>
-                                        <li>Adopt <input size='4'/> wires @ <input size='6'/> mm</li>
+                                        <li>\( D= \) <input id="final-d" size='6'/> mm</li>
+                                        <li>\( P _{i}= \) <input id="final-p" size='6'/> kN</li>
+                                        <li>\( e= \) <input id="final-e" size='6'/> mm</li>
+                                        <li>Adopt <input id="final-n" size='4'/> wires @ <input id="final-s" size='6'/> mm</li>
                                     </ul>
                                     <p>
                                         <button class="btn btn-primary" v-on:click="toFinish($event);">Finish and Submit</button>
                                     </p>
+                                    <p id="final-result" style="font-weight: bold;"></p>
                                 </div>
                             </div>
                         </section>

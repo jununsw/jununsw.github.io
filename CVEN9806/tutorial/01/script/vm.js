@@ -120,8 +120,34 @@ var vm = new Vue({
         },
         
         toFinish: function(e) {
-            $(e.target).closest("p").append($("<p><strong>This module is completed. You can close the page at any time.</strong></p>"));
-            $(e.target).hide();
+            if (this.toCheckAnswer()) {
+                $("#final-result").css("color", "black").show().html("This module is completed. You can close the page at any time.");
+                $(e.target).hide();
+            } else {
+                $("#final-result").css("color", "red").show().html("Your answer is not correct");
+            }
+        },
+        
+        toCheckAnswer() {
+            var d = Number($("#final-d").val());
+            var p = Number($("#final-p").val());
+            var e = Number($("#final-e").val());
+            var n = Number($("#final-n").val());
+            var s = Number($("#final-s").val());
+            
+            var pp = 1000 / p;
+            
+            var check_d = (d >= 80) && (d <= 150);
+            var check_e = (e > 0) && (e <= (d/2 - 20));
+            var check_n = (n * this.prob.R * this.prob.break <= p * 1.2) && (n * this.prob.R * this.prob.break >= p * 0.8);
+            var check_s = (s * (n - 1) <= 1200) && (s * (n - 1) >= 800);
+            var check_p = (pp >= this.p1e(e)) && (pp >= this.p2e(e)) && (pp <= this.p3(e)) && (pp >= this.p4(e));
+            
+            if (check_d && check_e && check_n && check_p && check_s) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 });

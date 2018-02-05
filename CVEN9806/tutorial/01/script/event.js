@@ -79,7 +79,18 @@ function plot_beam() {
         window.diagram.linaBe.point2.moveTo([0, vm.p2e(0)]);
         
         // calculate displacement
-        calculate_disp();
+        if ($("#disp").css("display") == "block") {
+            var x = Number($("#disp-pi").val());
+            var y = Number($("#disp-e").val());
+
+            if (isNaN(x) || isNaN(y) || (x == 0)) {
+                
+            } else {
+                calculate_disp(x, y);
+            }
+        } else {
+            
+        }
     });
     
     window.plot.profile = window.plot.brd.create('polygon', [[0, 75], [4, 75], [4, function() {
@@ -637,10 +648,31 @@ function show_disp(e) {
         $("#disp").show();
         $("#pe").html((x * vm.prob.R).toFixed(2));
         
-        calculate_disp();
+        calculate_disp(x, y);
     }
 }
 
-function calculate_disp() {
+function calculate_disp(pi, e) {
     var d = vm.d;
+    var ig = Number((Math.pow(d, 3) * vm.prob.b / 12).toExponential(3));
+    var ec = 30100;
+    
+    var gsw = Number((vm.prob.b / 1000 * d / 1000 * 24).toFixed(3));
+    var wst = Number((vm.prob.b/1000*d/1000*24 + vm.prob.ll*1.2).toFixed(3));
+    var wsus = Number((vm.prob.b/1000*d/1000*24 + 0.6*vm.prob.ll*1.2).toFixed(3));
+    
+    var dp = pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;
+    var dpe = vm.prob.R*pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;
+    
+    var dsw = 5*gsw*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
+    var dst = 5*wst*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
+    var dlt = 5*wsus*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
+    
+    var c = dsw - dp;
+    var st = dst - dpe;
+    var lt = st + (dlt - dpe)*2.5
+    
+    $("#dp").html(c.toFixed(2));
+    $("#dst").html(st.toFixed(2));
+    $("#dlt").html(lt.toFixed(2));
 }
