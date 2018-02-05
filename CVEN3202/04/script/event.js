@@ -486,10 +486,12 @@ function plot_chart(brd, pc, cr, cc, omega) {
         color: 'red',
         name: '\u03c3\'pc',
         highlight: false,
-        fixed: true
+        fixed: true,
+        label: {
+            fontSize: 14,
+            highlight: false
+        }
     });
-    
-    prob.chart.point_pc.label.setAttribute({fontSize: 20});
     
     prob.chart.brd.create('text', [(x_left + x0) / 2, e0, 'e0'], {
         anchorX: 'middle', 
@@ -568,7 +570,9 @@ function plot_chart(brd, pc, cr, cc, omega) {
         fontSize: 20,
         color: 'black',
         label: { 
-           cssClass: 'pointFont'
+           cssClass: 'pointFont',
+           fontSize: 16,
+           highlight: false
         }
     });
     
@@ -581,7 +585,9 @@ function plot_chart(brd, pc, cr, cc, omega) {
         name: '\u03c3\'f',
         color: 'black',
         label: { 
-           cssClass: 'pointFont'
+           cssClass: 'pointFont',
+           fontSize: 16,
+           highlight: false
         }
     });
     

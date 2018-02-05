@@ -82,9 +82,6 @@
                             </p>
                             <p>Therefore &sigma;'<sub>f</sub> = {{sigma_f}} kPa &gt; &sigma;'<sub>pc</sub></p>
                             <p>
-                                Use log(&sigma;')-e chart to find the change of e
-                            </p>
-                            <p>
                                 <button type="button" class="btn btn-primary" v-on:click="step2($event);">Next Step</button>
                             </p>
                         </div>
@@ -101,12 +98,10 @@
                             <ul>
                                 <li>Slope of the <span style="color: blue;">blue</span> line is C<sub>r</sub></li>
                                 <li>Slope of the <span style="color: green;">green</span> line is C<sub>c</sub></li>
+                                <li>Both lines intersect at point &sigma;'<sub>pc</sub></li>
                             </ul>
                             <p>
-                                From the oedometer result test, the void ratio at &sigma;<sub>pc</sub> is {{e0}}.
-                            </p>
-                            <p>
-                                &sigma;'<sub>0</sub> and &sigma;'<sub>f</sub> are shown on the chart
+                                &sigma;'<sub>0</sub> and &sigma;'<sub>f</sub> are shown on the plot
                             </p>
                             <div id="soil-chart" style="width: 350px; height: 350px; margin-left: 0;"></div>
                             <p id="soil-chart-label" style="text-align: center; display: none;">Pressure (kPa) log scale</p>
@@ -117,7 +112,7 @@
                                 <li>
                                     \[ \Delta e = C _{r} log \left ( \frac{\sigma ' _{pc}}{\sigma ' _{0}} \right ) + C _{c} log \left ( \frac{\sigma ' _{f}}{\sigma ' _{pc}} \right )\]
                                 </li>
-                                <li>Therefore &Delta;<sub>e</sub> = {{delta_e}}</li>
+                                <li>Therefore &Delta;e = {{delta_e}}</li>
                             </ul>
                             <p>
                                 The settlement is calculated as
