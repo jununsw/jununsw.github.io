@@ -29,8 +29,46 @@ var vm = new Vue({
         
         start: function(e) {
             $(e.target).css("display", "none");
-            $(e.target).closest(".section").find("section").css("display", "block");
+            $(e.target).closest(".section").find("section:first-of-type").css("display", "block");
             createSlider();
+        },
+        
+        part1: function(e) {
+            $(e.target).css("display", "none");
+            $(e.target).closest("section").next("section").css("display", "block");
+            
+            var e = ([10, 25].random(0)) * 10;
+            
+            prob.e = e;
+            window.plot.keypoint[1].moveTo([window.plot.keypoint[1].X(), -e]);
+            window.plot.keypoint[1].setAttribute({fixed: true});
+            
+            var atot = this.alpha(prob.span);
+            var pi = 4520 * (1 - 0.2*(atot + 0.01*prob.span));
+            
+            prob.pi = Number(pi.toFixed(0));
+            prob.pj = 4520;
+        },
+        
+        part2: function(e) {
+            var in1 = getPrecision($("#pi").val(), 0, 'n');
+            
+            if (Math.abs(in1 - prob.pi) <= 1) {
+                $(e.target).next("span").css("color", "red").prop("disabled", true).html("");
+                $(e.target).css("display", "none");
+                $(e.target).closest("section").next("section").css("display", "block");
+                
+                prob.pi = in1;
+            } else {
+                $(e.target).next("span").css("color", "red").html("&nbsp;&nbsp;&nbsp;Incorrect");
+                return;
+            }
+            
+            createPlot();
+        },
+        
+        part3: function(e) {
+            
         }
     }
 });

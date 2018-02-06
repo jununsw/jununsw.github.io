@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="h4 question">
-                        A simply supported post-tensioned beam has a parablic cable with zero eccentricity and the ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. Duct is bright and zinc coated metal
+                        A simply supported post-tensioned beam has a parablic cable with zero eccentricity and the ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. Duct is bright and zinc coated metal. The beam is jacked from left end only.
                     </div>
                 </div>
             </div>
@@ -56,6 +56,7 @@
                     <ul>
                         <li>Draw-in of Wedges = 6 mm</li>
                         <li>\( E_{p}= \) 195000 MPa</li>
+                        <li>\( \beta _{p}= \) 0.01, \( \mu= \) 0.2</li>
                     </ul>
                 </div>
             </div>
@@ -78,17 +79,46 @@
                 <div class="col-sm-12 h4 section">
                     <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
                     <section>
-                        In the figure above, a slider is shown below the tendon profle. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
+                        <p>
+                            In the figure above, a slider is shown below the tendon profle. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
+                        </p>
                         <ul>
                             <li>\( \theta= \) <span id="theta">{{-slope0.toFixed(3)}}</span></li>
                             <li>\( \alpha_{tot}= \) <span id="alpha">0.000</span></li>
                         </ul>
+                        <p>
+                            For single Parabola:
+                            \[ P _{j} - P _{i} \approx P _{j} \cdot ( \mu [ \alpha _{tot} + \beta _{p} x ] ) \]
+                        </p>
+                        <button class="btn btn-primary" v-on:click="part1($event);">Calculate Friction Loss</button>
+                    </section>
+                    <section style="display: none;">
+                        <p>
+                            Now assume the eccentricity at mid-span is {{prob.e}} mm.
+                        </p>
+                        <p>
+                            Calculate the prestress force at the right end immediately after transfer P<sub>i</sub> = <input id="pi" size="6"/> kN (rounded to 1 kN)
+                        </p>
+                        <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span>&nbsp;&nbsp;&nbsp;(for debug: answer {{prob.pi}})</span>
+                    </section>
+                    <section style="display: none;">
+                        <p>The friction losses diagram is plotted as follows:</p>
+                        <div id="svg-plot" style="width: 600px; height: 500px; margin: 0 auto;"></div>
+                        <p style="margin-top: 20px;">
+                            <strong>Note: </strong>There is a blue point on the y axis. Drag is point to plot the anchorage loss due to draw-in.
+                        </p>
+                        <p>Following values change when you drag the points in the plot: (You can also specity a value for &Delta;P<sub>i</sub> in the input box and press ENTER)</p>
+                        <ul>
+                            <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN)</li>
+                            <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
+                        </ul>
+                        <button class="btn btn-primary" v-on:click="part3($event);" disabled>Complete and Submit</button><span></span>
                     </section>
                 </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=1"></script>
-    <script type="text/javascript" src="script/model.js?v=1"></script>
-    <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/event.js?v=2"></script>
+    <script type="text/javascript" src="script/model.js?v=2"></script>
+    <script type="text/javascript" src="script/vm.js?v=2"></script>
 </html>
