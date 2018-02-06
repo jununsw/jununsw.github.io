@@ -46,8 +46,7 @@ section {
 }
 
 .question {
-    font-weight: bold; 
-    margin-bottom: 2em;
+    font-weight: bold;
 }
 
 img {
@@ -62,40 +61,4 @@ img {
     margin-top: -.8em;
     text-align: center;
     line-height: 1.6em;
-}
-
-.cal {
-    color: red;
-    font-weight: bold;
-}
-
-#answer-tabs {
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 0px; 
-    background: transparent; 
-    border-width: 0px; 
-}
-
-#answer-tabs .ui-tabs-nav { 
-    padding-left: 0px; 
-    background: transparent; 
-    border-width: 0px 0px 1px 0px; 
-    -moz-border-radius: 0px; 
-    -webkit-border-radius: 0px; 
-    border-radius: 0px; 
-}
-
-#answer-tabs .ui-tabs-panel { 
-    background: transparent; 
-    border-width: 0px 0px 0px 0px; 
-}
-
-#answer-tabs div {
-    font-weight: normal;
-    font-size: 0.8em;
-}
-
-#answer-tabs .list {
-    font-size: 14px;
 }

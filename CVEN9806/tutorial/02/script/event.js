@@ -1,103 +1,26 @@
+function init() {
+    plot_profile();
+}
+
 function changeColor(e) {
     var color = $(e.target).val();
     $("body").css("background-color", color.toString());
 }
 
-function init() {
-    plot_diagram();
-    plot_stress();
-    plot_beam();
-}
-
-function plot_beam() {
+function plot_profile() {
     JXG.Options.infobox.fontSize = 0;
     
     window.plot = {};
     
     window.plot.brd = JXG.JSXGraph.initBoard('svg-profile', {
-        boundingbox: [-1, 120, 5, -120],
+        boundingbox: prob.boundingbox,
         showNavigation: false,
         keepaspectratio: false,
         showCopyright: false,
         axis: false
     });
     
-    window.plot.glider_line = window.plot.brd.create('segment', [[4.5, -75], [4.5, 25]], {
-        strokeColor: 'black',
-        strokeWidth: 2,
-        dash: 2,
-        visible: false,
-        fixed: true
-    });
-    
-    window.plot.glider = window.plot.brd.create('glider', [4.5, -75, window.plot.glider_line], {
-        size: 4,
-        fillColor: 'blue',
-        strokeColor: 'blue',
-        name: '',
-        visible: false
-    });
-    
-    window.plot.glider.on('drag', function() {
-        var x = window.plot.glider.X();
-        var y = window.plot.glider.Y();
-        y = y - y%5;
-        y = Number(y.toFixed(0));
-        
-        depth = 75 - y;
-        window.plot.glider.moveTo([x, y]);
-        
-        vm.d = depth;
-        
-        // change diagram
-        
-        window.stress[0].control.moveTo([vm.d, 0]);
-        window.stress[1].control.moveTo([vm.d, 0]);
-        
-        // line A
-        window.diagram.linaA.point1.moveTo([1/vm.alpha, 0]);
-        window.diagram.linaA.point2.moveTo([100, vm.p1(100)]);
-        
-        // line B
-        window.diagram.linaB.point1.moveTo([-1/vm.alpha, 0]);
-        window.diagram.linaB.point2.moveTo([0, vm.p2(0)]);
-        
-        // line C
-        window.diagram.linaC.point1.moveTo([-1/vm.alpha, 0]);
-        window.diagram.linaC.point2.moveTo([0, vm.p3(0)]);
-        
-        // line D
-        window.diagram.linaD.point1.moveTo([1/vm.alpha, 0]);
-        window.diagram.linaD.point2.moveTo([0, vm.p4(0)]);
-        
-        // line Ae
-        window.diagram.linaAe.point1.moveTo([1/vm.alpha, 0]);
-        window.diagram.linaAe.point2.moveTo([100, vm.p1e(100)]);
-        
-        // line Be
-        window.diagram.linaBe.point1.moveTo([-1/vm.alpha, 0]);
-        window.diagram.linaBe.point2.moveTo([0, vm.p2e(0)]);
-        
-        // calculate displacement
-        if ($("#disp").css("display") == "block") {
-            var x = Number($("#disp-pi").val());
-            var y = Number($("#disp-e").val());
-
-            if (isNaN(x) || isNaN(y) || (x == 0)) {
-                
-            } else {
-                calculate_disp(x, y);
-            }
-        } else {
-            
-        }
-    });
-    
-    window.plot.profile = window.plot.brd.create('polygon', [[0, 75], [4, 75], [4, function() {
-        return window.plot.glider.Y();
-    }], [0, function() {
-        return window.plot.glider.Y();
-    }]], {
+    window.plot.profile = window.plot.brd.create('polygon', [[0, 400], [prob.span, 400], [prob.span, -400], [0, -400]], {
         fillColor: 'transparent',
         highlight: false,
         fixed: true
@@ -112,567 +35,338 @@ function plot_beam() {
     window.plot.profile.borders.forEach(function(ele) {
         ele.setAttribute({
             strokeColor: 'black',
-            strokeWidth: 4,
+            strokeWidth: 2,
             highlight: false,
             fixed: true
         });
     });
     
-    window.plot.width = window.plot.brd.create('segment', [[0, 95], [4, 95]], {
-        strokeColor: 'black',
-        strokeWidth: 2,
-        firstArrow: true,
-        lastArrow: true,
-        fixed: true
-    });
+    window.plot.glider = window.plot.brd.create('line', [[prob.span / 2, 0], [prob.span / 2, -390]], {visible: false, straightLast: false, straightFirst: false});
     
-    window.plot.brd.create('text', [2, 100, '1200mm'], {
-        anchorX: 'middle', 
-        anchorY: 'bottom', 
-        fontSize: 18, 
-        fontWeight: 'bold', 
-        highlight: false,
-        fixed: true
-    });
+    window.plot.keypoint = [];
     
-    window.plot.height = window.plot.brd.create('segment', [[-0.2, 75], [-0.2, function() {
-        return window.plot.glider.Y();
-    }]], {
-        strokeColor: 'black',
-        strokeWidth: 2,
-        firstArrow: true,
-        lastArrow: true,
-        fixed: true
-    });
-    
-    window.plot.height_text = window.plot.brd.create('text', [-0.3, function() {
-        return (75 + window.plot.glider.Y()) / 2;
-    }, function() {
-        return (vm.d).toFixed(0) + "mm";
-    }], {
-        anchorX: 'right', 
-        anchorY: 'middle', 
-        fontSize: 18, 
-        fontWeight: 'bold', 
-        highlight: false,
-        fixed: true,
+    window.plot.keypoint.push(window.plot.brd.create('point', [0, 0], {
         visible: false
+    }));
+    
+    window.plot.keypoint.push(window.plot.brd.create('glider', [prob.span / 2, -prob.e, window.plot.glider], {
+        name: '',
+        strokeColor: 'transparent',
+        fillColor: 'red',
+        size: 3,
+        highlight: false,
+        fixed: true
+    }));
+    
+    window.plot.keypoint.push(window.plot.brd.create('point', [prob.span, 0], {
+        visible: false
+    }));
+    
+    window.plot.keypoint[1].on('drag', function() {
+        var y = -window.plot.keypoint[1].Y();
+        var round = y - y%10;
+        
+        round = round > 390 ? 390 : round;
+        round = round < 10 ? 10 : round;
+        
+        window.plot.keypoint[1].moveTo([prob.span / 2, -round]);
+        prob.e = round;
+        vm.$forceUpdate();
+        
+        try {
+            var slope = vm.slope(window.plot.slider.Value());
+            $("#theta").html(-slope.toFixed(3));
+
+            var alpha = vm.alpha(window.plot.slider.Value());
+            $("#alpha").html(alpha.toFixed(3));
+        } catch(e) {
+            
+        }
     });
     
-    window.plot.brd.create('text', [2, -120, 'Plank X-section'], {
-        anchorX: 'middle', 
-        anchorY: 'bottom', 
-        fontSize: 20, 
-        fontWeight: 'bold', 
+    window.plot.tendon = window.plot.brd.create('curve', [function(t) {
+        return t;
+    }, function(t) {
+        return (-4 * window.plot.keypoint[1].Y() / prob.span / prob.span) * Math.pow(t - prob.span/2, 2) + window.plot.keypoint[1].Y();
+    }, 0, prob.span], {
+        strokeWidth: 3,
+        strokeColor: 'blue',
         highlight: false,
         fixed: true
     });
-    
-    [0.5, 1, 1.5, 2, 2.5, 3, 3.5].forEach(function(ele, idx, arr) {
-        window.plot.brd.create('point', [ele, function() {
-            return (75 + window.plot.glider.Y()) / 2 - vm.e_limit;
-        }], {
-            size: 2,
-            fillColor: 'black',
-            strokeColor: 'black',
-            name: '',
-            visible: true,
-            fixed: true
-        })
+}
+
+function createSlider() {
+    window.plot.slider = window.plot.brd.create('slider', [[0, -600], [prob.span, -600], [0, 0, prob.span]], {
+        snapWidth: 0.1,
+        name: 'x',
+        highlight: false
     });
-    
-    window.plot.neural = window.plot.brd.create('segment', [[-0.1, function() {
-        return (75 + window.plot.glider.Y()) / 2;
-    }], [4.1, function() {
-        return (75 + window.plot.glider.Y()) / 2;
-    }]], {
-        strokeColor: 'black',
-        strokeWidth: 2,
+        
+    window.plot.reference_line = window.plot.brd.create('line', [[function() {
+        return window.plot.slider.Value();
+    }, 400], [function() {
+        return window.plot.slider.Value();
+    }, -400]], {
+        straightLast: false, 
+        straightFirst: false,
         dash: 2,
-        visible: true,
+        strokeWidth: 2,
+        color: 'red',
         fixed: true
     });
-}
-
-function show_handle() {
-    window.plot.glider_line.setAttribute({visible: true});
-    window.plot.glider.setAttribute({visible: true});
-    window.plot.height_text.setAttribute({visible: true});
-}
-
-function hide_handle() {
-    window.plot.glider_line.setAttribute({visible: false});
-    window.plot.glider.setAttribute({visible: false});
-    window.plot.height_text.setAttribute({visible: false});
-}
-
-function plot_diagram() {
-    window.diagram = {};
     
-    window.diagram.brd = JXG.JSXGraph.initBoard('svg-diagram', {
-        boundingbox: [-40, 6, 100, -1],
+    window.plot.slider.on("drag", function() {
+        var slope = vm.slope(window.plot.slider.Value());
+        $("#theta").html(-slope.toFixed(3));
+        
+        var alpha = vm.alpha(window.plot.slider.Value());
+        $("#alpha").html(alpha.toFixed(3));
+    });
+}
+
+function createPlot() {
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.chart = {};
+    
+    window.chart.brd = JXG.JSXGraph.initBoard('svg-plot', {
+        boundingbox: [-2, 5000, 17, -500],  // pi minimum 1500
         showNavigation: false,
         keepaspectratio: false,
         showCopyright: false,
-        axis: true,
-        zoom: {
-            factorX: 1.25,
-            factorY: 1.25,
-            wheel: true,
-            needshift: true,
-            eps: 0.1
-	    }
+        axis: true
     });
     
-    window.diagram.checkBox = window.diagram.brd.create('checkbox', [-35, 5.5, '<span> for M<sub>o</sub>=0</span>'], {
-        fontSize: 16,
+    window.chart.label_x = window.chart.brd.create('text', [7.5, -500, 'Distance from left end x (m)'], {
+        anchorX: 'middle',
+        anchorY: 'bottom',
+        fontSize: 18,
         fontWeight: 'bold',
-        fixed: true
+        fixed: true,
+        highlight: false
     });
     
-    window.diagram.brd.create('text', [5, 5.5, '<span> 1/P<sub>i</sub> (10<sup>-6</sup> N<sup>-1</sup>)</span>'], {
+    window.chart.brd.create('text', [0, 5000, 'P (kN)'], {
+        anchorX: 'right',
+        anchorY: 'top',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fixed: true,
+        highlight: false
+    });
+    
+    window.chart.loss_line = window.chart.brd.create('segment', [[0, prob.pj], [15, prob.pi]], {
+        color: 'blue',
+        strokeWidth: 3,
+        dash: 2,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.chart.glider = window.chart.brd.create('segment', [[0, prob.pj], [0, function() {
+        var k = (prob.pj - prob.pi) / 15;
+        var delta = 30 * k;
+        
+        return prob.pj - delta;
+    }]], {
+        visible: false
+    });
+    
+    window.chart.point1 = window.chart.brd.create('glider', [0, prob.pj, window.chart.glider], {
+        size: 6,
+        strokeColor: 'blue',
+        strokeWidth: 1,
+        fillColor: 'blue',
+        highlight: false,
+        name: ''
+    });
+    
+    window.chart.point2 = window.chart.brd.create('glider', [15, prob.pi, window.chart.loss_line], {
+        size: 0,
+        strokeColor: 'blue',
+        strokeWidth: 1,
+        fillColor: 'blue',
+        highlight: false,
+        fixed: true,
+        name: ''
+    });
+    
+    window.chart.brd.create('text', [0.1, prob.pj + 100, function() {
+        return '<span>P<sub>j</sub> = ' + prob.pj.toFixed(0) + ' kN</span>';
+    }], {
         anchorX: 'left',
         anchorY: 'bottom',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
-        fixed: true
+        fixed: true,
+        highlight: false
     });
     
-    window.diagram.brd.create('text', [100, 0.1, '<span> e (mm)</span>'], {
-        anchorX: 'right',
-        anchorY: 'bottom',
-        fontSize: 20,
+    window.chart.brd.create('text', [0.1, function() {
+        return window.chart.point1.Y() - 100;
+    }, function() {
+        return '<span>P<sub>j</sub> - &Delta;P = ' + window.chart.point1.Y().toFixed(0) + ' kN</span>';
+    }], {
+        anchorX: 'left',
+        anchorY: 'top',
+        fontSize: 18,
         fontWeight: 'bold',
-        fixed: true
-    });
-    
-    window.diagram.linaA = window.diagram.brd.create('line', [[1/vm.alpha, 0], [100, vm.p1(100)]], {
-        strokeColor: 'green',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: true,
         fixed: true,
         highlight: false,
-    });
-    
-    window.diagram.linaB = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2(0)]], {
-        strokeColor: 'red',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: true,
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.linaC = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p3(0)]], {
-        strokeColor: 'blue',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: true,
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.linaD = window.diagram.brd.create('line', [[1/vm.alpha, 0], [0, vm.p4(0)]], {
-        strokeColor: '#DAA520',
-        strokeWidth: 2,
-        straightFirst: false,
-        visible: true,
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.linaAe = window.diagram.brd.create('line', [[1/vm.alpha, 0], [100, vm.p1e(100)]], {
-        strokeColor: 'green',
-        strokeWidth: 2,
-        straightFirst: false,
-        dash: 2,
         visible: function() {
-            return window.diagram.checkBox.Value();
-        },
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.linaBe = window.diagram.brd.create('line', [[-1/vm.alpha, 0], [0, vm.p2e(0)]], {
-        strokeColor: 'red',
-        strokeWidth: 2,
-        straightFirst: false,
-        dash: 2,
-        visible: function() {
-            return window.diagram.checkBox.Value();
-        },
-        fixed: true,
-        highlight: false,
-    });
-    
-    window.diagram.trial = window.diagram.brd.create('point', [0, 0], {
-        size: 5,
-        strokeColor: 'black',
-        fillColor: 'blue',
-        name: '',
-        highlight: false,
-        visible: false,
-        showInfobox: false
-    });
-    
-    window.diagram.trial.on('drag', function() {
-        var x = window.diagram.trial.X();
-        var y = window.diagram.trial.Y();
-
-        var pi = 1/y*1e6/1000;
-        var e = x;
-
-        pi = Number(pi.toFixed(0));
-        e = Number(e.toFixed(0));
-
-        x = pi;
-        y = e;
-
-        $("#try-pi").val(x.toString());
-        $("#try-e").val(y.toString());
-
-        window.stress[0].p.moveTo([x, 0]);
-        window.stress[0].e.moveTo([y, 0]);
-
-        window.stress[1].p.moveTo([x, 0]);
-        window.stress[1].e.moveTo([y, 0]);
-
-        x = 1 / x;
-        x = x * 1e3;
-        window.diagram.trial.moveTo([y, x]);
-    });
-}
-
-function show_pe(e) {
-    var x = Number($("#try-pi").val());
-    var y = Number($("#try-e").val());
-    
-    if (isNaN(x) || isNaN(y) || (x == 0)) {
-        return
-    } else {
-        window.stress[0].p.moveTo([x, 0]);
-        window.stress[0].e.moveTo([y, 0]);
-
-        window.stress[1].p.moveTo([x, 0]);
-        window.stress[1].e.moveTo([y, 0]);
-        
-        x = 1 / x;
-        x = x * 1e3;
-        window.diagram.trial.moveTo([y, x]);
-        window.diagram.trial.setAttribute({visible: true});
-        
-        // $("#stress-distribution").show();
-        $("#btn-stress").show()
-        $("#stress-distribution").dialog({
-            resizable: false,
-            height: 400,
-            width: 850,
-            position: { 
-                my: "right top", 
-                at: "right-50 top+50"
-            },
-            create: function() {
-                $(this).parent().css({position:"fixed"});
-                $(this).css("background-color", $("#select-color").val().toString());
-            },
-            open: function() {
-                $("#btn-stress").prop("disabled", true);
-                $(this).css("background-color", $("#select-color").val().toString());
-            },
-            close: function() {
-                $("#btn-stress").prop("disabled", false);
+            if (window.chart.point1.Y() < prob.pj) {
+                return true
+            } else {
+                return false
             }
-        });
+        }
+    });
+    
+    window.chart.brd.create('segment', [window.chart.point1, window.chart.point2], {
+        color: 'blue',
+        strokeWidth: 3,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.chart.brd.create('segment', [[15, prob.pi], window.chart.point2], {
+        color: 'blue',
+        strokeWidth: 3,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.chart.brd.create('segment', [[0, function() {
+        return window.chart.point1.Y() - 700;
+    }], [function() {
+        if (window.chart.point2.X() < 1) {
+            return 0.1;
+        } else {
+            return window.chart.point2.X();
+        }
+    }, function() {
+        return window.chart.point1.Y() - 700;
+    }]], {
+        firstArrow: true,
+        lastArrow: true,
+        color: 'black',
+        strokeWidth: 3,
+        fixed: true,
+        highlight: false,
+        visible: function() {
+            if (Math.abs(window.chart.point1.Y() - prob.pj) <= 10) {
+                return false;
+            }
+            
+            if (window.chart.point2.X() >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
+    window.chart.brd.create('segment', [window.chart.point2, [function() {
+        if (window.chart.point2.X() < 1) {
+            return 0.1;
+        } else {
+            return window.chart.point2.X();
+        }
+    }, function() {
+        return window.chart.point1.Y() - 700;
+    }]], {
+        firstArrow: true,
+        lastArrow: true,
+        color: 'black',
+        strokeWidth: 1,
+        dash: 1,
+        fixed: true,
+        highlight: false,
+        visible: function() {
+            if (Math.abs(window.chart.point1.Y() - prob.pj) <= 10) {
+                return false;
+            }
+            
+            if (window.chart.point2.X() >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
+    window.chart.brd.create('text', [function() {
+        return window.chart.point2.X() / 2;
+    }, function() {
+        return window.chart.point1.Y() - 750;
+    }, function() {
+        return '<span>L<sub>set</sub> = ' + window.chart.point2.X().toFixed(2) + ' m</span>';
+    }], {
+        anchorX: 'middle',
+        anchorY: 'top',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fixed: true,
+        highlight: false,
+        visible: function() {
+            if (Math.abs(window.chart.point1.Y() - prob.pj) <= 10) {
+                return false;
+            }
+            
+            if (window.chart.point2.X() >= 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
+    window.chart.point1.on('drag', function() {
+        var y = window.chart.point1.Y();
+        y = Number(y.toFixed(0));
+        window.chart.point1.moveTo([0, y]);
         
-        $("#after-btn").html("<strong>The corresponding point is plotted on the Mignel Diagram and you can drag it.<br/><br/>A dialog for stress distribution is pop-up.</strong>")
-    }
-}
+        var k = (prob.pj - prob.pi) / 15;
+        var middle = (prob.pj + window.chart.point1.Y()) / 2;
+        
+        var x = (prob.pj - middle) / k;
+        window.chart.point2.moveTo([x, middle]);
+        
+        $("#lset").html(x.toFixed(2));
+        $("#dp").val((prob.pj - window.chart.point1.Y()).toFixed(0));
+    });
+    
+    $("#dp").keypress(function(e) {
+        if(e.which == 13) {
+            $("#dp").css("background-color", "white");
+            var dp = Number($("#dp").val());
+            
+            dp = Number(dp.toFixed(0));
+            
+            var k = (prob.pj - prob.pi) / 15;
+            var delta = 8 * k
+            
+            if ((dp <= delta) && (dp >= 0)) {
+                var y = Number((prob.pj - dp).toFixed(0));
+            } else {
+                $("#dp").css("background-color", "red");
+                return;
+            }
+            
+            window.chart.point1.moveTo([0, y]);
+            var middle = (prob.pj + window.chart.point1.Y()) / 2;
 
-function show_stress(e) {
-    $("#stress-distribution").dialog("open");
-    $(e.target).prop("disabled", true);
-}
+            var x = (prob.pj - middle) / k;
+            window.chart.point2.moveTo([x, middle]);
 
-function plot_stress() {
-    window.stress = [{}, {}];
-    
-    var rangeX = vm.prob.span;
-    var rangeY = Math.abs(vm.prob.ft) + Math.abs(vm.prob.fc);
-    
-    /**
-     * STRESS DISTRIBUTION AT TRANSFER
-     */
-    
-    window.stress[0].brd = JXG.JSXGraph.initBoard('svg-stress1', {
-        boundingbox: [-rangeX / 10, vm.prob.ft + rangeY/10, vm.prob.span + rangeX/10, vm.prob.fc - rangeY/10],
-        showNavigation: false,
-        keepaspectratio: false,
-        showCopyright: false,
-        axis: true
+            $("#lset").html(x.toFixed(2));
+            
+            if ($("#dp").val() == "") {
+                
+            } else {
+                $("#dp").val((prob.pj - window.chart.point1.Y()).toFixed(0));
+            }
+        }
     });
-    
-    window.stress[0].control = window.stress[0].brd.create('point', [vm.d, 0], {
-        visible: false
-    });
-    
-    window.stress[0].p = window.stress[0].brd.create('point', [0, 0], {
-        visible: false
-    });
-    
-    window.stress[0].e = window.stress[0].brd.create('point', [0, 0], {
-        visible: false
-    });
-    
-    window.stress[0].ft = window.stress[0].brd.create('segment', [[0, vm.prob.fti], [vm.prob.span, vm.prob.fti]], {
-        strokeWidth: 3,
-        strokeColor: 'black',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[0].fc = window.stress[0].brd.create('segment', [[0, vm.prob.fci], [vm.prob.span, vm.prob.fci]], {
-        strokeWidth: 3,
-        strokeColor: 'black',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[0].top = [];
-    
-    window.stress[0].top.push(window.stress[0].brd.create("point", [0, function() {
-        var p = window.stress[0].p.X();
-        var e = window.stress[0].e.X();
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        
-        return -p/A*1e3 + p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[0].top.push(window.stress[0].brd.create("point", [vm.prob.span / 2, function() {
-        var p = window.stress[0].p.X();  // in kN
-        var e = window.stress[0].e.X();  // in mm
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        var m0 = A / 1e6 * 24 * vm.prob.span * vm.prob.span / 8;
-        
-        return -p/A*1e3 + p*e/z*1e3 - m0/z*1e6;
-    }], {visible: false}));
-    
-    window.stress[0].top.push(window.stress[0].brd.create("point", [vm.prob.span, function() {
-        var p = window.stress[0].p.X();
-        var e = window.stress[0].e.X();
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        
-        return -p/A*1e3 + p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[0].stress_top = window.stress[0].brd.create('spline', window.stress[0].top, {
-        strokeWidth: 3,
-        strokeColor: 'green',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[0].bottom = [];
-    
-    window.stress[0].bottom.push(window.stress[0].brd.create("point", [0, function() {
-        var p = window.stress[0].p.X();
-        var e = window.stress[0].e.X();
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        
-        return -p/A*1e3 - p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[0].bottom.push(window.stress[0].brd.create("point", [vm.prob.span / 2, function() {
-        var p = window.stress[0].p.X();
-        var e = window.stress[0].e.X();
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        var m0 = A / 1e6 * 24 * vm.prob.span * vm.prob.span / 8;
-        
-        return -p/A*1e3 - p*e/z*1e3 + m0/z*1e6;
-    }], {visible: false}));
-    
-    window.stress[0].bottom.push(window.stress[0].brd.create("point", [vm.prob.span, function() {
-        var p = window.stress[0].p.X();
-        var e = window.stress[0].e.X();
-        var A = window.stress[0].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[0].control.X() / 6;
-        
-        return -p/A*1e3 - p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[0].stress_bottom = window.stress[0].brd.create('spline', window.stress[0].bottom, {
-        strokeWidth: 3,
-        strokeColor: 'red',
-        fixed: true,
-        highlight: false
-    });
-    
-    /**
-     * STRESS DISTRIBUTION AT FULL SERVICE
-     */
-    
-    window.stress[1].brd = JXG.JSXGraph.initBoard('svg-stress2', {
-        boundingbox: [-rangeX / 10, vm.prob.ft + rangeY/10, vm.prob.span + rangeX/10, vm.prob.fc - rangeY/10],
-        showNavigation: false,
-        keepaspectratio: false,
-        showCopyright: false,
-        axis: true
-    });
-    
-    window.stress[1].control = window.stress[1].brd.create('point', [vm.d, 0], {
-        visible: false
-    });
-    
-    window.stress[1].p = window.stress[1].brd.create('point', [0, 0], {
-        visible: false
-    });
-    
-    window.stress[1].e = window.stress[1].brd.create('point', [0, 0], {
-        visible: false
-    });
-    
-    window.stress[1].ft = window.stress[1].brd.create('segment', [[0, vm.prob.ft], [vm.prob.span, vm.prob.fti]], {
-        strokeWidth: 3,
-        strokeColor: 'black',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[1].fc = window.stress[1].brd.create('segment', [[0, vm.prob.fc], [vm.prob.span, vm.prob.fci]], {
-        strokeWidth: 3,
-        strokeColor: 'black',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[1].top = [];
-    
-    window.stress[1].top.push(window.stress[1].brd.create("point", [0, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        
-        return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[1].top.push(window.stress[1].brd.create("point", [vm.prob.span / 2, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
-        
-        return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3 - mt/z*1e6;
-    }], {visible: false}));
-    
-    window.stress[1].top.push(window.stress[1].brd.create("point", [vm.prob.span, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        
-        return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[1].stress_top = window.stress[1].brd.create('spline', window.stress[1].top, {
-        strokeWidth: 3,
-        strokeColor: '#DAA520',
-        fixed: true,
-        highlight: false
-    });
-    
-    window.stress[1].bottom = [];
-    
-    window.stress[1].bottom.push(window.stress[1].brd.create("point", [0, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        
-        return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[1].bottom.push(window.stress[1].brd.create("point", [vm.prob.span / 2, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
-        
-        return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3 + mt/z*1e6;
-    }], {visible: false}));
-    
-    window.stress[1].bottom.push(window.stress[1].brd.create("point", [vm.prob.span, function() {
-        var p = window.stress[1].p.X();
-        var e = window.stress[1].e.X();
-        var A = window.stress[1].control.X() * vm.prob.b;
-        
-        var z = A * window.stress[1].control.X() / 6;
-        
-        return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3;
-    }], {visible: false}));
-    
-    window.stress[1].stress_bottom = window.stress[1].brd.create('spline', window.stress[1].bottom, {
-        strokeWidth: 3,
-        strokeColor: 'blue',
-        fixed: true,
-        highlight: false
-    });
-}
-
-function show_disp(e) {
-    var x = Number($("#disp-pi").val());
-    var y = Number($("#disp-e").val());
-    
-    if (isNaN(x) || isNaN(y) || (x == 0)) {
-        $("#after-disp").html("Invalid inputs");
-    } else {
-        $("#after-disp").html("");
-        $("#disp").show();
-        $("#pe").html((x * vm.prob.R).toFixed(2));
-        
-        calculate_disp(x, y);
-    }
-}
-
-function calculate_disp(pi, e) {
-    var d = vm.d;
-    var ig = Number((Math.pow(d, 3) * vm.prob.b / 12).toExponential(3));
-    var ec = 30100;
-    
-    var gsw = Number((vm.prob.b / 1000 * d / 1000 * 24).toFixed(3));
-    var wst = Number((vm.prob.b/1000*d/1000*24 + vm.prob.ll*1.2).toFixed(3));
-    var wsus = Number((vm.prob.b/1000*d/1000*24 + 0.6*vm.prob.ll*1.2).toFixed(3));
-    
-    var dp = pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;
-    var dpe = vm.prob.R*pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;
-    
-    var dsw = 5*gsw*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
-    var dst = 5*wst*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
-    var dlt = 5*wsus*Math.pow(vm.prob.span * 1000, 4)/384/ec/ig;
-    
-    var c = dsw - dp;
-    var st = dst - dpe;
-    var lt = st + (dlt - dpe)*2.5
-    
-    $("#dp").html(c.toFixed(2));
-    $("#dst").html(st.toFixed(2));
-    $("#dlt").html(lt.toFixed(2));
 }
