@@ -7,14 +7,14 @@
         <meta name="author" content="Dr Xiaojun Chen"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <title>Tutorial 02</title>
+        <title>Tutorial 01</title>
         <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>  
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
         <script src="https://unpkg.com/vue"></script>
         <script src="https://jununsw.github.io/res/util.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
@@ -24,101 +24,239 @@
     </head>
     <body onload="init();">
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
-            <strong>Module 02 Friction and Anchorage Losses</strong>
-            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <strong>Module 01 Prestress and Eccentricity</strong>
+            <div class="h6 bold">Background Color: <input id="select-color" type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+                E-learning Module for CVEN 9806 Prestressed Concrete<br/>
+                Course Coordinator: A/Prof Mario Attard<br/>
+                Module Creator: Dr Xiaojun Chen<br/>
+                All Rights Reserved by UNSW<br/>
+            </div>
         </div>
-        
-        <div class="container" id="myapp">
+        <div class="container" id="myapp" style="margin-bottom: 30px;">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="h4 question">
-                        A simply supported post-tensioned beam has a parablic cable with zero eccentricity and the ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. Duct is bright and zinc coated metal. The beam is jacked from left end only.
+                        <p>
+                            Design the prestressing for a simply supported fully prestressed pretensioned concrete bridge plank with the cross-section shown below. The plank is {{prob.b}} mm wide and you need to choose a depth D for it. Make sure the deflections are within acceptable limits.
+                        </p>
+                        <p>
+                            The span of the planks is {{prob.span}} m, Use only {{prob.dia}} mm diameter strands and the cable profile is straight. The service live load is {{prob.ll}} kN/m. No instantaneous losses and the time dependent losses R = {{prob.R}}. The minimum cover to the tendons is {{prob.cover}} mm.
+                        </p>
+                        <p>
+                            Assume \( E _{ci} = E _{c}=30,100MPa \), and take \( f_{c}=32MPa,\; f_{ci}=32MPa\) . The Breaking load is {{prob.break}} kN. Use only one layer of cables.
+                        </p>
+                        <img src="resource/fig01.png"/>
+                        <div style="text-align: center;">
+                            <div id="svg-profile" style="width: 600px; height: 200px; border: 0px solid black;"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="row" style="font-weight: bold; font-size: 1.2em;">
-                <div class="col-sm-4">
-                    <ul>
-                        <li>\( f_{ci}= \) 32 MPa</li>
-                        <li>Duct Dia = 110 mm</li>
-                        <li>31 Strands</li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <ul>
-                        <li>Dia. of Strands = 12.7 mm</li>
-                        <li>\( A_{p}= \) 3100 mm<sup>2</sup></li>
-                        <li>\( P_{j}= \) 4520 kN</li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <ul>
-                        <li>Draw-in of Wedges = 6 mm</li>
-                        <li>\( E_{p}= \) 195000 MPa</li>
-                        <li>\( \beta _{p}= \) 0.01, \( \mu= \) 0.2</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <div style="text-align: center;">
-                        <div id="svg-profile" style="width: 800px; height: 100px; margin: 0 auto;"></div>
+                    <div class="h4">
+                        <button class="btn btn-primary" v-on:click="toStart($event);">Click Here to Start</button>
+                        <section>
+                            <p style="margin-bottom: 15px;">
+                                <strong>Instruction:</strong> <span style="font-weight: normal;">Note A slider with a blue point is shown right the the cross-section of the plank above. Move the point vertically to change the depth of the plank. Go through the tabs below in sequence to design the depth \( D \), as well as \( P{i} \) and \( e \). Finally you need to answer the last tab (in red) and submit.</span>
+                            </p>
+                            <div id="answer-tabs">
+                                <ul>
+                                    <li class="list"><a href="#t1">Stress Limit Fomula</a></li>
+                                    <li class="list"><a href="#t4">Cross-section Limit</a></li>
+                                    <li class="list"><a href="#t5">Magnel Diagram &amp; Stress Distribution</a></li>
+                                    <li class="list"><a href="#t6">Deflection Check</a></li>
+                                    <li class="list"><a href="#t7" style="font-weight: bold; color: red;">Answer and Submission</a></li>
+                                </ul>
+                                
+                                <div id="t1" style="font-size: 0.7em;">
+                                    <strong>Stress limits are:</strong>
+                                    
+                                    \[ F _{ti} = 0.25 \sqrt{f _{ci}}= 1.41MPa,\;\;F _{t} = 0.25 \sqrt{f _{c}}= 1.41MPa,\;\; \]
+                                    \[ F _{ci} = -0.5 \sqrt{f _{ci}}= -16MPa,\;\;F _{c} = -0.5 \sqrt{f _{c}}= -16MPa,\;\; \]
+                                    
+                                    <strong>At transfer, the top fiber stress must not exceed tensile stress limit:</strong>
+                                    
+                                    \[ \sigma _{t} = -\frac{P _{i}}{A} + \frac{P _{i} \times e}{Z _{top}} - \frac{M _{o}}{Z _{top}} \leq F _{ti} \;\;\;(1) \]
+                                    
+                                    <strong>At transfer, the bottom fiber stress must not exceed compressive stress limit:</strong>
+                                    
+                                    \[ \sigma _{b} = -\frac{P _{i}}{A} - \frac{P _{i} \times e}{Z _{btm}} + \frac{M _{o}}{Z _{btm}} \geq F _{ci} \;\;\;(2) \]
+                                    
+                                    <strong>At transfer, the bottom fiber stress must not exceed tensile stress limit:</strong>
+                                    
+                                    \[ \sigma _{b} = -\frac{R \times P _{i}}{A} - \frac{R \times P _{i} \times e}{Z _{btm}} + \frac{M _{T}}{Z _{btm}} \leq F _{t} \;\;\;(3) \]
+                                    
+                                    <strong>At transfer, the top fiber stress must not exceed compressive stress limit:</strong>
+                                    
+                                    \[ \sigma _{t} = -\frac{R \times P _{i}}{A} + \frac{R \times P _{i} \times e}{Z _{top}} - \frac{M _{T}}{Z _{top}} \geq F _{c} \;\;\;(4) \]
+                                    
+                                    <strong>Note:</strong> in the 4 equations above, the first term is contribution of the axial force \( P _{i} \), the second term is contribution of the bending moment due to \( P _{i} \), the third term is the contribution of the bending moment due to either \( M _{o} \) or \( M _{t} \).
+                                </div>
+                                
+                                <div id="t4">
+                                    <p>
+                                        <strong>Moving the slider to change the depth of the plank, <span style="font-style: italic;">D</span> = {{d}} mm</strong>
+                                    </p>
+                                    <p>
+                                        <strong>The depth of the plank <span style="font-style: italic;">D</span> should be chosen so that the section modules (for rectangle cross-section \( Z _{top} = Z _{btm} = Z = \frac{b \times D ^{2}}{6} \)) must be larger than Z<sub>b,required</sub>:</strong>
+                                        \[ Z \geq Z _{b,required} = \frac{M _{t}}{F _{t} - R F_{ci}} \]
+                                    </p>
+                                    <ul>
+                                        <li><strong style="font-style: italic;">Z<sub>b,required</sub> = {{(zb_min).toExponential(3)}} mm<sup>3</sup></strong></li>
+                                    </ul>
+                                    <ul>
+                                        <li><strong>Z = {{(z).toExponential(3)}} mm<sup>3</sup></strong></li>
+                                    </ul>
+                                    <p>
+                                        <strong>The eccentricity must not exceed the maximum allowable eccentricity</strong>
+                                    </p>
+                                    <ul>
+                                        <li><strong style="font-style: italic;">e<sub>max</sub> = D/2 - cover - &Phi;/2 = {{(d/2 - prob.cover - prob.dia/2).toFixed(1)}} mm</strong></li>
+                                    </ul>
+                                    <p>
+                                        <strong>
+                                            \( P _{i} \) and \( e \) are determined from the Magnel Diagram, which is shown in the next tab.
+                                        </strong>
+                                    </p>
+                                </div>
+                                
+                                <div id="t5">
+                                    <div class="row">
+                                        <div class="col-sm-4" style="font-size: 1em;">
+                                            <p><strong>Magnel diagram is plotted</strong></p>
+                                            <p>Equations referred to the first tab</p>
+                                            <p>Following four lines are obtained from Eq (1)-(4) for the load at mid-span</p>
+                                            <ul>
+                                                <li><span style="font-weight: bold; color: green;">&#8212;&#8212;</span> Eq (1) for \( F _{ti} \)</li>
+                                                <li><span style="font-weight: bold; color: red;">&#8212;&#8212;</span> Eq (2) for \( F _{ci} \)</li>
+                                                <li><span style="font-weight: bold; color: blue;">&#8212;&#8212;</span> Eq (3) for \( F _{t} \)</li>
+                                                <li><span style="font-weight: bold; color: #DAA520;">&#8212;&#8212;</span> Eq (4) for \( F _{c} \)</li>
+                                            </ul>
+                                            <p>If the checkbox is ticked, two additional lines are plotted from from Eq (1), (2) for the load at the end</p>
+                                            <ul>
+                                                <li><span style="font-weight: bold; color: green;">&mdash;&nbsp;&nbsp;&mdash;</span> Eq (1) for \( F _{ti} \)</li>
+                                                <li><span style="font-weight: bold; color: red;">&mdash;&nbsp;&nbsp;&mdash;</span> Eq (2) for \( F _{ci} \)</li>
+                                            </ul>
+                                            <p>You can change the depth of the plank to see how the diagram changes</p>
+                                            <p>You can choose a pair of (\( P _{i} ,\; e \)) to see if it is in the acceptable area</p>
+                                            <ul>
+                                                <li>\( P _{i}= \) <input size='6' id="try-pi"/> kN</li>
+                                                <li>\( e= \) <input size='6' id="try-e"/> mm</li>
+                                            </ul>
+                                            <p>
+                                                <button class="btn btn-primary btn-xs" onclick="show_pe(event);">Show on the diagram</button><br/>
+                                                <button id="btn-stress" class="btn btn-success btn-xs" onclick="show_stress(event);" style="display: none;">Show stress distribution dialog</button>
+                                            </p>
+                                            <p id="after-btn"></p>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div id="svg-diagram" style="width: 600px; height: 400px; border: 0px solid black;"></div>
+                                        </div>
+                                    </div>
+                                    <div id="stress-distribution" title="Stress Distribution (Two Figures, Please Scroll)" class="" style="display: none;">
+                                        <div class="" style="font-size: 1em;">
+                                            <p style="margin-top: 10px;">
+                                                <strong>Stress at transfer</strong>
+                                            </p>
+                                            <ul>
+                                                <li>The <span style="color: green; font-weight: bold;">green</span> line shows the stress at top fiber through the span</li>
+                                                <li>The <span style="color: red; font-weight: bold;">red</span> line shows the stress at bottom fiber through the span</li>
+                                            </ul>
+                                            <p>
+                                                You can move the point in the Magnel Diagram and change the depth of the plank to see how the stress distribution changes
+                                            </p>
+                                            <div id="svg-stress1" style="width: 800px; height: 200px; margin: auto; display: block;"></div>
+                                            <p style="margin-top: 10px;">
+                                                <strong>Stress at full service</strong>
+                                            </p>
+                                            <ul>
+                                                <li>The <span style="color: blue; font-weight: bold;">blue</span> line shows the stress at top fiber through the span</li>
+                                                <li>The <span style="color: #DAA520; font-weight: bold;">brown</span> line shows the stress at bottom fiber through the span</li>
+                                            </ul>
+                                            <p>
+                                                You can move the point in the Magnel Diagram and change the depth of the plank to see how the stress distribution changes
+                                            </p>
+                                            <div id="svg-stress2" style="width: 800px; height: 200px; margin: auto; display: block;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="t6">
+                                    <p>
+                                        <strong>Taking loading factors for deflection: \( \varphi _{s}=1.0 \), \( \varphi _{l}=0.6 \), \( k _{cs}=2.5 \), we have:</strong>
+                                    </p>
+                                    <ul>
+                                        <li>G<sub>sw</sub> = 24 &times; Area = {{(prob.b / 1000 * d / 1000 * 24).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>st</sub> = G<sub>sw</sub> + &phi;<sub>s</sub>Q = {{(prob.b/1000*d/1000*24 + prob.ll*1.2).toFixed(3)}} kN/m</li>
+                                        <li>w<sub>sus</sub> = G<sub>sw</sub> + &phi;<sub>L</sub>Q = {{(prob.b/1000*d/1000*24 + 0.6*prob.ll*1.2).toFixed(3)}} kN/m</li>
+                                    </ul>
+                                    <p>
+                                        <strong>Formula for displacement:</strong>
+                                        \[ \delta\;\;(@tranfser) = \frac{5}{384}\frac{G _{sw} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{i} e L ^{2}}{E _{ci} I _{g}} \]
+                                        \[ \Delta _{ST} = \left (\frac{5}{384}\frac{w _{sw} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{e} e L ^{2}}{E _{ci} I _{g}} \right ) + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                        \[ \Delta _{sus} = \left (\frac{5}{384}\frac{w _{sus} L ^{4}}{E _{ci} I _{g}} - \frac{1}{8}\frac{P _{e} e L ^{2}}{E _{ci} I _{g}} \right ) + R\frac{E _{ci}}{E _{c}} \Delta _{p} \]
+                                        \[ \Delta _{LT} = k _{cs} \Delta _{sus} + \Delta _{ST} \]
+                                    </p>
+                                    <p style="font-weight: bold;">
+                                        According to AS 5100-2 &amp; AS 3600:
+                                    </p>
+                                    <ul style="">
+                                        <li>Camber Limit = L / 300 = {{(prob.span * 1000 / 300).toFixed(0)}} mm</li>
+                                        <li>Short Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                        <li>Long Term Limit = L / 250 = {{(prob.span * 1000 / 250).toFixed(0)}} mm</li>
+                                    </ul>
+                                    <p>
+                                        <strong>Use the \( P _{i} \) and \( e \) in the previous tab as input:</strong>
+                                    </p>
+                                    <ul style="font-size: 1em;">
+                                        <li>\( P _{i}= \) <input size='6' id="disp-pi"/> kN</li>
+                                        <li>\( e= \) <input size='6' id="disp-e"/> mm</li>
+                                    </ul>
+                                    <p>
+                                        <button class="btn btn-primary btn-xs" onclick="show_disp(event);">Calculate Displacement</button>&nbsp;&nbsp;
+                                        <span id="after-disp" style="color: red; font-weight: bold;"></span>
+                                    </p>
+                                    <section id="disp" style="display: none;">
+                                        <ul>
+                                            <li>Effective prestress force: \( P _{e}= R \times P _{i} = \) <span id="pe"></span> kN</li>
+                                            <li>\( E _{ci}= E _{c} = \) 30,100 MPa</li>
+                                            <li><span style="font-weight: bold; font-style: italic;">I<sub>g</sub></span> = {{(Math.pow(d, 3) * prob.b / 12).toExponential(3)}} mm<sup>4</sup></li>
+                                        </ul>
+                                        <p>
+                                            <strong>Therefore the displacement for the given inputs are calculated as</strong>
+                                        </p>
+                                        <ul style="font-weight: bold;">
+                                            <li>\( \delta = \) <span id="dp"></span> mm</li>
+                                            <li>\( \Delta _{ST}= \) <span id="dst"></span> mm</li>
+                                            <li>\( \Delta _{LT}= \) <span id="dlt"></span> mm</li>
+                                        </ul>
+                                        <p>
+                                            <strong>If the displacements are not satisfied, please change the inputs and recalculate</strong>
+                                        </p>
+                                    </section>
+                                </div>
+                                
+                                <div id="t7">
+                                    <p class="h4">
+                                        <strong>Based on the calculation in the previous three tabs, your final answer for \( D \), \( P _{i} \) and \( e \) are:</strong>
+                                    </p>
+                                    <ul style="font-size: 1em;">
+                                        <li>\( D= \) <input id="final-d" size='6'/> mm</li>
+                                        <li>\( P _{i}= \) <input id="final-p" size='6'/> kN</li>
+                                        <li>\( e= \) <input id="final-e" size='6'/> mm</li>
+                                        <li>Adopt <input id="final-n" size='4'/> wires @ <input id="final-s" size='6'/> mm</li>
+                                    </ul>
+                                    <p>
+                                        <button class="btn btn-primary" v-on:click="toFinish($event);">Finish and Submit</button>
+                                    </p>
+                                    <p id="final-result" style="font-weight: bold;"></p>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        You can drag the red point at the middle of the span to change the eccentricity<br/>
-                        eccentricity is {{prob.e}} mm
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-12 h4 section">
-                    <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
-                    <section>
-                        <p>
-                            In the figure above, a slider is shown below the tendon profle. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
-                        </p>
-                        <ul>
-                            <li>\( \theta= \) <span id="theta">{{-slope0.toFixed(3)}}</span></li>
-                            <li>\( \alpha_{tot}= \) <span id="alpha">0.000</span></li>
-                        </ul>
-                        <p>
-                            For single Parabola:
-                            \[ P _{j} - P _{i} \approx P _{j} \cdot ( \mu [ \alpha _{tot} + \beta _{p} x ] ) \]
-                        </p>
-                        <button class="btn btn-primary" v-on:click="part1($event);">Calculate Friction Loss</button>
-                    </section>
-                    <section style="display: none;">
-                        <p>
-                            Now assume the eccentricity at mid-span is {{prob.e}} mm.
-                        </p>
-                        <p>
-                            Calculate the prestress force at the right end immediately after transfer P<sub>i</sub> = <input id="pi" size="6"/> kN (rounded to 1 kN)
-                        </p>
-                        <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span>&nbsp;&nbsp;&nbsp;(for debug: answer {{prob.pi}})</span>
-                    </section>
-                    <section style="display: none;">
-                        <p>The friction losses diagram is plotted as follows:</p>
-                        <div id="svg-plot" style="width: 600px; height: 500px; margin: 0 auto;"></div>
-                        <p style="margin-top: 20px;">
-                            <strong>Note: </strong>There is a blue point on the y axis. Drag is point to plot the anchorage loss due to draw-in.
-                        </p>
-                        <p>Following values change when you drag the points in the plot: (You can also specity a value for &Delta;P<sub>i</sub> in the input box and press ENTER)</p>
-                        <ul>
-                            <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN)</li>
-                            <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
-                        </ul>
-                        <button class="btn btn-primary" v-on:click="part3($event);" disabled>Complete and Submit</button><span></span>
-                    </section>
                 </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=2"></script>
-    <script type="text/javascript" src="script/model.js?v=2"></script>
-    <script type="text/javascript" src="script/vm.js?v=2"></script>
+    <script type="text/javascript" src="script/event.js?v=3"></script>
+    <script type="text/javascript" src="script/model.js?v=3"></script>
+    <script type="text/javascript" src="script/vm.js?v=3"></script>
 </html>
