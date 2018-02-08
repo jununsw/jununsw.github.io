@@ -1,1 +1,94 @@
-var _0x9bdb=["\x72\x61\x6E\x64\x6F\x6D","\x6C\x65\x6E\x67\x74\x68","\x61\x62\x73","\x74\x6F\x45\x78\x70\x6F\x6E\x65\x6E\x74\x69\x61\x6C","\x6D\x6F\x64\x75\x6C\x65\x30\x33","\x6D\x6F\x64\x75\x6C\x65","\x51\x75\x65\x73\x74\x69\x6F\x6E\x30\x32","\x70","\x63\x6F\x6E\x74\x72\x6F\x6C\x6C\x65\x72","\x51\x75\x65\x73\x74\x69\x6F\x6E\x30\x31"];function fromArray(_0x18c0x2){var _0x18c0x3=_0x18c0x2[Math[_0x9bdb[0]]()* _0x18c0x2[_0x9bdb[1]]>> 0];return _0x18c0x3}function isEqual(_0x18c0x5,_0x18c0x6){if(isNaN(_0x18c0x5)){return false};if(_0x18c0x6== 0){if(Math[_0x9bdb[2]](_0x18c0x5)< 0.02){return true}else {return false}}else {var _0x18c0x7=Math[_0x9bdb[2]](_0x18c0x6- _0x18c0x5);if(_0x18c0x7< 0.02){return true}else {return false}}}function isEqualp(_0x18c0x5,_0x18c0x6){if(isNaN(_0x18c0x5)){return false};var a1=_0x18c0x5[_0x9bdb[3]](3);var a2=_0x18c0x6[_0x9bdb[3]](3);if(a1== a2){return true}else {return false}}var barlength=5;var barlenpool=[1,2,3];var wirelenpool=[2,3,4];var locationpool=[0.5,0.8,1];var forcepool=[60,80,100];var b1=fromArray(barlenpool);var b2=barlength- b1;var w1=fromArray(wirelenpool);var w2=fromArray(wirelenpool);var w3=fromArray(wirelenpool);var x1=fromArray(locationpool);var prob1={"\x62\x61\x72":[b1,b2],"\x77\x69\x72\x65":[w1,w2,w3],"\x6C\x6F\x63\x61\x74\x69\x6F\x6E":x1,"\x66\x6F\x72\x63\x65":fromArray(forcepool)};var lengthpool=[1,1.2,1.5,1.8];var axialpool=[40,50,60];var l1=fromArray(lengthpool);var l2=fromArray(lengthpool);var l3=fromArray(lengthpool);var a1=fromArray(axialpool);var a2=fromArray(axialpool);var a3=fromArray(axialpool);var prob2={"\x6C\x65\x6E\x67\x74\x68":[l1,l2,l3],"\x66\x6F\x72\x63\x65":[a1,a2,a3]};var app=angular[_0x9bdb[5]](_0x9bdb[4],[]);app[_0x9bdb[8]](_0x9bdb[9],function(_0x18c0x1f){_0x18c0x1f[_0x9bdb[7]]= prob1})[_0x9bdb[8]](_0x9bdb[6],function(_0x18c0x1f){_0x18c0x1f[_0x9bdb[7]]= prob2})
+function fromArray(arr) { // [Int] -> Int
+    var item = arr[Math.random() * arr.length >> 0];
+    return item;
+}
+
+function isEqual(a, b) { // Float -> Float -> Bool
+    if (isNaN(a)) {
+        return false;
+    }
+    if (b == 0) {
+        if (Math.abs(a) < 0.02) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        var diff = Math.abs(b - a);
+        if (diff < 0.02) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+function isEqualp(a, b) { // Float -> Float -> Bool
+    if (isNaN(a)) {
+        return false;
+    }
+    var a1 = a.toExponential(3);
+    var a2 = b.toExponential(3);
+    if (a1 == a2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/*
+ * Random value for problem 1
+ */
+
+var barlength = 5;
+
+var barlenpool = [1, 2, 3];
+var wirelenpool = [2, 3, 4];
+var locationpool = [0.5, 0.8, 1];
+var forcepool = [60, 80, 100];
+
+var b1 = fromArray(barlenpool);
+var b2 = barlength - b1;
+var w1 = fromArray(wirelenpool);
+var w2 = fromArray(wirelenpool);
+var w3 = fromArray(wirelenpool);
+var x1 = fromArray(locationpool);
+
+var prob1 = {
+    "bar": [b1, b2],
+    "wire": [w1, w2, w3],
+    "location": x1,
+    "force": fromArray(forcepool)
+};
+
+/*
+ * Random value for problem 2
+ */
+
+var lengthpool = [1, 1.2, 1.5, 1.8];
+var axialpool = [40, 50, 60];
+
+var l1 = fromArray(lengthpool);
+var l2 = fromArray(lengthpool);
+var l3 = fromArray(lengthpool);
+var a1 = fromArray(axialpool);
+var a2 = fromArray(axialpool);
+var a3 = fromArray(axialpool);
+
+var prob2 = {
+    "length": [l1, l2, l3],
+    "force": [a1, a2, a3]
+};
+
+/*
+ * Code for Angular
+ */
+
+var app = angular.module("module03", []);
+
+app.controller("Question01", function($scope) {
+    $scope.p = prob1;
+})
+.controller("Question02", function($scope) {
+    $scope.p = prob2;
+});
