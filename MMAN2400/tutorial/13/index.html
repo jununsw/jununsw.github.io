@@ -1,0 +1,198 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 12 - Torsion</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+    
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" id="f3-check-1" onclick="check_id()">Start</button><label id="after-id"></label>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Torsion</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        A solid circular shaft with diameter of 36 mm is shown below. The ends A and D are fixed to the wall where rotating is prevented. Two Torques are applied on B and C. Given G = 80,000 MPa.
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="720" height="320" viewBox="0 0 720 320" style="margin-left: 20px;">
+                            <image xlink:href="fig1.1.png" x="0" y="0" width="720px" height="320px"/>
+                        </svg>
+                        <p>
+                            <!--Here is the question description-->
+                            Please calculate the reaction Torque at A and D, as well as the angle of rotation at the centre of the shaft, E.
+                        </p>
+                        <p><button id="q1-start" class="btn btn-primary">Start</button></p>
+                        
+                        <div id="q1-1" style="display: none; margin-top: 30px;">  <!--change to display: none; later-->
+                            <p style="">
+                                The torsional constant is calculated as:
+                            </p>
+                            <p>
+                                J = (&pi;/32) &times; 36<sup>4</sup> = 164.9 &times; 10<sup>3</sup> mm<sup>4</sup>.
+                            </p>
+                            <p>
+                                The free-body diagram of the shaft is shown as:(with assumption of the directions of T<sub>A</sub> and T<sub>D</sub>)<br/>
+                                <svg id="svg-q1-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="565" height="156" viewBox="0 0 565 156" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.2.png" x="0" y="0" width="565px" height="156px"/>
+                                </svg>
+                            </p>
+                            <p>
+                                Therefore we have the equation for equilibrium: &nbsp;&nbsp; T<sub>A</sub> + T<sub>D</sub> = <input id="q1-tad" size="8"/> kN-m <br/>
+                                And the equation for compatibility: &nbsp;&nbsp; &phi;<sub>AB</sub> + &phi;<sub>BC</sub> + &phi;<sub>CD</sub> = 0 <br/>
+                                That is: -T<sub>A</sub> &times; 2 + (-T<sub>A</sub> + 1.2) &times; 4 + T<sub>D</sub> &times; 4 = 0, So we can solve (rounded to 0.01):<br/>
+                                T<sub>A</sub> = <input id="q1-ta" size="10"/> kN-m,<br/>
+                                T<sub>D</sub> = <input id="q1-td" size="10"/> kN-m,<br/>
+                                <button class="btn btn-primary" id="q1-check-1" onclick="q1_check_1()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-2" style="display: none; margin-top: 30px;">
+                            <p>
+                                Since &phi;<sub>E</sub> = &phi;<sub>AB</sub> + &phi;<sub>BE</sub><br/>
+                                Thus we have &phi;<sub>E</sub> = (-T<sub>A</sub> &times; l<sub>AB</sub> + (1.2 - T<sub>A</sub>) &times; l<sub>BE</sub>) / (G &times; J) = <input id="q1-phi" size="12"/>&deg; (Note: answer in degrees, round to 0.01) <br/>
+                                <button class="btn btn-primary" id="q1-check-2" onclick="q1_check_2()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-3" style="display: none; margin-top: 30px;">
+                            <p>
+                                Finally, please calculate the maximum shear stress &tau;<sub>max</sub> = T<sub>max</sub> &bull; c / J:
+                                &tau;<sub>max</sub> = <input id="q1-tau" size="12"/> MPa (round to 0.01)<br/>
+                                <button class="btn btn-primary" id="q1-check-3" onclick="q1_check_3()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-7" style="font-weight: bold; margin-top: 30px; display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+</html>

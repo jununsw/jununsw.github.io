@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 11 - Shear Flow in Thin-walled Box Beam</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" id="f3-check-1" onclick="check_id()">Start</button><label id="after-id"></label>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Thin-walled Box Section</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        An close section with dimensions is shown below: (mm)
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="469" height="377" viewBox="0 0 469 377" style="margin-left: 20px;">
+                            <image xlink:href="fig1.1.png" x="0" y="0" width="469px" height="377px"/>
+                        </svg>
+                        <p>
+                            <!--Here is the question description-->
+                            Please calculate the proportion of the vertical shear force S, carried by one flange. And please calculate the shear flow transmitted by each of the weld if S = 100 kN
+                        </p>
+                        <p><button id="q1-start" class="btn btn-primary">Start</button></p>
+                        
+                        <div id="q1-1" style="display: none; margin-top: 30px;">  <!--change to display: none; later-->
+                            <p style="">
+                                The moment of inertia I are given as:
+                            </p>
+                            <p>
+                                I<sub>xx</sub> = 241.44 &times; 10<sup>6</sup> mm<sup>4</sup>.
+                            </p>
+                            <p>
+                                In order to calculate the part of the shear force carried by the top flange for example, first calculate the first moment of area Q at any given depth y as shown in the following figure:<br/>
+                                <svg id="svg-q1-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="549" height="274" viewBox="0 0 549 274" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.2.png" x="0" y="0" width="549px" height="274px"/>
+                                </svg>
+                            </p>
+                            <p>
+                                Therefore Q can be expressed as a function of y: (as length &times; thickness &times; d for 100 mm &le; y &le; 120 mm)<br/>
+                                Q = 470 &times; (120 - y) &times; (<input id="q1-a1" size="12"/> y + <input id="q1-a2" size="12"/>). (do not round your answer)<br/>
+                                <button class="btn btn-primary" id="q1-check-1" onclick="q1_check_1()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-2" style="display: none; margin-top: 30px;">
+                            <p>
+                                Since v = &int;(S &bull; Q / I) dy. Integrate this expression from y = 100 mm to y = 120 mm, we have:<br/>
+                                V<sub>flange</sub> = <input id="q1-a3" size="12"/> S (round to 0.001)
+                                <button class="btn btn-primary" id="q1-check-2" onclick="q1_check_2()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-3" style="display: none; margin-top: 30px;">
+                            <p>
+                                Therefore the force carried by the top flange is 0.044 = 4.4%. <br/><br/>
+                                The total first moment of the top flange is:<br/>
+                                Q = 20 &times; (100 + 10 + 250 + 10 + 100) &times; <input id="q1-a4" size="12"/> = <input id="q1-a5" size="12"/> mm<sup>3</sup> (do not round your answer)
+                                <button class="btn btn-primary" id="q1-check-3" onclick="q1_check_3()"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-3"></label>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-4" style="display: none; margin-top: 30px;">
+                            <p>
+                                If the shear flow transmitted by one weld is denoted by q<sub>weld</sub>, we have 2q<sub>weld</sub> = S &bull; Q / I
+                            </p>
+                            <p>
+                                Therefore q<sub>weld</sub> = <input id="q1-a6" size="6"/> N/mm. (round to 0.1)
+                                <button class="btn btn-primary" id="q1-check-4" onclick="q1_check_4()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-7" style="font-weight: bold; margin-top: 30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+</html>

@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 08 - Determinate Beam Deflection</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" id="f3-check-1" onclick="check_id()">Start</button><label id="after-id"></label>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Simply Supported Beam</strong></a></li>
+                <li id="tab2" style="display: none;"><a class="button lightblue square" href="#tabr2"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Overhanging Beam</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        An simply supported beam is shown below:
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <img id="pic01" src="fig1.1.png" alt="description picture is not loaded" style="display: block;" width="540px" height="260px"/>
+                        <p>
+                            <!--Here is the question description-->
+                            This beam is of length L = 6 m and has an uniform distributed load (UDL) &omega; = <span id="udl"></span> kN applied on that.<br/>
+                            Please calculate the deflection of the beam.
+                        </p>
+                        <p><button id="q1-start" class="btn btn-primary" onclick="q1_start();">Start</button></p>
+                        
+                        <div id="q1-1" style="display: none; margin-top: 30px;">  <!--change to display: none; later-->
+                            <p style="">
+                                The freebody diagram of the beam is shown as follows:
+                            </p>
+                            <p>
+                                <svg id="svg-q1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="500" height="200" viewBox="0 0 500 200" style="display: block; margin-top: 0px; margin-left: 20px;">
+                                
+                                    <rect x="45" y="130" width="410" height="10" stroke="blue" fill="blue"/>
+                                    
+                                    <!--semi-circle indicating UDL-->
+                                    <path stroke="black" fill="none" stroke-width="4" stroke-linecap="round"
+                                          d="M 50 130
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0
+                                             a 20 20 0 0 1 40 0"/>
+                                    
+                                    <!--arrows for reaction-->
+                                    <path stroke="black" fill="none" stroke-width="4" stroke-linecap="round"
+                                          d="M 30 180
+                                             l 0 -80 -5 10 5 -10 5 10 -5 -10"/>
+                                    <path stroke="black" fill="none" stroke-width="4" stroke-linecap="round"
+                                          d="M 470 180
+                                             l 0 -80 -5 10 5 -10 5 10 -5 -10"/>
+                                    
+                                    <!--text on the top-->
+                                    <text id="svg-q1-udl" x="165" y="90">&omega; = 10 kN / m</text>
+                                    <text x="180" y="170">L = 6 m</text>
+                                    <text x="30" y="75">R<tspan baseline-shift="sub">A</tspan></text>
+                                    <text x="470" y="75">R<tspan baseline-shift="sub">B</tspan></text>
+                                    
+                                    <!--axis arrow and text-->
+                                    <path stroke="black" fill="none" stroke-width="3" stroke-linecap="round"
+                                          d="M 45 200
+                                             l 0 -20 0 10 50 0 -10 -5 10 5 -10 5 10 -5"/>
+                                    <text x="105" y="195" font-size="16">X</text>
+                                </svg>
+                            </p>
+                            <p>
+                                The reaction R<sub>A</sub> and R<sub>B</sub> are:<br/><br/>
+                                
+                                R<sub>A</sub> = <input id="q1-r1" size="8"/> kN,
+                                <button class="btn btn-primary btn-xs" id="q1-check-r1" onclick="q1_check_r1();"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-r1"></label><br/>
+                                
+                                R<sub>B</sub> = <input id="q1-r2" size="8"/> kN,
+                                <button class="btn btn-primary btn-xs" id="q1-check-r2" onclick="q1_check_r2();"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-r2"></label><br/>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-2" style="display: none; margin-top: 30px;">
+                            <p>
+                                Therefore we can write the bending moment as a function of <span style="font-style: italic;">x</span>. Please complete its coefficients:
+                            </p>
+                            <p>
+                                <span style="font-style: italic;">M(x) = EI v''</span> = <input id="q1-co11" size="4"/> <span style="font-style: italic;">x</span> + <input id="q1-co12" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span>
+                                <button class="btn btn-primary btn-xs" id="q1-check-co1" onclick="q1_check_co1();"><i class="fa fa-check"></i>Check</button>
+                                <br/><label id="q1-after-co1"></label>
+                            </p>
+                            <p id="q1-slope" style="display: none;">
+                                <span style="font-style: italic;">EI v'</span> = <input id="q1-co21" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span> + <input id="q1-co22" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <span style="font-style: italic;">C<sub>1</sub></span>
+                                <button class="btn btn-primary btn-xs" id="q1-check-co2" onclick="q1_check_co2();"><i class="fa fa-check"></i>Check</button>
+                                <br/><label id="q1-after-co2"></label>
+                            </p>
+                            <p id="q1-deflection" style="display: none;">
+                                <span style="font-style: italic;">EI v</span> = <input id="q1-co31" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <input id="q1-co32" size="4"/> <span style="font-style: italic;">x<sup>4</sup></span> + <span style="font-style: italic;">C<sub>1</sub>x</span> + <span style="font-style: italic;">C<sub>2</sub></span>
+                                <button class="btn btn-primary btn-xs" id="q1-check-co3" onclick="q1_check_co3();"><i class="fa fa-check"></i>Check</button>
+                                <br/><label id="q1-after-co3"></label>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-3" style="display: none; margin-top: 30px;">
+                            <p>
+                                In order to determine the two constants <span style="font-style: italic;">C<sub>1</sub></span> and <span style="font-style: italic;">C<sub>2</sub></span>, we need to examine the boundary conditions:
+                            </p>
+                            <p>
+                                At: <span style="font-style: italic;">x</span> = 0 m<br/>
+                                <select id="q1-select-left">
+                                    <option value="v0"><span style="font-style: italic;"></span></option>
+                                    <option value="v1"><span style="font-style: italic;">v</span></option>
+                                    <option value="v2"><span style="font-style: italic;">v'</span></option>
+                                    <option value="v3"><span style="font-style: italic;">v''</span></option>
+                                </select>
+                                = <input id="q1-left" size="4"/>
+                                <button class="btn btn-primary btn-xs" id="q1-check-left" onclick="q1_check_left();"><i class="fa fa-check"></i>Check</button>
+                                <br/><label id="q1-after-left"></label>
+                            </p>
+                            <p>
+                                At: <span style="font-style: italic;">x</span> = 6 m<br/>
+                                <select id="q1-select-right">
+                                    <option value="v0"><span style="font-style: italic;"></span></option>
+                                    <option value="v1"><span style="font-style: italic;">v</span></option>
+                                    <option value="v2"><span style="font-style: italic;">v'</span></option>
+                                    <option value="v3"><span style="font-style: italic;">v''</span></option>
+                                </select>
+                                = <input id="q1-right" size="4"/>
+                                <button class="btn btn-primary btn-xs" id="q1-check-right" onclick="q1_check_right();"><i class="fa fa-check"></i>Check</button>
+                                <br/><label id="q1-after-right"></label>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div id="q1-4" style="display: none; margin-top: 30px;">
+                        <p>
+                            Substitute the boundary conditions into the fuction of the deflection, we can solve for the two constants:
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>1</sub></span>
+                            = <input id="q1-c1" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q1-check-c1" onclick="q1_check_c1();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q1-after-c1"></label>
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>2</sub></span>
+                            = <input id="q1-c2" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q1-check-c2" onclick="q1_check_c2();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q1-after-c2"></label>
+                        </p>
+                    </div>
+                    
+                    <div id="q1-5" style="display: none; margin-top: 30px;">
+                        <p>
+                            Therefore the deflection function is
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">EI v</span> = <span id="q1-v1"></span> <span style="font-style: italic;">x<sup>3</sup></span> <span id="q1-v2"></span> <span style="font-style: italic;">x<sup>4</sup></span> <span id="q1-v3"></span><span style="font-style: italic;"> x</span>.
+                        </p>
+                        <p>This question is finished! Please continue Question 2 (second tab on the top)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tabr2" class="tab-content">
+                <div class="questions">
+                    <p>
+                        An overhanging beam is shown below:
+                    </p>
+                    
+                    <div id="div-q2" style="display: block;">
+                        <img id="pic02" src="fig1.2.png" alt="description picture is not loaded" style="display: block;" width="540px" height="260px"/>
+                        <p>
+                            <!--Here is the question description-->
+                            The beam has an uniform distributed load (UDL) &omega; = 30 kN applied on its whole length.<br/>
+                            Please calculate the deflection of the beam in terms of EI.
+                        </p>
+                        <p><button id="q2-start" class="btn btn-primary" onclick="q2_start();">Start</button></p>
+                    </div>
+                    
+                    <div id="q2-1" style="display: none; margin-top: 30px;">
+                        <p style="">
+                            Due to the reaction at B. Deflections of segment AB and BC need to be calculated seperately. Please please calculate the reaction R<sub>A</sub> and R<sub>B</sub>:<br/><br/>
+                            
+                            R<sub>A</sub> = <input id="q2-r1" size="8"/> kN,
+                            <button class="btn btn-primary btn-xs" id="q2-check-r1" onclick="q2_check_r1();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-r1"></label><br/>
+
+                            R<sub>B</sub> = <input id="q2-r2" size="8"/> kN,
+                            <button class="btn btn-primary btn-xs" id="q2-check-r2" onclick="q2_check_r2();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-r2"></label><br/>
+                        </p>
+                    </div>
+                    
+                    <div id="q2-2" style="display: none; margin-top: 30px;">
+                        <p>
+                            Let's first calculate the deflection of segment AB. Let x axis originates from point A. The freebody diagram for segment Ax (where x &le; 10 m) is shown as:
+                        </p>
+                        <p>
+                            <img id="pic03" src="fig1.3.png" alt="description picture is not loaded" style="display: block;" width="631px" height="225px"/>
+                        </p>
+                        <p>
+                            Therefore we can write the bending moment as a function of <span style="font-style: italic;">x</span>. Please complete its coefficients:
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">M(x) = EI v''</span> = <input id="q2-co11" size="4"/> <span style="font-style: italic;">x</span> + <input id="q2-co12" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co1" onclick="q2_check_co1();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co1"></label>
+                        </p>
+                        <p id="q2-slope" style="display: none;">
+                            <span style="font-style: italic;">EI v'</span> = <input id="q2-co21" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span> + <input id="q2-co22" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <span style="font-style: italic;">C<sub>1</sub></span>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co2" onclick="q2_check_co2();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co2"></label>
+                        </p>
+                        <p id="q2-deflection" style="display: none;">
+                            <span style="font-style: italic;">EI v</span> = <input id="q2-co31" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <input id="q2-co32" size="4"/> <span style="font-style: italic;">x<sup>4</sup></span> + <span style="font-style: italic;">C<sub>1</sub>x</span> + <span style="font-style: italic;">C<sub>2</sub></span>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co3" onclick="q2_check_co3();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co3"></label>
+                        </p>
+                    </div>
+                    
+                    <div id="q2-3" style="display: none; margin-top: 30px;">
+                        <p>
+                            In order to determine the two constants <span style="font-style: italic;">C<sub>1</sub></span> and <span style="font-style: italic;">C<sub>2</sub></span>, we need to examine the boundary conditions:
+                        </p>
+                        <p>
+                            At: <span style="font-style: italic;">x</span> = 0 m<br/>
+                            <select id="q2-select-left">
+                                <option value="v0"><span style="font-style: italic;"></span></option>
+                                <option value="v1"><span style="font-style: italic;">v</span></option>
+                                <option value="v2"><span style="font-style: italic;">v'</span></option>
+                                <option value="v3"><span style="font-style: italic;">v''</span></option>
+                            </select>
+                            = <input id="q2-left" size="4"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-left" onclick="q2_check_left();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-left"></label>
+                        </p>
+                        <p>
+                            At: <span style="font-style: italic;">x</span> = 10 m<br/>
+                            <select id="q2-select-right">
+                                <option value="v0"><span style="font-style: italic;"></span></option>
+                                <option value="v1"><span style="font-style: italic;">v</span></option>
+                                <option value="v2"><span style="font-style: italic;">v'</span></option>
+                                <option value="v3"><span style="font-style: italic;">v''</span></option>
+                            </select>
+                            = <input id="q2-right" size="4"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-right" onclick="q2_check_right();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-right"></label>
+                        </p>
+                    </div>
+                    
+                    <div id="q2-4" style="display: none; margin-top: 30px;">
+                        <p>
+                            Substitute the boundary conditions into the fuction of the deflection, we can solve for the two constants:
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>1</sub></span>
+                            = <input id="q2-c1" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-c1" onclick="q2_check_c1();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-c1"></label>
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>2</sub></span>
+                            = <input id="q2-c2" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-c2" onclick="q2_check_c2();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-c2"></label>
+                        </p>
+                    </div>                    
+                    
+                    <div id="q2-5" style="display: none; margin-top: 30px;">
+                        <p>
+                            Now let's first calculate the deflection of segment BC. The freebody diagram for segment Ax (where x &ge; 10 m) is shown as:
+                        </p>
+                        <p>
+                            <img id="pic04" src="fig1.4.png" alt="description picture is not loaded" style="display: block;" width="622px" height="290px"/>
+                        </p>
+                        <p>
+                            Therefore we can write the bending moment as a function of <span style="font-style: italic;">x</span>. Please complete its coefficients:
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">M(x) = EI v''</span> = <input id="q2-co41" size="4"/> <span style="font-style: italic;">x</span> + <input id="q2-co42" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span> + <input id="q2-co43" size="4"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co4" onclick="q2_check_co4();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co4"></label>
+                        </p>
+                        <p id="q2-slope2" style="display: none;">
+                            <span style="font-style: italic;">EI v'</span> = <input id="q2-co51" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span> + <input id="q2-co52" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <input id="q2-co53" size="4"/> <span style="font-style: italic;">x</span> + <span style="font-style: italic;">C<sub>3</sub></span>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co5" onclick="q2_check_co5();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co5"></label>
+                        </p>
+                        <p id="q2-deflection2" style="display: none;">
+                            <span style="font-style: italic;">EI v</span> = <input id="q2-co61" size="4"/> <span style="font-style: italic;">x<sup>3</sup></span> + <input id="q2-co62" size="4"/> <span style="font-style: italic;">x<sup>4</sup></span> + <input id="q2-co63" size="4"/> <span style="font-style: italic;">x<sup>2</sup></span> + <span style="font-style: italic;">C<sub>3</sub>x</span> + <span style="font-style: italic;">C<sub>4</sub></span>
+                            <button class="btn btn-primary btn-xs" id="q2-check-co6" onclick="q2_check_co6();"><i class="fa fa-check"></i>Check</button>
+                            <br/><label id="q2-after-co6"></label>
+                        </p>
+                    </div>
+                    <div id="q2-6" style="display: none; margin-top: 30px;">
+                        <p>
+                            As we have got the two boundary conditions: <span style="font-style: italic;">v</span> = 0 for  <span style="font-style: italic;">x</span> = 10, and slope should be continuous at x = 10 m. Substitute into the deflection function above to solve for <span style="font-style: italic;">C<sub>3</sub></span> and <span style="font-style: italic;">C<sub>4</sub></span>:
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>3</sub></span>
+                            = <input id="q2-c3" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-c3" onclick="q2_check_c3();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-c3"></label>
+                        </p>
+                        <p>
+                            <span style="font-style: italic;">C<sub>4</sub></span>
+                            = <input id="q2-c4" size="6"/>
+                            <button class="btn btn-primary btn-xs" id="q2-check-c4" onclick="q2_check_c4();"><i class="fa fa-check"></i>Check</button>
+                            <label id="q2-after-c4"></label>
+                        </p>
+                    </div>
+                    <div id="q2-7" style="display: none; margin-top: 30px;">
+                        <p>
+                            Thus we obtain the deflection function for this beam.
+                        </p>
+                        <p>
+                            For segment AB:
+                        </p>
+                        <p style="margin-left: 20px;">
+                            <span style="font-style: italic;">EI v</span> = 24 <span style="font-style: italic;">x<sup>3</sup></span> - 1.25 <span style="font-style: italic;">x<sup>4</sup></span> - 1150 <span style="font-style: italic;">x</span>
+                        </p>
+                        <p>
+                            For segment BC:
+                        </p>
+                        <p style="margin-left: 20px;">
+                            <span style="font-style: italic;">EI v</span> = 60 <span style="font-style: italic;">x<sup>3</sup></span> - 1.25 <span style="font-style: italic;">x<sup>4</sup></span> - 1080 <span style="font-style: italic;">x<sup>2</sup></span>  + 9650 <span style="font-style: italic;">x</span> - 36000
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+    <script type="text/javascript" src="exp01.02.js"></script>
+</html>

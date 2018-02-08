@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 07 - Plastic Bending</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" id="f3-check-1" onclick="check_id()">Start</button><label id="after-id"></label>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        A T section is shown below (drawn not to scale):
+                    </p>
+                    <div id="div-q2" style="display: block;">
+                        <img id="pic03" src="pic3.jpg" alt="description picture is not loaded" style="display: block;" width="360px" height="321px"/>
+                        <div>
+                            <p>
+                                The width of the flange b<sub>f</sub> = 150 mm,<br/>
+                                The thickness of the flange t<sub>f</sub> = 20 mm,<br/>
+                                The height of the web h<sub>w</sub> = 200 mm,<br/>
+                                The thickness of the web t<sub>w</sub> = 30 mm.<br/><br/>
+                                The Young's module for the section E = 125 GPa,<br/>
+                                The Yielding stress is &sigma;<sub>Y</sub> = 250 MPa for both compression and tension.<br/>
+                            </p>
+                            <span id="f3-indicate"><br/>Please click the "Start" button and follow the instruction to finish the question:<br/></span>
+                            <button class="btn btn-primary" id="f3-start" onclick="f3_part1()"><i class="fa fa-check"></i> Start</button>
+                            
+                            <div id="f3-part1" style="display: none; margin-top: 20px;">
+                                <p>
+                                    <span style="font-weight: bold;">(1) Calculate the bending moment M<sub>y</sub> which will the cause first yielding.</span><br/><br/>
+                                    First, calculate the vertical location of the centroid and the second moment of inertia I<sub>xx</sub>:
+                                </p>
+                                ȳ<sub><span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>top</span></sub> = <span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>+</span> <input id="f3-ybar-top" size="8"/> mm (rounded to 0.01mm), <br/><br/>
+                                ȳ<sub><span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>btm</span></sub> = <span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>-</span> <input id="f3-ybar-btm" size="8"/> mm (rounded to 0.01mm), <br/><br/>
+                                I<sub>xx</sub> = <input id="f3-ixx" size="8"/> mm<sup>4</sup> (3 significant figures)<br/><br/>
+                                <button class="btn btn-primary" id="f3-check-1" onclick="f3_check_1()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-1"></label>              
+                            </div>
+                            
+                            <div id="f3-part2" style="display: none; margin-top: 20px;">
+                                <p>
+                                    Since |ȳ<sub><span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>top</span></sub>| &lt; |ȳ<sub><span style='font-family: "Courier New", Courier, monospace; font-weight: bold;'>btm</span></sub>|, The bottom fiber yields first. At this situation, the stress and strain though the depth of the cross-section is shown as below:
+                                </p>
+                                <svg id="svg-q2-stress" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="651" height="301" viewBox="0 0 651 301" style="display: block; margin-left: 20px;">
+                                    <image xlink:href="pic3.1.jpg" x="0" y="0" height="301px" width="651px"/>
+                                    
+                                    <text id="f3-sig-top" x="306" y="20" font-size="14" fill="red" opacity="0">&sigma;<tspan baseline-shift="sub">top</tspan> = 152.4 MPa</text>
+                                    <text id="f3-ep-top" x="504" y="20" font-size="14" fill="red" opacity="0">&epsilon;<tspan baseline-shift="sub">top</tspan> = 1.219e-3</text>
+                                    <text id="f3-ep-btm" x="536" y="285" font-size="14" fill="red" opacity="0">&epsilon;<tspan baseline-shift="sub">btm</tspan> = 2e-3</text>
+                                </svg>
+                                <p>
+                                    From the equation -M<sub>y</sub> &bull; ȳ<sub>btm</sub> / I<sub>xx</sub> = &sigma;<sub>Y</sub> = 250 MPa, we can solve for M<sub>y</sub>
+                                </p>
+                                M<sub>y</sub> = <input id="f3-my" size="8"/> kN-m. (rounded to 0.01 kN-m)<br/><br/>
+                                <button class="btn btn-primary" id="f3-check-2" onclick="f3_check_2()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-2"></label> 
+                            </div>
+                            
+                            <div id="f3-part3" style="display: none; margin-top: 20px;">
+                                <p>Please calculate the stress of the top &sigma;<sub>top</sub>, strain of the top &epsilon;<sub>top</sub> and strain of the bottom &epsilon;<sub>btm</sub>:</p>
+                                
+                                &sigma;<sub>top</sub> = <input id="f3-3-1" size="8"/> Mpa. (rounded to 0.1 Mpa)&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" id="f3-check-3-1" onclick="f3_check_3_1()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-3-1"></label><br/><br/>
+                                
+                                &epsilon;<sub>top</sub> = <input id="f3-3-2" size="8"/> . (rounded to 0.001e-3)&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" id="f3-check-3-2" onclick="f3_check_3_2()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-3-2"></label><br/><br/>
+                                
+                                &epsilon;<sub>btm</sub> = <input id="f3-3-3" size="8"/> . (rounded to 0.001e-3)&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" id="f3-check-3-3" onclick="f3_check_3_3()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-3-3"></label><br/><br/>
+                            </div>
+                            
+                            <div id="f3-part4" style="display: none; margin-top: 20px;"> <!--TODO: change back to none-->
+                                <p>
+                                    Question (1) is finished!<br/><br/>
+                                    <span style="font-weight: bold;">(2) Calculate the bending moment M<sub>p</sub> for fully plastic bending.</span><br/><br/>
+                                    When fully plastic bending occurs, the N.A is located such that the area above the N.A. equals to the area below the N.A.
+                                </p>
+                                <p>
+                                    Please calculate the distance between the N.A. and the top flange d<sub>p</sub>:
+                                </p>
+                                d<sub>p</sub> = <input id="f3-dp" size="8"/> mm<br/><br/>
+                                <button class="btn btn-primary" id="f3-check-4" onclick="f3_check_4()"><i class="fa fa-check"></i>Check</button>
+                                <label id="f3-after-4"></label><br/>
+                                <img id="na-show" src="pic3.2.1.jpg" width="284px" height="310px"/>
+                                
+                                <div id="f3-part4-1" style="display: none; margin-top: 20px;">
+                                    <p>Please calculate the tensile forct T and the two compressive forces C<sub>f</sub> of the flange and C<sub>w</sub> of the web:</p>
+
+                                    T = <input id="f3-4-1" size="8"/> kN.&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" id="f3-check-4-1" onclick="f3_check_4_1($('#f3-4-1'), $('#f3-after-4-1'), prob3.full.t)"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-4-1"></label><br/><br/>
+
+                                    C<sub>f</sub> = <input id="f3-4-2" size="8"/> kN.&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" id="f3-check-4-2" onclick="f3_check_4_1($('#f3-4-2'), $('#f3-after-4-2'), prob3.full.cf)"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-4-2"></label><br/><br/>
+
+                                    C<sub>w</sub> = <input id="f3-4-3" size="8"/> kN.&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" id="f3-check-4-3" onclick="f3_check_4_1($('#f3-4-3'), $('#f3-after-4-3'), prob3.full.cw)"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-4-3"></label><br/><br/>
+                                </div>
+                                
+                                <div id="f3-part4-2" style="display: none; margin-top: 20px;">
+                                    <p>Therefore we can calcuate M<sub>p</sub> by computing the resultant moment of T, C<sub>f</sub> and C<sub>w</sub></p>
+                                    M<sub>p</sub> = <input id="f3-mp" size="8"/> kN-M <br/><br/>
+                                    <button class="btn btn-primary" id="f3-check-mp" onclick="f3_check_mp()"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-mp"></label><br/>
+                                </div>
+                                
+                                <div id="f3-part5" style="display: none; margin-top: 20px;"> <!--TODO: change back to none-->
+                                    <p>
+                                        Question (3) is finished!<br/><br/>
+                                        <span style="font-weight: bold;">(2) Calculate the bending moment M<sub>1</sub> for the case where the top of the cross-section just reaches yielding stress &sigma;<sub>Y</sub> = 250 MPa.</span><br/><br/>
+                                        First we need to calculate the location of the N.A. The stress and strain diagram are shown in the following figure:
+                                    </p>
+                                    <img id="na-partial" src="pic3.3.jpg" width="700px" height="328px"/>
+                                    <p>
+                                        Let <span class="d">d</span> be the distance between the top of the flange and the N.A. Let &sigma;<sub>2</sub> be the stress at the interface between the flange and the web. The compression force is divided into three parts C<sub>1</sub>, C<sub>2</sub> and C<sub>3</sub>, and the tensile force is divided into two parts T<sub>1</sub> and T<sub>2</sub>, as shown in the figure above.
+                                    </p>
+                                    <p>These forces can be expressed in terms of <span class="d">d</span> and &sigma;<sub>2</sub></p>
+                                    <div style="margin-left: 20px;">
+                                        <p>
+                                            C<sub>1</sub> = 0.5 &times; t<sub>f</sub> &times; b<sub>f</sub> &times; (&sigma;<sub>Y</sub> - &sigma;<sub>2</sub>),
+                                        </p>
+                                        <p>
+                                            C<sub>2</sub> = t<sub>f</sub> &times; b<sub>f</sub> &times; &sigma;<sub>2</sub>,
+                                        </p>
+                                        <p>
+                                            C<sub>3</sub> = 0.5 &times; (<span class="d">d</span> - t<sub>f</sub>) &times; t<sub>w</sub> &times; &sigma;<sub>2</sub>,
+                                        </p>
+                                        <p>
+                                            T<sub>1</sub> = 0.5 &times; <span class="d">d</span> &times; t<sub>w</sub> &times; &sigma;<sub>Y</sub>,
+                                        </p>
+                                        <p>
+                                            T<sub>2</sub> = (t<sub>f</sub> + h<sub>w</sub> - 2<span class="d">d</span>) &times; t<sub>w</sub> &times; &sigma;<sub>Y</sub>.
+                                        </p>
+                                    </div>
+                                    <p>Note the relationship between <span class="d">d</span> and &sigma;<sub>2</sub> is:</p>
+                                    <p style="margin-left: 20px;">
+                                        <span class="d">d</span> / &sigma;<sub>Y</sub> = t<sub>f</sub> / (&sigma;<sub>Y</sub> - &sigma;<sub>2</sub>)
+                                    </p>
+                                    <p>
+                                        Solve equation C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub> = T<sub>1</sub> + T<sub>2</sub> for <span class="d">d</span>:
+                                    </p>
+                                    <span class="d">d</span> = <input id="f3-d" size="8"/> mm (rounded to 0.01mm)<br/><br/>
+                                    <button class="btn btn-primary" id="f3-check-d" onclick="f3_check_d()"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-d"></label><br/>
+                                </div>
+                                
+                                <div id="f3-part5-2" style="display: none; margin-top: 20px;">
+                                    <p>
+                                        Therefore we can calculate the components of the compressive and tensile forces: (rounded to 0.01 kN)<br/>
+                                        Please use d = 75.31 mm and &sigma;<sub>2</sub> = 183.61 MPa to calculate
+                                    </p>
+                                    <p>
+                                        C<sub>1</sub> = <input id="f3-5-1" size="8"/> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="f3-check-5-1" onclick="f3_check_5_1($('#f3-5-1'), $('#f3-after-5-1'), prob3.partial.c1)"><i class="fa fa-check"></i>Check</button>
+                                        <label id="f3-after-5-1"></label>
+                                    </p>
+                                    <p>
+                                        C<sub>2</sub> = <input id="f3-5-2" size="8"/> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="f3-check-5-2" onclick="f3_check_5_1($('#f3-5-2'), $('#f3-after-5-2'), prob3.partial.c2)"><i class="fa fa-check"></i>Check</button>
+                                        <label id="f3-after-5-2"></label>
+                                    </p>
+                                    <p>
+                                        C<sub>3</sub> = <input id="f3-5-3" size="8"/> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="f3-check-5-3" onclick="f3_check_5_1($('#f3-5-3'), $('#f3-after-5-3'), prob3.partial.c3)"><i class="fa fa-check"></i>Check</button>
+                                        <label id="f3-after-5-3"></label>
+                                    </p>
+                                    <p>
+                                        T<sub>1</sub> = <input id="f3-5-4" size="8"/> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="f3-check-5-4" onclick="f3_check_5_1($('#f3-5-4'), $('#f3-after-5-4'), prob3.partial.t1)"><i class="fa fa-check"></i>Check</button>
+                                        <label id="f3-after-5-4"></label>
+                                    </p>
+                                    <p>
+                                        T<sub>2</sub> = <input id="f3-5-5" size="8"/> &nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="f3-check-5-5" onclick="f3_check_5_1($('#f3-5-5'), $('#f3-after-5-5'), prob3.partial.t2)"><i class="fa fa-check"></i>Check</button>
+                                        <label id="f3-after-5-5"></label>
+                                    </p>
+                                </div>
+                                
+                                <div id="f3-part5-3" style="display: none; margin-top: 20px;"> <!--TODO: change back to none-->
+                                    <p>
+                                        Thus we can calculate the bending moment M<sub>1</sub> by computing the resultant moment of C<sub>1</sub>, C<sub>2</sub>, C<sub>3</sub>, T<sub>1</sub> and T<sub>2</sub>, as illustrated in the following figure:
+                                    </p>
+                                    <img src="pic3.4.jpg" width="588px" height="368px"/>
+                                    <p>
+                                        The bending moment M<sub>1</sub> is:
+                                    </p>
+                                    M<sub>1</sub> = <input id="f3-m1" size="8"/> kN-M (rounded to 0.01 kN-M)<br/><br/>
+                                    <button class="btn btn-primary" id="f3-check-m1" onclick="f3_check_m1()"><i class="fa fa-check"></i>Check</button>
+                                    <label id="f3-after-m1"></label><br/>
+                                    <label id="f3-final" style="font-style: bold; margin-top: 20px; margin-left: 20px; font-size: 20px;"></label>
+                                </div>
+                        
+                                <div id="f1-submit" style="display: none;">
+                                    <button class="btn btn-primary" onclick="final_submit(event);">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.03.js"></script>
+</html>

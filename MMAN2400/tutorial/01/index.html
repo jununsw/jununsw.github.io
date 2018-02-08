@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="centroid, second moment of area"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Centroid, Second Moment of Area and Mohr's Circle</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+    </head>
+    <body>
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" onclick="check_id()">Start module</button><label id="after-id"></label><br/><br/>
+                <!--button class="btn btn-xs btn-warning" onclick="window.location.reload(true);">Refresh page</button-->
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main" style="margin: 40px;">
+            <div id="test">
+                <svg id="lshape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                     width="600" height="500" viewBox="-100 0 500 500" style="display: block; margin: auto">
+                    <text id="svg-title" fill="black" font-size="20" opacity="0" text-decoration="underline">Centroid</text>
+                    <g id="axis">
+                        <path stroke-width="3" stroke="black" fill="none"
+                              d="M 20 30 l -10 -10 l 0 420 l 420 0 l -10 -10"/>
+                        <text x="12" y="12" fill="black" font-size="16">y'</text>
+                        <text x="435" y="440" fill="black" font-size="16">x'</text>
+                        <circle id="origin" fill="black" cx="10" cy="440" r="6" opacity="1"/>
+                    </g>
+
+                    <g id="box">
+                        <rect id="box1" x="0" y="0" width="0" height="0" stroke="blue" stroke-width="3" fill-opacity="0"/>
+                        <rect id="box2" x="0" y="0" width="0" height="0" stroke="blue" stroke-width="3" fill-opacity="0"/>
+                    </g>
+
+                    <g id="centroid-line">
+                        <line id="x1bar-line" stroke-width="1" stroke="red"/>
+                        <line id="y1bar-line" stroke-width="1" stroke="red"/>
+                        <line id="x2bar-line" stroke-width="1" stroke="red"/>
+                        <line id="y2bar-line" stroke-width="1" stroke="red"/>
+                    </g>
+
+                    <g id="centroid-text">
+                        <text id="x1bar-text" fill="white" font-size="14">x'1</text>
+                        <text id="y1bar-text" fill="white" font-size="14">y'1</text>
+                        <text id="x2bar-text" fill="white" font-size="14">x'2</text>
+                        <text id="y2bar-text" fill="white" font-size="14">y'2</text>
+                    </g>
+
+                    <g id="centroid-draw">
+                        <circle id="centroid-point" fill="black" opacity="0"/>
+                        <g id="centroid-axis" opacity="1">
+                            <g id="myaxis">
+                                <path id="centroid-axis-draw" stroke-width="2" stroke="black" fill="none"/>
+                                <text id="xbar-text" fill="black" font-size="14">x</text>
+                                <text id="ybar-text" fill="black" font-size="14">y</text>
+                            </g>
+                            <text id="centroid-label" fill="black" font-size="14">C</text>
+
+                            <g id="rotate" opacity="0">
+                                <path id="rotate-axis" stroke-width="3" stroke="red" fill="none"/>
+                                <text id="rotate-1" fill="red" font-size="14">1</text>
+                                <text id="rotate-2" fill="red" font-size="14">2</text>
+                            </g>
+
+                            <g id="new-coord" opacity="0">
+                                <path id="new-axis" stroke-width="3" stroke="blue" fill="none"/>
+                                <text id="new-x" fill="blue" font-size="14">x*</text>
+                                <text id="new-y" fill="blue" font-size="14">y*</text>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <button class="btn btn-primary" id="toggle-button" onclick="toggle()"><i class="fa fa-picture-o"></i> Hide/Show Description img</button>
+
+            <div id="legend">
+                <img id="pic" src="exp01.png" alt="Legend loading failure"/>
+            </div>
+
+            <div class="des" style="font-weight: bold; margin-left: 20px; margin-right: 20px; font-size: 12pt;">
+                <p>Dimension of the two members are: (Click the button above to view the description)</p>
+                <p id="des1"></p>
+                <p id="des2"></p><br/>
+
+                <div style="border-style: solid; border-color: red; font-weight: normal;">
+                    <p><span style="font-weight: bold;">Instruction for input:</span></p>
+                    <ul>
+                        <li>The box waiting for input will be in <span style="font-weight: bold;">light-gold</span> color.</li>
+                        <li>After typing the value, press ENTER. If your answer is correct, the next table cell will be available.</li>
+                        <li>If your value is correct, the next available cell will be in light-gold color, waiting for input.</li>
+                        <li>If your value is not correct, the cell will be in red color. Please modify your answer.</li>
+                        <li><span style="font-weight: bold;">Value for length, area and angle should be rounded to 2 decimal places</span></li>
+                        <li><span style="font-weight: bold;">Value for second moment of area should be in scientific notation with 4 significant figures</span></li>
+                    </ul>
+                </div>
+                <br/>
+            </div>
+
+            <div id="main-body">
+
+                <ul>
+                    <li id="tab1" style="display: inline;"><a href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i><strong class="tab-title"> Centroid and Second Moment of Area</strong></a></li>
+                    <li id="tab2" style="display: none;"><a href="#tabr2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><strong class="tab-title"> Principle Second Moment of Area</strong></a></li>
+                    <li id="tab3" style="display: none;"><a href="#tabr3"><i class="fa fa-dot-circle-o" aria-hidden="true"></i><strong class="tab-title"> Mohr Circle</strong></a></li>
+                </ul>
+
+                <div id="tabr1">
+
+                    <table class="cen-input table table-bordered" border="1">
+                        <caption><b>Calculation for centroid</b></caption>
+                        <tr>
+                            <th>Member (i)</th>
+                            <th>Area (A)</th>
+                            <th>x'<sub>i</sub></th>
+                            <th>y'<sub>i</sub></th>
+                            <th>A<sub>i</sub>x'<sub>i</sub></th>
+                            <th>A<sub>i</sub>y'<sub>i</sub></th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th><input class="cinput" type="text" id="A1" size="10"/></th>
+                            <th><input class="cinput" type="text" id="x1bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="y1bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="Ax1bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="Ay1bar" size="10"/></th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th><input class="cinput" type="text" id="A2" size="10"/></th>
+                            <th><input class="cinput" type="text" id="x2bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="y2bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="Ax2bar" size="10"/></th>
+                            <th><input class="cinput" type="text" id="Ay2bar" size="10"/></th>
+                        </tr>
+                        <tr id="sum-row">
+                            <th>Sum</th>
+                            <th id="Asum"></th>
+                            <th></th>
+                            <th></th>
+                            <th id="Axsum"></th>
+                            <th id="Aysum"></th>
+                        </tr>
+                    </table><br/><br/>
+
+                    <div id="result" style="display: none">
+                        <label style="font-weight: bold; font-size: 22px;">
+                            x̄ is:&nbsp;&nbsp; <input class="cinput" type="text" id="cx" size="20" style="font-weight: bold; font-size: 22px;"/>&nbsp;&nbsp;&nbsp;
+                            <span class="centroid-formula">x̄=&Sigma;(A<sub>i</sub>x'<sub>i</sub>)/&Sigma;A<sub>i</sub> (2 digits after the decimal point)</span>
+                        </label>
+                        <br/><br/>
+                        <label style="font-weight: bold; font-size: 22px;">
+                            ȳ is:&nbsp;&nbsp; <input class="cinput" type="text" id="cy" size="20" style="font-weight: bold; font-size: 22px;"/>&nbsp;&nbsp;&nbsp;
+                            <span class="centroid-formula">ȳ=&Sigma;(A<sub>i</sub>y'<sub>i</sub>)/&Sigma;A<sub>i</sub> (2 digits after the decimal point)</span>
+                        </label>
+                        <br/><br/>
+                        <label id="final" style="font-weight: bold; font-size: 22px;"></label>
+                    </div><br/><br/>
+
+                    <table class="moment-input table table-bordered" border="1">
+                        <caption><b>Calculation for second moment of area (4 significant figures for all I, you need to scroll horizontally to see the whole table)</b></caption>
+                        <tr>
+                            <th>Member (i)</th>
+                            <th>A<sub>i</sub></th>
+                            <th>x̄<sub>i</sub> = x'<sub>i</sub>-x̄</th>
+
+                            <th>A<sub>i</sub>(x'<sub>i</sub>-x̄)<sup>2</sup></th>
+                            <th>I<sup>i</sup><sub>yy</sub></th>
+
+                            <th>ȳ<sub>i</sub> = y'<sub>i</sub>-ȳ</th>
+
+                            <th>A<sub>i</sub>(y'<sub>i</sub>-ȳ)<sup>2</sup></th>
+                            <th>I<sup>i</sup><sub>xx</sub></th>
+
+                            <th>A<sub>i</sub>(x'<sub>i</sub>-x̄)(y'<sub>i</sub>-ȳ)</th>
+                            <th>I<sup>i</sup><sub>xy</sub></th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th id="A1_result" width="100" style="background-color: white;"></th>
+                            <th><input class="minput" type="text" id="x1diff" size="10"/></th>
+
+                            <th id="ax21" class="area2"></th>
+                            <th><input class="minput" type="text" id="iyy1" size="10"/></th>
+
+                            <th><input class="minput" type="text" id="y1diff" size="10"/></th>
+
+                            <th id="ay21" class="area2"></th>
+                            <th><input class="minput" type="text" id="ixx1" size="10"/></th>
+
+                            <th id="axy1" class="area2"></th>
+                            <th><input class="minput" type="text" id="ixy1" size="10"/></th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th id="A2_result" width="100" style="background-color: white;"></th>
+                            <th><input class="minput" type="text" id="x2diff" size="10"/></th>
+
+                            <th id="ax22" class="area2"></th>
+                            <th><input class="minput" type="text" id="iyy2" size="10"/></th>
+
+                            <th><input class="minput" type="text" id="y2diff" size="10"/></th>
+
+                            <th id="ay22" class="area2"></th>
+                            <th><input class="minput" type="text" id="ixx2" size="10"/></th>
+
+                            <th id="axy2" class="area2"></th>
+                            <th><input class="minput" type="text" id="ixy2" size="10"/></th>
+                        </tr>
+                        <tr id="sum-row2" style="display: none">
+                            <th>Sum</th>
+                            <th id="Asum_result" style="background-color: silver;" width="100"></th>
+                            <th style="background-color: silver;"></th>
+
+                            <th id="ax2"></th>
+                            <th id="iyy"></th>
+
+                            <th style="background-color: silver;"></th>
+
+                            <th id="ay2"></th>
+                            <th id="ixx"></th>
+
+
+                            <th id="axy"></th>
+                            <th id="ixy"></th>
+                        </tr>
+                    </table><br/><br/>
+
+                    <div id="i-result" style="display: none">
+                        <label style="font-weight: bold; font-size: 22px;">
+                            I<sub>xx</sub> is:&nbsp;&nbsp; <input class="mfinput" type="text" id="ixxf" disabled size="20" style="font-weight: bold; font-size: 22px;"/>
+                            <span class="centroid-formula">I<sub>xx</sub>=&Sigma;A<sub>i</sub>(y'<sub>i</sub>-ȳ)<sup>2</sup>+&Sigma;I<sup>i</sup><sub>xx</sub></span>
+                        </label>
+                        <br/><br/>
+                        <label style="font-weight: bold; font-size: 22px;">
+                            I<sub>yy</sub> is:&nbsp;&nbsp; <input class="mfinput" type="text" id="iyyf" disabled size="20" style="font-weight: bold; font-size: 22px;"/>
+                            <span class="centroid-formula">I<sub>yy</sub>=&Sigma;A<sub>i</sub>(x'<sub>i</sub>-x̄)<sup>2</sup>+&Sigma;I<sup>i</sup><sub>yy</sub></span>
+                        </label>
+                        <br/><br/>
+                        <label style="font-weight: bold; font-size: 22px;">
+                            I<sub>xy</sub> is:&nbsp;&nbsp; <input class="mfinput" type="text" id="ixyf" disabled size="20" style="font-weight: bold; font-size: 22px;"/>
+                            <span class="centroid-formula">I<sub>xy</sub>=&Sigma;A<sub>i</sub>(x'<sub>i</sub>-x̄)(y'<sub>i</sub>-ȳ)+&Sigma;I<sup>i</sup><sub>xy</sub></span>
+                        </label>
+                        <br/><br/>
+                        <div id="final2" style="font-weight: bold; font-size: 22px;"></div>
+                    </div>
+                </div>
+
+                <div id="tabr2">
+                    <div id="tab2-label">
+                        <p class="summary-text" id="m-summary">p1</p>
+                        <p class="summary-text" id="q2">p2</p><br/>
+                        <label style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace;">
+                            &theta;<sub>p</sub>=&nbsp;
+                            <input class="finput" type="text" id="theta" size="10" style="font-weight: bold; font-size: 20px;"/>&nbsp;&deg;
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label id="formula1" style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-style: italic">
+                        </label>
+                        <br/><br/>
+                        <label style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace;">
+                            I<sub>1</sub>=&nbsp;<input class="finput" type="text" id="i1" size="10" style="font-weight: bold; font-size: 20px;"/>&nbsp;mm<sup>4</sup>
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label id="formula2" style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-style: italic">
+                        </label>
+                        <br/><br/>
+                        <label style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace;">
+                            I<sub>2</sub>=&nbsp;<input class="finput" type="text" id="i2" size="10" style="font-weight: bold; font-size: 20px;"/>&nbsp;mm<sup>4</sup>
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label id="formula3" style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-style: italic">
+                        </label><br/><br/><br/>
+                        <button class="btn btn-primary" id="check-final"><i class="fa fa-check"></i> Draw principal axis</button>
+                        <br/><br/>
+                        <label id="result-test" style="font-weight: bold; font-size: 22px;"></label>
+                    </div>
+                </div>
+
+                <div id="tabr3">
+                    <div id="submit-module" style="font-weight: normal; font-size: 16px; display: none;">
+                        <p>You can test the Mohr's circle in this tab.</p>
+                        <button id="finish-submit" class="btn btn-primary" onclick="finish_submit()">Finish and submit</button>
+                    </div>
+                    <svg id="mohr" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                         width="550" height="300" viewBox="0 0 550 300" style="display: block; margin: auto;">
+                        <path id="mohr-axis-x" stroke-width="2" stroke="black" fill="none"
+                              d="M 0 150 l 450 0 -10 -10 m 0 20 l 10 -10"/>
+                        <path id="mohr-axis-y" stroke-width="2" stroke="black" fill="none"
+                              d="M 50 150 l 0 -140 -10 10 m 20 0 l -10 -10 0 280"/>
+                        <text id="mohr-x" x="440" y="175" font-weight="bold">I<tspan baseline-shift="sub">xx/yy</tspan></text>
+                        <text id="mohr-y" x="75" y="15" font-weight="bold">I<tspan baseline-shift="sub">xy</tspan></text>
+                        <circle id="mohr-c" cx="250" cy="150" r="100" stroke-width="3" stroke="black" fill="none"/>
+                        <text x="380" y="170" font-weight="bold">I<tspan baseline-shift="sub">1</tspan></text>
+                        <text x="100" y="170" font-weight="bold">I<tspan baseline-shift="sub">2</tspan></text>
+                        <g id="i-line">
+                            <line style="stroke: black; stroke-width: 3" x1="150" y1="150" x2="350" y2="150"/>
+                            <text x="360" y="160" font-weight="bold"></text>
+                            <text x="140" y="160" font-weight="bold"></text>
+                        </g>
+                        <g id="new-line" opacity="0">
+                            <line id="new-line" style="stroke: blue; stroke-width: 3" x1="150" y1="150" x2="350" y2="150"/>
+                            <circle id="pa" r="5" cx="150" cy="150" fill="black"/>
+                            <circle id="pb" r="5" cx="350" cy="150" fill="black"/>
+                            <text id="ta" x="360" y="145" font-weight="bold" fill="blue">A</text>
+                            <text id="tb" x="130" y="145" font-weight="bold" fill="blue">B</text>
+                        </g>
+                        <circle cx="150" cy="150" r="5" fill="black"/>
+                        <circle cx="250" cy="150" r="5" fill="black"/>
+                        <circle cx="350" cy="150" r="5" fill="black"/>            
+                    </svg>
+
+                    <p style="text-align: center; font-weight: bold; font-size: 16px;">
+                        Please enter an arbitary angle (-180&deg; to 180&deg;): <input type="text" id="dinput" size="10"/> &deg; 
+                        <button class="btn btn-primary" id="apply-rotate">Apply</button>
+                        <button class="btn btn-primary" id="reset-rotate">Reset</button>
+                    </p>
+                    <br/>
+
+                    <div id="after" style="display: none;">
+                        <div class="afterangle-display" id="afterangle" style="width: 50%; border-style: solid; float: left;">
+                            <ul id="angle-list list-group" style="font-weight: bold; font-size: 22px; font-family: 'Courier New', Courier, monospace;">
+                                <li>I<sub>1</sub> = <lable id="list-i1"></lable></li>
+                                <li>I<sub>2</sub> = <lable id="list-i2"></lable></li>
+                                <li>Point A: <lable id="list-a"></lable></li>
+                                <li>Point B: <lable id="list-b"></lable></li>
+                                <li>Radius: <lable id="list-r"></lable></li>
+                            </ul>
+                        </div>
+                        <img class="afterangle-display" id="description-pic" style="float: left; margin-left: 10px;"
+                             src="exp02.png" alt="A picture for description, not yet add."/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js?v=2"></script>
+    <script type="text/javascript" src="exp01.02.js?v=2"></script>
+    <script type="text/javascript" src="exp01.03.js?v=2"></script>
+    <script type="text/javascript" src="exp01.04.js?v=2"></script>
+</html>

@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="axial force, axial deformation, indeterminate problems"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 05 - Axial Force and Deformation</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script type="text/javascript" src="app.03.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body ng-app="module03">
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" onclick="check_id()">Start module</button><label id="after-id"></label><br/><br/>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Question 1</strong></a></li>
+                <li id="tab2" style="display: none;"><a class="button lightblue square" href="#tabr2"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Question 2</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p ng-controller="Question01">
+                        The rigid bar ABC of length 5 m is supported by 3 wires of equal cross-section area as shown below. The lengths of the bar segments AB is {{p.bar[0]}} m and BC is {{p.bar[1]}} m. The length of the wires is AD = {{p.wire[0]}} m, BE = {{p.wire[1]}} m and CF = {{p.wire[2]}} m. Point D, E and F are hinged supports. A load W = {{p.force}} kN is applied at point G, with GC = {{p.location}} m.
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="600" height="300" viewBox="0 0 600 300" style="display: block; margin: auto;">
+
+                            <circle id="f1-point-a" fill="red" cx="50" cy="190" r="8"/>
+                            <circle id="f1-point-b" fill="red" cy="190" r="8"/>
+                            <circle id="f1-point-c" fill="red" cx="550" cy="190" r="8"/>
+
+                            <circle id="f1-point-d" fill="red" cx="50" r="8"/>
+                            <circle id="f1-point-e" fill="red" r="8"/>
+                            <circle id="f1-point-f" fill="red" cx="550" r="8"/>
+
+                            <path id="f1-force" stroke="black" stroke-linejoin="round" stroke-width="4"/>
+                            <text id="f1-force-text" font-family="Verdana" font-weight="bold" fill="black" font-size="20" y="280">W</text>
+
+                            <line id="f1-wire-1" x1="50" x2="50" y2="200" stroke="red" stroke-width="4"/>
+                            <line id="f1-wire-2" y2="200" stroke="red" stroke-width="4"/>
+                            <line id="f1-wire-3" x1="550" x2="550" y2="200" stroke="red" stroke-width="4"/>
+
+                            <text id="f1-a" font-size="20">A</text>
+                            <text id="f1-b" font-size="20">B</text>
+                            <text id="f1-c" font-size="20">C</text>
+                            <text id="f1-d" font-size="20">D</text>
+                            <text id="f1-e" font-size="20">E</text>
+                            <text id="f1-f" font-size="20">F</text>
+
+                            <text id="f1-g" font-size="20">G</text>
+                            
+                            <line id="f1-bar-original" x1="50" x2="550" y1="200" y2="200" stroke-linecap="round" stroke="blue" stroke-width="20"/>
+                        </svg>
+
+                        <div ng-controller="Question01">
+                            <p>
+                                AB = {{p.bar[0]}} m, BC = {{p.bar[1]}} m<br/>
+                                AD = {{p.wire[0]}} m, BE = {{p.wire[1]}} m, CF = {{p.wire[2]}} m<br/>
+                                GC = {{p.location}} m, W = {{p.force}} kN<br/>
+                                Young's modules of all three wires is 210 GPa<br/><br/>
+                                Question: Calculate the axial forces in all three wires.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" id="f1-start"><i class="fa fa-check"></i> Start solving</button>
+                        
+                        <div id="f1-part1" style="display: none;">
+                            <hr/>
+                            <p>(1). The free body diagram of the bar ABC is shown as</p>
+                            <svg id="f1-free-body" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 width="450" height="200" viewBox="0 0 450 200" style="display: block;">
+                                
+                                <path id="f1-freebody-fa" stroke="black" stroke-linejoin="round" stroke-width="4"
+                                      d="M 20 100 l 0 -50 -10 10 10 -10 10 10 -10 -10"/>
+                                <path id="f1-freebody-fb" stroke="black" stroke-linejoin="round" stroke-width="4"/>
+                                <path id="f1-freebody-fc" stroke="black" stroke-linejoin="round" stroke-width="4"
+                                      d="M 380 100 l 0 -50 -10 10 10 -10 10 10 -10 -10"/>
+                                <path id="f1-freebody-fw" stroke="black" stroke-linejoin="round" stroke-width="4"/>
+                                
+                                <text id="f1-freebody-a" font-size="14" x="20" y="40">N<tspan baseline-shift="sub">AD</tspan></text>
+                                <text id="f1-freebody-b" font-size="14" y="40">N<tspan baseline-shift="sub">BE</tspan></text>
+                                <text id="f1-freebody-c" font-size="14" x="380" y="40">N<tspan baseline-shift="sub">CF</tspan></text>
+                                <text id="f1-freebody-w" font-size="14" y="170">W</text>
+                                
+                                <line id="f1-freebody-bar" x1="20" x2="380" y1="100" y2="100" stroke-linecap="round" stroke="blue" stroke-width="16"/>
+                            </svg>
+                            <p>Please complete the following equation for equilibrium (coefficients are not unique, as long as they satisfy the equation):</p>
+                            <p><span style="font-size: 22px;">&#x2780; </span><span style="font-family: 'Courier New', Courier, monospace; font-size: 22px;">&Sigma;F<sub>y</sub></span> = 0: <input id="co11" size="3"/> N<sub>AD</sub> + <input id="co12" size="3"/> N<sub>BE</sub> + <input id="co13" size="3"/> N<sub>CF</sub> + <input id="co14" size="3"/> W = 0 <button id="f1-check-eq1" class="btn btn-primary">Check</button> <label id="f1-after-eq1"></label></p>
+                            <p><span style="font-size: 22px;">&#x2781; </span><span style="font-family: 'Courier New', Courier, monospace; font-size: 22px;">&Sigma;M<sub>C</sub></span> = 0: <input id="co21" size="3"/> N<sub>AD</sub> + <input id="co22" size="3"/> N<sub>BE</sub> + <input id="co23" size="3"/> N<sub>CF</sub> + <input id="co24" size="3"/> W = 0 <button id="f1-check-eq2" class="btn btn-primary">Check</button> <label id="f1-after-eq2"></label></p>
+                        </div>
+                        
+                        <div id="f1-part2" style="display: none;">
+                            <hr/>
+                            <p>(2). Diagram for compatibility of wire extensions</p>
+                            <svg id="f1-compatibility" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 width="450" height="200" viewBox="0 0 450 200" style="display: block;">
+                                
+                                <line id="f1-bar1" x1="20" x2="380" y1="50" y2="50" stroke-linecap="round" stroke="blue" stroke-width="16"/>
+                                <line id="f1-bar2" x1="20" x2="380" y1="150" y2="180" stroke-linecap="round" stroke="blue" stroke-width="16"/>
+                                
+                                <line id="f1-wire1" x1="20" y1="50" x2="20" y2="150" stroke-linecap="round" stroke="red" stroke-width="4"/>
+                                <line id="f1-wire2" y1="50" stroke="red" stroke-linecap="round" stroke-width="4"/>
+                                <line id="f1-wire3" x1="380" y1="50" x2="380" y2="180" stroke="red" stroke-linecap="round" stroke-width="4"/>
+                                
+                                <text id="f1-e1" font-size="16" x="30" y="80">e<tspan baseline-shift="sub">AD</tspan></text>
+                                <text id="f1-e2" font-size="16" y="80">e<tspan baseline-shift="sub">BE</tspan></text>
+                                <text id="f1-e3" font-size="16" x="390" y="80">e<tspan baseline-shift="sub">CF</tspan></text>
+                            </svg>
+                            <p>Based on the compatibilty of the elongation, please complete the following equation:</p>
+                            <p><span style="font-size: 22px;">&#x2782; </span><input id="co31" size="3"/> e<sub>AD</sub> + <input id="co32" size="3"/> e<sub>BE</sub> + <input id="co33" size="3"/> e<sub>CF</sub> = 0 <button id="f1-check-eq3" class="btn btn-primary">Check</button> <label id="f1-after-eq3"></label></p>
+                        </div>
+                        
+                        <div id="f1-part3" style="display: none;">
+                            <hr/>
+                            <p>(3). Accoriding to the material law: e = N&bull;L / (E&bull;A), since EA is the same for all three wires, we have:</p>
+                            <p>e<sub>AD</sub> = <input id="ratio1" size="4"/> &bull; (N<sub>AD</sub>/EA), e<sub>BE</sub> = <input id="ratio2" size="4"/> &bull; (N<sub>BE</sub>/EA), e<sub>CF</sub> = <input id="ratio3" size="4"/> &bull; (N<sub>CF</sub>/EA) <button id="f1-check-ratio" class="btn btn-primary">Check</button> <label id="f1-after-ratio"></label></p>
+                        </div>
+                        
+                        <div id="f1-part4" style="display: none;">
+                            <p>Substitute the above equations into Equation <span style="font-size: 20px;">&#x2782;</span>. Please rewrite Equation <span style="font-size: 20px;">&#x2782;</span> in terms of N<sub>AD</sub>, N<sub>BE</sub> and N<sub>CF</sub>:</p>
+                            <p><span style="font-size: 22px;">&#x2783; </span><input id="co41" size="3"/> N<sub>AD</sub> + <input id="co42" size="3"/> N<sub>BE</sub> + <input id="co43" size="3"/> N<sub>CF</sub> = 0 <button id="f1-check-eq4" class="btn btn-primary">Check</button> <label id="f1-after-eq4"></label></p>
+                        </div>
+                        
+                        <div id="f1-final" style="display: none;">
+                            <hr/>
+                            <p>Solve Equation <span style="font-size: 22px;">&#x2780;</span>, <span style="font-size: 22px;">&#x2781;</span> and <span style="font-size: 22px;">&#x2782;</span>, to obtain the axials forces in each wire. (rounded to three figure after decimal points)</p>
+                            <p>N<sub>AD</sub> = <input id="f1-nad" size="6"/> kN</p>
+                            <p>N<sub>BE</sub> = <input id="f1-nbe" size="6"/> kN</p>
+                            <p>N<sub>CF</sub> = <input id="f1-ncf" size="6"/> kN</p>
+                            <p><button id="f1-check-final" class="btn btn-primary">Check final answers</button><label id="f1-after-final"></label></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tabr2" class="tab-content">
+                <div class="questions">
+                    <p ng-controller="Question02">
+                        The bar AD shown below is built up from 3 sections. AB is of length {{p.length[0]}} m and has a cross sectional area of 500 mm<sup>2</sup>, BC is of length {{p.length[1]}} m has a cross sectional area of 1000 mm<sup>2</sup>, CD is of length {{p.length[2]}} m and has a cross sectional area of 1500 mm<sup>2</sup>. The bar is loaded with a force of {{p.force[0]}} kN applied at A, {{p.force[1]}} kN applied at B and {{p.force[2]}} kN applied at C. Each section is made from mild steel (E = 210 GPa).
+                    </p>
+
+                    <div id="div-q2" style="display: block;">
+                        <svg id="svg-q2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="600" height="300" viewBox="0 0 600 300" style="display: block; margin: auto;">
+
+                            <line id="f2-wall" x1="50" x2="50" y1="10" y2="290" stroke="black" stroke-width="14"/>
+
+                            <circle id="f2-point-d" cx="50" cy="150" r="8" fill="black"/>
+                            <circle id="f2-point-c" cy="150" r="8" fill="black"/>
+                            <circle id="f2-point-b" cy="150" r="8" fill="black"/>
+                            <circle id="f2-point-a" cx="550" cy="150" r="8" fill="black"/>
+
+                            <text id="f2-d" x="65" y="155" font-size="20">D</text>
+                            <text id="f2-c" y="155" font-size="20">C</text>
+                            <text id="f2-b" y="155" font-size="20">B</text>
+                            <text id="f2-a" x="520" y="160" font-size="20">A</text>
+
+                            <rect id="f2-bar-1" fill="none" stroke="black" stroke-width="6"/>
+                            <rect id="f2-bar-2" fill="none" stroke="black" stroke-width="6"/>
+                            <rect id="f2-bar-3" fill="none" stroke="black" stroke-width="6"/>
+
+                            <path id="f2-force-a" stroke-linejoin="round" stroke="black" stroke-width="3"/>
+                            <path id="f2-force-b" stroke-linejoin="round" stroke="black" stroke-width="3"/>
+                            <path id="f2-force-c" stroke-linejoin="round" stroke="black" stroke-width="3"/>
+
+                            <text id="f2-force-text-a" y="135" font-size="16">F<tspan baseline-shift="sub" font-size="12">A</tspan></text>
+                            <text id="f2-force-text-b" y="135" font-size="16">F<tspan baseline-shift="sub" font-size="12">B</tspan></text>
+                            <text id="f2-force-text-c" y="135" font-size="16">F<tspan baseline-shift="sub" font-size="12">C</tspan></text>
+                            
+                            <g id="f2-reaction" opacity="0">
+                                <path id="f2-force-r" stroke-linejoin="round" stroke="black" stroke-width="3"
+                                      d="M 0 150 l 40 0 -10 -10 10 10 -10 10 10 -10"/>
+                                <text id="f2-force-text-r" x="0" y="135" font-size="16">R</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div ng-controller="Question02">
+                        <p>
+                            F<sub>A</sub> = {{p.force[0]}} kN, F<sub>B</sub> = {{p.force[1]}} kN, F<sub>C</sub> = {{p.force[2]}} kN<br/>
+                            AB = {{p.length[0]}} m, BC = {{p.length[1]}} m, CD = {{p.length[2]}} m<br/><br/>
+                            Question: Calculate the total elongation of the bar AD
+                        </p>
+                    </div>
+                    <button class="btn btn-primary" id="f2-start"><i class="fa fa-check"></i> Start solving</button>
+                    
+                    <div id="f2-part1" style="display: none;">
+                        <hr/>
+                        <p>(1). Please calculate the reaction R at point D, and three member axial force N<sub>CD</sub>, N<sub>BC</sub> and N<sub>AB</sub> (positive for tension and negative for compression):</p>
+                        <p>R = <input id="r" size="3"/> kN, N<sub>CD</sub> = <input id="fcd" size="3"/> kN, N<sub>BC</sub> = <input id="fbc" size="3"/> kN, N<sub>AB</sub> = <input id="fab" size="3"/> kN <button id="f2-check-force" class="btn btn-primary">Check</button> <label id="f2-after-force"></label></p>
+                    </div>
+                    
+                    <div id="f2-part2" style="display: none;">
+                        <hr/>
+                        <p>(2). Calculate the elongation of the three members: e<sub>CD</sub>, e<sub>BC</sub> and e<sub>AB</sub> according to the material law <span style="font-family: 'Courier New', Courier, monospace; font-size: 22px;">e = N&bull;L/(E&bull;A) </span>: (round to 0.01mm)</p>
+                        <p>
+                            e<sub>CD</sub> = <input id="ecd" size="5"/> mm, e<sub>BC</sub> = <input id="ebc" size="5"/> mm, e<sub>AB</sub> = <input id="eab" size="5"/> mm <button id="f2-check-elongation" class="btn btn-primary">Check</button> <label id="f2-after-elongation"></label>
+                        </p>
+                    </div>
+                    
+                    <div id="f2-final" style="display: none;">
+                        <hr/>
+                        <p>
+                            Total elongation of Bar AD is <input id="e-final" size="5"/> mm (Please use the above values you typed in!) <button id="f2-check-final" class="btn btn-primary">Check</button>
+                            <label id="f2-after-final"></label>
+                        </p>
+                    </div>
+                    
+                    <div id="f1-submit" style="display: none;">
+                        <p>If you finished both questions, press the following button to submit</p>
+                        <button class="btn btn-primary" onclick="final_submit(event);">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+    <script type="text/javascript" src="exp01.02.js"></script>
+    <script type="text/javascript" src="exp01.03.js"></script>
+</html>

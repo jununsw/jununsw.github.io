@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="stress, strain"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Example 04 - Hooke's Law</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" onclick="check_id()">Start module</button><label id="after-id"></label><br/><br/>
+            </p>
+            <p>
+                <strong>In this module, concept of stress transformation will be revised. Then Hooke's Law will be tested</strong>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Stress Tranformation</strong></a></li>
+                <li id="tab2"><a class="button lightblue square" href="#tabr2"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Hooke's Law</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        <strong>A stress block is shown as follows:</strong>
+                    </p>
+                    
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="500" height="400" viewBox="0 0 500 400" style="display: block;">
+                            <g id="q1-1-block">
+                                <rect x="150" y="150" width="100" height="100" stroke="blue" stroke-width="4" fill-opacity="0"/>
+                                
+                                <g id="q1-1-arrows">
+                                    <path class="x-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 120 200 l -100 0 10 -5 -10 5 10 5 -10 -5"/>
+                                    <path class="x-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 120 200 l -10 5 10 -5 -10 -5 10 5 -100 0"/>
+                                    
+                                    <path class="x-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 280 200 l 100 0 -10 -5 10 5 -10 5 10 -5"/>
+                                    <path class="x-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 280 200 l 10 -5 -10 5 10 5 -10 -5 100 0"/>
+                                    
+                                    <path class="y-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 120 l 0 -100 -5 10 5 -10 5 10 -5 -10"/>
+                                    <path class="y-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 120 l -5 -10 5 10 5 -10 -5 10 0 -100"/>
+                                    
+                                    <path class="y-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 280 l 0 100 5 -10 -5 10 -5 -10 5 10"/>
+                                    <path class="y-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 280 l 5 10 -5 -10 -5 10 5 -10 0 100"/>
+                                    
+                                    <path class="xy-pos" opacity="1" fill="none"
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 150 135 l 100 0 -12 -7
+                                             M 265 250 l 0 -100 7 12
+                                             M 250 265 l -100 0 12 7
+                                             M 135 150 l 0 100 -7 -12"/>
+                                    <path class="xy-neg" opacity="1" fill="none"
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 250 135 l -100 0 12 -7
+                                             M 150 265 l 100 0 -12 7
+                                             M 135 250 l 0 -100 -7 12
+                                             M 265 150 l 0 100 7 -12"/>
+                                </g>
+                                
+                                <g id="q1-1-text">
+                                    <text x="220" y="75" font-size="16" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">y</tspan> = <tspan id="q1-y"></tspan> MPa</text>
+                                    <text x="300" y="180" font-size="16" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">x</tspan> = <tspan id="q1-x"></tspan> MPa</text>
+                                    <text x="280" y="280" font-size="16" font-weight="bold" fill="black" opacity="1">&tau;<tspan baseline-shift="sub">xy</tspan> = <tspan id="q1-xy1"></tspan> MPa</text>
+                                    <text x="30" y="120" font-size="16" font-weight="bold" fill="black" opacity="1">&tau;<tspan baseline-shift="sub">xy</tspan> = <tspan id="q1-xy2"></tspan> MPa</text>
+                                </g>
+                            </g>     
+                        </svg>
+                        
+                        <div>
+                            <p>
+                                Please calculate the principal stresses &sigma;<sub>1</sub> and &sigma;<sub>2</sub>, as well as the critical angel &theta;<sub>p</sub> using the following formula:
+                            </p>
+                            
+                            <div style="margin-left: 30px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-style: italic;">
+                                <p>
+                                    <span class="formula">tan 2</span>&theta;<sub>p</sub><span class="formula">= 2</span>&tau;<sub>xy</sub><span class="formula">/</span>(&sigma;<sub>x</sub>-&sigma;<sub>y</sub>)
+                                </p>
+
+                                <p>
+                                    &sigma;<sub>1</sub><span class="formula">= </span>&sigma;<sub>x</sub><span class="formula">cos<sup>2</sup></span>&theta;<sub>p</sub><span class="formula">+</span>&sigma;<sub>y</sub><span class="formula">sin<sup>2</sup></span>&theta;<sub>p</sub><span class="formula">+2</span>&tau;<sub>xy</sub><span class="formula">sin</span>&theta;<sub>p</sub><span class="formula">cos</span>&theta;<sub>p</sub>
+                                </p>
+
+                                <p>
+                                    &sigma;<sub>2</sub><span class="formula">= </span>&sigma;<sub>x</sub><span class="formula">sin<sup>2</sup></span>&theta;<sub>p</sub><span class="formula">+</span>&sigma;<sub>y</sub><span class="formula">cos<sup>2</sup></span>&theta;<sub>p</sub><span class="formula">-2</span>&tau;<sub>xy</sub><span class="formula">sin</span>&theta;<sub>p</sub><span class="formula">cos</span>&theta;<sub>p</sub>
+                                </p>
+                            </div>
+                            
+                            <p>
+                                So the answer is (final answer rounded with 2 decimal digits. -45&deg; &le; &theta;<sub>p</sub> &le; -45&deg;):
+                            </p><br/>
+                            
+                            <p>
+                                &sigma;<sub>1</sub> = <input id="q1-s1" size="8"/> MPa,
+                                <button class="btn btn-primary btn-xs" id="q1-check-1" onclick="q1_check_1($('#q1-s1'), $('#q1-check-1'), $('#q1-after-1'), stress.s1);"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-1"></label> 
+                            </p>
+                            
+                            <p>
+                                &sigma;<sub>2</sub> = <input id="q1-s2" size="8"/> MPa,
+                                <button class="btn btn-primary btn-xs" id="q1-check-2" onclick="q1_check_1($('#q1-s2'), $('#q1-check-2'), $('#q1-after-2'), stress.s2);"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-2"></label> 
+                            </p>
+                            
+                            <p>
+                                &theta;<sub>p</sub> = <input id="q1-thetad" size="8"/> &deg;.
+                                <button class="btn btn-primary btn-xs" id="q1-check-3" onclick="q1_check_1($('#q1-thetad'), $('#q1-check-3'), $('#q1-after-3'), -stress.thetad);"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-3"></label>
+                            </p>
+                            <label id="q1-after-1-1"></label> 
+                        </div>
+                        
+                        <svg id="svg-q1-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="600" height="450" viewBox="0 -20 600 430" style="display: none;">
+                            <g id="q1-2-block" transform="">
+                            <!-- you can rotate: $("#q1-2-block").attr("transform", "rotate(-" + angle.toString() + ", 200, 200)") -->
+                                <rect x="150" y="150" width="100" height="100" stroke="blue" stroke-width="4" fill-opacity="0"/>
+                                
+                                <g id="q1-2-arrows">
+                                    <path class="x-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 120 200 l -100 0 10 -5 -10 5 10 5 -10 -5"/>
+                                    <path class="x-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 120 200 l -10 5 10 -5 -10 -5 10 5 -100 0"/>
+                                    
+                                    <path class="x-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 280 200 l 100 0 -10 -5 10 5 -10 5 10 -5"/>
+                                    <path class="x-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 280 200 l 10 -5 -10 5 10 5 -10 -5 100 0"/>
+                                    
+                                    <path class="y-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 120 l 0 -100 -5 10 5 -10 5 10 -5 -10"/>
+                                    <path class="y-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 120 l -5 -10 5 10 5 -10 -5 10 0 -100"/>
+                                    
+                                    <path class="y-pos" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 280 l 0 100 5 -10 -5 10 -5 -10 5 10"/>
+                                    <path class="y-neg" opacity="1" 
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 200 280 l 5 10 -5 -10 -5 10 5 -10 0 100"/>
+                                    
+                                    <path class="xy-pos" opacity="0" fill="none"
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 150 135 l 100 0 -12 -7
+                                             M 265 250 l 0 -100 7 12
+                                             M 250 265 l -100 0 12 7
+                                             M 135 150 l 0 100 -7 -12"/>
+                                    <path class="xy-neg" opacity="0" fill="none"
+                                          stroke="black" stroke-width="3" stroke-linejoin="round"
+                                          d="M 250 135 l -100 0 12 -7
+                                             M 150 265 l 100 0 -12 7
+                                             M 135 250 l 0 -100 -7 12
+                                             M 265 150 l 0 100 7 -12"/>
+                                </g>
+                                
+                                <g id="q1-2-text">
+                                    <text id="q1-2-text-2" x="210" y="75" font-size="14" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">2</tspan>= <tspan id="q1-2">100.00</tspan> MPa</text>
+                                    <text id="q1-2-text-1" x="260" y="180" font-size="14" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">1</tspan>= <tspan id="q1-1">100.00</tspan> MPa</text>
+                                </g>
+                            </g>
+                            
+                            <text id="q1-d-text" x="480" y="90" font-size="12" font-weight="bold" fill="black" opacity="1">-&theta;<tspan baseline-shift="sub">p</tspan>= <tspan id="q1-d">200.00</tspan>&deg;</text>
+                            <path id="q1-2-x-axis" opacity="1"
+                                  stroke="blue" stroke-width="2" stroke-linejoin="round"
+                                  d="M 400 100 l 50 0 -12 -5 12 5 -12 5 12 -5"/>
+                            <text x="460" y="110" font-size="14" font-weight="bold" fill="blue" opacity="1">x</text>
+                            
+                            <g id="q1-2-ang" transform="">
+                                <path id="q1-2-1-axis" opacity="1"
+                                      stroke="blue" stroke-width="2" stroke-linejoin="round"
+                                      d="M 400 100 l 50 0 -12 -5 12 5 -12 5 12 -5"/>
+                                <text x="460" y="110" font-size="14" font-weight="bold" fill="blue" opacity="1">1</text>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div id="div-q1-mohr" style="display: none;">
+                        <p style="font-weight: bold;">
+                            Following is the Mohr's circle (red dot is the origin <span style="font-style: italic;">O</span>),<br/> point A corresponds to (&sigma;<sub>x</sub>, -&tau;<sub>xy</sub>),<br/> point B corresponds to (&sigma;<sub>y</sub>, &tau;<sub>xy</sub>)
+                        </p>
+                        
+                        <svg id="svg-q1-mohr" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="950" height="420" viewBox="0 -20 950 400" style="display: block;">
+                            <path opacity="1" stroke="black" stroke-width="3" stroke-linejoin="round"
+                                  d="M 10 200 L 390 200 l -12 -7 12 7 -12 7 12 -7"/>
+                            <text x="400" y="220" font-size="16" font-weight="bold" fill="black" opacity="1">&sigma;(MPa)</text>
+                            <g id="q1-mohr-tau-axis" transform="">
+                                <!-- transform="translate(350) -->
+                                <path opacity="1" stroke="black" stroke-width="3" stroke-linejoin="round"
+                                      d="M 20 350 L 20 5 l -7 12 7 -12 7 12 -7 -12"/>
+                                <text x="30" y="25" font-size="16" font-weight="bold" fill="black" opacity="1">&tau;(MPa)</text>
+                            </g>
+                            <circle cx="200" cy="200" r="100" stroke-width="3" stroke="black" fill="none"/>
+                            
+                            <circle cx="100" cy="200" r="6" stroke-width="3" stroke="black" fill="black"/>
+                            <circle cx="300" cy="200" r="6" stroke-width="3" stroke="black" fill="black"/>
+                            
+                            <!-- origin and origin text -->
+                            
+                            <circle id="q1-mohr-origin" cx="0" cy="200" r="4" stroke-width="3" stroke="red" fill="red" opacity="0"/>
+                            <text id="q1-mohr-origin-text" x="0" y="220" font-size="16" fill="red" font-style = "italic" opacity="0">O</text>
+                            
+                            <!-- end -->
+                            
+                            <text x="40" y="220" font-size="14" font-weight="bold" fill="black" opacity="1"><tspan id="q1-2-mohr">-00.00</tspan></text>
+                            <text x="305" y="220" font-size="14" font-weight="bold" fill="black" opacity="1"><tspan id="q1-1-mohr">+00.00</tspan></text>
+                            
+                            <g id="q1-mohr-line-xy">
+                                <line x1="100" y1="200" x2="300" y2="200" stroke-width="2" stroke="blue"/>
+                                <text x="80" y="195" font-size="16" font-weight="bold" fill="blue" opacity="1">B</text>
+                                <text x="310" y="195" font-size="16" font-weight="bold" fill="blue" opacity="1">A</text>
+                            </g>
+                            
+                            <g id="q1-mohr-line" opacity="0">
+                                <line x1="100" y1="200" x2="300" y2="200" stroke-width="2" stroke="red"/>
+                                <text x="80" y="195" font-size="16" font-weight="bold" fill="red" opacity="1">B'</text>
+                                <text x="310" y="195" font-size="16" font-weight="bold" fill="red" opacity="1">A'</text>
+                            </g>
+                            
+                            <text x="420" y="20" font-size="14" font-weight="bold" fill="blue" opacity="1">A: (<tspan id="q1-a-1">100.00</tspan> MPa, <tspan id="q1-a-2">100.00</tspan> Mpa)</text>
+                            <text x="420" y="40" font-size="14" font-weight="bold" fill="blue" opacity="1">B: (<tspan id="q1-b-1">100.00</tspan> MPa, <tspan id="q1-b-2">100.00</tspan> Mpa)</text>
+                            
+                            <g id="q1-mohr-text-ab" opacity="0">
+                                <text x="310" y="300" font-size="14" font-weight="bold" fill="red" opacity="1">A': (<tspan id="q1-aa-1">100.00</tspan> MPa, <tspan id="q1-aa-2">100.00</tspan> Mpa)</text>
+                                <text x="310" y="320" font-size="14" font-weight="bold" fill="red" opacity="1">B': (<tspan id="q1-bb-1">100.00</tspan> MPa, <tspan id="q1-bb-2">100.00</tspan> Mpa)</text>
+                            </g>
+                            
+                            <text id="q1-mohr-d" x="270" y="25" font-size="12" font-weight="bold" fill="black" opacity="1">-2&theta;<tspan baseline-shift="sub">p</tspan>= <tspan id="q1-mohr-2theta">200.00</tspan>&deg;</text>
+                            <path opacity="1"
+                                  stroke="black" stroke-width="2" stroke-linejoin="round"
+                                  d="M 200 35 l -30 0 30 0 50 0 -12 -5 12 5 -12 5 12 -5"/>
+                            <text x="255" y="35" font-size="14" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">1</tspan></text>
+                            
+                            <g id="q1-mohr-ang" transform="">
+                                <path opacity="1"
+                                      stroke="blue" stroke-width="2" stroke-linejoin="round"
+                                      d="M 200 35 l 30 0 -12 -5 12 5 -12 5 12 -5"/>
+                                <text x="235" y="35" font-size="14" font-weight="bold" fill="blue" opacity="1">A</text>
+                            </g>
+                            
+                            <g id="q1-mohr-block" opacity="0">
+                                <g id="q1-mohr-block-rotate">
+                                    <rect x="625" y="175" width="50" height="50" stroke="blue" stroke-width="4" fill-opacity="0"/>
+                                    <!-- center at (650, 200) -->
+
+                                    <g id="q1-mohr-arrows">
+                                        <path class="x-pos" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 595 200 l -50 0 10 -5 -10 5 10 5 -10 -5"/>
+                                        <path class="x-neg" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 595 200 l -10 5 10 -5 -10 -5 10 5 -50 0"/>
+
+                                        <path class="x-pos" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 705 200 l 50 0 -10 -5 10 5 -10 5 10 -5"/>
+                                        <path class="x-neg" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 705 200 l 10 -5 -10 5 10 5 -10 -5 50 0"/>
+
+                                        <path class="y-pos" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 650 145 l 0 -50 -5 10 5 -10 5 10 -5 -10"/>
+                                        <path class="y-neg" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 650 145 l -5 -10 5 10 5 -10 -5 10 0 -50"/>
+
+                                        <path class="y-pos" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 650 255 l 0 50 5 -10 -5 10 -5 -10 5 10"/>
+                                        <path class="y-neg" opacity="1" 
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 650 255 l 5 10 -5 -10 -5 10 5 -10 0 50"/>
+
+                                        <path class="xy-pos" opacity="1" fill="none"
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 625 160 l 50 0 -12 -7
+                                                 M 690 225 l 0 -50 7 12
+                                                 M 675 240 l -50 0 12 7
+                                                 M 610 175 l 0 50 -7 -12"/>
+                                        <path class="xy-neg" opacity="1" fill="none"
+                                              stroke="black" stroke-width="2" stroke-linejoin="round"
+                                              d="M 675 160 l -50 0 12 -7
+                                                 M 625 240 l 50 0 -12 7
+                                                 M 610 225 l 0 -50 -7 12
+                                                 M 690 175 l 0 50 7 -12"/>
+                                    </g>
+
+                                    <g id="q1-mohr-text">
+                                        <text x="665" y="125" font-size="14" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">y'</tspan></text>
+                                        <text x="720" y="185" font-size="14" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">x'</tspan></text>
+                                        <text x="685" y="245" font-size="14" font-weight="bold" fill="black" opacity="1">&tau;<tspan baseline-shift="sub">x'y'</tspan></text>
+                                        <text x="580" y="160" font-size="14" font-weight="bold" fill="black" opacity="1">&tau;<tspan baseline-shift="sub">x'y'</tspan></text>
+                                    </g>
+                                </g>
+                            
+                                <text id="q1-mohr-xx" x="780" y="40" font-size="12" font-weight="bold" fill="black" opacity="1">&theta;= <tspan id="q1-mohr-theta">200.00</tspan>&deg;</text>
+                                <path opacity="1"
+                                      stroke="blue" stroke-width="2" stroke-linejoin="round"
+                                      d="M 710 50 l 50 0 -12 -5 12 5 -12 5 12 -5"/>
+                                <text x="765" y="50" font-size="14" font-weight="bold" fill="blue" opacity="1">x</text>
+
+                                <g id="q1-mohr-block-ang" transform="">
+                                    <path opacity="1"
+                                          stroke="blue" stroke-width="2" stroke-linejoin="round"
+                                          d="M 710 50 l 50 0 -12 -5 12 5 -12 5 12 -5"/>
+                                    <text x="765" y="50" font-size="14" font-weight="bold" fill="blue" opacity="1">x'</text>
+                                </g>
+
+                                <text x="790" y="100" font-size="12" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">x'</tspan>= <tspan id="q1-mohr-x1">200.00</tspan> MPa</text>
+                                <text x="790" y="120" font-size="12" font-weight="bold" fill="black" opacity="1">&sigma;<tspan baseline-shift="sub">y'</tspan>= <tspan id="q1-mohr-y1">200.00</tspan> Mpa</text>
+                                <text x="790" y="140" font-size="12" font-weight="bold" fill="black" opacity="1">&tau;<tspan baseline-shift="sub">x'y'</tspan>= <tspan id="q1-mohr-xy1">200.00</tspan> Mpa</text>
+                            </g>
+                        </svg>
+                        
+                        <div id="q1-mohr-operation">
+                            <p>
+                                You can enter an arbitary angle for the new coordinate x'y' to rotate:<br/><br/> Your angle is <input id="q1-mohr-angle-input" size="8"/> (from -180&deg; to 180&deg;)
+                                <button class="btn btn-primary" id="q1-check-ang" onclick="q1_check_ang();">Show</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tabr2" class="tab-content">
+                <div class="questions">
+                    <p>
+                        <strong>According to the following Hooke's Law:</strong>
+                    </p>
+                    
+                    <p style="margin-left: 30px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-style: italic;">
+                        E&epsilon;<sub>x</sub><span class="formula"> = </span>&sigma;<sub>x</sub><span class="formula">-</span>&nu;&sigma;<sub>y</sub>
+                    </p>
+
+                    <p style="margin-left: 30px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-style: italic;">
+                        E&epsilon;<sub>y</sub><span class="formula"> = </span>&sigma;<sub>y</sub><span class="formula">-</span>&nu;&sigma;<sub>x</sub>
+                    </p>
+
+                    <p style="margin-left: 30px; font-family: 'Courier New', Courier, monospace; font-weight: bold; font-style: italic;">
+                        E&gamma;<sub>xy</sub><span class="formula"> = 2(1+</span>&nu;<span class="formula">)</span>&tau;<sub>xy</sub>
+                    </p>
+                    
+                    <p>
+                        Using the following material properties and the stress from the previous tab:<br/><br/>
+                        E = 200 GPa, &nu; = 0.25<br/>
+                        <br/>Please calculate the strain (in microstrain 1 &mu; = 1 &times; 10<sup>-6</sup>, answer rounded to 0.01 &mu;):
+                    </p><br/>
+                    
+                    <p>
+                        &epsilon;<sub>x</sub> = <input id="q2-ex" size="8"/> &mu;,
+                        <button class="btn btn-primary btn-xs" id="q2-check-1" onclick="q2_check_1($('#q2-ex'), $('#q2-check-1'), $('#q2-after-1'), stress.ex);"><i class="fa fa-check"></i>Check</button>
+                        <label id="q2-after-1"></label> 
+                    </p>
+
+                    <p>
+                        &epsilon;<sub>y</sub> = <input id="q2-ey" size="8"/> &mu;,
+                        <button class="btn btn-primary btn-xs" id="q2-check-2" onclick="q2_check_1($('#q2-ey'), $('#q2-check-2'), $('#q2-after-2'), stress.ey);"><i class="fa fa-check"></i>Check</button>
+                        <label id="q2-after-2"></label> 
+                    </p>
+                    
+                    <p>
+                        &gamma;<sub>xy</sub> = <input id="q2-exy" size="8"/> &mu;,
+                        <button class="btn btn-primary btn-xs" id="q2-check-3" onclick="q2_check_1($('#q2-exy'), $('#q2-check-3'), $('#q2-after-3'), stress.exy);"><i class="fa fa-check"></i>Check</button>
+                        <label id="q2-after-3"></label> 
+                    </p>
+                    <label id="q2-after-1-1"></label><br/><br/>
+                    <button class="btn btn-primary btn-xs" id="submitbtn" style="display: none;" onclick="q2_submit"><i class="fa fa-check"></i>Submit</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+    <script type="text/javascript" src="exp01.02.js"></script>
+</html>

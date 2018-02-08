@@ -1,0 +1,270 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 06.1 - Elastic Bending</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" onclick="check_id()">Start module</button><label id="after-id"></label><br/><br/>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        An I-section is shown below (drawn not to scale):
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="400" height="400" viewBox="0 0 400 400" style="display: block; margin-left: 20px;">
+                            
+                            <path id="f1-section" stroke="blue" fill="none" stroke-width="4" 
+                                  d="M 10 10 
+                                     l 0 30
+                                     l 100 0 
+                                     l 0 250
+                                     l -50 0 
+                                     l 0 60 
+                                     l 50 0 
+                                     l 60 0
+                                     l 50 0
+                                     l 0 -60
+                                     l -50 0
+                                     l 0 -250
+                                     l 100 0
+                                     l 0 -30
+                                     L 10 10"/>
+                            
+                            <path id="f1-y-arrow" stroke-linejoin="round" stroke="black" stroke-width="2"/>
+                            <text id="f1-y-text" x="125">y</text>
+                            
+                            <path id="f1-x-arrow" stroke-linejoin="round" stroke="black" stroke-width="2"/>
+                            <text id="f1-x-text" x="185">x</text>
+                            
+                            <line id="f1-centroid-line" stroke="black" stroke-dasharray="5,5" stroke-width="2" x2="380" opacity="1"/>
+                            <circle id="f1-centroid" fill="red" cx="140" r="8" opacity="1"/>
+                            <path id="f1-ybar-arrow" stroke-linejoin="round" stroke="black" stroke-width="2" opacity="1"/>
+                            <text id="f1-ybar" x="350" y="330" opacity="1">ȳ</text>
+                        </svg>
+
+                        <div>
+                            <p>
+                                Width of the top flange b<sub>ft</sub> = <span id="bft"></span> mm. Width of the bottom flange b<sub>fb</sub> = <span id="bfb"></span> mm.<br/>
+                                Thickness of the top flange t<sub>ft</sub> = 10 mm. Thickness of the bottom flange t<sub>fb</sub> = 20 mm.<br/><br/>
+                                Thickness of the web t<sub>w</sub> = 20 mm.<br/>
+                                Height of the web h<sub>w</sub> = 750 mm.<br/><br/>
+                                
+                                Centroid is located at ȳ = <span id="ybar"></span> mm,<br/>
+                                Second moment of inertia: I<sub>xx</sub> = <span id="ix"></span> mm<sup>4</sup>.<br/><br/>
+                                
+                                Please refer to the following figure:<br/>
+                            </p>
+                        </div>
+                        <button id="pic01-btn" class="btn btn-info btn-xs" onclick="toggle01()">Hide description image</button><br/>
+                        <img id="pic01" src="pic1.jpg" alt="description picture is not loaded" style="display: block;"/>
+                        <span id="f1-indicate"><br/>Please click the "Start" button and follow the instruction to finish the question:<br/></span>
+                        <button class="btn btn-primary" id="f1-start" onclick="f1_part1()"><i class="fa fa-check"></i> Start</button>
+                        
+                        <div id="f1-part1" style="display: none; margin-top: 20px;">
+                            <p style="">
+                                Question: A moment M = 100 kN-m is applied on the cross-section. The moment causes compression stresses at the top of the beam.<br/><br/>
+                                Given the bending stress formula as <span style='font-family: "Courier New", Courier, monospace"'>&sigma; = -M &bull; y / I<sub>xx</sub></span>, where y is measured from the centroid, please calculate the top and bottom stresses: (result rounded to 0.01 MPa)
+                            </p>
+                            <p>&sigma;<sub>top</sub> = <input id="f1-sigma-top" size="8"/> MPa &nbsp;&nbsp;&nbsp;&nbsp;
+                               &sigma;<sub>bottom</sub> = <input id="f1-sigma-bottom" size="8"/> MPa</p>
+                            <p><button class="btn btn-primary" id="f1-check-1" onclick="f1_check_1()"><i class="fa fa-check"></i>Check</button> <label id="f1-after-1"></label></p>
+                        </div>
+                        
+                        <div id="f1-part2" style="margin-top: 10px; display: none;">
+                            <svg id="svg-q1-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 width="700" height="220" viewBox="0 0 700 220" style="">
+                                
+                                <path stroke="blue" fill="none" stroke-width="2" 
+                                      d="M 15 15 
+                                         l 0 15
+                                         l 50 0 
+                                         l 0 125
+                                         l -25 0 
+                                         l 0 30 
+                                         l 25 0 
+                                         l 30 0
+                                         l 25 0
+                                         l 0 -30
+                                         l -25 0
+                                         l 0 -125
+                                         l 50 0
+                                         l 0 -15
+                                         L 15 15"/>
+                                
+                                <line id="f1-2-1" stroke="black" stroke-dasharray="5,5" stroke-width="2" x1="80" x2="250"/>
+                                <circle id="f1-2-2" fill="red" cx="80" r="4" opacity="1"/>
+                                <line stroke="black" stroke-width="4" stroke-linecap="round" x1="250" x2="250" y1="15" y2="185"/>
+                                <line id="f1-2-3" stroke="blue" stroke-width="2" y1="15" y2="185" stroke-linecap="round"/>
+                                
+                                <path id="f1-2-3-1" stroke="red" stroke-width="2" stroke-linejoin="round"/>
+                                <path id="f1-2-3-2" stroke="red" stroke-width="2" stroke-linejoin="round"/>
+                                
+                                <text id="f1-2-4-1" y="10" font-size="14"></text>
+                                <text id="f1-2-4-2" y="205" font-size="14"></text>
+                                
+                                <text x="260" y="25">&sigma;</text>
+                                
+                                <g id="f1-strain" opacity="0">
+                                    <line stroke="black" stroke-width="4" stroke-linecap="round" x1="450" x2="450" y1="15" y2="185"/>
+                                    <text x="460" y="25">&epsilon;</text>
+                                    
+                                    <line id="f1-3-1" stroke="blue" stroke-width="2" y1="15" y2="185" stroke-linecap="round"/>
+                                    
+                                    <path id="f1-3-2-1" stroke="red" stroke-width="2" stroke-linejoin="round"/>
+                                    <path id="f1-3-2-2" stroke="red" stroke-width="2" stroke-linejoin="round"/>
+                                    
+                                    <text id="f1-3-3-1" y="10" font-size="14"></text>
+                                    <text id="f1-3-3-2" y="205" font-size="14"></text>
+                                </g>
+                            </svg>
+                            
+                            <p style="">
+                                Please calculate the top and bottom strain given E = 200 GPa: (result rounded to 0.01 &times; 10<sup>-6</sup>, please use the &sigma; you calculated above!)
+                            </p>
+                            <p>&epsilon;<sub>top</sub> = <input id="f1-ep-top" size="8"/> &times; 10<sup>-6</sup>; &nbsp;&nbsp;&nbsp;&nbsp;
+                               &epsilon;<sub>bottom</sub> = <input id="f1-ep-bottom" size="8"/> &times; 10<sup>-6</sup>;</p>
+                            <p><button class="btn btn-primary" id="f1-check-2" onclick="f1_check_2()"><i class="fa fa-check"></i>Check</button> <label id="f1-after-2"></label></p>
+                        </div>
+                        
+                        <div id="f1-part3" style="margin-top: 10px; display: none;">
+                            <p style="">
+                                Finally, please calculate the curvature <span style='font-family: "Courier New", Courier, monospace"'>&kappa; = M / (E &bull; I<sub>xx</sub>)</span> (result with 4 siginicant figures, please pay attention to the unit):
+                            </p>
+                            <p>&kappa; = <input id="f1-kappa" size="8"/></p> m<sup>-1</sup>
+                            <p><button class="btn btn-primary" id="f1-check-3" onclick="f1_check_3()"><i class="fa fa-check"></i>Check</button> <label id="f1-after-3"></label></p>
+                        </div>
+                        
+                        <div id="f1-submit" style="display: none;">
+                            <p>If you finished both questions, press the following button to submit</p>
+                            <button class="btn btn-primary" onclick="final_submit(event);">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+</html>

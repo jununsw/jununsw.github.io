@@ -1,0 +1,30 @@
+body {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.questions {
+    font-weight: normal;
+}
+
+#main-body {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px; 
+    background: none; 
+    border-width: 0px; 
+}
+
+#main-body .ui-tabs-nav { 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
+}
+
+#main-body .ui-tabs-panel { 
+    background: white; 
+    border-width: 0px 0px 0px 0px; 
+}

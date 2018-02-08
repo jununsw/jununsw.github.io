@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content="bending"/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Week 09 - Shear Flow</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <link rel="stylesheet" type="text/css" href="exp01.css"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script type="text/javascript" src="calculator.js"></script>
+    </head>
+    <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
+        
+        <div id="id-bar" style="margin-top: 30px; margin-bottom: 30px; margin-left: 20px; display: none;">
+            <p id="main-score">
+                Your zID: <input id="zid" size="10"/> (e.g. z1234567, no spacing before or after)
+            </p>
+            <p>
+                <button class="btn btn-primary" id="f3-check-1" onclick="check_id()">Start</button><label id="after-id"></label>
+            </p>
+        </div>
+
+        <div style="font-weight: bold; font-style: italic; line-height: 120%; text-align: center; margin: 20px;">
+            E-learning Module for Mechanics of Solid<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        
+        <div id="main-body" style="margin: 40px;">
+            <ul class="tabs left">
+                <li id="tab1"><a class="button lightblue square" href="#tabr1"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;<strong>Shear stress for Open Section</strong></a></li>
+            </ul>
+            
+            <div id="tabr1" class="tab-content">
+                <div class="questions">
+                    <p>
+                        An C-shape open section with dimensions is shown below: (mm)
+                    </p>
+
+                    <div id="div-q1" style="display: block;">
+                        <svg id="svg-q1-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             width="360" height="400" viewBox="0 0 360 400" style="margin-left: 20px;">
+                            <image xlink:href="fig1.1.png" x="0" y="0" width="360px" height="400px"/>
+                            <text id="f1-flange-top" x="313" y="66" font-size="14">12</text>
+                            <text id="f1-web" x="313" y="213" font-size="14">226</text>
+                            <text id="f1-flange-btm" x="313" y="340" font-size="14">12</text>
+                            <text id="f1-flange-length" x="145" y="390" font-size="14">100</text>
+                            <text id="f1-flange-length" x="72" y="124" font-size="14">6</text>
+                        </svg>
+                        <p>
+                            <!--Here is the question description-->
+                            A shear force of S = <span style="font-style: italic;">80</span> kN is applied on the channel section. The dimension of the section is shown in the figure. Please calculate the shear stress at AA, BB and CC, as well as the location of the shear centre.
+                        </p>
+                        <p><button id="q1-start" class="btn btn-primary">Start</button></p>
+                        
+                        <div id="q1-1" style="display: none; margin-top: 30px;">  <!--change to display: none; later-->
+                            <p style="">
+                                The shear force S and the moment of inertia I are given as:
+                            </p>
+                            <p>
+                                S = 80 &times; 10<sup>3</sup> N,&nbsp;&nbsp;&nbsp;&nbsp;I<sub>xx</sub> = 39.79 &times; 10<sup>6</sup> mm<sup>4</sup>.
+                            </p>
+                            <p>
+                                In order to calculate the shear stress at AA, first calculate the first moment of area Q as shown in the following figire:<br/>
+                                <svg id="svg-q1-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="455" height="244" viewBox="0 0 455 244" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.2.png" x="0" y="0" width="455px" height="244px"/>
+                                </svg>
+                            </p>
+                            <p>
+                                Therefore Q = 94 &times; 12 &times; <input id="q1-d" size="8"/> = <input id="q1-qaa" size="12"/> mm<sup>3</sup>. (do not round your answer)<br/>
+                                <button class="btn btn-primary" id="q1-check-1" onclick="q1_check_1()"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-1"></label>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-2" style="display: none; margin-top: 30px;">
+                            <p>
+                                Therefore &tau;<sub>AA</sub> = V &bull; Q / (I<sub>xx</sub> &bull; b) = <input id="q1-ta" size="6"/> MPa. (round to 0.01)<br/>
+                                <button class="btn btn-primary" id="q1-check-2" onclick="q1_check_2()"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-2"></label>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-3" style="display: none; margin-top: 30px;">
+                            <p>
+                                Similarly, the first moment of area at CC, Q<sub>CC</sub> can be expressed as<br/>
+                                <svg id="svg-q1-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="474" height="285" viewBox="0 0 474 285" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.3.png" x="0" y="0" width="474px" height="285px"/>
+                                </svg><br/>
+                                Q<sub>CC</sub> = 100 &times; 12 &times; <input id="q1-dc1" size="8"/> + 113 &times; 6 &times; <input id="q1-dc2" size="8"/> = <input id="q1-qcc" size="12"/> mm<sup>3</sup>. (do not round your answer)<br/>
+                                <button class="btn btn-primary" id="q1-check-3" onclick="q1_check_3()"><i class="fa fa-check"></i>Check</button>
+                                <label id="q1-after-3"></label>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-4" style="display: none; margin-top: 30px;">
+                            <p>
+                                Thus please calculate the shear stress at BB and CC:
+                            </p>
+                            <p>
+                                Therefore &tau;<sub>BB</sub> = <input id="q1-tb" size="6"/> MPa. (round to 0.01)<br/>
+                                Therefore &tau;<sub>CC</sub> = <input id="q1-tc" size="6"/> MPa. (round to 0.01)<br/>
+                                <button class="btn btn-primary" id="q1-check-4" onclick="q1_check_4()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-5" style="display: none; margin-top: 30px;">
+                            <p>
+                                The shear flow and stress distribution is shown as:<br/>
+                                <svg id="svg-q1-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="460" height="460" viewBox="0 0 460 460" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.4.png" x="0" y="0" width="460px" height="460px"/>
+                                </svg><br/>
+                                In order to calculate the shear center, please calculate the horizontal force in the top flange:<br/>
+                                <svg id="svg-q1-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     width="380" height="343" viewBox="0 0 380 343" style="margin-left: 20px;">
+                                    <image xlink:href="fig1.5.png" x="0" y="0" width="380px" height="343px"/>
+                                </svg><br/>
+                                H = 22.49 &times; 12 &times; 94 &times; 0.5 = <input id="q1-h" size="10"/> N. (round to 0.01)<br/>
+                                <button class="btn btn-primary" id="q1-check-5" onclick="q1_check_5()"><i class="fa fa-check"></i>Check</button>
+                            </p>
+                        </div>
+                        
+                        <div id="q1-6" style="display: none; margin-top: 30px;">
+                            The shear centre is located so &Sigma;M = 0, therefore S &bull; e = H &bull; 238. <br/>
+                            So e = <input id="q1-e" size="10"/> mm. (round to 0.001 mm)<br/>
+                            <button class="btn btn-primary" id="q1-check-6" onclick="q1_check_6()"><i class="fa fa-check"></i>Check</button>
+                        </div>
+                        
+                        <div id="q1-7" style="font-weight: bold; margin-top: 30px; display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="exp01.01.js"></script>
+</html>
