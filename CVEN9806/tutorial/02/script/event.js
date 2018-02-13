@@ -55,7 +55,7 @@ function plot_profile() {
         fillColor: 'red',
         size: 3,
         highlight: false,
-        fixed: true
+        fixed: false
     }));
     
     window.plot.keypoint.push(window.plot.brd.create('point', [prob.span, 0], {
@@ -131,14 +131,66 @@ function createPlot() {
     window.chart = {};
     
     window.chart.brd = JXG.JSXGraph.initBoard('svg-plot', {
-        boundingbox: [-2, 5000, 17, -500],  // pi minimum 1500
+        boundingbox: [-2, 5000, 17, 2700],  // pi minimum 3000
         showNavigation: false,
         keepaspectratio: false,
         showCopyright: false,
-        axis: true
+        axis: false
     });
     
-    window.chart.label_x = window.chart.brd.create('text', [7.5, -500, 'Distance from left end x (m)'], {
+    window.chart.brd.create('arrow', [[0, 2700], [0, 4800]], {
+        strokeWidth: 3,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.chart.brd.create('arrow', [[-2, 3000], [17, 3000]], {
+        strokeWidth: 3,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    [3500, 4000, 4500].forEach(function(ele, idx, arr) {
+        window.chart.brd.create('text', [-0.5, ele, ele.toFixed(0)], {
+            anchorX: 'right',
+            anchorY: 'middle',
+            fontSize: 18,
+            fontWeight: 'bold',
+            fixed: true,
+            highlight: false
+        });
+        
+        window.chart.brd.create('segment', [[0, ele], [17, ele]], {
+            strokeWidth: 1,
+            dash: 1,
+            strokeColor: 'black',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    [5, 10, 15].forEach(function(ele, idx, arr) {
+        window.chart.brd.create('text', [ele, 2950, ele.toFixed(0)], {
+            anchorX: 'middle',
+            anchorY: 'top',
+            fontSize: 18,
+            fontWeight: 'bold',
+            fixed: true,
+            highlight: false
+        });
+        
+        window.chart.brd.create('segment', [[ele, 3000], [ele, 4800]], {
+            strokeWidth: 1,
+            dash: 1,
+            strokeColor: 'black',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    window.chart.label_x = window.chart.brd.create('text', [7.5, 2700, 'Distance from left end x (m)'], {
         anchorX: 'middle',
         anchorY: 'bottom',
         fontSize: 18,
@@ -278,9 +330,9 @@ function createPlot() {
     }]], {
         firstArrow: true,
         lastArrow: true,
-        color: 'black',
+        color: 'blue',
         strokeWidth: 1,
-        dash: 1,
+        dash: 2,
         fixed: true,
         highlight: false,
         visible: function() {
@@ -345,7 +397,7 @@ function createPlot() {
             dp = Number(dp.toFixed(0));
             
             var k = (prob.pj - prob.pi) / 15;
-            var delta = 8 * k
+            var delta = 30 * k
             
             if ((dp <= delta) && (dp >= 0)) {
                 var y = Number((prob.pj - dp).toFixed(0));

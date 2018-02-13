@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="h4 question">
-                        A simply supported post-tensioned beam has a parablic cable with zero eccentricity at both ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. Duct is bright and zinc coated metal. The beam is jacked from left end only.
+                        A simply supported post-tensioned beam has a parabolic cable with zero eccentricity at both ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. The duct is bright and zinc coated metal. The beam is jacked from left end only.
                     </div>
                 </div>
             </div>
@@ -105,23 +105,25 @@
                         <p>
                             Calculate the prestress force at the right end immediately after transfer P<sub>i</sub> = <input id="pi" size="6"/> kN (rounded to 1 kN)
                         </p>
-                        <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span>&nbsp;&nbsp;&nbsp;(for testing: answer {{prob.pi}})</span>
+                        <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span style='color: transparent;'>&nbsp;&nbsp;&nbsp;(for testing: answer {{prob.pi}})</span>
                     </section>
                     <section style="display: none;">
                         <p>The friction losses diagram is plotted as follows:</p>
                         <div id="svg-plot" style="width: 600px; height: 500px; margin: 0 auto;"></div>
                         <p style="margin-top: 20px;">
-                            <strong>Note: </strong>There is a blue point on the y axis. Drag is point to plot the anchorage loss due to draw-in.
+                            <strong>Note: </strong>There is a blue point on the y axis. Drag this point to plot the anchorage loss due to draw-in.
                         </p>
                         <p>
                             The following values will change when you drag the points in the plot:<br/><br/>
                             You can also type a value for &Delta;P<sub>i</sub> in the input box and press ENTER, the plot will change accordingly.
+                            \[ L _{set} = \sqrt{ \frac{E _{p} A _{p} \Delta}{p} } \]
+                            You need to calculate &Delta;P<sub>i</sub> based on L<sub>set</sub>:
                         </p>
                         <ul>
                             <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN, to reset, clear the input box and press ENTER)</li>
                             <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
                         </ul>
-                        <button class="btn btn-primary" v-on:click="part3($event);" disabled>Complete and Submit</button><span></span>
+                        <button class="btn btn-primary" v-on:click="part3($event);">Complete and Submit</button><span></span>
                     </section>
                 </div>
             </div>

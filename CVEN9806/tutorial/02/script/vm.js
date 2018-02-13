@@ -7,16 +7,12 @@ var vm = new Vue({
     },
     computed: {
         slope0: function() {
-            return 2 * (-4 * (-prob.e) / prob.span / prob.span) * (0 - prob.span/2) / 100;
+            return 4 * (-prob.e / 1000 / prob.span);
         }
     },
     methods: {
-        displacement: function(x) {
-            return ((-4 * (-prob.e) / prob.span / prob.span) * Math.pow(x - prob.span/2, 2) - prob.e) / 100;
-        },
-        
         slope: function(x) {
-            return (2 * (-4 * (-prob.e) / prob.span / prob.span) * (x - prob.span/2)) / 100;
+            return 4 * (-prob.e / 1000 / prob.span) * (1 - 2*x/prob.span);
         },
         
         alpha: function(x) {
@@ -70,7 +66,7 @@ var vm = new Vue({
         },
         
         part3: function(e) {
-            
+            $(e.target).hide().after("You have completed this module.");
         }
     }
 });
