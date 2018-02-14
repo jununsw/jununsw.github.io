@@ -1,6 +1,7 @@
 function init() {
+    $("#answer-tabs").tabs();
+    
     plot_soil();
-    // plot_chart('soil-chart', vm.prob.pc, vm.prob.cr, vm.prob.cc, vm.prob.omega);
 }
 
 function plot_soil() {
@@ -87,7 +88,7 @@ function plot_soil() {
         fixed: true
     });
     
-    prob.plot.brd.create('text', [7, 1.5, '<span>q = 40 kg/m<sup>2</sup></span>'], {
+    prob.plot.brd.create('text', [7, 1.5, '<span>q = ' + prob.q.toFixed(0) + ' kg/m<sup>2</sup></span>'], {
         anchorX: 'middle', 
         anchorY: 'bottom', 
         fontSize: 18, 

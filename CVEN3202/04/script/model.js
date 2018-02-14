@@ -12,7 +12,7 @@ class Model {
         this.plot = {};
         this.chart = {};
         
-        this.q = 40;
+        this.q = [60, 62, 64, 66, 68, 70].random();
         this.b = 5;
         this.l = 5;
         
@@ -51,7 +51,7 @@ class Model {
             return r1;
         })(this.gamma1, this.gamma2, this.d1, 4, this.q, this.b, this.l);
         
-        this.pc = [this.sigma0, this.sigma1].random(0);
+        this.pc = [this.sigma0 * 1.1, this.sigma1 * 0.9].random(0);
         
         var s0 = (function(gamma1, gamma2, d1, d2) {
             var r = gamma1*d1 + gamma2*d2/2 - d2/2*9.8;
