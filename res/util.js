@@ -104,6 +104,11 @@ function disableInspect(path) {
             (new Audio(path)).play();
             return false;
         }
+	    
+	if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
     }
     
     $("html").on("contextmenu", function(e) {
