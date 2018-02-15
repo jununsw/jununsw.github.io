@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>1D Seepage, Darcy's Law</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=9"/>
+    </head>
+    <body onload="init();">
+        <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>1D Seepage, Darcy's Law</strong></div>
+        <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+            E-learning Module for CVEN 3202 Soil Mechanics<br/>
+            Course Coordinator: Dr Arman Khoshghalb<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        <div class="container" id="myapp" style="margin-bottom: 20px; margin-top: 20px;">
+            <div class="row">
+                <div class="col-sm-12" style="font-weight: bold;">
+                    <p>
+                        A permeameter tube is filled with three layers of soil marked in red, blue and green color respectively. The angle between the tube and the horizontal direction is denoted by &theta;. k<sub>1</sub>, k<sub>2</sub> and k<sub>3</sub> are the permeabilities of soil segment AB, BC and CD respectively.
+                    </p>
+                    <p>
+                        Use the information in the tab below the figure to specify the dimensions and permeabilities of the problem.
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <div id="main-plot" style="width: 500px; height: 500px; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#t1" style="font-weight: bold;">Problem Setup</a></li>
+                    <li><a href="#t2" style="font-weight: bold; display: none;">Calculation</a></li>
+                </ul>
+                
+                <div id="t1">
+                    <div class="row">
+                        <div class="col-sm-12" style="margin-bottom: 20px; font-weight: bold;">
+                            Use the table on the left to specify the value of k<sub>1</sub>, k<sub>2</sub> and k<sub>3</sub>, and press ENTER after input. Note: k<sub>1</sub>, k<sub>2</sub> and k<sub>3</sub> should be between 10<sup>-6</sup> m/s and 10<sup>-4</sup> m/s. Use scientific notation (e.g. 3.4e-6) and your inputs will be rounded to 10<sup>-6</sup> m/s automatically. The input box will be in red if input is not valid.
+                            <br/><br/>
+                            Use the slider on the right to specify the dimension of the problem, such as the value of L<sub>1</sub>, L<sub>2</sub>, L<sub>3</sub>, &theta;, h<sub>1</sub> and h<sub>2</sub>. The above figure will be updated while you move the slider.
+                            <br/><br/>
+                            After the configuration of the problem is determined, press the button below, and h<sub>1</sub> will be verified using quick condition.
+                        </div>
+                        <div class="col-sm-6">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>k<sub>1</sub></th>
+                                        <th>k<sub>2</sub></th>
+                                        <th>k<sub>3</sub></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input id="k1" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                        <td><input id="k2" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                        <td><input id="k3" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: red;">k<sub>1</sub> = {{showK(k1) ? k1.toExponential(2) + " m/s" : ""}}</td>
+                                        <td style="color: blue;">k<sub>2</sub> = {{showK(k2) ? k2.toExponential(2) + " m/s" : ""}}</td>
+                                        <td style="color: green;">k<sub>3</sub> = {{showK(k3) ? k3.toExponential(2) + " m/s" : ""}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary" v-on:click="verifyH($event);" disabled>Verify h<sub>1</sub> using quick condition</button>
+                            <p style="font-weight: bold; margin-top: 10px;"></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>1</sub> = {{l1}} m (0.5m &lt; L<sub>1</sub> &lt; 5m)</p>
+                            <div class="slider" data-id="l1" data-min="0.5" data-max="5" data-snap="0.1"></div>
+                            
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>2</sub> = {{l2}} m (0.5m &lt; L<sub>2</sub> &lt; 5m)</p>
+                            <div class="slider" data-id="l2" data-min="0.5" data-max="5" data-snap="0.1"></div>
+                            
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>3</sub> = {{l3}} m (0.5m &lt; L<sub>3</sub> &lt; 5m)</p>
+                            <div class="slider" data-id="l3" data-min="0.5" data-max="5" data-snap="0.1"></div>
+                            
+                            <p style="font-weight: bold; margin-top: 10px;">&theta; = {{angle}}&deg; (0&deg; &lt; &theta; &lt; 90&deg;)</p>
+                            <div class="slider" data-id="angle" data-min="0" data-max="90" data-snap="5"></div>
+                            
+                            <p style="font-weight: bold; margin-top: 10px;">h<sub>1</sub> = {{h1}} m (1m &lt; h<sub>1</sub> &lt; 10m)</p>
+                            <div class="slider" data-id="h1" data-min="1" data-max="10" data-snap="0.2"></div>
+                            
+                            <p style="font-weight: bold; margin-top: 10px;">h<sub>2</sub> = {{h2}} m (1m &lt; h<sub>2</sub> &lt; 10m)</p>
+                            <div class="slider" data-id="h2" data-min="1" data-max="10" data-snap="0.2"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="t2"></div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/event.js?v=1"></script>
+    <script type="text/javascript" src="script/vm.js?v=1"></script>
+</html>
