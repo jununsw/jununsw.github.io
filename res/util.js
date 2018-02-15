@@ -72,3 +72,42 @@ Array.prototype.random = function() {
         return this[Math.random() * this.length >> 1];
     }
 }
+
+function disableInspect(path) {
+    document.onkeydown = function(e) {
+        if (event.keyCode == 123) {
+            (new Audio(path)).play();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
+
+        if (e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
+
+        if (e.ctrlKey && e.keyCode == 'V'.charCodeAt(0)) {
+            (new Audio(path)).play();
+            return false;
+        }
+    }
+    
+    $("html").on("contextmenu", function(e) {
+        (new Audio(path)).play();
+        return false;
+    });
+}
