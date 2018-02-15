@@ -1,5 +1,5 @@
 function init() {
-    disableInspect('css/warning.wav');
+    disableInspect('https://jununsw.github.io/res/warning.wav');
     
     $("#tabs").tabs();
     plot_figure(vm.h1, vm.h2, vm.l1, vm.l2, vm.l3, vm.angle, true);
