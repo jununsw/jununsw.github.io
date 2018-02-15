@@ -1,15 +1,5 @@
 function init() {
-    $("html").on("contextmenu", function(e) {
-        (new Audio('css/warning.wav')).play();
-        
-        /*
-        setTimeout(function() {
-            alert("Right-click is disabled");
-        }, 100);
-        */
-        
-        return false;
-    });
+    disableInspect('css/warning.wav');
     
     $("#tabs").tabs();
     plot_figure(vm.h1, vm.h2, vm.l1, vm.l2, vm.l3, vm.angle, true);
