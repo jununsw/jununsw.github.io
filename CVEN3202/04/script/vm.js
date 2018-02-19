@@ -99,7 +99,7 @@ var vm = new Vue({
                 });
             });
             
-            prob.plot.middle_point.setAttribute({visible: true});
+            // prob.plot.middle_point.setAttribute({visible: true});
             $("#step1").show();
         },
         

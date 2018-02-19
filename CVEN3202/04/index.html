@@ -44,8 +44,8 @@
                                 <h4 id='title' style="display: none;">Click here to expand question</h4>
                                 <div>
                                     <p>
-                                        The three-layered soil shown on the right<br/>
-                                        Soil properties are shown in the figure
+                                        A three-layered soil profile is shown in the figure.
+                                        Soil properties for each layer are shown in the figure
                                     </p>
                                     <div style='display: none;'>
                                         <p>Layer 1: Gravel</p>
@@ -64,11 +64,11 @@
                                             <li>\( C _{r}= \) &nbsp; {{prob.cr}}</li>  
                                         </ul>
                                     </div>
-                                    <p>The water level is located at the interface between the gravel and clay</p>
+                                    <p>The water level is located at the interface between the gravel and clay layer.</p>
                                     <p style="style=text-align: justify;">
-                                        Assume there is a q = {{prob.q}} kN/m<sup>2</sup> surcharge load is applied on a B &times; L rectangle area.
+                                        A q = {{prob.q}} kN/m<sup>2</sup> surcharge load is applied on the surface over a B &times; L rectangle area, as shown in the figure.
                                         <br/>
-                                        Use 2:1 method to calculate stress increase in the middle of the clay layer and calculate the settlement due to the loading<br/>(\( g= \) 9.8 m/s<sup>2</sup>) 
+                                        Estimate the total consolidation settlement for the clay layer under the centre of the loaded area. Use 2:1 method to calculate stress increase in the middle of the clay layer due to the loading (\( g= \) 9.8 m/s<sup>2</sup>) 
                                     </p>
                                     <p>
                                         <button type="button" class="btn btn-primary" v-on:click="start($event);">Start</button>
@@ -86,7 +86,7 @@
                                     <p>
                                         {{ text_compare }}, {{(sigma_0 &lt; prob.pc) ? 'over-consolidated' : 'normal consolidated'}} soil.
                                     </p>
-                                    <p>The stress at the middle of the clay layer (red point in the figure) before surcharge is</p>
+                                    <p>The stress at the middle of the clay layer (red point in the figure) after surcharge is</p>
                                     <p>
                                         \[ \sigma '_{f} =  \sigma '_{0} + \Delta \sigma ' \]
                                         \[ \Delta \sigma ' = \frac{qBL}{(B +d _{1} + \frac{d _{2}}{2})(L +d _{1} + \frac{d _{2}}{2})} \]
@@ -107,8 +107,8 @@
                                         In the following plot, the x axis is log(&sigma;') (kPa) and the y-axis is the void ratio e.
                                     </p>
                                     <ul>
-                                        <li>Slope of the <span style="color: blue;">blue</span> line is C<sub>r</sub></li>
-                                        <li>Slope of the <span style="color: green;">green</span> line is C<sub>c</sub></li>
+                                        <li>Slope of the <span style="color: blue; font-weight: bold;">blue</span> line is C<sub>r</sub></li>
+                                        <li>Slope of the <span style="color: green; font-weight: bold;">green</span> line is C<sub>c</sub></li>
                                         <li>Both lines intersect at point &sigma;'<sub>pc</sub></li>
                                     </ul>
                                     <p>
@@ -131,11 +131,6 @@
                                     </p>
                                     <p>
                                         <strong>Therefore S = {{result}} mm</strong>
-                                    </p>
-                                    <p>
-                                        <strong>
-                                            Now you can change the depth of layer 2 by moving the black triangle located at the interface between layer 2 and 3.<br/>
-                                        </strong>
                                     </p>
                                 </div>
                             </div>
@@ -171,7 +166,7 @@
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=1"></script>
-    <script type="text/javascript" src="script/model.js?v=1"></script>
-    <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/event.js?v=2"></script>
+    <script type="text/javascript" src="script/model.js?v=2"></script>
+    <script type="text/javascript" src="script/vm.js?v=2"></script>
 </html>

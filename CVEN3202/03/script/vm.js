@@ -44,6 +44,8 @@ var vm = new Vue({
             $("<p style='border-bottom: 1px solid black;'>From the chart above (green dashed line), percentage of gravel: " + this.prob.Fg.toFixed(1) + "%, percentage of sand: " + (100 - this.prob.Fg - this.prob.F).toFixed(1) + "% </p>").appendTo($(e.target).closest('div'));
             
             $("<p><br/><strong>Step 2. </strong>Determine the primary letter (prefix)</p>").appendTo($(e.target).closest('div'));
+            
+            $("<p>As calculated, percentage of gravel: " + this.prob.Fg.toFixed(1) + "%, percentage of sand: " + (100 - this.prob.Fg - this.prob.F).toFixed(1) + "% </p>").appendTo($(e.target).closest('div'));
 
             if (this.prob.Fg > (100 - this.prob.F) / 2) {  // Gravel
                 $("<p style='border-bottom: 1px solid black;'>There are more gravel than sand, prefix is G</p>").appendTo($(e.target).closest('div'));

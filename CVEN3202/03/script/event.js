@@ -466,11 +466,11 @@ function calculate() {
             visible: false
         });
         
-        prob.plot.arrow75 = prob.distribution.create("arrow", [prob.plot.p75, [prob.plot.p75.X(), 0]], {
+        prob.plot.arrow75 = prob.distribution.create("segment", [prob.plot.p75, [prob.plot.p75.X(), 0]], {
             strokeColor: 'blue',
             strokeWidth: 3,
-            straightFirst: false, 
-            straightLast: false,
+            firstArrow: true,
+            lastArrow: false,
             fixed: true,
             highlight: false,
             visible: false
@@ -483,31 +483,31 @@ function calculate() {
     if (prob.F <= 50) {
         try {
             if (prob.F <= 12) {
-                prob.plot.arrow10 = prob.distribution.create("arrow", [prob.plot.p10, [prob.plot.p10.X(), 0]], {
+                prob.plot.arrow10 = prob.distribution.create("segment", [prob.plot.p10, [prob.plot.p10.X(), 0]], {
                     strokeColor: 'red',
                     strokeWidth: 3,
-                    straightFirst: false, 
-                    straightLast: false,
+                    firstArrow: true,
+                    lastArrow: false,
                     fixed: true,
                     highlight: false,
                     visible: false
                 });
                 
-                prob.plot.arrow30 = prob.distribution.create("arrow", [prob.plot.p30, [prob.plot.p30.X(), 0]], {
+                prob.plot.arrow30 = prob.distribution.create("segment", [prob.plot.p30, [prob.plot.p30.X(), 0]], {
                     strokeColor: 'red',
                     strokeWidth: 3,
-                    straightFirst: false, 
-                    straightLast: false,
+                    firstArrow: true,
+                    lastArrow: false,
                     fixed: true,
                     highlight: false,
                     visible: false
                 });
                 
-                prob.plot.arrow60 = prob.distribution.create("arrow", [prob.plot.p60, [prob.plot.p60.X(), 0]], {
+                prob.plot.arrow60 = prob.distribution.create("segment", [prob.plot.p60, [prob.plot.p60.X(), 0]], {
                     strokeColor: 'red',
                     strokeWidth: 3,
-                    straightFirst: false, 
-                    straightLast: false,
+                    firstArrow: true,
+                    lastArrow: false,
                     fixed: true,
                     highlight: false,
                     visible: false
@@ -587,11 +587,11 @@ function calculate_coarse() {
             visible: false
         });
         
-        prob.plot.arrow_gravel = prob.distribution.create("arrow", [prob.plot.point_gravel, [prob.plot.point_gravel.X(), 0]], {
+        prob.plot.arrow_gravel = prob.distribution.create("segment", [prob.plot.point_gravel, [prob.plot.point_gravel.X(), 0]], {
             strokeColor: 'green',
             strokeWidth: 3,
-            straightFirst: false, 
-            straightLast: false,
+            firstArrow: true,
+            lastArrow: false,
             fixed: true,
             highlight: false,
             visible: false

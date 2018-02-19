@@ -28,7 +28,7 @@ class Model {
             '5.1': 1.1903
         };
         
-        this.cc = Number(((this.oedometer['100'] - this.oedometer['200']) / (Math.log10(200) - Math.log10(100))).toFixed(1));
+        this.cc = 0.7;
         this.cr = 0.2;
         
         this.sigma0 = (function(gamma1, gamma2, d1, d2) {

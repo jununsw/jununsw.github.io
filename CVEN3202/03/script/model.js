@@ -3,6 +3,36 @@
 
 class Model {
     constructor() {
+        function getPi(ll) {
+            var r;
+            
+            if (ll < 16) {
+                var r = [4, 7].random(0);
+            } else if (ll < 30) {
+                var max = upper(ll);
+                var r = [4, max].random(0);
+            } else {
+                var max = upper(ll);
+                var min = lower(ll);
+                var r = [min, max].random(0);
+            }
+            
+            while (((r >= 4) && (r <= 7)) || (r >= 59)) {
+                if (ll < 16) {
+                    var r = [4, 7].random(0);
+                } else if (ll < 30) {
+                    var max = upper(ll);
+                    var r = [4, max].random(0);
+                } else {
+                    var max = upper(ll);
+                    var min = lower(ll);
+                    var r = [min, max].random(0);
+                }              
+            }
+            
+            return Number(r.toFixed(0));
+        }
+        
         var upper = function(x) {return 0.9 * (x - 8);};
         var lower = function(x) {return 0.003*x*x -0.1183*x+2.2485;};
         
@@ -15,20 +45,7 @@ class Model {
         
         this.ll = Number((Math.random() * 100).toFixed(0));
         
-        var pi = (function(ll) {
-            if (ll < 16) {
-                var r = [4, 7].random(0);
-            } else if (ll < 30) {
-                var max = upper(ll);
-                var r = [4, max].random(0);
-            } else {
-                var max = upper(ll);
-                var min = lower(ll);
-                var r = [min, max].random(0);
-            }
-            
-            return r;
-        })(this.ll);
+        var pi = getPi(this.ll);
         
         this.pl = pi + this.ll;
         
