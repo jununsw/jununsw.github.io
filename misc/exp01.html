@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Result</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-sm-6">
+                    <div id="plot1" style="margin: 0 auto"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="plot2" style="margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        $(document).ready(function() {
+
+            var x = [
+                0.853596643443996, 0.854173074312063, 0.854749505180130, 0.855325936048197, 0.855902366916263, 0.856478797784330, 0.857055228652397, 0.857631659520464, 0.858208090388530, 0.858784521256597, 0.859360952124664, 0.859937382992731, 0.860513813860797, 0.861090244728864, 0.861666675596931, 0.862243106464998, 0.862819537333064, 0.863395968201131, 0.863972399069198, 0.864548829937265, 0.865125260805332, 0.865701691673398, 0.866278122541465, 0.866854553409532, 0.867430984277599, 0.868007415145665, 0.868583846013732, 0.869160276881799, 0.869736707749866, 0.870313138617932, 0.870889569485999, 0.871466000354066, 0.872042431222133, 0.872618862090199, 0.873195292958266, 0.873771723826333, 0.874348154694400, 0.874924585562466, 0.875501016430533, 0.876077447298600, 0.876653878166667, 0.877230309034733, 0.877806739902800, 0.878383170770867, 0.878959601638934, 0.879536032507000, 0.880112463375067, 0.880688894243134, 0.881265325111201, 0.881841755979268, 0.882418186847334, 0.882994617715401, 0.883571048583468, 0.884147479451535, 0.884723910319601, 0.885300341187668, 0.885876772055735, 0.886453202923802, 0.887029633791868, 0.887606064659935, 0.888182495528002, 0.888758926396069, 0.889335357264135, 0.889911788132202, 0.890488219000269, 0.891064649868336, 0.891641080736402, 0.892217511604469, 0.892793942472536, 0.893370373340603, 0.893946804208670, 0.894523235076736, 0.895099665944803, 0.895676096812870, 0.896252527680936, 0.896828958549003, 0.897405389417070, 0.897981820285137, 0.898558251153204, 0.899134682021270, 0.899711112889337, 0.900287543757404, 0.900863974625471, 0.901440405493537, 0.902016836361604, 0.902593267229671, 0.903169698097738, 0.903746128965804, 0.904322559833871, 0.904898990701938, 0.905475421570005, 0.906051852438071, 0.906628283306138, 0.907204714174205, 0.907781145042272, 0.908357575910338, 0.908934006778405, 0.909510437646472, 0.910086868514539, 0.910663299382606
+            ];
+
+            var y = [
+                0.000393835412196038, 0.00160535895757267, 0.00507220495580954, 0.0125060392630016, 0.0244059538226734, 0.0388030426205751, 0.0531508125821268, 0.0680612684895721, 0.0883390145003224, 0.120288577959701, 0.171639448279681, 0.253509011985004, 0.377562571627687, 0.546336445600272, 0.746744186799826, 0.956610863077405, 1.15769269550577, 1.34138059610137, 1.51377251165003, 1.70747774469974, 1.98695962535666, 2.43026090602176, 3.09550971399332, 3.99487965037697, 5.08775013714188, 6.30595237765565, 7.60296058175832, 8.99002522607239, 10.5310767251298, 12.2954411826191, 14.3020939289501, 16.5015885863180, 18.8368775644941, 21.3218550341975, 24.0176295394395, 26.9318851626348, 29.9797268383204, 33.0459752526379, 36.0837905552872, 39.1452782804696, 42.2954734272857, 45.4699517175853, 48.4573061569912, 51.0402439936941, 53.1023985303868, 54.6133828518086, 55.6053830687632, 56.2254891577998, 56.7331196477034, 57.3422718143072, 58.0379506998413, 58.5693548734322, 58.5981726448258, 57.8281800498283, 56.0661208387361, 53.3295665445465, 49.9640323245527, 46.5569976134558, 43.5896894264155, 41.1464017371386, 38.9574916783280, 36.6926706652252, 34.1870960948664, 31.4559186060400, 28.6103319966518, 25.7933688963089, 23.1259960460514, 20.6310179831995, 18.2120070637482, 15.7829831420455, 13.4349370064539, 11.4121672817429, 9.86891746489454, 8.69080478638465, 7.60459341809865, 6.45243135082237, 5.30594675931822, 4.32695881556001, 3.58401563917702, 3.02251550577320, 2.55132936893390, 2.11311808006851, 1.69777878381659, 1.32350088168020, 1.00899236532946, 0.756603084527684, 0.553883829680822, 0.388879213062286, 0.261663313935795, 0.177088851048336, 0.129889514650838, 0.104081307321399, 0.0846980996113170, 0.0650760174699580, 0.0449617991295502, 0.0267515041600473, 0.0131858894048723, 0.00522230490680570, 0.00161996859034200, 0.000392183413605229
+            ];
+            
+            var data1 = [];
+            var data2 = []
+
+            x.forEach(function(ele, idx, arr) {
+                data1.push([ele, y[idx] / 100]);
+            });
+
+            x.forEach(function(ele, idx, arr) {
+                if (idx % 3 == 0) {
+                    data2.push([ele, y[idx] / 100]);
+                }
+            });
+
+            var chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+
+            var title = {
+                text: 'PDF'   
+            };
+
+            var xAxis = {
+                title: {
+                    enabled: true,
+                    text: 'P_max',
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: '16px'
+                    }
+                },
+                startOnTick: false,
+                endOnTick: false,
+                showLastLabel: true
+            };
+
+            var yAxis = {
+                title: {
+                    text: 'probability density',
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: '16px'
+                    }
+                }
+            };
+
+            var legend = {   
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 40,
+                floating: true,
+                backgroundColor: '#FFFFFF',
+                borderWidth: 1
+            };
+
+            var plotOptions = {
+                scatter: {
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    }
+                }
+            };
+
+            var series= [
+                {
+                    name: 'Monte Carlo Simulation \u03C3 = 0.05\u03BC',
+                    color: 'rgba(255, 0, 0, 1)',
+                    lineWidth: 2,
+                    marker: {
+                        radius: 0
+                    },
+                    data: data1
+                },
+                {
+                    name: 'Neural Network \u03C3 = 0.05\u03BC',
+                    color: 'rgba(0, 0, 255, 1)',
+                    lineWidth: 0,
+                    marker: {
+                        radius: 3
+                    },
+                    data: data2
+                }
+            ];
+
+            var json = {};
+
+            json.chart = chart; 
+            json.title = title;
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;  
+            json.series = series;
+            json.plotOptions = plotOptions;
+            json.credits = false;
+
+            $('#plot1').highcharts(json);
+
+            chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+
+            title = {
+                text: 'PDF'   
+            };
+
+            xAxis = {
+                title: {
+                    enabled: true,
+                    text: 'P_max',
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: '16px'
+                    }
+                },
+                startOnTick: false,
+                endOnTick: false,
+                showLastLabel: true
+            };
+
+            yAxis = {
+                title: {
+                    text: 'probability density',
+                    style: {
+                        fontWeight: 'bold',
+                        fontSize: '16px'
+                    }
+                }
+            };
+
+            legend = {   
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 40,
+                floating: true,
+                backgroundColor: '#FFFFFF',
+                borderWidth: 1
+            };
+
+            plotOptions = {
+                scatter: {
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    }
+                }
+            };
+
+            series= [
+                {
+                    name: 'Monte Carlo Simulation \u03C3 = 0.05\u03BC',
+                    color: 'rgba(255, 0, 0, 1)',
+                    lineWidth: 2,
+                    marker: {
+                        radius: 0
+                    },
+                    data: data1
+                },
+                {
+                    name: 'Neural Network \u03C3 = 0.02\u03BC',
+                    color: 'rgba(0, 0, 0, 1)',
+                    lineWidth: 0,
+                    marker: {
+                        radius: 3
+                    },
+                    data: data2
+                }
+            ];
+
+            json = {};
+
+            json.chart = chart; 
+            json.title = title;
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;  
+            json.series = series;
+            json.plotOptions = plotOptions;
+            json.credits = false;
+
+            $('#plot2').highcharts(json);
+        });
+    </script>
+</html>
