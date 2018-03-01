@@ -525,7 +525,7 @@ function calculate() {
         
         calculate_coarse();
     } else {
-        prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+        prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.ll - prob.pl], {
             name: '',
             strokeColor: 'red',
             strokeWidth: 2,
@@ -604,7 +604,7 @@ function calculate_coarse() {
     
     if (prob.F >= 5) {
         if (prob.F > 12) {  // 3.2.2
-            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.ll - prob.pl], {
                 name: '',
                 strokeColor: 'red',
                 strokeWidth: 2,
@@ -616,7 +616,7 @@ function calculate_coarse() {
             
             prob.result[1] = check_mc(prob.plot.soil_point);
         } else {  // 3.2.3
-            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.pl - prob.ll], {
+            prob.plot.soil_point = prob.fine.create('point', [prob.ll, prob.ll - prob.pl], {
                 name: '',
                 strokeColor: 'red',
                 strokeWidth: 2,

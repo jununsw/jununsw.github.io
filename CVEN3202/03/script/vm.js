@@ -18,7 +18,7 @@ var vm = new Vue({
             $("<p>From the chart above (blue dashed line), we have F = " + prob.F.toFixed(1) + "% </p>").appendTo($(e.target).closest('div'));
 
             if (this.prob.F >= 50) {
-                $("<p>Since F &ge; 50%, it is a fine-grained soil,<br/>classification is purely based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = PL - LL = " + (this.prob.pl - this.prob.ll) + "</p>").appendTo($(e.target).closest('div'));
+                $("<p>Since F &ge; 50%, it is a fine-grained soil,<br/>classification is purely based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = LL - PL = " + (this.prob.ll - this.prob.pl) + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>Therefore the classification of the soil is " + this.prob.final() + "</p>").appendTo($(e.target).closest('div'));
                 $("#plot").show();
             } else {
@@ -67,7 +67,7 @@ var vm = new Vue({
                 $("<p>Therefore the classification of the soil is " + this.prob.final() + "</p>").appendTo($(e.target).closest('div'));
             } else if (this.prob.F > 12) {
                 $('<p>Since F &gt; 12%, sufix is either M or C.</p>').appendTo($(e.target).closest('div'));
-                $("<p>It is purely based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = PL - LL = " + (this.prob.pl - this.prob.ll) + "</p>").appendTo($(e.target).closest('div'));
+                $("<p>It is purely based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = LL - PL = " + (this.prob.ll - this.prob.pl) + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>The suffix is " + this.prob.result[1] + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>Therefore the classification of the soil is " + this.prob.final() + "</p>").appendTo($(e.target).closest('div'));
                 $("#plot").show();
@@ -79,7 +79,7 @@ var vm = new Vue({
                 this.plot_arrow(e);
                 $('<p style="border-top: 1px black dashed;">&nbsp;</p>').appendTo($(e.target).closest('div'));
                 $('<p>Assume F &gt; 12%, sufix is either M or C.</p>').appendTo($(e.target).closest('div'));
-                $("<p>It is based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = PL - LL = " + (this.prob.pl - this.prob.ll) + "</p>").appendTo($(e.target).closest('div'));
+                $("<p>It is based on liquid limit and plasticigty index, using the plasticity chart below<br/><br/>note: PI = LL - PL = " + (this.prob.ll - this.prob.pl) + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>The suffix is " + this.prob.result[2] + "</p>").appendTo($(e.target).closest('div'));
                 $("<p>Therefore the classification of the soil is " + this.prob.final() + "</p>").appendTo($(e.target).closest('div'));
                 $("#plot").show();

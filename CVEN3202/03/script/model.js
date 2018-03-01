@@ -47,7 +47,12 @@ class Model {
         
         var pi = getPi(this.ll);
         
-        this.pl = pi + this.ll;
+        this.pl = this.ll - pi;
+        
+        if ((this.pl <= 0) || ((this.ll - this.pl) >= 30)) {
+            var pi = getPi(this.ll);
+            this.pl = this.ll - pi;
+        }
         
         this.result = [];
         this.plot = {};
