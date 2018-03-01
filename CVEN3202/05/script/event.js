@@ -22,8 +22,6 @@ function init() {
             }
         });
     });
-    
-    console.log("gamma_sat = " + vm.gammaSat.toFixed(1));
 }
 
 function plot_figure(h1, h2, l1, l2, l3, angle, isNew) {
@@ -389,4 +387,47 @@ function plot_figure(h1, h2, l1, l2, l3, angle, isNew) {
         highlight: false,
         fixed: true
     });
+    
+    /** 
+     * in case theta = 90
+     * water head at A B C D
+     */
+    
+    window.plot.brd.create('segment', [window.plot.l1.point1, [-1, window.plot.l1.point1.Y()]], {
+        strokeColor: 'black',
+        opacity: 0.3,
+        strokeWidth: 4,
+        highlight: false,
+        fixe: true,
+        visible: function() {
+            if (angle >= 80) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
+    window.plot.brd.create('segment', [window.plot.l3.point2, [function () {
+        return (l1 + l2 + l3) * Math.cos(angle / 180 * Math.PI) + 1;
+    }, window.plot.l3.point2.Y()]], {
+        strokeColor: 'black',
+        opacity: 0.3,
+        strokeWidth: 4,
+        highlight: false,
+        fixe: true,
+        visible: function() {
+            if (angle >= 80) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    
+    var left = -1;
+    var right = (l1 + l2 + l3) * Math.cos(angle / 180 * Math.PI) + 1;
+    
+    var xB = l1/(l1 + l2 + l3)*left + (l1 + l2)/(l1 + l2 + l3)*right;
+    var xC = l1/(l1 + l2 + l3)*right + (l1 + l2)/(l1 + l2 + l3)*left;
 }

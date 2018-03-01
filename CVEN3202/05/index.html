@@ -55,9 +55,10 @@
                         <div class="col-sm-12" style="margin-bottom: 20px; font-weight: bold;">
                             Use the table on the left to specify the value of k<sub>1</sub>, k<sub>2</sub> and k<sub>3</sub>, and press ENTER after input. Note: k<sub>1</sub>, k<sub>2</sub> and k<sub>3</sub> should be between 10<sup>-6</sup> m/s and 10<sup>-4</sup> m/s. Use scientific notation (e.g. 3.4e-6) and your inputs will be rounded to 10<sup>-6</sup> m/s automatically. The input box will be in red if input is not valid.
                             <br/><br/>
-                            Use the slider on the right to specify the dimension of the problem, such as the value of L<sub>1</sub>, L<sub>2</sub>, L<sub>3</sub>, &theta;, h<sub>1</sub> and h<sub>2</sub>. The above figure will be updated while you move the slider.
+                            Use the slider on the right to specify the dimension of the problem, such as the value of L<sub>1</sub>, L<sub>2</sub>, L<sub>3</sub>, &theta; and h<sub>2</sub>.<br/><br/>
+                            After you specified all the variable, press the 'Adjust h<sub>1</sub>' button to adjust the value of h1. The range of h<sub>1</sub> will be given based on the quick condition. (Note: If you have not input k<sub>1</sub>, k<sub>2</sub> or k<sub>3</sub>, the corresponding input box will show in red. Please specify theses values first)
                             <br/><br/>
-                            After the configuration of the problem is determined, press the button below, and h<sub>1</sub> will be verified using quick condition.
+                            After the configuration of the problem is determined, press 'Finish Configuration' button.
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-bordered">
@@ -70,9 +71,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input id="k1" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
-                                        <td><input id="k2" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
-                                        <td><input id="k3" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                        <td><input class="k" id="k1" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                        <td><input class="k" id="k2" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
+                                        <td><input class="k" id="k3" size="6" v-on:keyup.enter="checkK($event);"/> m/s</td>
                                     </tr>
                                     <tr>
                                         <td style="color: red;">k<sub>1</sub> = {{showK(k1) ? k1.toExponential(2) + " m/s" : ""}}</td>
@@ -81,27 +82,42 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn btn-primary" v-on:click="verifyH($event);" disabled>Verify h<sub>1</sub> using quick condition</button>
+                            <p>
+                                1e-6 m/s &le; k &le; 1e-4 m/s
+                            </p>
+                            <p>
+                                Let &gamma;<sub>sat</sub> = {{gammaSat}} kg/m<sup>3</sup>
+                            </p>
                             <p style="font-weight: bold; margin-top: 10px;"></p>
                         </div>
                         <div class="col-sm-6">
-                            <p style="font-weight: bold; margin-top: 10px;">L<sub>1</sub> = {{l1}} m (0.5m &lt; L<sub>1</sub> &lt; 5m)</p>
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>1</sub> = {{l1}} m <span class='range'>(0.5m &lt; L<sub>1</sub> &lt; 5m)</span></p>
                             <div class="slider" data-id="l1" data-min="0.5" data-max="5" data-snap="0.1"></div>
                             
-                            <p style="font-weight: bold; margin-top: 10px;">L<sub>2</sub> = {{l2}} m (0.5m &lt; L<sub>2</sub> &lt; 5m)</p>
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>2</sub> = {{l2}} m <span class='range'>(0.5m &lt; L<sub>2</sub> &lt; 5m)</span></p>
                             <div class="slider" data-id="l2" data-min="0.5" data-max="5" data-snap="0.1"></div>
                             
-                            <p style="font-weight: bold; margin-top: 10px;">L<sub>3</sub> = {{l3}} m (0.5m &lt; L<sub>3</sub> &lt; 5m)</p>
+                            <p style="font-weight: bold; margin-top: 10px;">L<sub>3</sub> = {{l3}} m <span class='range'>(0.5m &lt; L<sub>3</sub> &lt; 5m)</span></p>
                             <div class="slider" data-id="l3" data-min="0.5" data-max="5" data-snap="0.1"></div>
                             
-                            <p style="font-weight: bold; margin-top: 10px;">&theta; = {{angle}}&deg; (0&deg; &lt; &theta; &lt; 90&deg;)</p>
+                            <p style="font-weight: bold; margin-top: 10px;">&theta; = {{angle}}&deg; <span class='range'>(0&deg; &lt; &theta; &lt; 90&deg;)</span></p>
                             <div class="slider" data-id="angle" data-min="0" data-max="90" data-snap="5"></div>
                             
-                            <p style="font-weight: bold; margin-top: 10px;">h<sub>1</sub> = {{h1}} m (1m &lt; h<sub>1</sub> &lt; 10m)</p>
-                            <div class="slider" data-id="h1" data-min="1" data-max="10" data-snap="0.2"></div>
-                            
-                            <p style="font-weight: bold; margin-top: 10px;">h<sub>2</sub> = {{h2}} m (1m &lt; h<sub>2</sub> &lt; 10m)</p>
+                            <p style="font-weight: bold; margin-top: 10px;">h<sub>2</sub> = {{h2}} m <span class='range'>(1m &lt; h<sub>2</sub> &lt; 10m)</span></p>
                             <div class="slider" data-id="h2" data-min="1" data-max="10" data-snap="0.2"></div>
+                            
+                            <button class="btn btn-primary" v-on:click="verifyH($event);">Configure h<sub>1</sub></button>
+                            
+                            <div style="display: none;">
+                                <p style="font-weight: bold; margin-top: 20px;" id="quick" data-check="yes">
+                                    Use the following slide to configure h<sub>1</sub>:
+                                </p>
+                                <p style="font-weight: bold; margin-top: 10px;">h<sub>1</sub> = {{h1}} m <span class='range' id="range-h1"></span></p>
+                                <div class="slider" data-id="h1" data-min="1" data-max="10" data-snap="0.2"></div>
+                                <p style="font-weight: bold; margin-top: 20px;">
+                                    <button class="btn btn-primary" v-on:click="second($event);">Finish Configuration</button>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,6 +126,6 @@
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=1"></script>
-    <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/event.js?v=2"></script>
+    <script type="text/javascript" src="script/vm.js?v=2"></script>
 </html>
