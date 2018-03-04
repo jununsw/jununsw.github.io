@@ -16,7 +16,7 @@
         <div style="width: 80%; margin: 30px auto 0 auto;">
             <table id="myTable" class="table table-hover table-bordered table-striped">
                 <thead>
-                    <tr>
+                    <tr style="font-weight: bold;">
                         <td>zID</td>
                         <td>Quiz Time</td>
                     </tr>
@@ -27,9 +27,6 @@
                 </tbody>
             </table>
         </div>
-        <h1 style="display: none;">
-            You have not registered your quiz time nor provided evidence.
-        </h1>
     </body>
     <script type="text/javascript">
         var list = {
@@ -60,7 +57,7 @@
             if (id in list) {
                 $("tbody tr").append("<td>" + id + "</td><td>" + list[id] + "</td>");
             } else {
-                $("h1").show();
+
             }
         }
     </script>
