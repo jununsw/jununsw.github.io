@@ -7,7 +7,7 @@
         <meta name="author" content="Dr Xiaojun Chen"/>
         
         <title>Online Quiz Time</title>
-        <link rel="shortcut icon" href="http://www.lindenbaum.net.au/unsw/util/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -17,6 +17,8 @@
             <table id="myTable" class="table table-hover table-bordered table-striped">
                 <thead>
                     <tr>
+                        <td>zID</td>
+                        <td>Quiz Time</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +27,9 @@
                 </tbody>
             </table>
         </div>
+        <h1 style="display: none;">
+            You have not registered your quiz time nor provided evidence.
+        </h1>
     </body>
     <script type="text/javascript">
         var list = {
@@ -50,8 +55,13 @@
 
         function init() {
             var query = window.location.search.substr(1);
-            var id = query.substr(query.length - 7, query.length - 1);
-            console.log(id);
+            var id = query.substr(query.length - 8, query.length - 1);
+            
+            if (id in list) {
+                $("tbody tr").append("<td>" + id + "<td></td>" + list[id] + "</td");
+            } else {
+                $("h1").show();
+            }
         }
     </script>
 </html>
