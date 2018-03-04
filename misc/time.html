@@ -58,7 +58,7 @@
             var id = query.substr(query.length - 8, query.length - 1);
             
             if (id in list) {
-                $("tbody tr").append("<td>" + id + "<td></td>" + list[id] + "</td>");
+                $("tbody tr").append("<td>" + id + "</td><td>" + list[id] + "</td>");
             } else {
                 $("h1").show();
             }
