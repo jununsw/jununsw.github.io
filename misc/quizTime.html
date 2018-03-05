@@ -55,6 +55,7 @@
         }
 
         function init() {
+            var query = window.location.search;
             var id = window.location.search.substr(query.length - 8, query.length - 1);
             var re = new RegExp('^z[0-9]{7}$');
             
