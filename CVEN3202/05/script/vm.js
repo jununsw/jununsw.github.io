@@ -11,12 +11,20 @@ var vm = new Vue({
         l3: 3,
         h1: 5,
         h2: 1,
+        hb: 0,
+        hc: 0,
         
         gammaSat: [18, 21].random(1)
     },
     
     computed: {
-        
+        Q: function() {
+            var keq = (this.l1 + this.l2 + this.l3) / (this.l1/this.k1 + this.l2/this.k2 + this.l3/this.k3);
+            var h3 = (this.l1 + this.l2 + this.l3) * Math.sin(this.angle / 180 * Math.PI);
+            var q = keq * (this.h1 - this.h2 - h3) / (this.l1 + this.l2 + this.l3);
+            
+            return Number(q.toExponential(3));
+        }
     },
     
     methods: {
@@ -90,17 +98,22 @@ var vm = new Vue({
                         if (q > 0) {
                             if (vm['h1'] > h) {
                                 $("#quick").html('quick condition will occur if h1 is outside of this range. Verify this!').attr("data-check", "no");
+                                $("#confirm").prop("disabled", true);
                             } else {
                                 $("#quick").html('Use the following slide to configure h<sub>1</sub>:').attr("data-check", "yes");
+                                $("#confirm").prop("disabled", false);
                             }
                         } else if (q < 0) {
                             if (vm['h1'] < h) {
-                                $("#quick").html('quick condition will occur if h1 is outside of this range. Verify this!').attr("data-check", "no");;
+                                $("#quick").html('quick condition will occur if h1 is outside of this range. Verify this!').attr("data-check", "no");
+                                $("#confirm").prop("disabled", true);
                             } else {
                                 $("#quick").html('Use the following slide to configure h<sub>1</sub>:').attr("data-check", "yes");
+                                $("#confirm").prop("disabled", false);
                             }
                         } else {
                             $("#quick").html('Use the following slide to configure h<sub>1</sub>:').attr("data-check", "yes");
+                            $("#confirm").prop("disabled", false);
                         }
                     }
                 }).show();
@@ -118,7 +131,17 @@ var vm = new Vue({
         },
         
         second: function(e) {
-            
+            $(e.target).closest("div").after("<p><strong>h<sub>1</sub> = " + vm.h1.toFixed(1) + " m</strong></p><p><strong>The second tab is showing, where you can learn how to calculate the seepage</strong></p>");
+            $(e.target).closest("div").hide();
+            $("#tab2").show();
+            $("#tab3").show();
+            vm.hb = Number((vm.h1 - vm.l1*Math.sin(vm.angle / 180 * Math.PI) - vm.l1*vm.Q/vm.k1).toFixed(2));
+            vm.hc = Number((vm.h2 + vm.l3*Math.sin(vm.angle / 180 * Math.PI) + vm.l3*vm.Q/vm.k3).toFixed(2));
+            plot_chart();
+        },
+        
+        update_animate: function(e) {
+            plot_animate();
         }
     }
 });
