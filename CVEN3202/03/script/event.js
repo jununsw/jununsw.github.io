@@ -552,7 +552,7 @@ function calculate_coarse() {
     });
     
     if (prob.controls[4].X() <= Math.log10(4.75)) {
-        prob.Fg = 100;
+        prob.Fg = 0;
         
         prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
             strokeColor: 'green', 
@@ -564,7 +564,7 @@ function calculate_coarse() {
             visible: false
         });
     } else if (prob.controls[0].X() >= Math.log10(4.75)) {
-        prob.Fg = 0;
+        prob.Fg = 100;
         
         prob.plot.line_gravel = prob.distribution.create('line', [[-4, prob.controls[4].Y()], prob.controls[4]], {
             strokeColor: 'green', 
