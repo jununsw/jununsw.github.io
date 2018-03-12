@@ -118,7 +118,7 @@ function disableInspect(path) {
 }
 
 function scoreEncode(score) {
-    var s = score.toFixed(0);
+    var s = (Number(score)).toFixed(0);
     var r = "";
     var pool = "1234567890";
     var head = "";
