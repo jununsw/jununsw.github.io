@@ -104,8 +104,8 @@ function disableInspect(path) {
             (new Audio(path)).play();
             return false;
         }
-	    
-	if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) {
+
+        if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) {
             (new Audio(path)).play();
             return false;
         }
@@ -115,4 +115,26 @@ function disableInspect(path) {
         (new Audio(path)).play();
         return false;
     });
+}
+
+function encode(score) {
+    var s = score.toFixed(0);
+    var r = "";
+    var pool = "1234567890abcdefghijklmnopqrstuvwxyz";
+    var head = "";
+    var tail = "";
+
+    for (var i = 0; i < 6; i++) {
+        head += pool[Math.random() * pool.length >> 0];
+    }
+
+    r = r + head + 'y' + s;
+
+    for (var i = 0; i < 3; i++) {
+        tail += pool[Math.random() * pool.length >> 0];
+    }
+
+    r += tail;
+
+    return r;
 }
