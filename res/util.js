@@ -120,17 +120,17 @@ function disableInspect(path) {
 function encode(score) {
     var s = score.toFixed(0);
     var r = "";
-    var pool = "1234567890abcdefghijklmnopqrstuvwxyz";
+    var pool = "1234567890";
     var head = "";
     var tail = "";
 
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 5; i++) {
         head += pool[Math.random() * pool.length >> 0];
     }
 
-    r = r + head + 'y' + s;
+    r = r + head + s;
 
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
         tail += pool[Math.random() * pool.length >> 0];
     }
 
