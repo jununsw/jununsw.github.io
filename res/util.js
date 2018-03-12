@@ -119,7 +119,13 @@ function disableInspect(path) {
 
 function scoreEncode(score) {
     var s = (Number(score)).toFixed(0);
-    var r = "";
+
+    if (isFinite(Number(s))) {
+
+    } else {
+        s = "99";
+    }
+
     var pool = "1234567890";
     var head = "";
     var tail = "";
@@ -128,7 +134,7 @@ function scoreEncode(score) {
         head += pool[Math.random() * pool.length >> 0];
     }
 
-    r = r + head + s;
+    var r = head + s;
 
     for (var i = 0; i < 5; i++) {
         tail += pool[Math.random() * pool.length >> 0];
