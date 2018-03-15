@@ -28,7 +28,7 @@ var vm = new Vue({
         
         mt: function() {
             var r = this.prob.b / 1000 * this.d / 1000 * 24;
-            r = (r * 1.2 + this.prob.ll) * this.prob.span * this.prob.span / 8;
+            r = (r + this.prob.ll) * this.prob.span * this.prob.span / 8;
             
             return Number(r.toFixed(2));
         },
