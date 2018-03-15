@@ -678,7 +678,7 @@ function calculate_disp(pi, e) {
 }
 
 function debug(code) {
-    if (code="edwinatrus@gmail.com") {
+    if (code == "edwinatrus@gmail.com") {
         console.log("debug mode enabled, please stand by ...");
         setTimeout(function() {
             console.log("Access to class methods granted!");
