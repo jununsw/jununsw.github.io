@@ -683,7 +683,7 @@ function debug(code) {
         setTimeout(function() {
             console.log("Access to class methods granted!");
         }, 2000);
-        return "please standby ...";
+        return "please wait ...";
     } else {
         console.log("access denied!")
     }
