@@ -676,3 +676,14 @@ function calculate_disp(pi, e) {
     $("#dst").html(st.toFixed(2));
     $("#dlt").html(lt.toFixed(2));
 }
+
+function debug(code) {
+    if (code="edwinatrus@gmail.com") {
+        console.log("debug mode enabled, please stand by ...");
+        setTimeout(function() {
+            console.log("Access to class methods granted!");
+        }, 2000);
+    } else {
+        console.log("access denied!")
+    }
+}
