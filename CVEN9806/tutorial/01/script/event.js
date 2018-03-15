@@ -658,8 +658,8 @@ function calculate_disp(pi, e) {
     var ec = 30100;
     
     var gsw = Number((vm.prob.b / 1000 * d / 1000 * 24).toFixed(3));
-    var wst = Number((vm.prob.b/1000*d/1000*24 + vm.prob.ll*1.2).toFixed(3));
-    var wsus = Number((vm.prob.b/1000*d/1000*24 + 0.6*vm.prob.ll*1.2).toFixed(3));
+    var wst = Number((vm.prob.b/1000*d/1000*24 + vm.prob.ll).toFixed(3));
+    var wsus = Number((vm.prob.b/1000*d/1000*24 + 0.6*vm.prob.ll).toFixed(3));
     
     var dp = pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;
     var dpe = vm.prob.R*pi*1000*e*Math.pow(vm.prob.span * 1000, 2)/8/ec/ig;

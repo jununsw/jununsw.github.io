@@ -12,8 +12,8 @@ class Problem {
         
         this.break = 65.5;
         
-        this.fti = 1.4
-        this.ft = 1.4;
+        this.fti = 1.414;
+        this.ft = 1.414;
         this.fci = -16;
         this.fc = -16;
     }
