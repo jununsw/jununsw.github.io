@@ -69,7 +69,7 @@ Array.prototype.random = function() {
 
         return Number(r.toFixed(n));
     } else {
-        return this[Math.random() * this.length >> 1];
+        return this[Math.random() * this.length >> 0];
     }
 }
 
