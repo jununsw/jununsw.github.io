@@ -26,47 +26,318 @@
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
             <strong>Module 03 Ultimate Moment Capacity</strong>
             <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+                E-learning Module for CVEN 9806 Prestressed Concrete<br/>
+                Course Coordinator: A/Prof Mario Attard<br/>
+                Module Creator: Dr Xiaojun Chen<br/>
+                All Rights Reserved by UNSW<br/>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p style="font-size: 1.1em;">
+                        <strong>Please first review what you have learnt in class using tab "Demo 1" and "Demo 2", then answer the question in the "Question" tab.</strong>
+                    </p>
+                </div>
+            </div>
         </div>
         
         <div class="container" id="myapp">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        
+            <ul>
+                <li><a href="#p1" class="bold">Demo 1</a></li>
+                <li><a href="#p2" class="bold">Demo 2</a></li>
+                <li><a href="#p3" class="bold">Question</a></li>
+            </ul>
+            
+            <div id="p1">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="h4 question" style="font-weight: normal">
+                            <p>
+                                A partially prestressed concrete beam has the rectangular cross-section (width: {{prob.width}} mm, height: {{prob.height}} mm), and its profile is shown in the Figure. Both prestress steel and conventional steel are assumed to be perfect plastic.
+                            </p>
+                            <p>
+                                Two conventional steel bars are used on the top and four conventional steel bars are used on the bottom. The area of each conventional steel bar is {{prob.as}} mm<sup>2</sup>. The area of prestressed tendon is {{prob.ap}} mm<sup>2</sup>. Distance from the centroid of the tendon to the top the concrete is {{prob.dp}} mm. Minimum cover is {{prob.cover}} mm. Other properties for the concrete and steel are
+                            </p>
+                            <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                <li>\( f_{c}= \) {{prob.fc}} MPa</li>
+                                <li>\( f_{py}= \) {{prob.fpy}} MPa</li>
+                                <li>\( f_{pe}= \) {{prob.fsy}} MPa</li>
+                                <li>\( E_{c}= \) {{prob.ec}} MPa</li>
+                                <li>\( E_{p}= \) {{prob.ep}} MPa</li>
+                                <li>\( E_{s}= \) {{prob.es}} MPa</li>
+                                <li>\( \gamma= \) {{prob.gamma}}</li>
+                                <li>\( P_{e}= \) {{prob.pe}} kN</li>
+                            </ul>
+                            <p>
+                                The beam has
+                                <select onchange="toSelect(event, 'top');">
+                                    <option selected>2</option>
+                                    <option>3</option>
+                                </select> bars on the top and 
+                                <select onchange="toSelect(event, 'btm');">
+                                    <option selected>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                </select> at the bottom.<br/><br/>
+                                You can change the profile by selecting different number of bars<br/><br/>
+                            </p>
+                            <p id="ready">
+                                Click START button to start the process for calculating ultimate moment capacity
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="h4 question">
+                            <div id="svg-block" style="width: 250px; height: 450px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <p id="test">
+                            {{d}} mm, {{f_top}} &le; 500, {{s_s}} &ge; 0.0025, {{s_p}} &ge; 0.008
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
+                        <section>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>
+                                        In the following, the FBD under ultimate moment is shown on the left, strain distribution at transfer and under ultimate moment are shown at the middle and on the right, respectively.
+                                    </p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div id="svg-stress" style="width: 600px; height: 300px; margin: 0 auto;"></div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p>
+                                        At ultimate moment, strain at the top fiber of the concrete is assumed to be 0.003.
+                                    </p>
+                                    <p>
+                                        <strong>Step 1: Assume the top reinforcement is NOT at yield</strong>
+                                    </p>
+                                    <ul style="font-style: italic;">
+                                        <li>&epsilon;<sub>s,top</sub> = 0.003 &times; (d<sub>N</sub> - 50) / d<sub>N</sub></li>
+                                        <li>C<sub>s</sub> = E<sub>s</sub> &times; &epsilon;<sub>s,top</sub> &times; A<sub>s,top</sub></li>
+                                        <li>C<sub>c</sub> = 0.85 &times; f<sub>c</sub> &times; b &times; &gamma; &times; d<sub>N</sub></li>
+                                    </ul>
+                                    <p>
+                                        And assume the bottome reinforcement and prestress tendom is at yield
+                                    </p>
+                                    <ul style="font-style: italic;">
+                                        <li>T<sub>p</sub> = {{prob.fpy}} MPa &times; {{prob.ap}} mm<sup>2</sup> = {{prob.fpy * prob.ap / 1000}} kN</li>
+                                        <li>T<sub>s</sub> = {{prob.fsy}} MPa &times; {{prob.as}} mm<sup>2</sup> &times; {{prob.n_btm}} = {{prob.fsy * prob.as * prob.n_btm / 1000}} kN</li>
+                                    </ul>
+                                    <p>
+                                        Solve T<sub>p</sub> + T<sub>s</sub> = C<sub>c</sub> + C<sub>s</sub> for d<sub>N</sub>, we have
+                                    </p>
+                                    <p>
+                                        <strong>d<sub>N</sub> = {{d}} mm</strong>, 
+                                        <span v-if="(prob.height/2 - d) < 251">
+                                            neutral axis moves up {{Number((prob.height/2 - d).toFixed(2))}} mm &lt; 251 mm
+                                        </span>
+                                        <span v-else>
+                                            neutral axis moves up {{Number((prob.height/2 - d).toFixed(2))}} mm &ge; 251 mm, please refresh the page and chose another profile setup
+                                        </span>
+                                    </p>
+                                    <button class="btn btn-primary" v-on:click="step2($event);">Next Step</button>
+                                </div>
+                            </div>
+                        </section>
+                        <section style="display: none;">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>
+                                        <strong>Step 2. Check if the above assumption is correct.</strong>
+                                    </p>
+                                    <p>For conventional reinforcement at both top and bottom:</p>
+                                    <ul style="font-style: italic;">
+                                        <li>&epsilon;<sub>s,top</sub> = 0.003 &times; ({{d}} - 50) / {{d}} = {{Number((0.003 * (d - 50) / d).toFixed(5))}} &lt; 0.0025, OK</li>
+                                        <li>&epsilon;<sub>s,btm</sub> = 0.003 &times; ({{prob.height}} - {{d}} - 50) / {{d}} = {{s_s}} &gt; 0.0025, OK</li>
+                                    </ul>
+                                    <p>For prestress tendon, we have <span style="font-style: italic;">&epsilon;<sub>p</sub> = &epsilon;<sub>pe</sub> + &epsilon;<sub>ce</sub> + &epsilon;<sub>cp</sub></span></p>
+                                    <ul style="font-style: italic;">
+                                        <li>&epsilon;<sub>pe</sub> = &sigma;<sub>pe</sub> / E<sub>p</sub> = 1000 kN / {{prob.ep}} MPa = 0.00513</li>
+                                        <li>&epsilon;<sub>ce</sub> = 0.00017 (refer to your lecture notes)</li>
+                                        <li>&epsilon;<sub>cp</sub> = 0.003 &times; (d<sub>p</sub> - d<sub>N</sub>) / d<sub>N</sub> = {{Number((0.003 * (prob.dp - d) / d).toFixed(5))}}</li>
+                                    </ul>
+                                    <p>
+                                        Therefore <span style="font-style: italic;">&epsilon;<sub>p</sub> = </span> {{s_p}} &gt; 0.008, OK
+                                    </p>
+                                    <button class="btn btn-primary" v-on:click="step3($event);">Next Step</button>
+                                </div>
+                            </div>
+                        </section>
+                        <section style="display: none;">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>
+                                        <strong>Step 3. Ductility Check</strong>
+                                    </p>
+                                    <p>
+                                        k<sub>uo</sub> = d<sub>N</sub> / d<sub>o</sub> = {{d}} / {{prob.height - prob.cover}} = {{Number((d / (prob.height - prob.cover)).toFixed(3))}}
+                                    </p>
+                                    <div v-if="Number((d / (prob.height - prob.cover)).toFixed(3)) >= 0.36">
+                                        <br/>
+                                        k<sub>uo</sub> &ge; 0.36
+                                        <br/><br/>
+                                        Ductility check is not OK. Please refresh the page and change a profile setup
+                                    </div>
+                                    <div v-else>
+                                        <p>
+                                            <br/>
+                                            k<sub>uo</sub> &lt; 0.36
+                                            <br/><br/>
+                                            Ductility check is OK. &phi; = 0.8
+                                        </p>
+                                        <p>
+                                            <br/>
+                                            Therefore, the ultimate moment is M<sub>u</sub> = <input id='mu' size="10"/> kNm (round to 0.1 kNm, press ENTER to continue)
+                                            <br/>
+                                            <span id="result-1" style="font-weight: bold;"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="h4">
-                    <button class="btn btn-primary">Click Here to Start</button>
-                    <section>
-                        
-                    </section>
+            
+            <div id="p2">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="h4 question" style="font-weight: normal">
+                            <p>
+                                Again, a partially prestressed concrete beam has the rectangular cross-section (width: {{prob.width}} mm, height: {{prob.height}} mm), and its profile is shown in the Figure, where there are 4 conventional reinforcement bars at bottom.
+                            </p>
+                            <p>
+                                The area of each conventional steel bar is {{prob.as}} mm<sup>2</sup>. The area of prestressed tendon is {{prob.ap}} mm<sup>2</sup>. Distance from the centroid of the tendon to the top the concrete is {{prob.dp}} mm. Minimum cover is {{prob.cover}} mm. Other properties for the concrete and steel are
+                            </p>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                        <li>\( f_{c}= \) {{prob.fc}} MPa</li>
+                                        <li>\( f_{pe}= \) {{prob.fsy}} MPa</li>
+                                        <li>\( \epsilon _{s}= \) = 0.0025</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-4">
+                                    <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                        <li>\( E_{c}= \) {{prob.ec}} MPa</li>
+                                        <li>\( E_{p}= \) {{prob.ep}} MPa</li>
+                                        <li>\( E_{s}= \) {{prob.es}} MPa</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-4">
+                                    <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                        <li>\( \gamma= \) {{prob.gamma}}</li>
+                                        <li>\( P_{e}= \) {{prob.pe}} kN</li>
+                                        <li>\( \epsilon _{e}= \) = 0.008205</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p>
+                                The conventional steel is assumed to be perfect plastic, and the prestress tendon's stress-strain relationship is given as per Sargin's requirements
+                            </p>
+                            <ul style="font-style: italic;">
+                                <li>&sigma; = E<sub>p</sub> &times; &epsilon; (for &epsilon; &le; &epsilon;<sub>e</sub>)</li>
+                                <li>&sigma; = &epsilon;<sub>e</sub> + A<sub>1</sub> &times; tanh(A<sub>2</sub>(&epsilon; - &epsilon;<sub>e</sub>)) (for &epsilon; &gt; &epsilon;<sub>e</sub>)</li>
+                            </ul>
+                            <p>
+                                where 
+                            </p>
+                            <ul style="font-style: italic;">
+                                <li>A<sub>1</sub> = E<sub>p</sub> / A<sub>2</sub></li>
+                                <li>A<sub>2</sub>(&sigma;<sub>py</sub> - &sigma;<sub>e</sub>) = E<sub>p</sub> &times; tanh(A<sub>2</sub>(&epsilon;<sub>y</sub> + (&sigma;<sub>py</sub> - &sigma;<sub>e</sub>) / E<sub>p</sub>))</li>
+                                <li>&sigma;<sub>py</sub> = 1842 MPa, &sigma;<sub>e</sub> = 1600 MPa</li>
+                            </ul>
+                            <p id="ready2">
+                                <br/>Click START button to start the process for calculating ultimate moment capacity
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="h4 question">
+                            <div id="svg-block-2" style="width: 250px; height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <button class="btn btn-primary" v-on:click="tab2($event);">Click Here to Start</button>
+                        <section>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>
+                                        Using the given properties of the prestress steel, we have A<sub>1</sub> = 243 mm<sup>2</sup>, A<sub>2</sub> = 802 mm<sup>2</sup>. The stress-strain relationship for both prestress tendon and conventional steel are shown as
+                                    </p>
+                                </div>
+                                <div class="col-sm-6" style="display: none;">
+                                    <div class="h4 question">
+                                        <div id="svg-dist1" style="width: 400px; height: 400px;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="display: none;">
+                                    <div class="h4 question">
+                                        <div id="svg-dist2" style="width: 400px; height: 400px;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="h4 question">
+                                        <div id="svg-stress2" style="width: 600px; height: 300px;"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-sm-offset-1">
+                                    <p>
+                                        Since we need to solve a non-linear equation for d<sub>N</sub>, trail and error procedure is used. The initial strain distribution is assumed as the figure on the left. Drag the blue point to change the location of the neutral axis. The green line represents &epsilon;<sub>s</sub>, and the red line represents &epsilon;<sub>cp</sub> (Note: not &epsilon;<sub>p</sub>!). From the stree-strain relationship above we have:
+                                    </p>
+                                    <ul>
+                                        <li>
+                                            d<sub>N</sub> = <span id="dn">400</span> mm
+                                            <br/>
+                                            <button type="button" class="btn btn-default btn-xs" onclick="adjust('up');">
+                                                <span class="glyphicon glyphicon-triangle-top"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-xs" onclick="adjust('down);">
+                                                <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                            </button>
+                                            <br/>
+                                            you can also adjust d<sub>N</sub> by clicking above buttons
+                                        </li>
+                                        <li>&epsilon;<sub>s</sub> = <span id="epss">0.002625</span></li>
+                                        <li>&sigma;<sub>s</sub> = <span id="sigs">500</span> MPa</li>
+                                        <li>&epsilon;<sub>cp</sub> = <span id="epscp">0.0020625</span></li>
+                                        <li>
+                                            &epsilon;<sub>p</sub> = &epsilon;<sub>pe</sub> + &epsilon;<sub>ce</sub> + &epsilon;<sub>cp</sub> = <span id="epsp">0.007365</span><br/>&epsilon;<sub>pe</sub>, &epsilon;<sub>ce</sub> are the same as in the previous tab
+                                        </li>
+                                        <li>&sigma;<sub>p</sub> = <span id="sigp">1436.173</span> MPa</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p>
+                                        <strong>Adjust d<sub>N</sub> so that C = T<sub>s</sub> + T<sub>p</sub></strong>
+                                    </p>
+                                    <ul>
+                                        <li>C = 0.85 &gamma; d<sub>N</sub> &times; f<sub>c</sub> &times; b = <span id="C">2676.48</span> kN</li>
+                                        <li>T<sub>s</sub></li>
+                                        <li>T<sub>p</sub></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="dialog" id="dialog" style="display: none;" title="Trial and Error">
-            <ul>
-                <li>LHS function: <input type="text" id="lhs" size="15"/></li>
-                <li>RHS function: <input type="text" id="rhs" size="15"/></li>
-                <li>Range: <input type="text" id="min" size="6"/> to <input type="text" id="max" size="6"/></li>
-            </ul>
-            <div>
-                <button class="btn btn-success btn-xs" style="display: block; margin: auto;">Start Trial</button>
-                <button class="btn btn-warning btn-xs" style="display: block; margin: auto;">Reset</button>
-            </div>
-            <div id="slider"></div>
-            <div id="trial-result" style="display: none;">
-                <ul>
-                    <li>LHS = <span id="lhs-result"></span></li>
-                    <li>RHS = <span id="rhs-result"></span></li>
-                    <li>Diff = LHS - RHS = <span id="diff-result"></span></li>
-                </ul>
-            </div>
+            
+            <div id="p3"></div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=1"></script>
-    <script type="text/javascript" src="script/model.js?v=1"></script>
     <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/event.js?v=1"></script>
 </html>
