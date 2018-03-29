@@ -574,7 +574,7 @@ function plot_stress() {
         var A = window.stress[1].control.X() * vm.prob.b;
         
         var z = A * window.stress[1].control.X() / 6;
-        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
+        var mt = ((A / 1e6 * 24) * 1.2 / 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
         
         return -vm.prob.R*p/A*1e3 + vm.prob.R*p*e/z*1e3 - mt/z*1e6;
     }], {visible: false}));
@@ -614,7 +614,7 @@ function plot_stress() {
         var A = window.stress[1].control.X() * vm.prob.b;
         
         var z = A * window.stress[1].control.X() / 6;
-        var mt = ((A / 1e6 * 24) * 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
+        var mt = ((A / 1e6 * 24) * 1.2 / 1.2 + vm.prob.ll) * vm.prob.span * vm.prob.span / 8;
         
         return -vm.prob.R*p/A*1e3 - vm.prob.R*p*e/z*1e3 + mt/z*1e6;
     }], {visible: false}));
