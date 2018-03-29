@@ -52,7 +52,7 @@ function plot_figure(h1, h2, l1, l2, l3, angle, isNew) {
     
     window.plot.l1 = window.plot.brd.create("segment", [[0, 0], [l1 * Math.cos(angle / 180 * Math.PI),  l1 * Math.sin(angle / 180 * Math.PI)]], {
         strokeWidth: 70,
-        strokeColor: 'red',
+        strokeColor: 'gold',
         opacity: 0.3,
         highlight: false,
         fixed: true
@@ -433,18 +433,76 @@ function plot_figure(h1, h2, l1, l2, l3, angle, isNew) {
 }
 
 function plot_chart() {
-    $("#t3").append('<div id="head-chart" style="width: 600px; height: 400px; margin: 0 auto; border: 0px black solid;"></div>');
+    var main = `
+        <div class="row">
+            <div class="col-sm-12 col-md-8">
+                <div id="head-chart" style="width: 600px; height: 400px;"></div>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <table class="table table-bordered" style="font-size: 0.8em; margin-top: 1em;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A</th>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>h<sub>e</sub> (m)</th>
+                            <th id="hea"></th>
+                            <th id="heb"></th>
+                            <th id="hec"></th>
+                            <th id="hed"></th>
+                        </tr>
+                        <tr>
+                            <th>h<sub>p</sub> (m)</th>
+                            <th id="hpa"></th>
+                            <th id="hpb"></th>
+                            <th id="hpc"></th>
+                            <th id="hpd"></th>
+                        </tr>
+                        <tr>
+                            <th>H (m)</th>
+                            <th id="ha"></th>
+                            <th id="hb"></th>
+                            <th id="hc"></th>
+                            <th id="hd"></th>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul>
+                    <li>h<sub>e</sub>: Elevation head</li>
+                    <li>h<sub>p</sub>: Pore water pressure head</li>
+                    <li>H: Total head</li>
+                </ul>
+                <p>
+                    <strong>Rate of flow Q = <span id="result-q"></span></strong>
+                <p>
+            </div>
+        <div>
+    `;
+    
+    $("#t3").append(main);
     
     var info = `
-        <div style="font-weight: bold;">
-            <p style="margin-top: 20px;">The <span style="color: gray;">GRAY</span> bar are the elevation head. (If located at datum, elevation head is 0)</p>
-            <p>The <span style="color: blue;">BLUE</span> point and line are the pore pressure water head</p>
-            <p>The <span style="color: red;">RED</span> point and line are the total water head</p>
-            <p>You can move your mouse onto the points to view the value of the corresponding heads</p>
+        <div class="row">
+            <div class="col-sm-12>
+                <div style="font-weight: bold;">
+                    <p style="margin-top: 20px;">The <span style="color: green;">GREEN</span> bars are the elevation head. (If located at datum, elevation head is 0)</p>
+                    <p>The <span style="color: blue;">BLUE</span> points and lines are the pore pressure water head</p>
+                    <p>The <span style="color: red;">RED</span> points and lines are the total water head</p>
+                    <p>You can hover your mouse onto the points to view the value of the corresponding heads</p>
+                </div>
+            </div>
         </div>
     `;
     
     $("#t3").append(info);
+    
+    $("#result-q").html(vm.Q.toExponential(2) + " m/s");
     
     JXG.Options.infobox.fontSize = 0;
     var height = Math.max(vm.h1, vm.h2 + (vm.l1 + vm.l2 + vm.l3)*Math.sin(vm.angle / 180 * Math.PI));
@@ -537,7 +595,7 @@ function plot_chart() {
     
     window.chart.brd.create("segment", [window.chart.base[1], [window.chart.base[1].X(), vm.l1 * Math.sin(vm.angle / 180 * Math.PI)]], {
         strokeWidth: 25,
-        strokeColor: 'grey',
+        strokeColor: 'green',
         opacity: 0.4,
         fixed: true,
         highlight: false
@@ -545,7 +603,7 @@ function plot_chart() {
     
     window.chart.brd.create("segment", [window.chart.base[2], [window.chart.base[2].X(), (vm.l1 + vm.l2) * Math.sin(vm.angle / 180 * Math.PI)]], {
         strokeWidth: 25,
-        strokeColor: 'grey',
+        strokeColor: 'green',
         opacity: 0.4,
         fixed: true,
         highlight: false
@@ -553,7 +611,7 @@ function plot_chart() {
     
     window.chart.brd.create("segment", [window.chart.base[3], [window.chart.base[3].X(), (vm.l1 + vm.l2 + vm.l3) * Math.sin(vm.angle / 180 * Math.PI)]], {
         strokeWidth: 25,
-        strokeColor: 'grey',
+        strokeColor: 'green',
         opacity: 0.4,
         fixed: true,
         highlight: false
@@ -725,6 +783,23 @@ function plot_chart() {
     });
     
     prepare_animate();
+    
+    (function() {
+        $("#hea").html("0");
+        $("#heb").html((vm.l1 * Math.sin(vm.angle / 180 * Math.PI)).toFixed(2));
+        $("#hec").html(((vm.l1 + vm.l2) * Math.sin(vm.angle / 180 * Math.PI)).toFixed(2));
+        $("#hed").html(((vm.l1 + vm.l2 + vm.l3) * Math.sin(vm.angle / 180 * Math.PI)).toFixed(2));
+        
+        $("#hpa").html((window.chart.tA.Y()).toFixed(2));
+        $("#hpb").html((window.chart.pB.Y()).toFixed(2));
+        $("#hpc").html((window.chart.pC.Y()).toFixed(2));
+        $("#hpd").html((window.chart.pD.Y()).toFixed(2));
+        
+        $("#ha").html((window.chart.tA.Y()).toFixed(2));
+        $("#hb").html((window.chart.tB.Y()).toFixed(2));
+        $("#hc").html((window.chart.tC.Y()).toFixed(2));
+        $("#hd").html((window.chart.tD.Y()).toFixed(2));
+    })();
 }
 
 function prepare_animate() {

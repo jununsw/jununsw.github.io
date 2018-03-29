@@ -79,7 +79,7 @@
                                         <td><input class="k" id="k3" size="6" v-on:keyup.enter="checkK($event);" value="1e-5"/> m/s</td>
                                     </tr>
                                     <tr>
-                                        <td style="color: red;">k<sub>1</sub> = {{showK(k1) ? k1.toExponential(2) + " m/s" : ""}}</td>
+                                        <td style="color: goldenrod;">k<sub>1</sub> = {{showK(k1) ? k1.toExponential(2) + " m/s" : ""}}</td>
                                         <td style="color: blue;">k<sub>2</sub> = {{showK(k2) ? k2.toExponential(2) + " m/s" : ""}}</td>
                                         <td style="color: green;">k<sub>3</sub> = {{showK(k3) ? k3.toExponential(2) + " m/s" : ""}}</td>
                                     </tr>
@@ -178,9 +178,20 @@
                 </div>
             
                 <div id="t3">
-                    <p>
-                        <strong>The water head is ploted as follows:</strong>
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                <strong>The water head is ploted as follows:</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-12">
+                    <div class="text-center" style="border-top: 3px solid black;">
+                        <button class="btn btn-warning btn-lg" onclick="window.location.reload(true);">Restart</button>
+                    </div>   
                 </div>
             </div>
         </div>

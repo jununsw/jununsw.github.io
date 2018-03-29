@@ -84,9 +84,10 @@ var vm = new Vue({
                 plot_figure(vm.h1, vm.h2, vm.l1, vm.l2, vm.l3, vm.angle, false);
                 
                 $(".slider[data-id='h1']").slider('option', {
-                    min: Number((vm.h1 - 3).toFixed(1)) >= 0.5 ? Number((vm.h1 - 3).toFixed(1)) : 0.5,
-                    max: Number((vm.h1 + 3).toFixed(1)),
+                    min: Number((vm.h1 - 5).toFixed(1)) >= 0.5 ? Number((vm.h1 - 5).toFixed(1)) : 0.5,
+                    max: Number((vm.h1 + 5).toFixed(1)),
                     value: vm.h1,
+                    step: 0.1,
                     slide: function(event, ui) {
                         vm['h1'] = ui.value;
                         plot_figure(vm.h1, vm.h2, vm.l1, vm.l2, vm.l3, vm.angle, false);
@@ -97,7 +98,7 @@ var vm = new Vue({
                         
                         if (q > 0) {
                             if (vm['h1'] > h) {
-                                $("#quick").html('quick condition will occur if h1 is outside of this range. Verify this!').attr("data-check", "no");
+                                $("#quick").html('quick condition will occur if h1 is outside of this range. Reconfigure the problem by clicking the "Restart" button!').attr("data-check", "no");
                                 $("#confirm").prop("disabled", true);
                             } else {
                                 $("#quick").html('Use the following slide to configure h<sub>1</sub>:').attr("data-check", "yes");
@@ -105,7 +106,7 @@ var vm = new Vue({
                             }
                         } else if (q < 0) {
                             if (vm['h1'] < h) {
-                                $("#quick").html('quick condition will occur if h1 is outside of this range. Verify this!').attr("data-check", "no");
+                                $("#quick").html('quick condition will occur if h1 is outside of this range. Reconfigure the problem by clicking the "Restart" button!').attr("data-check", "no");
                                 $("#confirm").prop("disabled", true);
                             } else {
                                 $("#quick").html('Use the following slide to configure h<sub>1</sub>:').attr("data-check", "yes");
@@ -131,9 +132,9 @@ var vm = new Vue({
         },
         
         second: function(e) {
-            $(e.target).closest("div").after("<p><strong>h<sub>1</sub> = " + vm.h1.toFixed(1) + " m</strong></p><p><strong>The second tab is showing, where you can learn how to calculate the seepage</strong></p>");
+            $(e.target).closest("div").after("<p><strong>h<sub>1</sub> = " + vm.h1.toFixed(1) + " m</strong></p><p><strong>The second tab is showing, where you can see the plot of the water head</strong></p>");
             $(e.target).closest("div").hide();
-            $("#tab2").show();
+            // $("#tab2").show();
             $("#tab3").show();
             vm.hb = Number((vm.h1 - vm.l1*Math.sin(vm.angle / 180 * Math.PI) - vm.l1*vm.Q/vm.k1).toFixed(2));
             vm.hc = Number((vm.h2 + vm.l3*Math.sin(vm.angle / 180 * Math.PI) + vm.l3*vm.Q/vm.k3).toFixed(2));
