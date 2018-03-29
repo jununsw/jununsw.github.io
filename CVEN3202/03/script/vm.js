@@ -120,7 +120,7 @@ var vm = new Vue({
             $('<p>The the followings can be calculated:</p>').appendTo($(e.target).closest('div'));
             
             var $ul = $("<ul></ul>");
-            $('<li>Coefficient of uniformity: C<sub>u</sub> = D<sub>60</sub> / D<sub>60</sub> = ' + this.prob.cu + '</li>').appendTo($ul);
+            $('<li>Coefficient of uniformity: C<sub>u</sub> = D<sub>60</sub> / D<sub>10</sub> = ' + this.prob.cu + '</li>').appendTo($ul);
             $('<li>Coefficient of curvature: C<sub>c</sub> = D<sub>30</sub><sup>2</sup> / (D<sub>10</sub> &times; D<sub>60</sub>) = ' + this.prob.cc + '</li>').appendTo($ul);
             $ul.appendTo($(e.target).closest('div'));
             
