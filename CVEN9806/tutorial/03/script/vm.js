@@ -111,13 +111,6 @@ var vm = new Vue({
         step3: function(e) {
             $(e.target).hide();
             $(e.target).closest("section").next("section").show();
-        },
-        
-        tab2: function(e) {
-            $(e.target).hide();
-            $("#ready2").hide();
-            $(e.target).next("section").show();
-            createDistribution();
         }
     }
 });
