@@ -589,6 +589,7 @@ function createTest(brdId) {
     
     window.test.cross.borders.forEach(function(ele, idx, arr) {
         ele.setAttribute({
+            strokeWidth: 2,
             strokeColor: 'black',
             highlight: false,
             fixed: true
