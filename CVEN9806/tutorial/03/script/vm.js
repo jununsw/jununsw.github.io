@@ -150,6 +150,8 @@ var vm = new Vue({
             $("#test-ready").hide();
             $(e.target).next("section").show();
             window.scrollTo(0,document.body.scrollHeight);
+            
+            plotDp();
         }
     }
 });

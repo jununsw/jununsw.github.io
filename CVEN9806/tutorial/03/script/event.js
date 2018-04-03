@@ -641,6 +641,73 @@ function createTest(brdId) {
             });
         }
     });
+    
+    [0, 100, 200, 1900, 2000].forEach(function(ele, idx, arr) {
+        window.test.brd.create('segment', [[((idx == 0) || (idx == 4)) ? 800 : 700, ele], [850, ele]], {
+            strokeColor: 'black',
+            strokeWidth: 2,
+            dash: 2,
+            fixed: true,
+            highlight: false
+        });
+    });
+    
+    window.test.brd.create('segment', [[825, 0], [825, 100]], {
+        firstArrow: true,
+        lastArrow: true,
+        strokeColor: 'red',
+        strokeWidth: 2,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.test.brd.create('segment', [[825, 200], [825, 100]], {
+        firstArrow: true,
+        lastArrow: true,
+        strokeColor: 'red',
+        strokeWidth: 2,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.test.brd.create('segment', [[825, 1900], [825, 2000]], {
+        firstArrow: true,
+        lastArrow: true,
+        strokeColor: 'red',
+        strokeWidth: 2,
+        fixed: true,
+        highlight: false
+    });
+}
+
+function plotDp() {
+    // 492.2
+    var y = 2000 - 492.2;
+    
+    window.test.brd.create('segment', [[0, y], [800, y]], {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        dash: 2,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.test.brd.create('segment', [[400, y], [400, 2000]], {
+        firstArrow: true,
+        lastArrow: true,
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        fixed: true,
+        highlight: false
+    });
+    
+    window.test.brd.create('text', [420, 2000 - 492.2/2, '<span style="color: blue;">d<sub>p</sub></span>'], {
+        fontSize: 18,
+        anchorX: 'left',
+        anchorY: 'middle',
+        fixed: true,
+        highlight: false
+    });
 }
 
 function checkDp(dp) {

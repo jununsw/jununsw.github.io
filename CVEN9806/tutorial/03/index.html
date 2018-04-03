@@ -214,33 +214,43 @@
                         <div class="h5 question" style="font-weight: bold;">
                             <p>
                                 An I-shape concrete beam is shown on the right.<br/>
-                                The size of the top and bottom flange is 800 mm &times; 300 mm (width &times; height).<br/>
+                                The size of the top and bottom flange are 800 mm &times; 300 mm (width &times; height).<br/>
                                 The size of the web is 350 mm &times; 1400 mm (width &times; height).
                             </p>
                             <p>
                                 The beam is reinforced with 55-12.7 mm super grade strands in one duct, which is located at the interface between the web and the bottom flange.
                             </p>
                             <p>
-                                One layer of 6N28 and one layer of 4N28 conventional bars are used in the bottom flange; 2N28 conventianl bars are used in the top flange. The distance between the edge of the beam and the centroid of the coventional reinforcement as well as between the two layers is 100 mm.
+                                One layer of 6N28 and one layer of 4N28 conventional bars are used in the bottom flange; 2N28 conventianl bars are used in the top flange.<br/><br/>
+                                The distance between the edge of the beam and the centroid of the coventional reinforcement as well as between the two layers are 100 mm (indicated by red arrows in the figure).
                             </p>
                             <p>
                                 Both prestress and conventional steel are assumed to be perfectly plastic. Other properties are as follows
                             </p>
-                            <ul style="margin-top: 1em; margin-bottom: 1em;">
-                                <li>\( f_{c}= \) 40 MPa</li>
-                                <li>\( f_{cp}= \) 40 MPa</li>
-                                <li>\( f_{py}= \) {{prob.fpy}} MPa</li>
-                                <li>\( f_{pe}= \) {{prob.fsy}} MPa</li>
-                                <li>\( E_{c}= \) {{prob.ec}} MPa</li>
-                                <li>\( E_{p}= \) {{prob.ep}} MPa</li>
-                                <li>\( E_{s}= \) {{prob.es}} MPa</li>
-                                <li>\( \gamma= \) 0.77</li>
-                                <li>\( P_{e}= \) 1000 kN</li>
-                                <li>\( A_{s}= \) {{4880 / 8}} mm<sup>2</sup> (single bar)</li>
-                                <li>\( A_{p}= \) 5428 mm<sup>2</sup></li>
-                            </ul>
-                            <p id="test-ready">
-                                Click START button to answer the question for ultimate moment capacity
+                            <div class='row'>
+                                <div class="col-sm-6">
+                                    <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                        <li>\( f_{c}= \) 40 MPa</li>
+                                        <li>\( f_{cp}= \) 40 MPa</li>
+                                        <li>\( f_{py}= \) {{prob.fpy}} MPa</li>
+                                        <li>\( f_{pe}= \) {{prob.fsy}} MPa</li>
+                                        <li>\( E_{c}= \) {{prob.ec}} MPa</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                        <li>\( E_{p}= \) {{prob.ep}} MPa</li>
+                                        <li>\( E_{s}= \) {{prob.es}} MPa</li>
+                                        <li>\( \gamma= \) 0.77</li>
+                                        <li>\( P_{e}= \) 1000 kN</li>
+                                        <li>\( A_{s}= \) {{4880 / 8}} mm<sup>2</sup> (single bar)</li>
+                                        <li>\( A_{p}= \) 5428 mm<sup>2</sup></li>
+                                    </ul>
+                                </div>
+                            </div>    
+                            <p id="test-ready" style="margin-top: 2em;">
+                                Click START button to answer the question for ultimate moment capacity<br/>
+                                (scroll down if not seen)
                             </p>
                         </div>
                     </div>
@@ -255,7 +265,7 @@
                         <button class="btn btn-primary" v-on:click="part2($event);">Click Here to Start</button>
                         <section>
                             <p>
-                                Let d<sub>p</sub> is the distance between the top edge of the beam and the location of the neutral axis.
+                                Let d<sub>p</sub> be the distance between the top edge of the beam and the location of the neutral axis.
                             </p>
                             <p>
                                 Therefore d<sub>p</sub> = <input id='test-dp' size="10"/> mm (press ENTER to continue, round to 0.1 mm, or it will be rounded to 0.1 mm automatically otherwise)
