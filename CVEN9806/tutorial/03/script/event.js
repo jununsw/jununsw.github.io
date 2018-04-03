@@ -6,6 +6,7 @@ function init() {
     vm.prob.n_btm = 4;
     
     createBlock('svg-block');
+    createTest('svg-test');
     
     $("#mu").keypress(function(e) {
         if(e.which == 13) {
@@ -17,6 +18,53 @@ function init() {
                 $("#result-1").html("Correct. &phi;M<sub>u</sub> = " + (0.8 * vm.mu).toFixed(1) + " kNm.");
             } else {
                 $("#mu").css("background-color", "red");
+            }
+        }
+    });
+    
+    $("#test-dp").keypress(function(e) {
+        if(e.which == 13) {
+            var in1 = Number($("#test-dp").val());
+            $("#test-dp").css("background-color", "white");
+            
+            if (isFinite(in1) && (in1 > 100) && (in1 < 1000)) {
+                vm.test.inValid = false;
+                
+                in1 = Number(in1.toFixed(1));
+                $("#test-dp").val(in1.toFixed(1));
+                
+                var r = checkDp(in1);
+                
+                if (r) {
+                    $("#test-dp").css("background-color", "white").prop("disabled", true);
+                    vm.test.dp = in1;
+                    
+                    $("#last").show();
+                } else {
+                    $("#test-dp").css("background-color", "red").prop("disabled", false);
+                }
+            } else {
+                $("#test-dp").css("background-color", "red");
+                vm.test.inValid = true;
+            }
+            
+            $(e.target).closest("section").next("section").show();
+            window.scrollTo(0,document.body.scrollHeight);
+        }
+    });
+    
+    $("#test-mu").keypress(function(e) {
+        if(e.which == 13) {
+            $("#test-mu").css("background-color", "white");
+            var in1 = Number($("#test-mu").val());
+            
+            if ((isFinite(in1)) && (Math.abs(in1 - vm.test_mu) <= 2)) {
+                // mu = 15456.9
+                
+                $("#test-mu").prop("disabled", "true");
+                $("#test-mu").closest("section").append("<p><strong>Correct, you have completed this module!</strong></p>");
+            } else {
+                $("#test-mu").css("background-color", "red");
             }
         }
     });
@@ -493,4 +541,163 @@ function createStress(brdId) {
         highlight: false,
         fixed: true
     });
+}
+
+function createTest(brdId) {
+    var offsetX = 50;
+    var offsetY = 25;
+    
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.test = {};
+    
+    let width = 800;
+    let height = 2000;
+    
+    let ratio = (width + offsetX*2) / (height + offsetY*2);
+    
+    $("#" + brdId).height($("#" + brdId).width() / ratio);
+
+    window.test.brd = JXG.JSXGraph.initBoard(brdId, {
+        boundingbox: [-50, height + 25, width + 50, -25],
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: false
+    });
+    
+    let polygon = [];
+    
+    polygon.push(window.test.brd.create('point', [0, 0], {visible: false}));
+    polygon.push(window.test.brd.create('point', [800, 0], {visible: false}));
+    polygon.push(window.test.brd.create('point', [800, 300], {visible: false}));
+    polygon.push(window.test.brd.create('point', [575, 300], {visible: false}));
+    polygon.push(window.test.brd.create('point', [575, 1700], {visible: false}));
+    polygon.push(window.test.brd.create('point', [800, 1700], {visible: false}));
+    polygon.push(window.test.brd.create('point', [800, 2000], {visible: false}));
+    polygon.push(window.test.brd.create('point', [0, 2000], {visible: false}));
+    polygon.push(window.test.brd.create('point', [0, 1700], {visible: false}));
+    polygon.push(window.test.brd.create('point', [225, 1700], {visible: false}));
+    polygon.push(window.test.brd.create('point', [225, 300], {visible: false}));
+    polygon.push(window.test.brd.create('point', [0, 300], {visible: false}));
+    
+    window.test.cross = window.test.brd.create('polygon', polygon, {
+        fillColor: "transparent",
+        highlight: false,
+        fixed: true
+    });
+    
+    window.test.cross.borders.forEach(function(ele, idx, arr) {
+        ele.setAttribute({
+            strokeColor: 'black',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    window.test.tendon = window.test.brd.create('point', [400, 300], {
+        size: 13,
+        name: '',
+        strokeWidth: 1,
+        strokeColor: 'black',
+        fillColor: 'grey',
+        fixed: true,
+        highlight: false
+    });
+    
+    let reinforcement = [1, 2, 3, 4, 5, 6].map(function(ele, idx, arr) {
+        return ele * width / (arr.length + 1);
+    });
+    
+    reinforcement.forEach(function(ele, idx, arr) {
+        window.test.brd.create("point", [ele, 100], {
+            size: 4,
+            name: '',
+            strokeColor: 'transparent',
+            fillColor: 'black',
+            fixed: true,
+            highlight: false
+        });
+        
+        if ((idx !== 2) && (idx !== 3)) {
+            window.test.brd.create("point", [ele, 200], {
+                size: 4,
+                name: '',
+                strokeColor: 'transparent',
+                fillColor: 'black',
+                fixed: true,
+                highlight: false
+            });
+        }
+        
+        if ((idx == 0) || (idx == arr.length - 1)) {
+            window.test.brd.create("point", [ele, 1900], {
+                size: 4,
+                name: '',
+                strokeColor: 'transparent',
+                fillColor: 'black',
+                fixed: true,
+                highlight: false
+            });
+        }
+    });
+}
+
+function checkDp(dp) {
+    // answer 492.2
+    
+    var eps_top = 0.003 / dp * (dp - 100);
+    var eps_btm1 = 0.003 / dp * (1000 - dp - 100);
+    var eps_btm2 = 0.003 / dp * (1000 - dp - 200);
+    var eps_p = 0.003 / dp * (1000 - dp - 300);
+    
+    // force in concrete
+    if (0.77 * dp > 300) {
+        vm.test.c1 = 0.85 * 800 * 300 * 40 / 1000;
+        vm.test.c2 = 0.85 * 350 * (0.77*dp - 300) * 40 / 1000;
+    } else {
+        vm.test.c1 = 0.85 * 800 * dp * 0.77 * 40 / 1000;
+        vm.test.c2 = 0;
+    }
+    
+    // force in the top steel
+    if (eps_top > 0.0025) {
+        vm.test.cs = 200000 * 0.0025 * 610 * 2 / 1000;
+    } else {
+        vm.test.cs = 200000 * eps_top * 610 * 2 / 1000;
+    }
+    
+    // force in the btm steel
+    if (eps_btm1 > 0.0025) {
+        vm.test.ts1 = 200000 * 0.0025 * 610 * 6 / 1000;
+    } else {
+        vm.test.ts1 = 200000 * eps_btm1 * 610 * 6 / 1000;
+    }
+    
+    if (eps_btm2 > 0.0025) {
+        vm.test.ts2 = 200000 * 0.0025 * 610 * 4 / 1000;
+    } else {
+        vm.test.ts2 = 200000 * eps_btm2 * 610 * 4 / 1000;
+    }
+    
+    // force in tendon
+    var eps_pe = 1000 / 195000;
+    var eps = eps_pe + 0.00017 + eps_p;
+    
+    if (eps > 0.008) {
+        vm.test.tp = 1560 * 5428 / 1000;
+    } else {
+        vm.test.tp = 195000 * eps * 5428 / 1000;
+    }
+    
+    var diff = vm.test.c1 + vm.test.c2 + vm.test.cs - vm.test.ts1 - vm.test.ts2 - vm.test.tp;
+    diff = Math.abs(diff);
+    
+    if (diff < 2) {
+        vm.test.isCorrect = true;
+    } else {
+        vm.test.isCorrect = false;
+    }
+    
+    return vm.test.isCorrect;
 }

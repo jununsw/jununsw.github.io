@@ -44,7 +44,7 @@
             </div>
         </div>
         
-        <div class="container" id="myapp">
+        <div class="container" id="myapp" style="padding-bottom: 5em;">
             <ul>
                 <li><a href="#p1" class="bold">Demo</a></li>
                 <li><a href="#p2" class="bold">Question</a></li>
@@ -53,7 +53,7 @@
             <div id="p1">
                 <div class="row">
                     <div class="col-sm-8">
-                        <div class="h4 question" style="font-weight: normal">
+                        <div class="h5 question" style="font-weight: bold;">
                             <p>
                                 A partially prestressed concrete beam has the rectangular cross-section (width: {{prob.width}} mm, height: {{prob.height}} mm), and its profile is shown in the Figure. Both prestress steel and conventional steel are assumed to be perfect plastic.
                             </p>
@@ -211,14 +211,81 @@
             <div id="p2">
                 <div class="row">
                     <div class="col-sm-8">
-                        <div class="h4 question" style="font-weight: normal">
-                            
+                        <div class="h5 question" style="font-weight: bold;">
+                            <p>
+                                An I-shape concrete beam is shown on the right.<br/>
+                                The size of the top and bottom flange is 800 mm &times; 300 mm (width &times; height).<br/>
+                                The size of the web is 350 mm &times; 1400 mm (width &times; height).
+                            </p>
+                            <p>
+                                The beam is reinforced with 55-12.7 mm super grade strands in one duct, which is located at the interface between the web and the bottom flange.
+                            </p>
+                            <p>
+                                One layer of 6N28 and one layer of 4N28 conventional bars are used in the bottom flange; 2N28 conventianl bars are used in the top flange. The distance between the edge of the beam and the centroid of the coventional reinforcement as well as between the two layers is 100 mm.
+                            </p>
+                            <p>
+                                Both prestress and conventional steel are assumed to be perfectly plastic. Other properties are as follows
+                            </p>
+                            <ul style="margin-top: 1em; margin-bottom: 1em;">
+                                <li>\( f_{c}= \) 40 MPa</li>
+                                <li>\( f_{cp}= \) 40 MPa</li>
+                                <li>\( f_{py}= \) {{prob.fpy}} MPa</li>
+                                <li>\( f_{pe}= \) {{prob.fsy}} MPa</li>
+                                <li>\( E_{c}= \) {{prob.ec}} MPa</li>
+                                <li>\( E_{p}= \) {{prob.ep}} MPa</li>
+                                <li>\( E_{s}= \) {{prob.es}} MPa</li>
+                                <li>\( \gamma= \) 0.77</li>
+                                <li>\( P_{e}= \) 1000 kN</li>
+                                <li>\( A_{s}= \) {{4880 / 8}} mm<sup>2</sup> (single bar)</li>
+                                <li>\( A_{p}= \) 5428 mm<sup>2</sup></li>
+                            </ul>
+                            <p id="test-ready">
+                                Click START button to answer the question for ultimate moment capacity
+                            </p>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="h4 question">
                             <div id="svg-test" style="width: 250px; height: 450px;"></div>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <button class="btn btn-primary" v-on:click="part2($event);">Click Here to Start</button>
+                        <section>
+                            <p>
+                                Let d<sub>p</sub> is the distance between the top edge of the beam and the location of the neutral axis.
+                            </p>
+                            <p>
+                                Therefore d<sub>p</sub> = <input id='test-dp' size="10"/> mm (press ENTER to continue, round to 0.1 mm, or it will be rounded to 0.1 mm automatically otherwise)
+                            </p>
+                        </section>
+                        <section style='display: none;'>
+                            <div v-if="test.inValid">
+                                Your input is invalid. Please re-type in d<sub>p</sub> and press ENTER
+                            </div>
+                            <div v-else>
+                                <p>
+                                    Based on your input, the compressive and tensile force is calculated as
+                                </p>
+                                <ul>
+                                    <li>C = C<sub>c</sub> + C<sub>s</sub> = {{Number((test.c1 + test.c2 + test.cs).toFixed(3))}} kN</li>
+                                    <li>T = T<sub>p</sub> + T<sub>s</sub> = {{Number((test.ts1 + test.ts2 + test.tp).toFixed(3))}} kN</li>
+                                </ul>
+                                <p v-if="test.isCorrect">
+                                    C = T, your d<sub>p</sub> is correct
+                                </p>
+                                <p v-else>
+                                    C &ne; T, your d<sub>p</sub> is not correct, Please re-calculate d<sub>p</sub>
+                                </p>
+                            </div>
+                        </section>
+                        <section id='last' style='display: none;'>
+                            <p>
+                                Therefore, M<sub>u</sub> = <input id='test-mu' size="10"/> kNm (round to 0.1 kNm, press ENTER to continue)
+                            </p>
+                        </section>
                     </div>
                 </div>
             </div>

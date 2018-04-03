@@ -32,6 +32,18 @@ var vm = new Vue({
             dp: 675,  // distance from top to the centroid of tendon
             
             dn: 191.45
+        },
+        
+        test: {
+            inValid: false,
+            dp: 0,
+            c1: 0,
+            c2: 0,
+            cs: 0,
+            ts1: 0,
+            ts2: 0,
+            tp: 0,
+            isCorrect: false
         }
     },
     
@@ -91,6 +103,26 @@ var vm = new Vue({
             r += ts * (this.prob.height - this.prob.cover - offset) / 1000;
             
             return Number(r.toFixed(1));
+        },
+        
+        test_mu: function() {
+            var r = 0;
+            
+            var r1 = ((0.77 * this.test.dp) > 300) ? 300 : (0.77 * this.test.dp);
+            r1 /= 2;
+            
+            var r2 = ((0.77 * this.test.dp) > 300) ? (0.77*this.test.dp - 300) : 0;
+            r2 = (r2 == 0) ? 0 : (r2 - 300)/2 + 300;
+            
+            r += this.test.tp * (2000 - 300);
+            r += this.test.ts1 * (2000 - 100);
+            r += this.test.ts2 * (2000 - 200);
+            
+            r -= this.test.cs * 100;
+            r -= this.test.c1 * r1;
+            r -= this.test.c2 * r2;
+            
+            return r / 1000;
         }
     },
     
@@ -111,6 +143,13 @@ var vm = new Vue({
         step3: function(e) {
             $(e.target).hide();
             $(e.target).closest("section").next("section").show();
+        },
+        
+        part2: function(e) {
+            $(e.target).hide();
+            $("#test-ready").hide();
+            $(e.target).next("section").show();
+            window.scrollTo(0,document.body.scrollHeight);
         }
     }
 });
