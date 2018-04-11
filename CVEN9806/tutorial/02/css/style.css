@@ -2,6 +2,25 @@ body {
     background-color: #e0ffff;
 }
 
+#myapp {
+    border-width: 0px; 
+    background: transparent; 
+}
+
+#myapp .ui-tabs-nav { 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px;
+}
+
+#myapp .ui-tabs-panel { 
+    background: transparent; 
+    border-width: 0px 0px 0px 0px; 
+}
+
 .bold {
     font-weight: bold;
 }
@@ -61,4 +80,12 @@ img {
     margin-top: -.8em;
     text-align: center;
     line-height: 1.6em;
+}
+
+#slope td {
+    width: 5%;
+}
+
+#slope th {
+    width: 5%;
 }

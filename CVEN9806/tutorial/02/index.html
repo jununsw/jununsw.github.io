@@ -34,98 +34,297 @@
             </div>
         </div>
         
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p style="font-size: 1.2em;">
+                        <strong>There are two question tabs, and the second question is optional</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
         <div class="container" id="myapp">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        A simply supported post-tensioned beam has a parabolic cable with zero eccentricity at both ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. The duct is bright and zinc coated metal. The beam is jacked from left end only.
+            <ul>
+                <li><a href="#p1" class="bold">1: simply-supported beam</a></li>
+                <li><a href="#p2" class="bold">2: continuous beam (optional)</a></li>
+            </ul>
+            
+            <div id='p1'>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="h4 question">
+                            A simply supported post-tensioned beam has a parabolic cable with zero eccentricity at both ends (shown as follows). The span of the beam is {{prob.span}} m. Calculate the friction losses and anchorage set losses through the beam. The duct is bright and zinc coated metal. The beam is jacked from left end only.
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="row" style="font-weight: bold; font-size: 1.2em;">
-                <div class="col-sm-4">
-                    <ul>
-                        <li>\( f_{ci}= \) 32 MPa</li>
-                        <li>Duct Dia = 110 mm</li>
-                        <li>31 Strands</li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <ul>
-                        <li>Dia. of Strands = 12.7 mm</li>
-                        <li>\( A_{p}= \) 3100 mm<sup>2</sup></li>
-                        <li>\( P_{j}= \) 4520 kN</li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <ul>
-                        <li>Draw-in of Wedges = 6 mm</li>
-                        <li>\( E_{p}= \) 195000 MPa</li>
-                        <li>\( \beta _{p}= \) 0.01, \( \mu= \) 0.2</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <div style="text-align: center;">
-                        <div id="svg-profile" style="width: 800px; height: 100px; margin: 0 auto;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        You can drag the red point at the middle of the span to change the eccentricity<br/>
-                        Current eccentricity is {{prob.e}} mm
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-12 h4 section">
-                    <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
-                    <section>
-                        <p>
-                            In the figure above, a slider is shown below the beam profile. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
-                        </p>
+
+                <div class="row" style="font-weight: bold; font-size: 1.2em;">
+                    <div class="col-sm-4">
                         <ul>
-                            <li>\( \theta= \) <span id="theta">{{-slope0.toFixed(3)}}</span></li>
-                            <li>\( \alpha_{tot}= \) <span id="alpha">0.000</span></li>
+                            <li>\( f_{ci}= \) 32 MPa</li>
+                            <li>Duct Dia = 110 mm</li>
+                            <li>31 Strands</li>
                         </ul>
-                        <p>
-                            For single Parabola:
-                            \[ P _{j} - P _{i} \approx P _{j} \cdot ( \mu [ \alpha _{tot} + \beta _{p} x ] ) \]
-                        </p>
-                        <button class="btn btn-primary" v-on:click="part1($event);">Calculate Friction Loss</button>
-                    </section>
-                    <section style="display: none;">
-                        <p>
-                            Now assume the eccentricity at mid-span is {{prob.e}} mm.
-                        </p>
-                        <p>
-                            Calculate the prestress force at the right end immediately after transfer P<sub>i</sub> = <input id="pi" size="6"/> kN (rounded to 1 kN)
-                        </p>
-                        <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span style='color: transparent;'>&nbsp;&nbsp;&nbsp;(for testing: answer {{prob.pi}})</span>
-                    </section>
-                    <section style="display: none;">
-                        <p>The friction losses diagram is plotted as follows:</p>
-                        <div id="svg-plot" style="width: 600px; height: 500px; margin: 0 auto;"></div>
-                        <p style="margin-top: 20px;">
-                            <strong>Note: </strong>There is a blue point on the y axis. Drag this point to plot the anchorage loss due to draw-in.
-                        </p>
-                        <p>
-                            The following values will change when you drag the points in the plot:<br/><br/>
-                            You can also type a value for &Delta;P<sub>i</sub> in the input box and press ENTER, the plot will change accordingly.
-                            \[ L _{set} = \sqrt{ \frac{E _{p} A _{p} \Delta}{p} } \]
-                            where \( p \) is the slope of the fiction loss line above (rate of friction loss). 
-                            <br/>You need to calculate &Delta;P<sub>i</sub> based on L<sub>set</sub>:
-                        </p>
+                    </div>
+                    <div class="col-sm-4">
                         <ul>
-                            <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN, to reset, clear the input box and press ENTER)</li>
-                            <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
+                            <li>Dia. of Strands = 12.7 mm</li>
+                            <li>\( A_{p}= \) 3100 mm<sup>2</sup></li>
+                            <li>\( P_{j}= \) 4520 kN</li>
                         </ul>
-                        <button class="btn btn-primary" v-on:click="part3($event);">Complete and Submit</button><span></span>
-                    </section>
+                    </div>
+                    <div class="col-sm-4">
+                        <ul>
+                            <li>Draw-in of Wedges = 6 mm</li>
+                            <li>\( E_{p}= \) 195000 MPa</li>
+                            <li>\( \beta _{p}= \) 0.01, \( \mu= \) 0.2</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <div style="text-align: center;">
+                            <div id="svg-profile" style="width: 800px; height: 100px; margin: 0 auto;"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="h4 question">
+                            You can drag the red point at the middle of the span to change the eccentricity<br/>
+                            Current eccentricity is {{prob.e}} mm
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 h4 section">
+                        <button class="btn btn-primary" v-on:click="start($event);">Click Here to Start</button>
+                        <section>
+                            <p>
+                                In the figure above, a slider is shown below the beam profile. By moving the slider, you can see the change of the slope \( \theta \) and \( \alpha_{tot} \) in radian:
+                            </p>
+                            <ul>
+                                <li>\( \theta= \) <span id="theta">{{-slope0.toFixed(3)}}</span></li>
+                                <li>\( \alpha_{tot}= \) <span id="alpha">0.000</span></li>
+                            </ul>
+                            <p>
+                                For single Parabola:
+                                \[ P _{j} - P _{i} \approx P _{j} \cdot ( \mu [ \alpha _{tot} + \beta _{p} x ] ) \]
+                            </p>
+                            <button class="btn btn-primary" v-on:click="part1($event);">Calculate Friction Loss</button>
+                        </section>
+                        <section style="display: none;">
+                            <p>
+                                Now assume the eccentricity at mid-span is {{prob.e}} mm.
+                            </p>
+                            <p>
+                                Calculate the prestress force at the right end immediately after transfer P<sub>i</sub> = <input id="pi" size="6"/> kN (rounded to 1 kN)
+                            </p>
+                            <button class="btn btn-primary" v-on:click="part2($event);">Check</button><span style='color: transparent;'>&nbsp;&nbsp;&nbsp;(for testing: answer {{prob.pi}})</span>
+                        </section>
+                        <section style="display: none;">
+                            <p>The friction losses diagram is plotted as follows:</p>
+                            <div id="svg-plot" style="width: 600px; height: 500px; margin: 0 auto;"></div>
+                            <p style="margin-top: 20px;">
+                                <strong>Note: </strong>There is a blue point on the y axis. Drag this point to plot the anchorage loss due to draw-in.
+                            </p>
+                            <p>
+                                The following values will change when you drag the points in the plot:<br/><br/>
+                                You can also type a value for &Delta;P<sub>i</sub> in the input box and press ENTER, the plot will change accordingly.
+                                \[ L _{set} = \sqrt{ \frac{E _{p} A _{p} \Delta}{p} } \]
+                                You need to calculate &Delta;P<sub>i</sub> based on L<sub>set</sub>:
+                            </p>
+                            <ul>
+                                <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN, to reset, clear the input box and press ENTER)</li>
+                                <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
+                            </ul>
+                            <button class="btn btn-primary" v-on:click="part3($event);">Complete and Submit</button><span></span>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            
+            <div id='p2'>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="h4 question">
+                            A four span continuous bridge girder is post-tensioned with a tendon. Half of the girder is shown in the figure below due to symmetry. The symmetrical tendon is simultaneously stressed up to 75% f<sub>pk</sub> from both ends and then anchored. Other properties are,
+                        </div>
+                        <div class="row" style="font-weight: bold; font-size: 1.2em;">
+                            <div class="col-sm-4">
+                                <ul>
+                                    <li>\( f_{p}= \) 1860 MPa</li>
+                                    <li>\( E_{p}= \) 195,000 MPa</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                <ul>
+                                    <li>\( \mu = \) 0.2</li>
+                                    <li>\( k = \) 0.002 m<sup>-1</sup></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                <ul>
+                                    <li>\( A_{p}= \) 2800 mm<sup>2</sup></li>
+                                    <li>anchorage slip \( \Delta_{s} \) = 6 mm</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12">
+                                <p>
+                                    Height of the beam is 2m. The first span is 30m and the second span is 40m.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 text-center">
+                            <div style="text-align: center;">
+                                <div id="svg-continue" style="width: 800px; height: 200px; margin: 0 auto;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12">
+                            <div class="h4 question">
+                                You can drag the blue points to configure the maximum eccentricity at mid-span and at the support (excluding left end). When ready, press Start button<br/><br/>
+                                Maximum eccentricity: {{e}} mm<br/><br/>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 h4 section">
+                            <button class="btn btn-primary" v-on:click="tab2($event);">Start</button>
+                            <section>
+                                <p>
+                                    The tendon is analysed as segments of parabola. Segments are partitioned by points of maximum eccentricity and inflection points (where curvature is zero). The inflection points are plotted in the figure as black points and the length of each segments are also shown in the figure.
+                                </p>
+                                <p style="font-style: italic;">
+                                    <br/>Note: in this example, the profile of the tendon is highly simplified, just for education purpose.
+                                </p>
+                                <p>
+                                    <br/>Initial force at stretching end is:<br/><br/>
+                                    P<sub>0</sub> = 0.75 &times; f<sub>p</sub> &times; A<sub>p</sub> = 3906 kN
+                                </p>
+                                <p>Slopes at point A - H are</p>
+                                <table id="slope" class="table table-bordered" style="font-weight: normal; font-size: 0.8em; width: 80%;">
+                                    <thead>
+                                        <tr>
+                                            <th>A</th>
+                                            <th>B</th>
+                                            <th>C</th>
+                                            <th>D</th>
+                                            <th>E</th>
+                                            <th>F</th>
+                                            <th>G</th>
+                                            <th>H</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{e * 2 / 20 / 1000}}</td>
+                                            <td>0</td>
+                                            <td>{{e * 2 / 20 / 1000}}</td>
+                                            <td>0</td>
+                                            <td>{{e * 2 / 20 / 1000}}</td>
+                                            <td>0</td>
+                                            <td>{{e * 2 / 20 / 1000}}</td>
+                                            <td>0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>Complete the following the table, and note:</p>
+                                <ul>
+                                    <li>P<sub>(&bull;)</sub> = P<sub>0</sub>e<sup>-&Sigma;(&mu;&alpha;+kx)</sup> denotes the force at the end of each segment (rounded to 1 kN)</li>
+                                    <li>Other value rounded to 0.001</li>
+                                    <li>Press ENTER after input. If correct, the input box will turn gold; if incorrect, the input box will turn red</li>
+                                    <li>Next part will show after all the input boxes are answered correctly</li>
+                                </ul>
+                                <p>
+                                    <br/>
+                                </p>
+                                <table id="calculation" class="table table-bordered" style="font-weight: normal; font-size: 0.8em; width: 80%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Segment</th>
+                                            <th>&alpha;</th>
+                                            <th>&mu;&alpha;+kx</th>
+                                            <th>-&Sigma;(&mu;&alpha;+kx)</th>
+                                            <th>P<sub>0</sub>e<sup>-&Sigma;(&mu;&alpha;+kx)</sup></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-seg="1">
+                                            <td>A-B</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>B</sub> = <input id="pb" size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="2">
+                                            <td>B-C</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>C</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="3">
+                                            <td>C-D</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>D</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="4">
+                                            <td>D-E</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>E</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="5">
+                                            <td>E-F</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>F</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="6">
+                                            <td>F-G</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>G</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                        <tr data-seg="7">
+                                            <td>G-H</td>
+                                            <td data-col="1"><input size="6"/></td>
+                                            <td data-col="2"><input size="6"/></td>
+                                            <td data-col="3"><input size="6"/></td>
+                                            <td data-col="4">P<sub>H</sub> = <input size="6"/> kN</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <section id="last" style="display: none;">
+                                <p>
+                                    Let p be the loss of prestress per length in the first segment, p = (P<sub>0</sub> - P<sub>B</sub>) / L<sub>AB</sub> = <span id="p-value"></span><br/><br/>
+                                    Your can calculate the anchorage loss using the following formula
+                                </p>
+                                <p>
+                                    \[ L_{set}= \sqrt{\frac{\Delta_{s}A_{p}E_{p}}{p}} \]
+                                </p>
+                                <p>
+                                    \[ \Delta_{p} = 2p L_{set} \]
+                                </p>
+                                <div style="display: none;">
+                                    <p>
+                                        Therefore &Delta;<sub>p</sub> = <input id='finial' size="6"> kN (rounded to 1 kN)
+                                    </p>
+                                    <p>
+
+                                    </p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

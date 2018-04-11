@@ -1,5 +1,7 @@
 function init() {
+    $("#myapp").tabs();
     plot_profile();
+    plot_continue();
 }
 
 function changeColor(e) {
@@ -420,5 +422,259 @@ function createPlot() {
                 $("#dp").val((prob.pj - window.chart.point1.Y()).toFixed(0));
             }
         }
+    });
+}
+
+function plot_continue() {
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.continue = {};
+    
+    window.continue.end = 70;
+    window.continue.x1 = 10;
+    window.continue.x2 = 30;
+    window.continue.x3 = 50;
+    
+    window.continue.brd = JXG.JSXGraph.initBoard('svg-continue', {
+        boundingbox: [-5, 4000, window.continue.end + 5, -5000],
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: false
+    });
+    
+    window.continue.brd.create('segment', [[0, 2000], [window.continue.end, 2000]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.continue.brd.create('segment', [[0, -2000], [window.continue.end, -2000]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.continue.brd.create('segment', [[0, 2000], [0, -2000]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.continue.brd.create('segment', [[window.continue.end, 3000], [window.continue.end, -2000]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
+        dash: 2,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.continue.brd.create('segment', [[0, 0], [window.continue.end + 4, 0]], {
+        strokeWidth: 1,
+        strokeColor: 'black',
+        dash: 1,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.continue.support = [];
+    
+    window.continue.support.push(window.continue.brd.create('polygon', [[0, -2000], [0 - 1, -2000 - 800], [0 + 1, -2000 - 800]], {
+        fillColor: 'transparent',
+        highlight: false,
+        fixed: true
+    }));
+    
+    window.continue.support.push(window.continue.brd.create('polygon', [[window.continue.x2, -2000], [window.continue.x2 - 1, -2000 - 800], [window.continue.x2 + 1, -2000 - 800]], {
+        fillColor: 'transparent',
+        highlight: false,
+        fixed: true
+    }));
+    
+    window.continue.support.push(window.continue.brd.create('polygon', [[window.continue.end, -2000], [window.continue.end - 1, -2000 - 800], [window.continue.end + 1, -2000 - 800]], {
+        fillColor: 'transparent',
+        highlight: false,
+        fixed: true
+    }));
+    
+    window.continue.support.forEach(function(ele, idx, arr) {
+        ele.vertices.forEach(function(e) {
+            e.setAttribute({visible: false});
+        });
+        
+        ele.borders.forEach(function(e) {
+            e.setAttribute({
+                strokeWidth: 2,
+                strokeColor: 'black',
+                highlight: false,
+                fixed: true
+            });
+        });
+    });
+    
+    window.continue.glider1 = window.continue.brd.create('segment', [[window.continue.x1, -500], [window.continue.x1, -1400]], {
+        visible: false
+    });
+    
+    window.continue.glider2 = window.continue.brd.create('segment', [[window.continue.x2, 500], [window.continue.x2, 1400]], {
+        visible: false
+    });
+    
+    window.continue.glider3 = window.continue.brd.create('segment', [[window.continue.x3, -500], [window.continue.x3, -1400]], {
+        visible: false
+    });
+    
+    window.continue.glider4 = window.continue.brd.create('segment', [[window.continue.end, 500], [window.continue.end, 1400]], {
+        visible: false
+    });
+    
+    window.continue.glidee0 = window.continue.brd.create('point', [0, 0], {
+        visible: false
+    });
+    
+    window.continue.glidee1 = window.continue.brd.create('glider', [window.continue.x1, -700, window.continue.glider1], {
+        name: '',
+        size: 3,
+        fillColor: 'blue',
+        strokeColor: 'blue'
+    });
+    
+    window.continue.glidee2 = window.continue.brd.create('glider', [window.continue.x2, 700, window.continue.glider2], {
+        name: '',
+        size: 3,
+        fillColor: 'blue',
+        strokeColor: 'blue'
+    });
+    
+    window.continue.glidee3 = window.continue.brd.create('glider', [window.continue.x3, -700, window.continue.glider3], {
+        name: '',
+        size: 3,
+        fillColor: 'blue',
+        strokeColor: 'blue'
+    });
+    
+    window.continue.glidee4 = window.continue.brd.create('glider', [window.continue.end, 700, window.continue.glider4], {
+        name: '',
+        size: 3,
+        fillColor: 'blue',
+        strokeColor: 'blue'
+    });
+    
+    
+    
+    window.continue.glidee1.on('drag', function() {
+        var y = window.continue.glidee1.Y();
+        y = Number(y.toFixed(0));
+        y = y + (-y)%10;
+        window.continue.glidee1.moveTo([window.continue.glidee1.X(), y]);
+        window.continue.glidee2.moveTo([window.continue.glidee2.X(), -y]);
+        window.continue.glidee3.moveTo([window.continue.glidee3.X(), y]);
+        window.continue.glidee4.moveTo([window.continue.glidee4.X(), -y]);
+        
+        vm.e = -y;
+    });
+    
+    window.continue.glidee3.on('drag', function() {
+        var y = window.continue.glidee3.Y();
+        y = Number(y.toFixed(0));
+        y = y + (-y)%10;
+        window.continue.glidee1.moveTo([window.continue.glidee1.X(), y]);
+        window.continue.glidee2.moveTo([window.continue.glidee2.X(), -y]);
+        window.continue.glidee3.moveTo([window.continue.glidee3.X(), y]);
+        window.continue.glidee4.moveTo([window.continue.glidee4.X(), -y]);
+        
+        vm.e = -y;
+    });
+    
+    window.continue.glidee2.on('drag', function() {
+        var y = window.continue.glidee2.Y();
+        y = Number(y.toFixed(0));
+        y = y + (y)%10;
+        window.continue.glidee1.moveTo([window.continue.glidee1.X(), -y]);
+        window.continue.glidee2.moveTo([window.continue.glidee2.X(), y]);
+        window.continue.glidee3.moveTo([window.continue.glidee3.X(), -y]);
+        window.continue.glidee4.moveTo([window.continue.glidee4.X(), y]);
+        
+        vm.e = y;
+    });
+    
+    window.continue.glidee4.on('drag', function() {
+        var y = window.continue.glidee4.Y();
+        y = Number(y.toFixed(0));
+        y = y + (y)%10;
+        window.continue.glidee1.moveTo([window.continue.glidee1.X(), -y]);
+        window.continue.glidee2.moveTo([window.continue.glidee2.X(), y]);
+        window.continue.glidee3.moveTo([window.continue.glidee3.X(), -y]);
+        window.continue.glidee4.moveTo([window.continue.glidee4.X(), y]);
+        
+        vm.e = y;
+    });
+    
+    window.continue.brd.create('curve', [function(t) {
+        return t;
+    }, function(t) {
+        var a = vm.e;
+        return -a * Math.sin(t * 2 * Math.PI / 40);
+    }, 0, window.continue.end], {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+}
+
+function partition() {
+    [window.continue.glidee0, window.continue.glidee1, window.continue.glidee2, window.continue.glidee3, window.continue.glidee4].forEach(function(ele, idx, arr) {
+        ele.setAttribute({visible: false});
+        
+        window.continue.brd.create('segment', [ele, [ele.X(), -3500]], {
+            strokeWidth: 1,
+            strokeColor: 'black',
+            dash: 1,
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    [20, 40, 60].forEach(function(ele, idx, arr) {
+        window.continue.glidee0 = window.continue.brd.create('point', [ele, 0], {
+            name: '',
+            size: 3,
+            fillColor: 'blace',
+            strokeColor: 'transparent',
+            fixed: true,
+            highlight: false
+        });
+        
+        window.continue.brd.create('segment', [[ele, 0], [ele, -3500]], {
+            strokeWidth: 1,
+            strokeColor: 'black',
+            dash: 1,
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach(function(ele, idx, arr) {
+        if (ele != 8) {
+            window.continue.brd.create('text', [(ele - 1)*10 + 5, -3500, '10m'], {
+                anchorX: 'middle',
+                anchorY: 'middle',
+                fontSize: 16,
+                highlight: false,
+                fixed: true
+            });
+        }
+        
+        window.continue.brd.create('text', [(ele - 1)*10, -4000, '<span style="font-style: italic; font-weight: bold;">' + String.fromCharCode(64 + ele) + '</span>'], {
+            anchorX: 'middle',
+            anchorY: 'middle',
+            fontSize: 18,
+            highlight: false,
+            fixed: true
+        });
     });
 }
