@@ -118,7 +118,7 @@ var vm = new Vue({
                         }
                     } else if (col == 4) {
                         var alpha = vm.e * 2 / 20 / 1000;
-                        var ans = Number((Math.exp(-(alpha*0.2 + 0.002*10) * seg) * 3609).toFixed(0));
+                        var ans = Number((Math.exp(-(alpha*0.2 + 0.002*10) * seg) * 3906).toFixed(0));
                         
                         var in1 = $(ev.target).val();
                         in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(0));
