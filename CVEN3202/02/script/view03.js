@@ -1,14 +1,14 @@
 JXG.Options.infobox.fontSize = 0;
 
 var board = JXG.JSXGraph.initBoard('main-plot', {
-    boundingbox: [0, 650, 1000, 0],
+    boundingbox: [0, 650, 1100, 0],
     showNavigation: false,
     keepaspectratio: true,
     showCopyright: false,
     axis: false
 });
 
-var leftStart = 200;
+var leftStart = 100;
 var bottomStart = 20;
 var maxHeight = 550;
 var height = Math.random() * 150 + 380;
@@ -33,20 +33,20 @@ linelist.push(createCustomCurve(board, function(t) {
 linelist.push(createCustomCurve(board, function(t) {
     if (t < 300 - bottomStart) {
         return leftStart;
-    } else if (t < 300 - bottomStart + 950 - leftStart) {
+    } else if (t < 300 - bottomStart + 1050 - leftStart) {
         return leftStart + (t - (300 - bottomStart));
     } else {
-        return 950;
+        return 1050;
     }
 }, function(t) {
     if (t < 300 - bottomStart) {
         return 300 - t;
-    } else if (t < 300 - bottomStart + 950 - leftStart) {
+    } else if (t < 300 - bottomStart + 1050 - leftStart) {
         return bottomStart;
     } else {
-        return bottomStart + (t - (300 - bottomStart + 950 - leftStart));
+        return bottomStart + (t - (300 - bottomStart + 1050 - leftStart));
     }
-}, 300 - thickness - bottomStart + 300 - bottomStart + 950 - leftStart, '#000080'));
+}, 300 - thickness - bottomStart + 300 - bottomStart + 1050 - leftStart, '#000080'));
 
 linelist.push(createCustomCurve(board, function(t) {
     return 500 - t
@@ -74,7 +74,7 @@ linelist.push(createCustomCurve(board, function(t) {
     } else {
         return 300 - thickness;
     }
-}, 400 + thickness, 'red'));
+}, 400 + thickness + (1050 - 950), 'red'));
 
 var net = createFlowNet(board, linelist);
 
@@ -83,8 +83,11 @@ board.create('segment', [[650, maxHeight], [topStart, maxHeight]], {strokecolor:
 board.create('segment', [[650, maxHeight], [850, 300 - thickness]], {strokecolor: "black", highlight: false, fixed: true});
 board.create('segment', [[650 + 100, 300], [650 + (maxHeight - 300) / ((maxHeight - 300 + thickness) / (850 - 650)), 300]], {strokecolor: "transparent", highlight: false, fixed: true});
 
+waterlevel(board, leftStart, height, 15);
+waterlevel(board, 1050, 300, 15);
+
 board.create('segment', [[500, height], [leftStart, height]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
-board.create('segment', [[950, 300], [650 + (maxHeight - 300) / ((maxHeight - 300 + thickness) / (850 - 650)), 300]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
+board.create('segment', [[1050, 300], [650 + (maxHeight - 300) / ((maxHeight - 300 + thickness) / (850 - 650)), 300]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
 
 var shadow = board.create('polygon', [
     [650, 300],

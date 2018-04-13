@@ -1,7 +1,7 @@
 JXG.Options.infobox.fontSize = 0;
 
 var board = JXG.JSXGraph.initBoard('main-plot', {
-    boundingbox: [-50, 600, 950, 0],
+    boundingbox: [-150, 600, 1050, 0],
     showNavigation: false,
     keepaspectratio: true,
     showCopyright: false,
@@ -40,35 +40,35 @@ linelist.push(createCustomCurve(board, function(t) {
 
 linelist.push(createCustomCurve(board, function(t) {
     if (t < 400) {
-        return 50;
-    } else if (t < 1200) {
-        return 50 + (t - 400);
+        return -100;
+    } else if (t < 1500) {
+        return -100 + (t - 400);
     } else {
-        return 850;
+        return 1000;
     }
 }, function(t) {
     if (t < 400) {
         return 500 - t;
-    } else if (t < 1200) {
-        return 100 + (t - 400) * k / 800;
+    } else if (t < 1500) {
+        return 100 + (t - 400) * k / 1100;
     } else {
-        return 100 + k + (t - 1200);
+        return 100 + k + (t - 1500);
     }
-}, 400 + 800 + 400 - height - k, '#000080'));
+}, 400 + 1100 + 400 - height - k, '#000080'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    return t + 50;
+    return t - 100;
 }, function(t) {
     return 500;
-}, trenchStart - 50, 'red'));
+}, trenchStart + 100, 'red'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    return 850 - t;
+    return 1000 - t;
 }, function(t) {
     return 500 - height;
-}, trenchStart - 50, 'red'));
+}, trenchStart + 100, 'red'));
 
 var net = createFlowNet(board, linelist);
 
-board.create('segment', [[50, 500], [-50, 500]], {strokecolor: "green", strokewidth: 3, dash: 2, highlight: false, fixed: true});
-board.create('segment', [[850, 500 - height], [950, 500 - height]], {strokecolor: "green", strokewidth: 3, dash: 2, highlight: false, fixed: true});
+waterlevel(board, -100 + 20, 500, 15);
+waterlevel(board, 1000 - 20, 500 - height, 15);

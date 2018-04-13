@@ -39,12 +39,13 @@
                         <li>You must plot at least 2 flow lines and 3 equipotential lines</li>
                         <li>Please keep the flow lines and equipotential lines in order (their order number will show when you Ctrl + click them), and
                             <ul>
-                                <li>As water level is indicated by the dashed <span style="color: green; font-weight: bold;">GREEN</span> line, equipotential lines should be arranged so that its potential is from high to low</li>
-                                <li>Two flow lines are drawn in blue as two boundaries. Flow lines should be arranged so that the one in <span style="color: deepskyblue; font-weight: bold;">SKY BLUE</span> is the first and the one in <span style="color: navy; font-weight: bold;">NAVY BLUE</span> is the last</li>
+                                <li>As water level is indicated by the <span style="color: green; font-weight: bold;">GREEN</span> triangles, equipotential lines should be arranged so that its potential is from high to low</li>
+                                <li>Two flow lines are drawn in blue as two boundaries. Flow lines should be arranged so that the one in <span style="color: deepskyblue; font-weight: bold;">SKY BlUE</span> is the first and the one in <span style="color: navy; font-weight: bold;">NAVY BlUE</span> is the last</li>
                             </ul>
                         </li>
                         <li>In order to improve the graphic performance, please use as less control points as possible for each flow and equipotential line</li>
-                        <li>Please make sure every flow line and equipotential line must have one and only one, including with the boundaries. You can draw the lines slightly beyond the boundaries to guarantee there is a intersection</li>
+                        <li>Every flow / equipotential line must have one intersection, including with its corresponding boundaries (because they are flow / equipotential lines too)</li>
+                        <li>You can draw the flow / equipotential lines slightly beyound the boundary so that its intersection with the boundary can be clearly visible</li>
                     </ul>
                 </div>
             </div>
@@ -78,6 +79,11 @@
                 </div>
                 <div class="col-sm-3" style="margin-top: 10px;">
                     <ul id="record"></ul>
+                </div>
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <div id="result-plot" style="width: 1000px; height: 150px; margin: 0 auto; display: none;"></div>
+                    </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">

@@ -67,5 +67,8 @@ linelist.push(createCustomCurve(board, function(t) {
 
 var net = createFlowNet(board, linelist, []);
 
+waterlevel(board, 0, 400, 15);
+waterlevel(board, 400, 400, 15);
+
 board.create('segment', [[50, 400], [-50, 400]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
 board.create('segment', [[350, 400], [450, 400]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});

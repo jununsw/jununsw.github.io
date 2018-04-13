@@ -39,33 +39,33 @@ linelist.push(createCustomCurve(board, function(t) {
 
 linelist.push(createCustomCurve(board, function(t) {
     if (t < 300) {
-        return 50;
-    } else if (t < 1100) {
-        return 50 + (t - 300);
+        return 20;
+    } else if (t < 300 + 800 + 30 + 30) {
+        return 20 + (t - 300);
     } else {
-        return 850;
+        return 880;
     }
 }, function(t) {
     if (t < 300) {
         return 400 - t;
-    } else if (t < 1100) {
+    } else if (t < 300 + 800 + 30 + 30) {
         return 100;
     } else {
-        return 100 + (t - 1100);
+        return 100 + (t - (300 + 800 + 30 + 30));
     }
-}, 300 + 800 + 300, '#000080'));
+}, 300 + 800 + 30 + 30 + 300, '#000080'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    return t + 50;
+    return t + 20;
 }, function(t) {
     return 400;
-}, trenchStart - 50, 'red'));
+}, trenchStart - 20, 'red'));
 
 linelist.push(createCustomCurve(board, function(t) {
-    return 850 - t;
+    return 880 - t;
 }, function(t) {
     return 400;
-}, trenchStart - 50, 'red'));
+}, trenchStart - 20, 'red'));
 
 var net = createFlowNet(board, linelist);
 
@@ -91,5 +91,8 @@ shadow.borders.forEach(function(ele) {
     });
 });
 
-board.create('segment', [[trenchStart, 480], [50, 480]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
-board.create('segment', [[trenchEnd, 420], [850, 420]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
+waterlevel(board, 50, 480, 15);
+waterlevel(board, 850, 420, 15);
+
+board.create('segment', [[trenchStart, 480], [20, 480]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
+board.create('segment', [[trenchEnd, 420], [880, 420]], {strokecolor: "green", strokewidth: 2, dash: 2, highlight: false, fixed: true});
