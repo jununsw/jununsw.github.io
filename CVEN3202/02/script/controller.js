@@ -893,7 +893,8 @@ function createFlowNet(board, lineList, irregular) {
 
                             $("#btn-finish").prop("disabled", true).html("Done");
                             
-                            showScale();
+                            showIntersection();
+                            showCell();
 
                             resolve({
                                 status: 0,
@@ -932,23 +933,138 @@ function createFlowNet(board, lineList, irregular) {
     }
 }
 
-function showScale() {
-    $("#result-plot").html("");
+function showIntersection() {
+    $("#result-intersection").html("");
     
     var $list = $("#record").find("li");
     
     if ($list.length > 0) {
-        $("#result-plot").html("").show();
+        $("#result-intersection").html("").show();
         
-        var brd = JXG.JSXGraph.initBoard('result-plot', {
+        window.intersection = {};
+        
+        window.intersection.brd = JXG.JSXGraph.initBoard('result-intersection', {
             boundingbox: [-50, 100, 450, -200],
             showNavigation: false,
-            keepaspectratio: true,
+            keepaspectratio: false,
             showCopyright: false,
             axis: false
         });
         
+        window.intersection.brd.create("arrow", [[0, 0], [400, 0]], {
+            strokeColor: 'blue',
+            strokeWidth: 4,
+            highlight: false,
+            fixed: true
+        });
         
+        window.intersection.brd.create("text", [-40, 90, '<span style="color: blue;">Error of intersection</span>'], {
+            anchorX: 'left',
+            anchorY: 'top',
+            fontSize: 18,
+            highlight: false,
+            fixed: true
+        });
+        
+        [0, 100, 200, 300].forEach(function(ele, idx, arr) {
+            if (ele !== 0) {
+                window.intersection.brd.create("segment", [[ele, -20], [ele, 20]], {
+                    strokeColor: 'blue',
+                    strokeWidth: 2,
+                    highlight: false,
+                    fixed: true
+                });
+            } else {
+                
+            }
+            
+            var text = (ele == 0) ? 'Poor' : (ele == 100) ? 'Fair' : (ele == 200) ? 'Good' : 'Excellect';
+            
+            window.intersection.brd.create("text", [ele + 50, 50, '<span style="color: blue;">' + text + '</span>'], {
+                anchorX: 'middle',
+                anchorY: 'top',
+                fontSize: 18,
+                highlight: false,
+                fixed: true
+            });
+        });
+        
+        for (var i = 0; i < $list.length; i++) {
+            var color = (i == $list.length - 1) ? 'black' : 'blue';
+            var opacity = (i == $list.length - 1) ? 1 : 0.5;
+            
+            var $li = $list.eq(i);
+            var txt = $li.html();
+        }
+        
+    } else {
+        
+    }
+}
+
+function showCell() {
+    $("#result-cell").html("");
+    
+    var $list = $("#record").find("li");
+    
+    if ($list.length > 0) {
+        $("#result-cell").html("").show();
+        
+        window.cell = {};
+        
+        window.cell.brd = JXG.JSXGraph.initBoard('result-cell', {
+            boundingbox: [-50, 100, 450, -200],
+            showNavigation: false,
+            keepaspectratio: false,
+            showCopyright: false,
+            axis: false
+        });
+        
+        window.cell.brd.create("arrow", [[0, 0], [400, 0]], {
+            strokeColor: 'blue',
+            strokeWidth: 4,
+            highlight: false,
+            fixed: true
+        });
+        
+        window.cell.brd.create("text", [-40, 90, '<span style="color: blue;">Error of Cell</span>'], {
+            anchorX: 'left',
+            anchorY: 'top',
+            fontSize: 18,
+            highlight: false,
+            fixed: true
+        });
+        
+        [0, 100, 200, 300].forEach(function(ele, idx, arr) {
+            if (ele !== 0) {
+                window.cell.brd.create("segment", [[ele, -20], [ele, 20]], {
+                    strokeColor: 'blue',
+                    strokeWidth: 2,
+                    highlight: false,
+                    fixed: true
+                });
+            } else {
+                
+            }
+            
+            var text = (ele == 0) ? 'Poor' : (ele == 100) ? 'Fair' : (ele == 200) ? 'Good' : 'Excellect';
+            
+            window.cell.brd.create("text", [ele + 50, 50, '<span style="color: blue;">' + text + '</span>'], {
+                anchorX: 'middle',
+                anchorY: 'top',
+                fontSize: 18,
+                highlight: false,
+                fixed: true
+            });
+        });
+        
+        for (var i = 0; i < $list.length; i++) {
+            var color = (i == $list.length - 1) ? 'black' : 'blue';
+            var opacity = (i == $list.length - 1) ? 1 : 0.5;
+            
+            var $li = $list.eq(i);
+            var txt = $li.html();
+        }
         
     } else {
         
