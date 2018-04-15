@@ -995,6 +995,41 @@ function showIntersection() {
             
             var $li = $list.eq(i);
             var txt = $li.html();
+            var txts = txt.split(', ');
+            var score = Number(txts[0]);
+            var arrowX = 0;
+            
+            score = score > 0.15 ? 0.15 : score < 0.001 ? 0.001 : score;
+            
+            if (score >= 0.07) {
+                var ratio = (0.15 - score) / (0.15 - 0.07);
+                arrowX = 0 + 100*ratio;
+            } else if (score >= 0.035) {
+                var ratio = (0.07 - score) / (0.07 - 0.035);
+                arrowX = 100 + 100*ratio;
+            } else if (score >= 0.02) {
+                var ratio = (0.035 - score) / (0.035 - 0.02);
+                arrowX = 200 + 100*ratio;
+            } else {
+                var ratio = (0.02 - score) / (0.02 - 0.001);
+                arrowX = 300 + 100*ratio;
+            }
+            
+            window.intersection.brd.create("arrow", [[arrowX, -100], [arrowX, 0]], {
+                strokeColor: color,
+                strokeOpacity: opacity,
+                strokeWidth: 4,
+                highlight: false,
+                fixed: true
+            });
+            
+            window.intersection.brd.create("point", [arrowX, -100], {
+                size: 0,
+                name: (i + 1).toFixed(0),
+                label: {
+                    offset: [0, -10]
+                }
+            });
         }
         
     } else {
@@ -1013,7 +1048,7 @@ function showCell() {
         window.cell = {};
         
         window.cell.brd = JXG.JSXGraph.initBoard('result-cell', {
-            boundingbox: [-50, 100, 450, -200],
+            boundingbox: [-50, 100, 450, -250],
             showNavigation: false,
             keepaspectratio: false,
             showCopyright: false,
@@ -1031,6 +1066,14 @@ function showCell() {
             anchorX: 'left',
             anchorY: 'top',
             fontSize: 18,
+            highlight: false,
+            fixed: true
+        });
+        
+        window.cell.brd.create("text", [-40, -240, '<span style="color: black;">Note: number below the arrow indicates the sequence of your plot; black arrow indicates your current plot</span>'], {
+            anchorX: 'left',
+            anchorY: 'bottom',
+            fontSize: 16,
             highlight: false,
             fixed: true
         });
@@ -1064,6 +1107,41 @@ function showCell() {
             
             var $li = $list.eq(i);
             var txt = $li.html();
+            var txts = txt.split(', ');
+            var score = Number(txts[1]);
+            var arrowX = 0;
+            
+            score = score > 1.5 ? 1.5 : score < 0.01 ? 0.01 : score;
+            
+            if (score >= 0.7) {
+                var ratio = (1.5 - score) / (1.5 - 0.07);
+                arrowX = 0 + 100*ratio;
+            } else if (score >= 0.35) {
+                var ratio = (0.7 - score) / (0.7 - 0.35);
+                arrowX = 100 + 100*ratio;
+            } else if (score >= 0.2) {
+                var ratio = (0.35 - score) / (0.35 - 0.2);
+                arrowX = 200 + 100*ratio;
+            } else {
+                var ratio = (0.2 - score) / (0.2 - 0.01);
+                arrowX = 300 + 100*ratio;
+            }
+            
+            window.cell.brd.create("arrow", [[arrowX, -100], [arrowX, 0]], {
+                strokeColor: color,
+                strokeOpacity: opacity,
+                strokeWidth: 4,
+                highlight: false,
+                fixed: true
+            });
+            
+            window.cell.brd.create("point", [arrowX, -100], {
+                size: 0,
+                name: (i + 1).toFixed(0),
+                label: {
+                    offset: [0, -10]
+                }
+            });
         }
         
     } else {
