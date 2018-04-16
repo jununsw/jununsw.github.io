@@ -140,6 +140,7 @@ function createFlowNet(board, lineList, irregular) {
             p: p,
             curve: curve,
             type: type,
+            max: 0,
 
             funX: function(t) {
                 var pt = this.p;
@@ -380,7 +381,7 @@ function createFlowNet(board, lineList, irregular) {
                 });
                 p.push(last_point);
                 var color = c.curve.getAttribute('strokecolor');
-                this.board.removeObject(c.curve);
+                net.board.removeObject(net.active.curve);
                 c.curve = this.board.create('curve', JXG.Math.Numerics.CardinalSpline(p, 0.5), {
                     strokecolor: color, 
                     strokeOpacity: 0.6, 
@@ -406,14 +407,14 @@ function createFlowNet(board, lineList, irregular) {
                     c.showPoint();
                 });
             } else if (type == "remove") {
-                if (n <= 3) {
+                if ((n <= 3) || (n <= c.max)) {
                     return;
                 }
                 
                 this.board.removeObject(p[n-1]);
                 p.pop();
                 var color = c.curve.getAttribute('strokecolor');
-                this.board.removeObject(c.curve);
+                net.board.removeObject(net.active.curve);
                 c.curve = this.board.create('curve', JXG.Math.Numerics.CardinalSpline(p, 0.5), {
                     strokecolor: color, 
                     strokeOpacity: 0.6, 
@@ -924,6 +925,14 @@ function createFlowNet(board, lineList, irregular) {
                     }
                 }
             }
+            
+            this.stream.forEach(function(ele, idx, arr) {
+                ele.max = ele.p.length;
+            });
+            
+            this.potential.forEach(function(ele, idx, arr) {
+                ele.max = ele.p.length;
+            });
             
             $("#btn-group button").prop("disabled", false);
             $("#btn-finish").prop("disabled", false).html("Finish and Check");
