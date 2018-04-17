@@ -820,7 +820,7 @@ function showPoints() {
             size: 2,
             fillColor: 'black',
             strokeColor: 'black',
-            name: "<span style='font-weight: bold;'>p" + (i+1).toString() + "</p>",
+            name: "<span style='font-weight: bold;'>P<sub>" + (i+1).toString() + "</sub></p>",
             highlight: false,
             fixed: true
         });
@@ -844,11 +844,13 @@ function plotLoss() {
     var inputs = $('#calculation td[data-col="4"]').find("input");
     var loss = [3906];
     
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < inputs.length; i++) {
         var in1 = inputs.eq(i).val();
         in1 = Number(in1);
         loss.push(in1);
     }
+    
+    var pX = [0, 7, this.x1, 20, this.x2, 35, this.x3, 50, this.x4, 63, 70];
     
     var max = 4200;
     var min = loss[6] - loss[6]%100 - 200;

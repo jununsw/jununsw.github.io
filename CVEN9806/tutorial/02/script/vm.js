@@ -10,17 +10,17 @@ var vm = new Vue({
         e3: -700,
         e4: 700,
         e5: -700,
-        s0: 0,
-        s1: 0,
-        s2: 0,
-        s3: 0,
-        s4: 0,
-        s5: 0,
+        s0: -0.2,
+        s1: 0.215,
+        s2: -0.187,
+        s3: 0.187,
+        s4: -0.215,
+        s5: 0.2,
         x0: 0,
-        x1: 0,
-        x2: 0,
-        x3: 0,
-        x4: 0,
+        x1: 13.5,
+        x2: 27.5,
+        x3: 42.5,
+        x4: 56.5,
         x5: 70
     },
     computed: {
@@ -44,17 +44,8 @@ var vm = new Vue({
         checkTable: function(row, col) {
             var p0 = 3906;
             
-            var length = [7, 13, 15, 15, 13, 7];
-            var ecce = [0, this.e1, this.e2, this.e3, this.e4, this.e5];
-            var alpha = ecce.map(function(ele, idx, arr) {
-                if (idx == 5) {
-                    var r = 2 * Math.abs(ecce[idx]) / length[idx] / 1000;
-                    return Number(r.toFixed(3));
-                } else {
-                    var r = 2 * (Math.abs(ecce[idx]) + Math.abs(ecce[idx + 1])) / length[idx] / 1000;
-                    return Number(r.toFixed(3));
-                }
-            });
+            var length = [7, this.x1 - 7, 20 - this.x1, this.x2 - 20, 35 - this.x2, this.x3 - 35, 50 - this.x3, this.x4 - 50, 63 - this.x4, 7];
+            var alpha = [Math.abs(this.s0), Math.abs(this.s1), Math.abs(this.s1), Math.abs(this.s2), Math.abs(this.s2), Math.abs(this.s3), Math.abs(this.s3), Math.abs(this.s4), Math.abs(this.s4), Math.abs(this.s5)];
             
             var mu = alpha.map(function(ele, idx, arr) {
                 var r = 0.2*ele + 0.002*length[idx];
@@ -77,13 +68,13 @@ var vm = new Vue({
             });
             
             if (col == 1) {
-                return alpha[row - 1];
+                return alpha[row];
             } else if (col == 2) {
-                return mu[row - 1];
+                return mu[row];
             } else if (col == 3) {
-                return sigma[row - 1];
+                return sigma[row];
             } else if (col == 4) {
-                return p[row - 1];
+                return p[row];
             } else {
                 return false;
             }
