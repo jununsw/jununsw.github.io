@@ -9,7 +9,19 @@ var vm = new Vue({
         e2: 700,
         e3: -700,
         e4: 700,
-        e5: -700
+        e5: -700,
+        s0: 0,
+        s1: 0,
+        s2: 0,
+        s3: 0,
+        s4: 0,
+        s5: 0,
+        x0: 0,
+        x1: 0,
+        x2: 0,
+        x3: 0,
+        x4: 0,
+        x5: 70
     },
     computed: {
         slope0: function() {
@@ -126,6 +138,7 @@ var vm = new Vue({
         tab2: function(e) {
             $(e.target).css("display", "none");
             $(e.target).closest(".section").find("section:first-of-type").css("display", "block");
+            showPoints();
             partition();
             
             $("#calculation").find("input").on("keypress", function(ev) {

@@ -599,10 +599,14 @@ function plot_continue() {
             if (idx == 1) {
                 vm.e1 = y;
             } else if (idx == 2) {
+                arr[4].moveTo([ele.X(), y]);
                 vm.e2 = y;
+                vm.e4 = y;
             } else if (idx == 3) {
                 vm.e3 = y;
             } else if (idx == 4) {
+                arr[2].moveTo([ele.X(), y]);
+                vm.e2 = y;
                 vm.e4 = y;
             } else if (idx == 5) {
                 vm.e5 = y;
@@ -784,6 +788,50 @@ function showCurve() {
         highlight: false,
         fixed: true
     });
+    
+    window.curve = [c2, c3, c4, c5];
+}
+
+function showPoints() {
+    var e1 = Math.abs(vm.e1);
+    var e2 = Math.abs(vm.e2);
+    var e3 = Math.abs(vm.e3);
+    var e4 = Math.abs(vm.e4);
+    var e5 = Math.abs(vm.e5);
+    
+    window.points = {};
+    window.points.x = [];
+    window.points.x.push(7 + 13*e2/(e1 + e2));
+    window.points.x.push(7 + 13 + 15*e3/(e2 + e3));
+    window.points.x.push(7 + 13 + 15 + 15*e4/(e3 + e4));
+    window.points.x.push(7 + 13 + 15 + 15 + 13*e5/(e4 + e5));
+    
+    vm.x1 = window.points.x[0];
+    vm.x2 = window.points.x[1];
+    vm.x3 = window.points.x[2];
+    vm.x4 = window.points.x[3];
+    
+    for (var i = 0; i < 4; i++) {
+        var line = window.continue.brd.create('line', [[window.points.x[i], -5000], [window.points.x[i], 4000]], {
+            visible: false
+        });
+        
+        window.continue.brd.create('intersection', [window.curve[i], line, 0], {
+            size: 2,
+            fillColor: 'black',
+            strokeColor: 'black',
+            name: "<span style='font-weight: bold;'>p" + (i+1).toString() + "</p>",
+            highlight: false,
+            fixed: true
+        });
+    }
+    
+    vm.s0 = Number((2 * vm.e1 / 7 / 1000).toFixed(3));
+    vm.s1 = Number((2 * (vm.e2 - vm.e1) / 13 / 1000).toFixed(3));
+    vm.s2 = Number((2 * (vm.e3 - vm.e2) / 15 / 1000).toFixed(3));
+    vm.s3 = Number((2 * (vm.e4 - vm.e3) / 15 / 1000).toFixed(3));
+    vm.s4 = Number((2 * (vm.e5 - vm.e4) / 13 / 1000).toFixed(3));
+    vm.s5 = Number((-2 * vm.e5 / 7 / 1000).toFixed(3));
 }
 
 function partition() {
