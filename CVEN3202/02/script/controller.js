@@ -882,13 +882,13 @@ function createFlowNet(board, lineList, irregular) {
                             $("#feedback").html(msg.msg);
 
                             $("#feedback").html($("#feedback").html() + "Error of intersections: " + self.e_slope.toFixed(3) + ", Error of cells: " + self.e_cell.toFixed(3));
-                            $("#feedback").html($("#feedback").html() + "<br/><button id='reset' type='button' class='btn btn-primary'>Modify</button>");
+                            $("#feedback").html($("#feedback").html() + "<br/><button id='reset' type='button' class='btn btn-primary btn-lg'>Modify</button>");
                             $("<li>" + self.e_slope.toFixed(3) + ", " + self.e_cell.toFixed(3) + "</li>").appendTo($("#record"));
                             $("#reset").on("click", function() {
                                 $("#reset").html("Clearing, please wait...");
                                 setTimeout(function() {
                                     self.reset();
-                                    $("#feedback").html("Now you can modify your flownet by Ctrl+Click the curve.");
+                                    $("#feedback").html("Now you can modify your flownet by Ctrl+Click the curve, note you cannot delete the existing control point (but can still move them)");
                                 }, 20);
                             });
 
