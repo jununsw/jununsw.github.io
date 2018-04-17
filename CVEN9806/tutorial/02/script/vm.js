@@ -153,7 +153,7 @@ var vm = new Vue({
                         var in1 = $(ev.target).val();
                         in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(3));
                         
-                        if (Math.abs(in1 - ans) < 0.1) {
+                        if (Math.abs(in1 - ans) < 0.01) {
                             $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
                         } else {
                             $(ev.target).prop("disabled", false).css("background", "red");

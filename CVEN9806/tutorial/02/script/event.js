@@ -801,10 +801,10 @@ function showPoints() {
     
     window.points = {};
     window.points.x = [];
-    window.points.x.push(7 + 13*e2/(e1 + e2));
-    window.points.x.push(7 + 13 + 15*e3/(e2 + e3));
-    window.points.x.push(7 + 13 + 15 + 15*e4/(e3 + e4));
-    window.points.x.push(7 + 13 + 15 + 15 + 13*e5/(e4 + e5));
+    window.points.x.push(Number((7 + 13*e2/(e1 + e2)).toFixed(2)));
+    window.points.x.push(Number((7 + 13 + 15*e3/(e2 + e3)).toFixed(2)));
+    window.points.x.push(Number((7 + 13 + 15 + 15*e4/(e3 + e4)).toFixed(2)));
+    window.points.x.push(Number((7 + 13 + 15 + 15 + 13*e5/(e4 + e5)).toFixed(2)));
     
     vm.x1 = window.points.x[0];
     vm.x2 = window.points.x[1];
@@ -826,12 +826,12 @@ function showPoints() {
         });
     }
     
-    vm.s0 = Number((2 * vm.e1 / 7 / 1000).toFixed(3));
+    vm.s0 = Number((2 * (vm.e1 - 0) / 7 / 1000).toFixed(3));
     vm.s1 = Number((2 * (vm.e2 - vm.e1) / 13 / 1000).toFixed(3));
     vm.s2 = Number((2 * (vm.e3 - vm.e2) / 15 / 1000).toFixed(3));
     vm.s3 = Number((2 * (vm.e4 - vm.e3) / 15 / 1000).toFixed(3));
     vm.s4 = Number((2 * (vm.e5 - vm.e4) / 13 / 1000).toFixed(3));
-    vm.s5 = Number((-2 * vm.e5 / 7 / 1000).toFixed(3));
+    vm.s5 = Number((2 * (0 - vm.e5) / 7 / 1000).toFixed(3));
 }
 
 function partition() {
@@ -841,32 +841,99 @@ function partition() {
 }
 
 function plotLoss() {
+    $("#svg-loss").html("");
     var inputs = $('#calculation td[data-col="4"]').find("input");
-    var loss = [3906];
+    var friction = [3906];
     
     for (var i = 0; i < inputs.length; i++) {
         var in1 = inputs.eq(i).val();
         in1 = Number(in1);
-        loss.push(in1);
+        friction.push(in1);
     }
     
-    var pX = [0, 7, this.x1, 20, this.x2, 35, this.x3, 50, this.x4, 63, 70];
+    var pX = [0, 7, vm.x1, 20, vm.x2, 35, vm.x3, 50, vm.x4, 63, 70];
     
     var max = 4200;
-    var min = loss[6] - loss[6]%100 - 200;
+    var min = Math.max(friction[10] - (friction[6] - friction[10]), 0);
     
     JXG.Options.infobox.fontSize = 0;
     
     window.loss = {};
     
     var offsetX = 10;
-    var offsetY = 100
+    var offsetY = 100;
     
-    window.loss.brd = JXG.JSXGraph.initBoard('svg-plot', {
+    window.loss.brd = JXG.JSXGraph.initBoard('svg-loss', {
         boundingbox: [-offsetX, max + offsetY, 70 + offsetX, min - offsetY],  // pi max 3906
         showNavigation: false,
         keepaspectratio: false,
         showCopyright: false,
         axis: false
+    });
+    
+    var pointList = [];
+    var nameList = ['A', 'B', 'P1', 'C', 'P2', 'D', 'P3', 'E', 'P4', 'F', 'G'];
+    
+    pX.forEach(function(ele, idx, arr) {
+        pointList.push(window.loss.brd.create("point", [ele, friction[idx]], {
+            size: 2,
+            name: nameList[idx],
+            fillColor: 'black',
+            strokeColor: 'transparent',
+            highlight: false,
+            fixed: true
+        }));
+    });
+    
+    pointList.forEach(function(ele, idx, arr) {
+        if (idx != (arr.length - 1)) {
+            window.loss.brd.create("segment", [arr[idx], arr[idx + 1]], {
+                strokeColor: 'blue',
+                strokeWidth: 3,
+                highlight: false,
+                fixed: true
+            })
+        }
+    });
+    
+    window.loss.brd.create('arrow', [[0, min], [0, max + offsetY]], {
+        strokeWidth: 3,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.loss.brd.create('arrow', [[0, min], [70 + offsetX, min]], {
+        strokeWidth: 3,
+        strokeColor: 'black',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.loss.brd.create('text', [70, min, 'Distance from left end'], {
+        anchorX: 'right',
+        anchorY: 'bottom',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fixed: true,
+        highlight: false
+    });
+    
+    window.loss.brd.create('text', [offsetX / 2, max, 'P (kN)'], {
+        anchorX: 'left',
+        anchorY: 'top',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fixed: true,
+        highlight: false
+    });
+    
+    window.loss.brd.create('text', [0 - offsetX/5, friction[0], friction[0].toString()], {
+        anchorX: 'right',
+        anchorY: 'middle',
+        fontSize: 16,
+        fontWeight: 'bold',
+        fixed: true,
+        highlight: false
     });
 }
