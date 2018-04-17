@@ -431,9 +431,11 @@ function plot_continue() {
     window.continue = {};
     
     window.continue.end = 70;
-    window.continue.x1 = 10;
-    window.continue.x2 = 30;
-    window.continue.x3 = 50;
+    window.continue.x1 = 7;
+    window.continue.x2 = 20;
+    window.continue.x3 = 35;
+    window.continue.x4 = 50;
+    window.continue.x5 = 63;
     
     window.continue.brd = JXG.JSXGraph.initBoard('svg-continue', {
         boundingbox: [-5, 4000, window.continue.end + 5, -5000],
@@ -464,15 +466,14 @@ function plot_continue() {
         fixed: true
     });
     
-    window.continue.brd.create('segment', [[window.continue.end, 3000], [window.continue.end, -2000]], {
+    window.continue.brd.create('segment', [[window.continue.end, 2000], [window.continue.end, -2000]], {
         strokeWidth: 2,
         strokeColor: 'black',
-        dash: 2,
         highlight: false,
         fixed: true
     });
     
-    window.continue.brd.create('segment', [[0, 0], [window.continue.end + 4, 0]], {
+    window.continue.brd.create('segment', [[-4, 0], [window.continue.end + 4, 0]], {
         strokeWidth: 1,
         strokeColor: 'black',
         dash: 1,
@@ -489,6 +490,12 @@ function plot_continue() {
     }));
     
     window.continue.support.push(window.continue.brd.create('polygon', [[window.continue.x2, -2000], [window.continue.x2 - 1, -2000 - 800], [window.continue.x2 + 1, -2000 - 800]], {
+        fillColor: 'transparent',
+        highlight: false,
+        fixed: true
+    }));
+    
+    window.continue.support.push(window.continue.brd.create('polygon', [[window.continue.x4, -2000], [window.continue.x4 - 1, -2000 - 800], [window.continue.x4 + 1, -2000 - 800]], {
         fillColor: 'transparent',
         highlight: false,
         fixed: true
@@ -527,7 +534,11 @@ function plot_continue() {
         visible: false
     });
     
-    window.continue.glider4 = window.continue.brd.create('segment', [[window.continue.end, 500], [window.continue.end, 1400]], {
+    window.continue.glider4 = window.continue.brd.create('segment', [[window.continue.x4, 500], [window.continue.x4, 1400]], {
+        visible: false
+    });
+    
+    window.continue.glider5 = window.continue.brd.create('segment', [[window.continue.x5, -500], [window.continue.x5, -1400]], {
         visible: false
     });
     
@@ -556,80 +567,55 @@ function plot_continue() {
         strokeColor: 'blue'
     });
     
-    window.continue.glidee4 = window.continue.brd.create('glider', [window.continue.end, 700, window.continue.glider4], {
+    window.continue.glidee4 = window.continue.brd.create('glider', [window.continue.x4, 700, window.continue.glider4], {
         name: '',
         size: 3,
         fillColor: 'blue',
         strokeColor: 'blue'
     });
     
-    
-    
-    window.continue.glidee1.on('drag', function() {
-        var y = window.continue.glidee1.Y();
-        y = Number(y.toFixed(0));
-        y = y + (-y)%10;
-        window.continue.glidee1.moveTo([window.continue.glidee1.X(), y]);
-        window.continue.glidee2.moveTo([window.continue.glidee2.X(), -y]);
-        window.continue.glidee3.moveTo([window.continue.glidee3.X(), y]);
-        window.continue.glidee4.moveTo([window.continue.glidee4.X(), -y]);
-        
-        vm.e = -y;
+    window.continue.glidee5 = window.continue.brd.create('glider', [window.continue.x5, -700, window.continue.glider5], {
+        name: '',
+        size: 3,
+        fillColor: 'blue',
+        strokeColor: 'blue'
     });
     
-    window.continue.glidee3.on('drag', function() {
-        var y = window.continue.glidee3.Y();
-        y = Number(y.toFixed(0));
-        y = y + (-y)%10;
-        window.continue.glidee1.moveTo([window.continue.glidee1.X(), y]);
-        window.continue.glidee2.moveTo([window.continue.glidee2.X(), -y]);
-        window.continue.glidee3.moveTo([window.continue.glidee3.X(), y]);
-        window.continue.glidee4.moveTo([window.continue.glidee4.X(), -y]);
-        
-        vm.e = -y;
+    window.continue.glidee6 = window.continue.brd.create('point', [window.continue.end, 0], {
+        visible: false
     });
     
-    window.continue.glidee2.on('drag', function() {
-        var y = window.continue.glidee2.Y();
-        y = Number(y.toFixed(0));
-        y = y + (y)%10;
-        window.continue.glidee1.moveTo([window.continue.glidee1.X(), -y]);
-        window.continue.glidee2.moveTo([window.continue.glidee2.X(), y]);
-        window.continue.glidee3.moveTo([window.continue.glidee3.X(), -y]);
-        window.continue.glidee4.moveTo([window.continue.glidee4.X(), y]);
-        
-        vm.e = y;
+    window.continue.control = [window.continue.glidee0, window.continue.glidee1, window.continue.glidee2, window.continue.glidee3, window.continue.glidee4, window.continue.glidee5, window.continue.glidee6];
+    
+    window.continue.control.forEach(function(ele, idx, arr) {
+        ele.on('drag', function() {
+            var y = ele.Y();
+            y = Number(y.toFixed(0));
+            var remaider = Math.abs(y) % 10;
+            y = ((y > 0) ? (y - remaider) : (y + remaider));
+            
+            ele.moveTo([ele.X(), y]);
+            
+            if (idx == 1) {
+                vm.e1 = y;
+            } else if (idx == 2) {
+                vm.e2 = y;
+            } else if (idx == 3) {
+                vm.e3 = y;
+            } else if (idx == 4) {
+                vm.e4 = y;
+            } else if (idx == 5) {
+                vm.e5 = y;
+            }
+        });
     });
     
-    window.continue.glidee4.on('drag', function() {
-        var y = window.continue.glidee4.Y();
-        y = Number(y.toFixed(0));
-        y = y + (y)%10;
-        window.continue.glidee1.moveTo([window.continue.glidee1.X(), -y]);
-        window.continue.glidee2.moveTo([window.continue.glidee2.X(), y]);
-        window.continue.glidee3.moveTo([window.continue.glidee3.X(), -y]);
-        window.continue.glidee4.moveTo([window.continue.glidee4.X(), y]);
-        
-        vm.e = y;
-    });
-    
-    window.continue.brd.create('curve', [function(t) {
-        return t;
-    }, function(t) {
-        var a = vm.e;
-        return -a * Math.sin(t * 2 * Math.PI / 40);
-    }, 0, window.continue.end], {
-        strokeColor: 'blue',
-        strokeWidth: 3,
-        highlight: false,
-        fixed: true
-    });
+    showLength();
+    showCurve();
 }
 
-function partition() {
-    [window.continue.glidee0, window.continue.glidee1, window.continue.glidee2, window.continue.glidee3, window.continue.glidee4].forEach(function(ele, idx, arr) {
-        ele.setAttribute({visible: false});
-        
+function showLength() {
+    window.continue.control.forEach(function(ele, idx, arr) {
         window.continue.brd.create('segment', [ele, [ele.X(), -3500]], {
             strokeWidth: 1,
             strokeColor: 'black',
@@ -639,28 +625,9 @@ function partition() {
         });
     });
     
-    [20, 40, 60].forEach(function(ele, idx, arr) {
-        window.continue.glidee0 = window.continue.brd.create('point', [ele, 0], {
-            name: '',
-            size: 3,
-            fillColor: 'blace',
-            strokeColor: 'transparent',
-            fixed: true,
-            highlight: false
-        });
-        
-        window.continue.brd.create('segment', [[ele, 0], [ele, -3500]], {
-            strokeWidth: 1,
-            strokeColor: 'black',
-            dash: 1,
-            highlight: false,
-            fixed: true
-        });
-    });
-    
-    [1, 2, 3, 4, 5, 6, 7, 8].forEach(function(ele, idx, arr) {
-        if (ele != 8) {
-            window.continue.brd.create('text', [(ele - 1)*10 + 5, -3500, '10m'], {
+    [0, 7, 20, 35, 50, 63, 70].forEach(function(ele, idx, arr) {
+        if (ele != 70) {
+            window.continue.brd.create('text', [(arr[idx] + arr[idx + 1]) / 2, -3500, '<span style="font-style: normal; font-weight: bold;">' + (arr[idx + 1] - arr[idx]).toFixed(0) + '</span>'], {
                 anchorX: 'middle',
                 anchorY: 'middle',
                 fontSize: 16,
@@ -669,12 +636,187 @@ function partition() {
             });
         }
         
-        window.continue.brd.create('text', [(ele - 1)*10, -4000, '<span style="font-style: italic; font-weight: bold;">' + String.fromCharCode(64 + ele) + '</span>'], {
+        window.continue.brd.create('text', [ele, -3800, '<span style="font-style: italic; font-weight: bold;">' + String.fromCharCode(65 + idx) + '</span>'], {
             anchorX: 'middle',
             anchorY: 'middle',
             fontSize: 18,
             highlight: false,
             fixed: true
         });
+    });
+}
+
+function showCurve() {
+    var c11 = window.continue.brd.create('point', [function() {
+        return window.continue.glidee1.X() - 3;
+    }, function () {
+        return window.continue.glidee1.Y();
+    }], {
+        visible: false
+    });
+    
+    var c12 = window.continue.brd.create('point', [function() {
+        return window.continue.glidee1.X() - 1;
+    }, function () {
+        return window.continue.glidee1.Y();
+    }], {
+        visible: false
+    });
+    
+    var c1 = window.continue.brd.create('curve', JXG.Math.Numerics.bezier([window.continue.glidee0, c11, c12, window.continue.glidee1]), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+    
+    var c21 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee1.X() + window.continue.glidee2.X()) / 2;
+    }, function () {
+        return window.continue.glidee1.Y();
+    }], {
+        visible: false
+    });
+    
+    var c22 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee1.X() + window.continue.glidee2.X()) / 2;
+    }, function () {
+        return window.continue.glidee2.Y();
+    }], {
+        visible: false
+    });
+    
+    var c2 = window.continue.brd.create('curve', JXG.Math.Numerics.bspline([window.continue.glidee1, c21, c22, window.continue.glidee2], 4), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+    
+    var c31 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee2.X() + window.continue.glidee3.X()) / 2;
+    }, function () {
+        return window.continue.glidee2.Y();
+    }], {
+        visible: false
+    });
+    
+    var c32 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee2.X() + window.continue.glidee3.X()) / 2;
+    }, function () {
+        return window.continue.glidee3.Y();
+    }], {
+        visible: false
+    });
+    
+    var c3 = window.continue.brd.create('curve', JXG.Math.Numerics.bspline([window.continue.glidee2, c31, c32, window.continue.glidee3], 4), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+    
+    var c41 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee3.X() + window.continue.glidee4.X()) / 2;
+    }, function () {
+        return window.continue.glidee3.Y();
+    }], {
+        visible: false
+    });
+    
+    var c42 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee3.X() + window.continue.glidee4.X()) / 2;
+    }, function () {
+        return window.continue.glidee4.Y();
+    }], {
+        visible: false
+    });
+    
+    var c4 = window.continue.brd.create('curve', JXG.Math.Numerics.bspline([window.continue.glidee3, c41, c42, window.continue.glidee4], 4), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+    
+    var c51 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee4.X() + window.continue.glidee5.X()) / 2;
+    }, function () {
+        return window.continue.glidee4.Y();
+    }], {
+        visible: false
+    });
+    
+    var c52 = window.continue.brd.create('point', [function() {
+        return (window.continue.glidee4.X() + window.continue.glidee5.X()) / 2;
+    }, function () {
+        return window.continue.glidee5.Y();
+    }], {
+        visible: false
+    });
+    
+    var c5 = window.continue.brd.create('curve', JXG.Math.Numerics.bspline([window.continue.glidee4, c51, c52, window.continue.glidee5], 4), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+    
+    var c61 = window.continue.brd.create('point', [function() {
+        return window.continue.glidee5.X() + 1;
+    }, function () {
+        return window.continue.glidee5.Y();
+    }], {
+        visible: false
+    });
+    
+    var c62 = window.continue.brd.create('point', [function() {
+        return window.continue.glidee5.X() + 3;
+    }, function () {
+        return window.continue.glidee5.Y();
+    }], {
+        visible: false
+    });
+    
+    var c6 = window.continue.brd.create('curve', JXG.Math.Numerics.bezier([window.continue.glidee5, c61, c62, window.continue.glidee6]), {
+        strokeColor: 'blue',
+        strokeWidth: 3,
+        highlight: false,
+        fixed: true
+    });
+}
+
+function partition() {
+    window.continue.control.forEach(function(ele, idx, arr) {
+        ele.setAttribute({visible: false});
+    });
+}
+
+function plotLoss() {
+    var inputs = $('#calculation td[data-col="4"]').find("input");
+    var loss = [3906];
+    
+    for (var i = 0; i < 6; i++) {
+        var in1 = inputs.eq(i).val();
+        in1 = Number(in1);
+        loss.push(in1);
+    }
+    
+    var max = 4200;
+    var min = loss[6] - loss[6]%100 - 200;
+    
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.loss = {};
+    
+    var offsetX = 10;
+    var offsetY = 100
+    
+    window.loss.brd = JXG.JSXGraph.initBoard('svg-plot', {
+        boundingbox: [-offsetX, max + offsetY, 70 + offsetX, min - offsetY],  // pi max 3906
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: false
     });
 }

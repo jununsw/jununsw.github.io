@@ -47,7 +47,7 @@
         <div class="container" id="myapp">
             <ul>
                 <li><a href="#p1" class="bold">1: simply-supported beam</a></li>
-                <li><a href="#p2" class="bold" style="display: none;">2: continuous beam (optional)</a></li>
+                <li><a href="#p2" class="bold">2: continuous beam</a></li>
             </ul>
             
             <div id='p1'>
@@ -139,7 +139,7 @@
                                 <li>&Delta;P<sub>i</sub> = <input id='dp' size="6"/> (rounded to 1kN, to reset, clear the input box and press ENTER)</li>
                                 <li>L<sub>set</sub> = <span id="lset">0.00</span> m</li>
                             </ul>
-                            <button class="btn btn-primary" v-on:click="part3($event);">Complete and Submit</button><span></span>
+                            <button class="btn btn-primary" v-on:click="part3($event);">Complete this tab</button><span></span>
                         </section>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                             </div>
                             <div class="col-sm-12">
                                 <p>
-                                    Height of the beam is 2m. The first span is 30m and the second span is 40m.
+                                    Height of the beam is 2m. Length of each span is shown in the figure below (in metre)
                                 </p>
                             </div>
                         </div>
@@ -185,51 +185,43 @@
                         
                         <div class="col-sm-12">
                             <div class="h4 question">
-                                You can drag the blue points to configure the maximum eccentricity at mid-span and at the support (excluding left end). When ready, press Start button<br/><br/>
-                                Maximum eccentricity: {{e}} mm<br/><br/>
+                                You can drag the blue points to configure the maximum eccentricity at mid-span and at the support (excluding both end). Eccentricities of each point are<br/><br/>
                             </div>
+                            <table class="table table-bordered" style="font-weight: bold; font-size: 1em; width: 80%;">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="width: 8em;">B</th>
+                                        <th style="width: 8em;">C</th>
+                                        <th style="width: 8em;">D</th>
+                                        <th style="width: 8em;">E</th>
+                                        <th style="width: 8em;">F</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Eccentricity (mm)</td>
+                                        <td style="width: 8em;">{{Math.abs(e1)}}</td>
+                                        <td style="width: 8em;">{{Math.abs(e2)}}</td>
+                                        <td style="width: 8em;">{{Math.abs(e3)}}</td>
+                                        <td style="width: 8em;">{{Math.abs(e4)}}</td>
+                                        <td style="width: 8em;">{{Math.abs(e5)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         
                         <div class="col-sm-12 h4 section">
                             <button class="btn btn-primary" v-on:click="tab2($event);">Start</button>
                             <section>
                                 <p>
-                                    The tendon is analysed as segments of parabola. Segments are partitioned by points of maximum eccentricity and inflection points (where curvature is zero). The inflection points are plotted in the figure as black points and the length of each segments are also shown in the figure.
-                                </p>
-                                <p style="font-style: italic;">
-                                    <br/>Note: in this example, the profile of the tendon is highly simplified, just for education purpose.
+                                    The tendon is analysed as segments of parabola. Segments are partitioned by points of maximum eccentricity.<br/>
+                                    &alpha; can be calculated as 2(e<sub>1</sub> + e<sub>2</sub>)/L where e<sub>1</sub>, e<sub>2</sub> are the eccentricity at both end of a segment<br/>
                                 </p>
                                 <p>
-                                    <br/>Initial force at stretching end is:<br/><br/>
-                                    P<sub>0</sub> = 0.75 &times; f<sub>p</sub> &times; A<sub>p</sub> = 3906 kN
+                                    <br/>Initial force at stretching end is:<br/>
+                                    P<sub>0</sub> = 0.75 &times; f<sub>p</sub> &times; A<sub>p</sub> = 3906 kN<br/><br/>
                                 </p>
-                                <p>Slopes at point A - H are</p>
-                                <table id="slope" class="table table-bordered" style="font-weight: normal; font-size: 0.8em; width: 80%;">
-                                    <thead>
-                                        <tr>
-                                            <th>A</th>
-                                            <th>B</th>
-                                            <th>C</th>
-                                            <th>D</th>
-                                            <th>E</th>
-                                            <th>F</th>
-                                            <th>G</th>
-                                            <th>H</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{e * 2 / 20 / 1000}}</td>
-                                            <td>0</td>
-                                            <td>{{e * 2 / 20 / 1000}}</td>
-                                            <td>0</td>
-                                            <td>{{e * 2 / 20 / 1000}}</td>
-                                            <td>0</td>
-                                            <td>{{e * 2 / 20 / 1000}}</td>
-                                            <td>0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                                 <p>Complete the following the table, and note:</p>
                                 <ul>
                                     <li>P<sub>(&bull;)</sub> = P<sub>0</sub>e<sup>-&Sigma;(&mu;&alpha;+kx)</sup> denotes the force at the end of each segment (rounded to 1 kN)</li>
@@ -237,9 +229,6 @@
                                     <li>Press ENTER after input. If correct, the input box will turn gold; if incorrect, the input box will turn red</li>
                                     <li>Next part will show after all the input boxes are answered correctly</li>
                                 </ul>
-                                <p>
-                                    <br/>
-                                </p>
                                 <table id="calculation" class="table table-bordered" style="font-weight: normal; font-size: 0.8em; width: 80%;">
                                     <thead>
                                         <tr>
@@ -256,7 +245,7 @@
                                             <td data-col="1"><input size="6"/></td>
                                             <td data-col="2"><input size="6"/></td>
                                             <td data-col="3"><input size="6"/></td>
-                                            <td data-col="4">P<sub>B</sub> = <input id="pb" size="6"/> kN</td>
+                                            <td data-col="4">P<sub>B</sub> = <input size="6"/> kN</td>
                                         </tr>
                                         <tr data-seg="2">
                                             <td>B-C</td>
@@ -293,35 +282,14 @@
                                             <td data-col="3"><input size="6"/></td>
                                             <td data-col="4">P<sub>G</sub> = <input size="6"/> kN</td>
                                         </tr>
-                                        <tr data-seg="7">
-                                            <td>G-H</td>
-                                            <td data-col="1"><input size="6"/></td>
-                                            <td data-col="2"><input size="6"/></td>
-                                            <td data-col="3"><input size="6"/></td>
-                                            <td data-col="4">P<sub>H</sub> = <input size="6"/> kN</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </section>
-                            <section id="last" style="display: none;">
+                            <section style="display: none;">
                                 <p>
-                                    Let p be the loss of prestress per length in the first segment, p = (P<sub>0</sub> - P<sub>B</sub>) / L<sub>AB</sub> = <span id="p-value"></span><br/><br/>
-                                    Your can calculate the anchorage loss using the following formula
+                                    Friction loss is plotted as follows
                                 </p>
-                                <p>
-                                    \[ L_{set}= \sqrt{\frac{\Delta_{s}A_{p}E_{p}}{p}} \]
-                                </p>
-                                <p>
-                                    \[ \Delta_{p} = 2p L_{set} \]
-                                </p>
-                                <div style="display: none;">
-                                    <p>
-                                        Therefore &Delta;<sub>p</sub> = <input id='finial' size="6"> kN (rounded to 1 kN)
-                                    </p>
-                                    <p>
-
-                                    </p>
-                                </div>
+                                <div id="svg-loss" style="width: 600px; height: 500px; margin: 0 auto;"></div>
                             </section>
                         </div>
                     </div>

@@ -4,7 +4,12 @@ var vm = new Vue({
     el: "#myapp",
     data: {
         prob: prob,
-        e: 700
+        e: 700,
+        e1: -700,
+        e2: 700,
+        e3: -700,
+        e4: 700,
+        e5: -700
     },
     computed: {
         slope0: function() {
@@ -21,6 +26,54 @@ var vm = new Vue({
                 return Math.abs(this.slope0) - Math.abs(this.slope(x));
             } else {
                 return Math.abs(this.slope0) + Math.abs(this.slope(x));
+            }
+        },
+        
+        checkTable: function(row, col) {
+            var p0 = 3906;
+            
+            var length = [7, 13, 15, 15, 13, 7];
+            var ecce = [0, this.e1, this.e2, this.e3, this.e4, this.e5];
+            var alpha = ecce.map(function(ele, idx, arr) {
+                if (idx == 5) {
+                    var r = 2 * Math.abs(ecce[idx]) / length[idx] / 1000;
+                    return Number(r.toFixed(3));
+                } else {
+                    var r = 2 * (Math.abs(ecce[idx]) + Math.abs(ecce[idx + 1])) / length[idx] / 1000;
+                    return Number(r.toFixed(3));
+                }
+            });
+            
+            var mu = alpha.map(function(ele, idx, arr) {
+                var r = 0.2*ele + 0.002*length[idx];
+                return Number(r.toFixed(3));
+            });
+            
+            var sigma = mu.map(function(ele, idx, arr) {
+                var r = 0;
+                for (var i = 0; i <= idx; i++) {
+                    r += mu[i];
+                }
+                
+                return -Number(r.toFixed(3));
+            });
+            
+            var p = sigma.map(function(ele, idx, arr) {
+                var r = p0 * Math.exp(ele);
+                
+                return Number(r.toFixed(0));
+            });
+            
+            if (col == 1) {
+                return alpha[row - 1];
+            } else if (col == 2) {
+                return mu[row - 1];
+            } else if (col == 3) {
+                return sigma[row - 1];
+            } else if (col == 4) {
+                return p[row - 1];
+            } else {
+                return false;
             }
         },
         
@@ -79,49 +132,13 @@ var vm = new Vue({
                 if (ev.keyCode == 13) {
                     $(ev.target).css("background-color", "white");
                     var col = Number($(ev.target).closest("td").attr("data-col"));
-                    var seg = Number($(ev.target).closest("tr").attr("data-seg"));
+                    var row = Number($(ev.target).closest("tr").attr("data-seg"));
                     
-                    if (col == 1) {
-                        var ans = vm.e * 2 / 20 / 1000;
-                        
+                    var ans = vm.checkTable(row, col);
+                    
+                    if (col == 4) {
                         var in1 = $(ev.target).val();
                         in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(3));
-                        
-                        if (Math.abs(in1 - ans) < 0.1) {
-                            $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
-                        } else {
-                            $(ev.target).prop("disabled", false).css("background", "red");
-                        }
-                    } else if (col == 2) {
-                        var alpha = vm.e * 2 / 20 / 1000;
-                        var ans = Number((alpha*0.2 + 0.002*10).toFixed(3));
-                        
-                        var in1 = $(ev.target).val();
-                        in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(3));
-                        
-                        if (Math.abs(in1 - ans) < 0.1) {
-                            $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
-                        } else {
-                            $(ev.target).prop("disabled", false).css("background", "red");
-                        }
-                    } else if (col == 3) {
-                        var alpha = vm.e * 2 / 20 / 1000;
-                        var ans = Number((-(alpha*0.2 + 0.002*10) * seg).toFixed(3));
-                        
-                        var in1 = $(ev.target).val();
-                        in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(3));
-                        
-                        if (Math.abs(in1 - ans) < 0.1) {
-                            $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
-                        } else {
-                            $(ev.target).prop("disabled", false).css("background", "red");
-                        }
-                    } else if (col == 4) {
-                        var alpha = vm.e * 2 / 20 / 1000;
-                        var ans = Number((Math.exp(-(alpha*0.2 + 0.002*10) * seg) * 3906).toFixed(0));
-                        
-                        var in1 = $(ev.target).val();
-                        in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(0));
                         
                         if (Math.abs(in1 - ans) < 2) {
                             $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
@@ -129,29 +146,28 @@ var vm = new Vue({
                             $(ev.target).prop("disabled", false).css("background", "red");
                         }
                     } else {
+                        var in1 = $(ev.target).val();
+                        in1 = (in1 == "") ? NaN : Number(Number(in1).toFixed(3));
                         
+                        if (Math.abs(in1 - ans) < 0.1) {
+                            $(ev.target).prop("disabled", true).css("background", "#FFF8DC").val(ans.toString());
+                        } else {
+                            $(ev.target).prop("disabled", false).css("background", "red");
+                        }
                     }
                     
-                    // check if all correct
                     var allCorrect = (($("#calculation").find("input").filter(":not([disabled])").length) == 0);
                     
                     if (allCorrect) {
-                        vm.last();
+                        vm.tab2_2(e);
                     }
                 }
             });
         },
         
-        last: function(e) {
-            $("#last").show();
-            
-            $("#p-value").html(((3609 - Number($("#pb").val())) / 10).toFixed(1) + " kN/m");
-            
-            $("#final").on("keypress", function(ev) {
-                if (ev.keyCode == 13) {
-                    
-                }
-            });
+        tab2_2: function(e) {
+            $(e.target).closest(".section").find("section:nth-of-type(2)").css("display", "block");
+            plotLoss();
         }
     }
 });
