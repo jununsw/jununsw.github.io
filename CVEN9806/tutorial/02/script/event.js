@@ -2,6 +2,20 @@ function init() {
     $("#myapp").tabs();
     plot_profile();
     plot_continue();
+    
+    $(document).keydown(function(event) {
+        if (event.which == "17") {
+            $("#debug").css("display", "inline");
+            $("#debug").click(function() {
+                vm.debug();
+            });
+        }
+    });
+    
+    $(document).keyup(function() {
+        $("#debug").hide();
+        $("#debug").off("click");
+    });
 }
 
 function changeColor(e) {
@@ -874,6 +888,8 @@ function plotLoss() {
     var pointList = [];
     var nameList = ['A', 'B', 'P1', 'C', 'P2', 'D', 'P3', 'E', 'P4', 'F', 'G'];
     
+    window.pointList = pointList;
+    
     pX.forEach(function(ele, idx, arr) {
         pointList.push(window.loss.brd.create("point", [ele, friction[idx]], {
             size: 2,
@@ -936,4 +952,13 @@ function plotLoss() {
         fixed: true,
         highlight: false
     });
+    
+    vm.dp1 = Number(((friction[1] - friction[0]) / pX[1]).toFixed(1));
+    vm.dp2 = Number(((friction[9] - friction[10]) / pX[1]).toFixed(1));
+    
+    for (var i = 0; i < friction.length - 1; i++) {
+        vm.pav += 0.5 * (friction[i] + friction[i + 1]) * (pX[i + 1] - pX[i]);
+    }
+    
+    vm.pav = Number(vm.pav.toFixed(1));
 }

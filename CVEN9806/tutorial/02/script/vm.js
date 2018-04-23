@@ -21,11 +21,26 @@ var vm = new Vue({
         x2: 27.5,
         x3: 42.5,
         x4: 56.5,
-        x5: 70
+        x5: 70,
+        dp1: 10,
+        dp2: 10,
+        pav: 0
     },
     computed: {
         slope0: function() {
             return 4 * (-prob.e / 1000 / prob.span);
+        },
+        
+        lset1: function() {
+            var r = 6 * 195000 * 2800 / this.dp1;
+            r = Math.sqrt(Math.abs(r)) / 1000;
+            return Math.min(70, Number(r.toFixed(1)));
+        },
+        
+        lset2: function() {
+            var r = 6 * 195000 * 2800 / this.dp2;
+            r = Math.sqrt(Math.abs(r)) / 1000;
+            return Math.min(70, Number(r.toFixed(1)));
         }
     },
     methods: {
@@ -171,6 +186,23 @@ var vm = new Vue({
         
         tab2_2: function(e) {
             $(e.target).closest(".section").find("section:nth-of-type(2)").css("display", "block");
+            plotLoss();
+        },
+        
+        debug: function(e) {
+            $("#calculation").find("input").each(function(idx, ele) {
+                var col = Number($(ele).closest("td").attr("data-col"));
+                var row = Number($(ele).closest("tr").attr("data-seg"));
+                
+                var ans = vm.checkTable(row, col);
+                $(ele).val(ans.toString());
+            });
+            
+            $("#calculation").find("input").each(function(idx, ele) {
+                $(ele).prop("disabled", true).css("background", "#FFF8DC");
+            });
+            
+            $("#debug").closest(".section").find("section:nth-of-type(2)").css("display", "block");
             plotLoss();
         }
     }
