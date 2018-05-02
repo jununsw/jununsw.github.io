@@ -35,7 +35,7 @@
                                 A simply supported post-tensioned girder spans 40 metres and carries uniform load of 22 kN/m in addtition to its self weight.<br/><br/>
                                 The beam is reinforced with 55-12.7 mm super grade strands in one duct (duct diameter is 140 mm), which is paraboic with zero eccentricity at the ends and an eccentricity of 700 mm at mid-span. 8N28 conventional reinforcement bars are used in the bottom flange.<br/><br/>
                                 Dimensions are shown in the following figure. The figure shows the cross-section at mid-span (eccentricity of 700 mm).<br/><br/>
-                                Follow the instructions below to solve the shear capacity, and the prestress force will be given during the process.
+                                Follow the instructions below to solve the shear capacity and design stirrups (using N12 stirrups). Prestress force will be given during the process.
                             </p>
                             <div class="row" style="margin-top: 2em;">
                                 <div class="col-sm-8">
@@ -89,11 +89,135 @@
                                 </p>
                             </section>
                             <section>
-                                <h4 style="font-weight: bold;">Step 2. Determine Factored Design Shear Force and Moment</h4>
+                                <h4 style="font-weight: bold;">Step 2. Determine Factored Design Shear Force and Moment at x = 1m</h4>
                                 <p class="answer">
+                                    Factored design shear force at 1m from the support: V* = <input size="6" onkeypress="question_check(event, 1159, 0);"/> kN (rounded to 1 kN)<br/><br/>
+                                    Factored design moment at 1m from the support: M* = <input size="6" onkeypress="question_check(event, 1190, 0);"/> kNm (rounded to 1 kN)<br/><br/>
+                                    Assume the prestress force P<sub>e</sub> at 1m from support to be 6500 kN<br/>
+                                    Vertical component of Prestress Force P<sub>v</sub> = <input size="6" onkeypress="question_check(event, 432, 0);"/> (rounded to 1 kN)
+                                    <i class="far fa-question-circle" title="You need to calculate the slope of the tendon at 1m based on the shape (0 at support, 700 mm eccentricity at mid-span)"></i>
                                 </p>
                             </section>
-                            <section><strong>This question is finished</strong></section>
+                            <section>
+                                <h4 style="font-weight: bold;">Step 3. Check Shear-cracking at x = 1m, P<sub>e</sub> = 6500 kN</h4>
+                                <p class="answer">
+                                    Bending moment M<sub>o</sub> is calculated as: \( M_{o} = Z_{b} \left ( \frac{P_{e}}{A} +  \frac{P_{e} \times e}{Z_{b}} \right ) \) <br/>
+                                    M<sub>o</sub> = <input size="6" onkeypress="question_check(event, 3.372, 1);"/> &times; 10<sup>3</sup> kNm (3 decimals)<br/><br/>
+                                    Therefore V<sub>o</sub> = <input size="6" onkeypress="question_check(event, 3.240, 2);"/> &times; 10<sup>3</sup> kN (3 decimals)
+                                    <i class="far fa-question-circle" title="Mo&times;V*/M*, use the Mo rounded above"></i><br/><br/>
+                                    Then determine coefficients for V<sub>uc</sub>:
+                                </p>
+                                <ul>
+                                    <li>
+                                        d<sub>0</sub> is given: 1900 mm
+                                    </li>
+                                    <li>
+                                        b<sub>v</sub> = <input size="6" onkeypress="question_check(event, 280, 1);"/> mm
+                                        <i class="far fa-question-circle" title="bw - &Phi;/2"></i>
+                                    </li>
+                                    <li>
+                                        &beta;<sub>1</sub> = <input size="6" onkeypress="question_check(event, 1.1, 1);"/>
+                                        <i class="far fa-question-circle" title="must not be smaller than its minimum required value"></i>
+                                    </li>
+                                    <li>
+                                        &beta;<sub>2</sub> = <input size="6" onkeypress="question_check(event, 1.0, 1);"/>
+                                        <i class="far fa-question-circle" title="no axial force is presented"></i>
+                                    </li>
+                                </ul>
+                                <p>
+                                    Note: \( V_{uc} = \beta_{1} \beta_{2} b_{v} d_{0} \sqrt[3]{\frac{(A_{st}+A_{pt}) \times f'_{c}}{b_{v} d_{0}}} + V_{0} + P_{V} \) <br/><br/>
+                                    Therefore &Phi;V<sub>uc</sub> = <input size="6" onkeypress="question_check(event, 2.947, 2);"/> &times; 10<sup>3</sup> kN (3 decimals), 
+                                    which is <select onchange="choice_check(event, 'ok');">
+                                        <option disabled selected value> -- select an option -- </option>
+                                        <option>ok</option>
+                                        <option>not ok</option>
+                                    </select>
+                                </p>
+                            </section>
+                            <section>
+                                <h4 style="font-weight: bold;">Step 4. Web Shear at centroid, x = 1m</h4>
+                                <div class="row">
+                                    <p class="answer col-xs-8">
+                                        first moment of area Q is 29.975 &times; 10<sup>7</sup> mm<sup>3</sup>, P<sub>e</sub> = 6500 kN <br/><br/>
+                                        The cross-section below the centroid is shown on the right. We need to calculate the shear stress at centroid level to determine V<sub>t</sub>, by using Mohr's condition<br/><br/>
+                                        \( \sigma_{1} = \sqrt{(\sigma / 2)^{2} + \tau ^{2}} + \sigma / 2 \), where<br/><br/>
+                                        principle tensile stress \( 0.33 \sqrt{f'_{c}} = \) 2.1 MPa<br/><br/>
+                                        Normal stress at centroid &sigma; = <input size="6" onkeypress="question_check(event, -6.7, 1);"/> MPa (rounded to 0.001 MPa)
+                                        <i class="far fa-question-circle" title="Negative value for compression"></i><br/><br/>
+                                        Therefore the shear stress &tau; = <input size="6" onkeypress="question_check(event, 4.299, 1);"/> MPa (rounded to 0.001 MPa)<br/><br/>
+                                        And V<sub>t</sub> = <input size="6" onkeypress="question_check(event, 2.239, 1);"/> &times; 10<sup>3</sup> kN (3 decimals)<br/><br/>
+                                        &Phi;V<sub>uc</sub> = &Phi;(V<sub>t</sub>+P<sub>V</sub>) = <input size="6" onkeypress="question_check(event, 1.87, 1);"/> &times; 10<sup>3</sup> kN (3 decimals)
+                                    </p>
+                                    <div id="web-cen" class="col-xs-4" style="width: 250px; height: 250px;"></div>
+                                </div>
+                            </section>
+                            <section>
+                                <h4 style="font-weight: bold;">Step 5. Web Shear at tendon level, x = 1m</h4>
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <p class='answer'>
+                                            The first moment of area Q is 257.58 &times; 10<sup>7</sup> mm<sup>3</sup>,<br/>
+                                            Second moment of area I is 430.43 &times; 10<sup>9</sup> mm<sup>4</sup>,<br/>
+                                            e = 68 mm, P<sub>e</sub> = 6500 kN <br/><br/>
+                                            Still use Mohr's condition, but note (see more explanation when hoving on <i class="far fa-question-circle"></i>):
+                                        </p>
+                                        <ul>
+                                            <li>
+                                                normal stress &sigma; is calulated at tendon level
+                                                <i class="far fa-question-circle" title="&sigma; = -Pe/A + Pe&times;e/Z + Mt/Z"></i>
+                                            </li>
+                                            <li>
+                                                M<sub>t</sub> is related to V<sub>t</sub>
+                                                <i class="far fa-question-circle" title="Mt = Vt &times; M* / V*"></i>
+                                            </li>
+                                            <li>
+                                                Efficient width at tendon level b<sub>eff</sub> = b<sub>w</sub> - &Phi;/2
+                                            </li>
+                                            <li>
+                                                Principle tensile stress is still \( 0.33 \sqrt{f'_{c}} = \) 2.1 MPa
+                                            </li>
+                                        </ul>
+                                        <p class='answer'>
+                                            By solving the Mohr's condition, we have<br/><br/>
+                                            V<sub>t</sub> = <input size="6" onkeypress="question_check(event, 1.98, 1);"/> &times; 10<sup>3</sup> kN (3 decimals)<br/><br/>
+                                            &Phi;V<sub>uc</sub> = &Phi;(V<sub>t</sub>+P<sub>V</sub>) = <input size="6" onkeypress="question_check(event, 1.688, 1);"/> &times; 10<sup>3</sup> kN (3 decimals)
+                                        </p>
+                                    </div>
+                                    <div id="web-ten" class="col-xs-4" style="width: 250px; height: 250px;"></div>
+                                </div>
+                            </section>
+                            <section>
+                                <h4 style="font-weight: bold;">Step 6. Select Stirrup</h4>
+                                <p class="answer">
+                                    using N12 stirrups (2-legs: 220mm<sub>2</sub>)<br/><br/>
+                                    Calculate V<sub>u,min</sub> for &Phi;V<sub>u,min</sub> &gt; V*<br/><br/>
+                                    \( V_{u,min} = V_{uc} + max(0.1 \sqrt{f'_{c}},0.6)b_{v}d_{0} \)
+                                    Therefore is 
+                                    <select onchange="choice_check(event, 'ok');">
+                                        <option disabled selected value> -- select an option -- </option>
+                                        <option>ok</option>
+                                        <option>not ok</option>
+                                    </select><br/><br/>
+                                    And minimum of stirrup spacing can be 
+                                    <select onchange="choice_check(event, '500');">
+                                        <option disabled selected value> -- select an option -- </option>
+                                        <option>300</option>
+                                        <option>400</option>
+                                        <option>500</option>
+                                        <option>600</option>
+                                        <option>700</option>
+                                        <option>800</option>
+                                        <option>900</option>
+                                    </select> mm
+                                </p>
+                            </section>
+                            <section>
+                                <h4 style="font-weight: bold;">
+                                    Design of spacing for x = 1m is completed.<br/><br/>
+                                    You need to do the same procedure through the beam, note if M* is greater than the cracking moment at a certain section, web-shear cracking does not need to be considered.<br/><br/>
+                                    You can calculate other location of the cross-section by yourself. This module is completed.
+                                </h4>
+                            </section>
                         </div>
                     </div>
                 </div>

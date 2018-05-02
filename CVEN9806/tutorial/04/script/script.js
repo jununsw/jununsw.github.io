@@ -6,6 +6,8 @@ function changeColor(e) {
 function init() {
     createTest('svg-block');
     createDiagram('svg-diagram');
+    createWeb('web-cen', 120);
+    createTendon('web-ten', 120);
     
     $(document).tooltip({
         tooltipClass: "mytooltip"
@@ -51,7 +53,6 @@ function choice_check(e, co) {
     }
 }
 
-/*
 function question_check(e, co, tol) {
     if (e.keyCode == 13) {
         var in1 = $(e.target).val();
@@ -71,7 +72,6 @@ function question_check(e, co, tol) {
         }
     }
 }
-*/
 
 function createTest(brdId) {
     var offsetX = 100;
@@ -428,6 +428,219 @@ function createDiagram(brdId) {
         anchorX: 'middle',
         anchorY: 'top',
         fontSize: 16,
+        highlight: false,
+        fixed: true
+    });
+}
+
+function createWeb(brdId, e) {
+    var offsetX = 100;
+    var offsetY = 150;
+    
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.web = {};
+    
+    let width = 800;
+    let height = 1000;
+    
+    let ratio = (width + offsetX*2) / (height + offsetY*2);
+    
+    $("#" + brdId).height($("#" + brdId).width() / ratio);
+    
+    window.web.brd = JXG.JSXGraph.initBoard(brdId, {
+        boundingbox: [-offsetX, height + offsetY, width + offsetX, -offsetY],
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: false
+    });
+    
+    let polygon = [];
+    
+    polygon.push(window.web.brd.create('point', [0, 0], {visible: false}));
+    polygon.push(window.web.brd.create('point', [800, 0], {visible: false}));
+    polygon.push(window.web.brd.create('point', [800, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [0, 300], {visible: false}));
+    
+    window.web.cross1 = window.web.brd.create('polygon', polygon, {
+        fillColor: "#000000",
+        opacity: 0.6,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.cross1.borders.forEach(function(ele, idx, arr) {
+        ele.setAttribute({
+            strokeWidth: 3,
+            strokeColor: '#000080',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    polygon = [];
+    
+    polygon.push(window.web.brd.create('point', [(800 - 350) / 2, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350)/2 + 350, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350)/2 + 350, 1000], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350) / 2, 1000], {visible: false}));
+    
+    window.web.cross2 = window.web.brd.create('polygon', polygon, {
+        fillColor: "#000000",
+        opacity: 0.6,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.cross2.borders.forEach(function(ele, idx, arr) {
+        ele.setAttribute({
+            strokeWidth: 3,
+            strokeColor: '#000080',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    window.web.brd.create('segment', [[0, 1000], [800, 1000]], {
+        strokeColor: 'black',
+        strokeWidth: 4,
+        dash: 2,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('text', [0, 1000 + offsetY, 'Centroidal Axis'], {
+        anchorX: 'left',
+        anchorY: 'top',
+        fontSize: 18,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('point', [400, 1000 - e], {
+        size: 10,
+        fillColor: 'white',
+        strokeColor: 'transparent',
+        name: '',
+        highlight: false,
+        fixed: true
+    });
+}
+
+function createTendon(brdId, e) {
+    var offsetX = 100;
+    var offsetY = 150;
+    
+    JXG.Options.infobox.fontSize = 0;
+    
+    window.web = {};
+    
+    let width = 800;
+    let height = 1000;
+    
+    let ratio = (width + offsetX*2) / (height + offsetY*2);
+    
+    $("#" + brdId).height($("#" + brdId).width() / ratio);
+    
+    window.web.brd = JXG.JSXGraph.initBoard(brdId, {
+        boundingbox: [-offsetX, height + offsetY, width + offsetX, -offsetY],
+        showNavigation: false,
+        keepaspectratio: false,
+        showCopyright: false,
+        axis: false
+    });
+    
+    let polygon = [];
+    
+    polygon.push(window.web.brd.create('point', [0, 0], {visible: false}));
+    polygon.push(window.web.brd.create('point', [800, 0], {visible: false}));
+    polygon.push(window.web.brd.create('point', [800, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [0, 300], {visible: false}));
+    
+    window.web.cross1 = window.web.brd.create('polygon', polygon, {
+        fillColor: "#000000",
+        opacity: 0.6,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.cross1.borders.forEach(function(ele, idx, arr) {
+        ele.setAttribute({
+            strokeWidth: 3,
+            strokeColor: '#000080',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    polygon = [];
+    
+    polygon.push(window.web.brd.create('point', [(800 - 350) / 2, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350)/2 + 350, 300], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350)/2 + 350, 1000 - e], {visible: false}));
+    polygon.push(window.web.brd.create('point', [(800 - 350) / 2, 1000 - e], {visible: false}));
+    
+    window.web.cross2 = window.web.brd.create('polygon', polygon, {
+        fillColor: "#000000",
+        opacity: 0.6,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.cross2.borders.forEach(function(ele, idx, arr) {
+        ele.setAttribute({
+            strokeWidth: 3,
+            strokeColor: '#000080',
+            highlight: false,
+            fixed: true
+        });
+    });
+    
+    window.web.brd.create('segment', [[0, 1000], [800, 1000]], {
+        strokeColor: 'black',
+        strokeWidth: 4,
+        dash: 2,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('text', [0, 1000 + offsetY, 'Centroidal Axis'], {
+        anchorX: 'left',
+        anchorY: 'top',
+        fontSize: 18,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('point', [400, 1000 - e], {
+        size: 10,
+        fillColor: 'white',
+        strokeColor: 'transparent',
+        name: '',
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('segment', [[(800 - 350)/2 + 350, 1000 - e], [800, 1000 - e]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
+        dash: 2,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('text', [800, 1000 - e/2, 'e'], {
+        anchorX: 'right',
+        anchorY: 'middle',
+        fontSize: 16,
+        highlight: false,
+        fixed: true
+    });
+    
+    window.web.brd.create('arrow', [[(800 - 350)/2 + 350 + 100, 1000], [(800 - 350)/2 + 350 + 100, 1000 - e]], {
+        strokeWidth: 2,
+        strokeColor: 'black',
         highlight: false,
         fixed: true
     });
