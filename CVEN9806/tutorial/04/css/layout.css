@@ -1,6 +1,5 @@
 body {
-    background-color: white;
-    font-size: 18px;
+    background-color: #e0ffff;
 }
 
 .figure {
@@ -22,6 +21,7 @@ button {
 
 ol {
     list-style-type: lower-alpha;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }
 
 li {
@@ -29,28 +29,92 @@ li {
     margin: 5px 0 0 5px;
 }
 
+.ui-dialog {
+    top: 0;
+    left: 0;
+    padding: .2em;
+    border:1px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    border: 1px;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-content {
+    border: 0;
+    padding: 20px;
+    font-size: 16px;
+    color: blue;
+    background-color: white;
+    overflow: auto;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: left;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    margin-top: .5em;
+    padding: .3em 1em .5em .4em;
+    background-color: white;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 0;
+    cursor: pointer;
+}
+
+.accordion {
+    margin: 0;
+}
+
+.accordion .ui-accordion-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.accordion .ui-accordion-content {
+    background-color: transparent;
+    border: 0;
+}
+
 .list-seperate li {
     margin: 10px 0;
 }
 
-#svg-container {
-    max-width: 500px;
-    max-height: 600px;
-}
-
-.inlet {
+section {
     display: none;
+    margin: 1em;
 }
 
-.btn-postproc {
-    margin-left: 20px;
-    margin-right: 20px;
+section h4 {
+    margin: 2em;
 }
 
-.rotation {
-    display: none;
+section p.answer {
+    font-weight: normal;
 }
 
-.main-body {
-    display: none;
+.question {
+    font-weight: bold; 
+    margin-bottom: 2em;
+}
+
+i[title]:hover {
+    cursor: help;
+}
+
+.mytooltip {
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: left;
+    font-stretch: condensed;
+    text-decoration: none;
+    box-shadow: none;
 }

@@ -8,60 +8,97 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <title>Tutorial 04</title>
-        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <link rel="shortcut icon" href="http://www.lindenbaum.net.au/unsw/util/favicon.ico" type="image/vnd.microsoft.icon"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>  
-        <script src="https://unpkg.com/vue"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
         <script src="https://jununsw.github.io/res/util.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
-        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=4"/>
     </head>
     <body onload="init();">
         <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
             <strong>Module 04 Shear Capacity</strong>
-            <div class="h6 bold">Background Color: <input type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+            <div class="h6 bold">Background Color: <input id="color" type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
         </div>
-        
-        <div class="container" id="myapp">
+        <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="h4 question">
-                        
+                    <div id="q2">
+                        <div class="h4 question">
+                            <p>
+                                A simply supported post-tensioned girder spans 40 metres and carries uniform load of 22 kN/m in addtition to its self weight.<br/><br/>
+                                The beam is reinforced with 55-12.7 mm super grade strands in one duct (duct diameter is 140 mm), which is paraboic with zero eccentricity at the ends and an eccentricity of 700 mm at mid-span. 8N28 conventional reinforcement bars are used in the bottom flange.<br/><br/>
+                                Dimensions are shown in the following figure. The figure shows the cross-section at mid-span (eccentricity of 700 mm).<br/><br/>
+                                Follow the instructions below to solve the shear capacity, and the prestress force will be given during the process.
+                            </p>
+                            <div class="row" style="margin-top: 2em;">
+                                <div class="col-sm-8">
+                                    <p style="font-style: italic; font-weight: normal;">Design Data:</p>
+                                    <div class="row" style="font-size: 0.9em;">
+                                        <div class="col-sm-6">
+                                            <ul>
+                                                <li>\( f'_{cp} = \) 40 MPa (transfer)</li>
+                                                <li>\( f'_{c} = \) 40 MPa (28 days)</li>
+                                                <li>\( f_{sy} = \) 500 MPa (steel)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ul>
+                                                <li>\( A_{s} = \) 4800 mm<sup>2</sup> (8N28)</li>
+                                                <li>\( A_{p} = \) 5428 mm<sup>2</sup> (55-12.7mm)</li>
+                                                <li>\( E_{s} = \) 200 GPa (steel)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p style="font-style: italic; font-weight: normal; margin-top: 2em;">FBD, SFD and BMD:</p>
+                                    <div id="svg-diagram" style="width: 700px; height: 300px;"></div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div id="svg-block" style="width: 250px; height: 250px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h4 question" style="color: red; font-style: italic; font-weight: normal; font-size: 1em;">
+                            <p>
+                                Please Note:
+                            </p>
+                            <ul>
+                                <li>Press ENTER after input</li>
+                                <li>If a precision is required, answer needs to match exactly the required precision</li>
+                                <li>If no precision is given, precise answer is required</li>
+                                <li>For some questions, you can hover your mouse onto the <i class="far fa-question-circle"></i> mark for hints</li>
+                            </ul>
+                        </div>
+                        <div class="h4" style="margin-bottom: 5em;">
+                            <section style="display: block">
+                                <h4 style="font-weight: bold;">Step 1. Determine Shear Force and Bending Moment</h4>
+                                <p class="answer">
+                                    Area of the cross-section A = <input size="6" onkeypress="question_check(event, 0.97, 3);"/> &times; 10<sup>6</sup> mm<sup>2</sup> <br/><br/>
+                                    Designed load w* = <input size="6" onkeypress="question_check(event, 61, 0)"/> kN/m (rounded to 1 kN/m)
+                                    <i class="far fa-question-circle" title="Design load is 1.2*DEAD LOAD (self-weight) + 1.5*LIVE LOAD"></i><br/><br/>
+                                    Therefore V<sub>A</sub> = V<sub>B</sub> = <input size="6" onkeypress="question_check(event, 1220, 0);"/> kN (absolute value, ignore +/- sign)
+                                    <i class="far fa-question-circle" title="It's the maximum shear force for simply-supported beam under UDL"></i><br/><br/>
+                                    Therefore M<sub>max</sub> = <input size="6" onkeypress="question_check(event, 12200, 0);"/> kNm (absolute value, ignore +/- sign)
+                                    <i class="far fa-question-circle" title="It's the maximum bending moment at mid-span for simply-supported beam under UDL"></i>
+                                </p>
+                            </section>
+                            <section>
+                                <h4 style="font-weight: bold;">Step 2. Determine Factored Design Shear Force and Moment</h4>
+                                <p class="answer">
+                                </p>
+                            </section>
+                            <section><strong>This question is finished</strong></section>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="h4 question">
-                        
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                    <div class="h4 question">
-                        <div id="svg-cross" style="width: 400px; height: 600px;"></div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="h4 question">
-                        <div id="svg-cross" style="width: 800px; height: 400px;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="h4">
-                    <button class="btn btn-primary">Click Here to Start</button>
-                    <section>
-                        
-                    </section>
                 </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript" src="script/event.js?v=1"></script>
-    <script type="text/javascript" src="script/model.js?v=1"></script>
-    <script type="text/javascript" src="script/vm.js?v=1"></script>
+    <script type="text/javascript" src="script/script.js?v=5"></script>
 </html>
