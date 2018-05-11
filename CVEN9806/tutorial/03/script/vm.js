@@ -112,7 +112,7 @@ var vm = new Vue({
             r1 /= 2;
             
             var r2 = ((0.77 * this.test.dp) > 300) ? (0.77*this.test.dp - 300) : 0;
-            r2 = (r2 == 0) ? 0 : (r2 - 300)/2 + 300;
+            r2 = (r2 == 0) ? 0 : r2/2 + 300;
             
             r += this.test.tp * (2000 - 300);
             r += this.test.ts1 * (2000 - 100);
