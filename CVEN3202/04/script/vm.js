@@ -60,7 +60,7 @@ var vm = new Vue({
         },
         
         result: function() {
-            return Number((this.delta_e / (1 + this.prob.omega * this.prob.gs) * this.d2 * 1000).toFixed(2))
+            return Number((this.delta_e / (1 + this.prob.omega / 100 * this.prob.gs) * this.d2 * 1000).toFixed(2))
         }
     },
     
