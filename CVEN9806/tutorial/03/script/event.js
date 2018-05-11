@@ -712,12 +712,12 @@ function plotDp() {
 }
 
 function checkDp(dp) {
-    // answer 492.2
+    // answer 574.2
     
     var eps_top = 0.003 / dp * (dp - 100);
-    var eps_btm1 = 0.003 / dp * (1000 - dp - 100);
-    var eps_btm2 = 0.003 / dp * (1000 - dp - 200);
-    var eps_p = 0.003 / dp * (1000 - dp - 300);
+    var eps_btm1 = 0.003 / dp * (2000 - dp - 100);
+    var eps_btm2 = 0.003 / dp * (2000 - dp - 200);
+    var eps_p = 0.003 / dp * (2000 - dp - 300);
     
     // force in concrete
     if (0.77 * dp > 300) {
@@ -749,7 +749,7 @@ function checkDp(dp) {
     }
     
     // force in tendon
-    var eps_pe = 1000 / 195000;
+    var eps_pe = 0.000944;
     var eps = eps_pe + 0.00017 + eps_p;
     
     if (eps > 0.008) {
