@@ -750,7 +750,7 @@ function checkDp(dp) {
     
     // force in tendon
     var eps_pe = 0.000944;
-    var eps = eps_pe + 0.00017 + eps_p;
+    var eps = eps_pe + 0.000085 + eps_p;
     
     if (eps > 0.008) {
         vm.test.tp = 1560 * 5428 / 1000;
