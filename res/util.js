@@ -69,7 +69,7 @@ Array.prototype.random = function() {
 
         return Number(r.toFixed(n));
     } else {
-        return this[Math.random() * this.length >> 0];
+        return this[Math.random() * this.length >> 1];
     }
 }
 
@@ -137,6 +137,48 @@ function scoreEncode(score) {
     var r = head + s;
 
     for (var i = 0; i < 5; i++) {
+        tail += pool[Math.random() * pool.length >> 0];
+    }
+
+    r += tail;
+
+    return r;
+}
+
+function twoScoreEncode(score, addtional) {
+    var s = (Number(score)).toFixed(0);
+    var a = (Number(addtional)).toFixed(0);
+
+    if (isFinite(Number(s))) {
+
+    } else {
+        s = "99";
+    }
+
+    if (isFinite(Number(a))) {
+
+    } else {
+        a = "99";
+    }
+
+    var pool = "1234567890";
+    var head = "";
+    var middle = "";
+    var tail = "";
+
+    for (var i = 0; i < 3; i++) {
+        head += pool[Math.random() * pool.length >> 0];
+    }
+
+    var r = head + s;
+
+    for (var i = 0; i < 3; i++) {
+        middle += pool[Math.random() * pool.length >> 0];
+    }
+
+    var r = r + middle + a;
+
+    for (var i = 0; i < 3; i++) {
         tail += pool[Math.random() * pool.length >> 0];
     }
 
