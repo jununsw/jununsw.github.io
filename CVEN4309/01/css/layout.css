@@ -1,0 +1,124 @@
+#myapp {
+    display: none;
+    margin-top: 30px; 
+    margin-bottom: 30px; 
+    margin-left: 20px;
+}
+
+#main-body, #score-bar {
+    display: none;
+}
+
+.question {
+    
+}
+
+.timer {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-weight: bold;
+    color: red;
+    font-family: "Courier New", Courier, monospace;
+    z-index: 2;
+}
+
+.instruction {
+    border: 1px black solid; 
+    width: 80%; 
+    padding: 3px;
+}
+
+#main-body {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px; 
+    background: none; 
+    border-width: 0px; 
+}
+
+#main-body .ui-tabs-nav { 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
+}
+
+#main-body .ui-tabs-panel { 
+    background: white; 
+    border-width: 0px 0px 0px 0px; 
+}
+
+.figure {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+ol {
+    list-style-type: lower-alpha;
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.ui-dialog {
+    top: 0;
+    left: 0;
+    padding: .2em;
+    border:1px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    border: 1px;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-content {
+    border: 0;
+    padding: 20px;
+    font-size: 16px;
+    color: blue;
+    background-color: white;
+    overflow: auto;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: left;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    margin-top: .5em;
+    padding: .3em 1em .5em .4em;
+    background-color: white;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 0;
+    cursor: pointer;
+}
+
+.additional {
+    margin-top: 30px; 
+    padding-top: 20px; 
+    font-weight: bold; 
+    border-top: 2px solid blue;
+}
+
+textarea {
+    width: 100%;
+}
