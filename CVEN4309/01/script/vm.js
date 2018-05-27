@@ -68,13 +68,15 @@ var vm = new Vue({
     data: {
         answered: 0,
         score: 0,
+        s1: 0,  // used for coefficients for q1.1
+        s2: 0,  // used for coefficients for q1.2
+        s3: 0,  // used for coefficients for q2
         part0: q0,
         part1: q1,
         part2: q2,
         submit: {},
         multi: [q0[4], ["null", "null", "null", "null"], [q0[0].choice.toString(), q0[1].choice.toString(), q0[2].choice.toString(), q0[3].choice.toString()]],
         text: {
-            additional: 0,
             co1: coeff1,
             co2: coeff2,
             input1: {
@@ -105,48 +107,48 @@ var vm = new Vue({
                 'rhob': ['', '']
             },
             input2: {
-                'Ac': ['', ''],
-                'Ap': ['', ''],
-                'As': ['', ''],
-                'At': ['', ''],
-                'Emean': ['', ''],
-                'E0.05': ['', ''],
-                'fb': ['', ''],
-                'fc': ['', ''],
-                'fp': ['', ''],
-                'fs': ['', ''],
-                'ft': ['', ''],
-                'I': ['', ''],
-                'j2short': ['', ''],
-                'j2long': ['', ''],
-                'j3': ['', ''],
-                'k1': ['', ''],
-                'k4': ['', ''],
-                'k6': ['', ''],
-                'k7': ['', ''],
-                'k9': ['', ''],
-                'k12': ['', ''],
-                'S1': ['', ''],
-                'Z': ['', ''],
-                'phi': ['', ''],
-                'rhob': ['', '']
+                'Ac': '',
+                'Ap': '',
+                'As': '',
+                'At': '',
+                'Emean': '',
+                'E0.05': '',
+                'fb': '',
+                'fc': '',
+                'fp': '',
+                'fs': '',
+                'ft': '',
+                'I': '',
+                'j2short': '',
+                'j2long': '',
+                'j3': '',
+                'k1': '',
+                'k4': '',
+                'k6': '',
+                'k7': '',
+                'k9': '',
+                'k12': '',
+                'S1': '',
+                'Z': '',
+                'phi': '',
+                'rhob': ''
             }
         }
     },
     methods: {
         toAjax: function(event) {
-            // change button label
-            $(event.target).html("Submitting...").prop("disabled", true);
+            // resume button label
             setTimeout(function() {
                 $(event.target).html("Finish and Submit").prop("disabled", false);
             }, 8000);
             
+            // check coefficients
+            checkText();
+
             // fire all hidden 'record' button
             $(".record").each(function(idx, ele) {
                 $(ele).trigger("click");
             });
-
-            toText();
             
             // postData is the "data" attribute in AJAX post method
             var postData = {};
@@ -165,10 +167,10 @@ var vm = new Vue({
                 "week": "w1",
                 "mark": postData.score,
                 "data": JSON.stringify(postData),
-                "text": JSON.stringify(this.text);
+                "text": JSON.stringify(this.text)
             };
 
-            var code = twoScoreEncode(this.score, this.text.additional);
+            var code = scoreEncode(this.score);
             
             $.post("../query.php", submitData, function(data, status) {
                 if (data.toString() == "1") {
@@ -198,7 +200,10 @@ var vm = new Vue({
                 buttons: {
                     "Yes, submit Now!": function() {
                         $(this).dialog("close");
-                        currentInstance.toAjax(currentEvent);
+                        $(currentEvent.target).html("Submitting...").prop("disabled", true);
+                        setTimeout(function(){
+                            currentInstance.toAjax(currentEvent);
+                        }, 50);
                     },
                     "No, I'll do it later": function() {
                         $(this).dialog("close");
@@ -230,17 +235,28 @@ var vm = new Vue({
                 if (isNaN(in2)) {
                     in2 = "blank";
                 }
+
+                // check corresponding coefficient
+                var coeff = (qIdx <= 4) ? this.s1 : (qIdx <= 9) ? this.s2 : this.s3;
                     
-                var thisScore = 1;
+                var thisScore = 0;
                 $(tag1).css("background", "white").prop("disabled", true);
                 $(tag2).css("background", "white").prop("disabled", true);
                 
-                if (!(isEqual(in1, answerArray[qIdx][0], 2))) {
-                    thisScore -= 0.5;
+                if (isEqual(in1, answerArray[qIdx][0], 2)) {
+                    thisScore += 4;
+                } else if (coeff != 0) {
+                    thisScore += coeff;
+                } else {
+
                 }
                 
-                if (!(isEqual(in2, answerArray[qIdx][1], 2))) {
-                    thisScore -= 0.5;
+                if (isEqual(in2, answerArray[qIdx][1], 2)) {
+                    thisScore += 4;
+                } else if (coeff != 0) {
+                    thisScore += coeff;
+                } else {
+                    
                 }
 
                 // update score and number of answered
@@ -268,7 +284,7 @@ var vm = new Vue({
                 $(tag).prop("disabled", true);
 
                 if (in1 === answerArray[qIdx]) {  // "yes", "larger", "smaller"
-                    this.score += 1;
+                    this.score += 2;
                 } else {
 
                 }
@@ -298,7 +314,7 @@ var vm = new Vue({
             $(tag).prop("disabled", true);
 
             if (in1 === this.part0[idx].choice.toString()) {
-                this.score += 0.5;
+                this.score += 1;
             } else {
 
             }
@@ -311,7 +327,9 @@ var vm = new Vue({
             $(event.target).remove();
         },
 
-        toText: function() {
+        checkText: function() {  
+            // change s1, s2, s3 to be the corresponding partial number
+            // qIdx = 0..4 for question 1.1; 5..9 for question 1.1; 10..12 for question 2
             
         }
     }

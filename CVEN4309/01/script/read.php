@@ -53,7 +53,7 @@ $additional = json_decode($text);
 $output = array();
 
 // define function to proceed json
-function parseObj($obj, $additional) {
+function parseObj($obj) {
     // student id
     if (isset($obj->{'zid'})) {
         $table = array(array('zid', $obj->{'zid'}, ''));
@@ -63,11 +63,7 @@ function parseObj($obj, $additional) {
 
     // mark
     if (isset($obj->{'score'})) {
-        if (isset($additional->{'additional'})) {
-            array_push($table, array('score', strval($obj->{'score'}) . ' + ' . strval($additional->{'additional'}), ''));
-        } else {
-            array_push($table, array('score', strval($obj->{'score'}), ''));
-        }
+        array_push($table, array('score', strval($obj->{'score'}) . ' / 90', ''));
     } else {
         array_push($table, array('score', 'no score', ''));
         return $table;
@@ -204,7 +200,7 @@ function parseCoefficients($additional) {
     return $coeffiencts;
 }
 
-$table = parseObj($obj, $additional);
+$table = parseObj($obj);
 $coeffiencts = parseCoefficients($additional);
 $record = parseQuestion($obj);
 
@@ -266,7 +262,6 @@ $record = parseQuestion($obj);
                             <li>you have your mark modified by your course coordinator, so the modified mark will directly goes to Moodle Gradebook</li>
                         </ul>
                         <p>Except for the multiple choices, if your answer is incorrect, it will be in red color</p>
-                        <p>Please note, your score has two parts. The first part is the mark you get from correctly answering the question; the second part is the partial mark you get from answering the coeffiencts</p>
                     </div>
                     
                     <div id="main-body">

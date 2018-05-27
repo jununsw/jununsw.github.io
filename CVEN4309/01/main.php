@@ -91,14 +91,14 @@ $conn->close();
 
                 <div id="score-bar" class="col-xs-12">
                     <p>
-                        <button class="btn btn-primary" id="id-submit" v-on:click="tofinish">Finish and Submit</button>
+                        <button class="btn btn-primary" id="id-submit" v-on:click="tofinish" disabled>Finish and Submit</button>
                         <span style="font-weight: bold;">zID: <?php echo isset($_POST["id"]) ? $_POST["id"] : "";?></span>
                         <span id="after-submit"></span><br/><br/>
                         <span style="font-weight: bold;" class="after-hide" id="timeup"></span>
                     </p>
                     <div class="alert alert-danger after-hide" role="alert">
                         <p class="after-hide" style="font-weight: bold; font-size: 1.1em;">
-                            There are three tabs of questions. There are 15 marks in total.<br/>
+                            There are three tabs of questions. There are 90 marks in total.<br/>
                             Please take screenshot of each tab for your record.<br/>
                             Click 'Finish and Submit' after you complete all questions. Note you can only submit once!
                         </p>
@@ -121,7 +121,7 @@ $conn->close();
                             </ul>
 
                             <div id="p0" class="question">
-                                <p class="bold">Multiple Choice (0.5 marks each)<br/><br/></p>
+                                <p class="bold">Multiple Choice (1 mark each)<br/><br/></p>
                                 <p class="bold">
                                     1. {{part0[0].question}}
                                 </p>
@@ -175,7 +175,7 @@ $conn->close();
                                     <img src="resource/01.png"/>
                                 </div>
                                 <p>
-                                    {{part1.joist.depth}} &times; {{part1.joist.width}} seasoned MGP12 joists support a residential floor at {{part1.joist.centres}} mm centres in {{part1.location}} under the below loads, spanning {{part1.joist.span}} m. These floor joists are supported by a 2 &times; {{part1.bearer.depth}} &times; {{part1.bearer.width}} seasoned MGP12 bearer that spans {{part1.bearer.span}} m above a window with a bearing length of 45mm (assume the load of the joists acts as a UDL on the bearer).
+                                    {{part1.joist.depth}} &times; {{part1.joist.width}} seasoned {{part1.joist.grade}} joists support a residential floor at {{part1.joist.centres}} mm centres in {{part1.location}} under the below loads, spanning {{part1.joist.span}} m. The width of the floor is 6 m. These floor joists are supported by a 2 &times; {{part1.bearer.depth}} &times; {{part1.bearer.width}} seasoned {{part1.bearer.grade}} that spans {{part1.bearer.span}} m above a window with a bearing length of {{part1.bearer.length}} mm (assume the load of the joists acts as a UDL on the bearer).
                                 </p>
                                 <ul>
                                   <li>G (incl. SW) = {{part1.deadload}} kPa</li>
@@ -183,7 +183,7 @@ $conn->close();
                                 </ul>
 
                                 <p class="bold">
-                                    1. Assess the bending strength of the joists (0.5 marks &times; 2)
+                                    1. Assess the bending strength of the joists (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the bending load on the joists? <input id="q0-1" size="8"/> kNm</li>
@@ -191,7 +191,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    2. Assess the flexural shear strength of the joists (0.5 marks &times; 2)
+                                    2. Assess the flexural shear strength of the joists (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the flexural load on the joists? <input id="q1-1" size="8"/> kN</li>
@@ -199,7 +199,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    3. Assess the bearing strength of the joists (0.5 marks &times; 2)
+                                    3. Assess the bearing strength of the joists (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the bearing load on the joists? <input id="q2-1" size="8"/> kN</li>
@@ -207,7 +207,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    4. Assess the serviceability the floor joists for appearance under the below loads against a span / 300 sag limit under a G + &psi;lQ load (0.5 marks &times; 2)
+                                    4. Assess the serviceability the floor joists for appearance under the below loads against a span / 300 sag limit under a G + &psi;lQ load (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the deflection of the joists? <input id="q3-1" size="8"/> mm</li>
@@ -215,7 +215,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    5. Is the floor joist appropriate? (1 mark)
+                                    5. Is the floor joist appropriate? (2 marks)
                                 </p>
                                 <form id="q4">
                                     <ul>
@@ -226,7 +226,7 @@ $conn->close();
                                 </form>
 
                                 <p class="bold">
-                                    6. Assess the bending strength of the bearer (0.5 marks &times; 2)
+                                    6. Assess the bending strength of the bearer (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the bending load on the bearer? <input id="q5-1" size="8"/> kNm</li>
@@ -234,7 +234,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    7. Assess the flexural shear strength of the bearer (0.5 marks &times; 2)
+                                    7. Assess the flexural shear strength of the bearer (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the flexural load on the bearer? <input id="q6-1" size="8"/> kN</li>
@@ -242,7 +242,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    8. Assess the bearing strength of the bearer (0.5 marks &times; 2)
+                                    8. Assess the bearing strength of the bearer (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the bearing load on the bearer? <input id="q7-1" size="8"/> kN</li>
@@ -250,7 +250,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    9. Assess the serviceability of the bearer against a maximum deflection of 5mm under a G + &psi;lQ load to prevent load transfer to the window (0.5 marks &times; 2)
+                                    9. Assess the serviceability of the bearer against a maximum deflection of 5mm under a G + &psi;lQ load to prevent load transfer to the window (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the deflection of the bearer? <input id="q8-1" size="8"/> mm</li>
@@ -258,7 +258,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    10. Is the bearer appropriate? (1 mark)
+                                    10. Is the bearer appropriate? (2 marks)
                                 </p>
                                 <form id="q9">
                                     <ul>
@@ -277,14 +277,14 @@ $conn->close();
                                     <img src="resource/02.png"/>
                                 </div>
                                 <p>
-                                    {{part2.element.depth}} &times; {{part2.element.width}} seasoned F11 hardwood diagonal elements that are {{part2.element.length}} m long are used in a truss supporting a roof in {{part2.location}}. The worst case element is subject to the below loads. The element is fixed to the surrounding truss elements with two {{part2.boltsize}} bolts in {{part2.holesize}} m diameter holes at each end. 
+                                    {{part2.element.depth}} &times; {{part2.element.width}} seasoned {{part2.density}} {{part2.grade}} diagonal elements that are {{part2.element.length}} m long are used in a truss supporting a roof in {{part2.location}}. The worst case element is subject to the below loads. The element is fixed to the surrounding truss elements with two {{part2.boltsize}} bolts in {{part2.holesize}} m diameter holes at each end. 
                                 </p>
                                 <ul>
-                                  <li>P (duration &lt; 5 hours) = {{part2.load}} kN</li>
+                                  <li>Distributed Roof Load P<sup>*</sup> (duration &lt; 5 hours) = 1.2G + 1.5Q = {{part2.load}} kN</li>
                                 </ul>
 
                                 <p class="bold">
-                                    1. Assess the tensile strength of the element (0.5 marks &times; 2)
+                                    1. Assess the tensile strength of the element (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the tensile load on the element ? <input id="q10-1" size="8"/> kN</li>
@@ -292,7 +292,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    2. Assess the compression strength of the element (0.5 marks &times; 2)
+                                    2. Assess the compression strength of the element (4 marks &times; 2)
                                 </p>
                                 <ol>
                                     <li>What is the compression load on the element ? <input id="q11-1" size="8"/> kN</li>
@@ -300,7 +300,7 @@ $conn->close();
                                 </ol>
 
                                 <p class="bold">
-                                    3. Is the element appropriate? (1 mark)
+                                    3. Is the element appropriate? (2 marks)
                                 </p>
                                 <form id="q12">
                                     <ul>
