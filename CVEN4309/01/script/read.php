@@ -169,7 +169,7 @@ function parseQuestion($obj) {
         $tag = 'q' . strval($qidx);  // question tag: q1, q2, ...
 
         if (isset($obj->$tag)) {
-            array_push($record, array('<strong style="color: red;">Question ' . strval($qidx) . '</strong>', ''));  // question #
+            array_push($record, array('<strong style="color: red;">Calculation ' . strval($qidx) . '</strong>', ''));  // question #
 
             foreach ($obj->$tag as $key => $value) {
                 if ($key != 'answer') {
@@ -196,7 +196,7 @@ function parseQuestion($obj) {
 
 function parseCoefficients($additional) {
     $coeffiencts = array();
-
+    // need to verify and mark red
     return $coeffiencts;
 }
 
@@ -266,8 +266,8 @@ $record = parseQuestion($obj);
                     
                     <div id="main-body">
                         <ul>
-                            <li><a href="#t0" class="bold">Your Submission</a></li>
-                            <li><a href="#t1" class="bold">Addtional Coefficicents</a></li>
+                            <li><a href="#t0" class="bold">Submitted Answers</a></li>
+                            <li><a href="#t1" class="bold">Submitted Coefficients</a></li>
                             <li><a href="#t2" class="bold">Your Question Set</a></li>
                         </ul>
 
@@ -297,7 +297,28 @@ $record = parseQuestion($obj);
                         </div>
 
                         <div id="t1">
+                            <p><strong>Note:</strong></p>
+                            <ul>
+                                <li>Column name refer to which question in the quiz</li>
+                                <li>Coefficients is displayed as <strong>[your input]/[correct value]</strong></li>
+                                <li>If your input is a calculated value, it is automatically rounded to 3 decimals</li>
+                                <li>Your input will shown as 'null' if it is invalid (not a number for instance)</li>
+                                <li>'NA' means the coefficient is not relevant in a question</li>
+                            </ul>
                             <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Coefficient</th>
+                                        <th>Calculation 1 for Joist</th>
+                                        <th>Calculation 1 for Bearer</th>
+                                        <th>Calculation 2</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    ?>
+                                </tbody>
                             </table>
                         </div>
 

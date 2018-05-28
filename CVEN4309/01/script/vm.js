@@ -16,7 +16,9 @@ function check_id() {
     if ((zid === "z3243398") || (zid === "z7701732") || (zid === "z3290765")) {
         isFirst = "first attempt";
     }
-    
+
+    $("#id-submit").prop("disabled", ((zid == 'z3243398') ? false : true));
+
     function toshow() {
         $("#main-body").css("display", "block");
         $("#score-bar").css("display", "block");
@@ -85,7 +87,7 @@ var vm = new Vue({
                 'As': ['', ''],
                 'At': ['', ''],
                 'Emean': ['', ''],
-                'E0.05': ['', ''],
+                'E005': ['', ''],
                 'fb': ['', ''],
                 'fc': ['', ''],
                 'fp': ['', ''],
@@ -104,7 +106,8 @@ var vm = new Vue({
                 'S1': ['', ''],
                 'Z': ['', ''],
                 'phi': ['', ''],
-                'rhob': ['', '']
+                'rhob': ['', ''],
+                'rhoc': ['', '']
             },
             input2: {
                 'Ac': '',
@@ -112,7 +115,7 @@ var vm = new Vue({
                 'As': '',
                 'At': '',
                 'Emean': '',
-                'E0.05': '',
+                'E005': '',
                 'fb': '',
                 'fc': '',
                 'fp': '',
@@ -131,7 +134,11 @@ var vm = new Vue({
                 'S1': '',
                 'Z': '',
                 'phi': '',
-                'rhob': ''
+                'rhob': '',
+                'rhoc': ''
+            },
+            submit: {
+                'part1': []
             }
         }
     },
@@ -143,7 +150,7 @@ var vm = new Vue({
             }, 8000);
             
             // check coefficients
-            checkText();
+            this.checkText();
 
             // fire all hidden 'record' button
             $(".record").each(function(idx, ele) {
@@ -159,19 +166,21 @@ var vm = new Vue({
             postData["q2"] = this.part2;
             postData["q0"] = this.multi;
             
-            console.log(JSON.stringify(postData));
-            
             // submitData is the one to send with post method
             var submitData = {
                 "zid": postData.zid,
                 "week": "w1",
                 "mark": postData.score,
                 "data": JSON.stringify(postData),
-                "text": JSON.stringify(this.text)
+                "text": JSON.stringify(this.text.submit)
             };
 
             var code = scoreEncode(this.score);
+
+            console.log(submitData.data);
+            console.log(submitData.text);
             
+            /*
             $.post("../query.php", submitData, function(data, status) {
                 if (data.toString() == "1") {
                     $(event.target).hide();
@@ -180,10 +189,11 @@ var vm = new Vue({
                     $(".after-hide").hide();
                     $(".after-show").show();
                 } else {
-                    $("#after-submit").html("<br/><br/><strong>We have confronted a problem when sending the mark. Please try again and if problem still exists, please send a screenshot of the error code with your zID to xiaojun.chen@unsw.edu.au<br/><br/>" + "Error Code: " + code + ", zid: " + zid + "</strong>");
+                    $("#after-submit").html("<br/><br/><strong>We have confronted a problem when sending the mark. Please try again and if problem still exists, please send a screenshot of the submission ID with your zID to xiaojun.chen@unsw.edu.au<br/><br/>" + "<span style='color: red;'>submission ID: " + code + ", zID: " + zid + "</span></strong>");
                     $(event.target).html("Finish and Submit").prop("disabled", false);
                 }
             });
+            */
         },
         
         tofinish: function(event) {
@@ -329,8 +339,12 @@ var vm = new Vue({
 
         checkText: function() {  
             // change s1, s2, s3 to be the corresponding partial number
-            // qIdx = 0..4 for question 1.1; 5..9 for question 1.1; 10..12 for question 2
-            
+            // generate text.submit for later AJAX
+            $("table input").prop("disabled", true);
+
+            for (let key of this.text.co1[0]) {
+                this.text.submit.part1.push([key.toString(), 'NA/NA', 'NA/NA', 'NA/NA']);
+            }
         }
     }
 });

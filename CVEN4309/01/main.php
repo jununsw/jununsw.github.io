@@ -99,7 +99,7 @@ $conn->close();
                     <div class="alert alert-danger after-hide" role="alert">
                         <p class="after-hide" style="font-weight: bold; font-size: 1.1em;">
                             There are three tabs of questions. There are 90 marks in total.<br/>
-                            Please take screenshot of each tab for your record.<br/>
+                            Please take screenshot of each tab for your record. (You can do so after submission)<br/>
                             Click 'Finish and Submit' after you complete all questions. Note you can only submit once!
                         </p>
                     </div>
@@ -114,9 +114,9 @@ $conn->close();
                     <div class="col-xs-12" id="answers" style="border: none;">
                         <div id="main-body">
                             <ul>
-                                <li><a href="#p0" class="bold">Part 1</a></li>
-                                <li><a href="#p1" class="bold">Part 2</a></li>
-                                <li><a href="#p2" class="bold">Part 3</a></li>
+                                <li><a href="#p0" class="bold">Multiple Choice</a></li>
+                                <li><a href="#p1" class="bold">Calculation 1</a></li>
+                                <li><a href="#p2" class="bold">Calculation 2</a></li>
                                 <li><a href="#p3" class="bold">Upload Drafts (Optional)</a></li>
                             </ul>
 
@@ -169,8 +169,12 @@ $conn->close();
 
                             <div id="p1" class="question">
                                 <p class="bold">
-                                    NOTE: To get the correct rounding, work with four decimal places only for the calculation. Present your answer to three decimal places.
+                                    NOTE:
                                 </p>
+                                <ul>
+                                    <li class="bold">To get the correct rounding, work with four decimal places only for the calculation. Present your answer to three decimal places.</li>
+                                    <li class="bold">There is a table at bottom for you to record any coefficients (optional). If you do so, when your final answer is incorrect, partial mark might be given if you correctly answered most of the coefficients (details see <a href="#table1" style="color: blue; font-style: italic;">below</a>)</li>
+                                </ul>
                                 <div class="figure">
                                     <img src="resource/01.png"/>
                                 </div>
@@ -267,12 +271,172 @@ $conn->close();
                                         <li><input type="radio" name="1-10" value="smaller"/> No, need smaller bearer <button type="button" class="btn btn-danger btn-xs" v-on:click="check(9, $event);">Record Answers</button></li>
                                     </ul>
                                 </form>
+
+                                <div id="table1" style="border-style: ridge; padding: 10px;">
+                                    <p class="h4 bold">Table for Coefficients of Calculation 1</p>
+                                    <ul>
+                                        <li>You can record any relevant coefficients in your calculation (optional)</li>
+                                        <li>Leave the inputbox blank if the coefficient is irrelevant</li>
+                                        <li>Partial mark will be given for your calculation if you have no more than:</li>
+                                        <ul>
+                                            <li>1 incorrect coefficient: 75%</li>
+                                            <li>2 incorrect coefficients: 50%</li>
+                                            <li>3 incorrect coefficients: 25%</li>
+                                        </ul>
+                                        <li>Multiple choices (including those in Calculation 1&2) have no partial mark</li>
+                                    </ul>
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Coeffcients</th>
+                                                <th>For Joists</th>
+                                                <th>For Bearer</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>A<sub>c</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input1.Ac[0]"></td>
+                                                <td><input v-model="text.input1.Ac[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>p</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input1.Ap[0]"></td>
+                                                <td><input v-model="text.input1.Ap[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>s</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input1.As[0]"></td>
+                                                <td><input v-model="text.input1.As[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>t</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input1.At[0]"></td>
+                                                <td><input v-model="text.input1.At[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>E<sub>mean</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.Emean[0]"></td>
+                                                <td><input v-model="text.input1.Emean[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>E<sub>0.05</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.E005[0]"></td>
+                                                <td><input v-model="text.input1.E005[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>b</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.fb[0]"></td>
+                                                <td><input v-model="text.input1.fb[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>c</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.fc[0]"></td>
+                                                <td><input v-model="text.input1.fc[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>p</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.fp[0]"></td>
+                                                <td><input v-model="text.input1.fp[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>s</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.fs[0]"></td>
+                                                <td><input v-model="text.input1.fs[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>t</sub> (MPa)</td>
+                                                <td><input v-model="text.input1.ft[0]"></td>
+                                                <td><input v-model="text.input1.ft[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>I (mm<sup>4</sup>)</td>
+                                                <td><input v-model="text.input1.I[0]"></td>
+                                                <td><input v-model="text.input1.I[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>2,short</sub></td>
+                                                <td><input v-model="text.input1.j2short[0]"></td>
+                                                <td><input v-model="text.input1.j2short[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>2,long</sub></td>
+                                                <td><input v-model="text.input1.j2long[0]"></td>
+                                                <td><input v-model="text.input1.j2long[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>3</sub></td>
+                                                <td><input v-model="text.input1.j3[0]"></td>
+                                                <td><input v-model="text.input1.j3[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>1</sub></td>
+                                                <td><input v-model="text.input1.k1[0]"></td>
+                                                <td><input v-model="text.input1.k1[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>4</sub></td>
+                                                <td><input v-model="text.input1.k4[0]"></td>
+                                                <td><input v-model="text.input1.k4[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>6</sub></td>
+                                                <td><input v-model="text.input1.k6[0]"></td>
+                                                <td><input v-model="text.input1.k6[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>7</sub></td>
+                                                <td><input v-model="text.input1.k7[0]"></td>
+                                                <td><input v-model="text.input1.k7[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>9</sub></td>
+                                                <td><input v-model="text.input1.k9[0]"></td>
+                                                <td><input v-model="text.input1.k9[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>12</sub></td>
+                                                <td><input v-model="text.input1.k12[0]"></td>
+                                                <td><input v-model="text.input1.k12[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>S<sub>1</sub></td>
+                                                <td><input v-model="text.input1.S1[0]"></td>
+                                                <td><input v-model="text.input1.S1[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Z (mm<sup>3</sup>)</td>
+                                                <td><input v-model="text.input1.Z[0]"></td>
+                                                <td><input v-model="text.input1.Z[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&phi;</td>
+                                                <td><input v-model="text.input1.phi[0]"></td>
+                                                <td><input v-model="text.input1.phi[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&rho;<sub>b</sub></td>
+                                                <td><input v-model="text.input1.rhob[0]"></td>
+                                                <td><input v-model="text.input1.rhob[1]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&rho;<sub>c</sub></td>
+                                                <td><input v-model="text.input1.rhoc[0]"></td>
+                                                <td><input v-model="text.input1.rhoc[1]"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div id="p2" class="question">
                                 <p class="bold">
-                                    NOTE: To get the correct rounding, work with four decimal places only for the calculation. Present your answer to three decimal places.
+                                    NOTE:
                                 </p>
+                                <ul>
+                                    <li class="bold">To get the correct rounding, work with four decimal places only for the calculation. Present your answer to three decimal places.</li>
+                                    <li class="bold">There is a table at bottom for you to record any coefficients (optional). If you do so, when your final answer is incorrect, partial mark might be given if you correctly answered most of the coefficients (details see <a href="#table2" style="color: blue; font-style: italic;">below</a>)</li>
+                                </ul>
                                 <div class="figure">
                                     <img src="resource/02.png"/>
                                 </div>
@@ -309,6 +473,135 @@ $conn->close();
                                         <li><input type="radio" name="1-13" value="smaller"/> No, need smaller element <button type="button" class="btn btn-danger btn-xs" v-on:click="check(12, $event);">Record Answers</button></li>
                                     </ul>
                                 </form>
+
+                                <div id="table2" style="border-style: ridge; padding: 10px;">
+                                    <p class="h4 bold">Table for Coefficients of Calculation 2</p>
+                                    <ul>
+                                        <li>You can record any relevant coefficients in your calculation (optional)</li>
+                                        <li>Leave the inputbox blank if the coefficient is irrelevant</li>
+                                        <li>Partial mark will be given for your calculation if you have no more than:</li>
+                                        <ul>
+                                            <li>1 incorrect coefficient: 75%</li>
+                                            <li>2 incorrect coefficients: 50%</li>
+                                            <li>3 incorrect coefficients: 25%</li>
+                                        </ul>
+                                        <li>Multiple choices (including those in Calculation 1&2) have no partial mark</li>
+                                    </ul>
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Coeffcients</th>
+                                                <th>For Element</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>A<sub>c</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input2.Ac"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>p</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input2.Ap"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>s</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input2.As"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>A<sub>t</sub> (mm<sup>2</sup>)</td>
+                                                <td><input v-model="text.input2.At"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>E<sub>mean (MPa)</sub></td>
+                                                <td><input v-model="text.input2.Emean"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>E<sub>0.05 (MPa)</sub></td>
+                                                <td><input v-model="text.input2.E005"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>b</sub> (MPa)</td>
+                                                <td><input v-model="text.input2.fb"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>c</sub> (MPa)</td>
+                                                <td><input v-model="text.input2.fc"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>p</sub> (MPa)</td>
+                                                <td><input v-model="text.input2.fp"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>s</sub> (MPa)</td>
+                                                <td><input v-model="text.input2.fs"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>f<sub>t</sub> (MPa)</td>
+                                                <td><input v-model="text.input2.ft"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>I (mm<sup>4</sup>)</td>
+                                                <td><input v-model="text.input2.I"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>2,short</sub></td>
+                                                <td><input v-model="text.input2.j2short"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>2,long</sub></td>
+                                                <td><input v-model="text.input2.j2long"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>j<sub>3</sub></td>
+                                                <td><input v-model="text.input2.j3"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>1</sub></td>
+                                                <td><input v-model="text.input2.k1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>4</sub></td>
+                                                <td><input v-model="text.input2.k4"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>6</sub></td>
+                                                <td><input v-model="text.input2.k6"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>7</sub></td>
+                                                <td><input v-model="text.input2.k7"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>9</sub></td>
+                                                <td><input v-model="text.input2.k9"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>k<sub>12</sub></td>
+                                                <td><input v-model="text.input2.k12"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>S<sub>1</sub></td>
+                                                <td><input v-model="text.input2.S1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Z (mm<sup>3</sup>)</td>
+                                                <td><input v-model="text.input2.Z"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&phi;</td>
+                                                <td><input v-model="text.input2.phi"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&rho;<sub>b</sub></td>
+                                                <td><input v-model="text.input2.rhob"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>&rho;<sub>c</sub></td>
+                                                <td><input v-model="text.input2.rhoc"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div id="p3">
