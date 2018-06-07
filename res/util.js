@@ -204,3 +204,13 @@ function shuffle(original_arr) {
 
     return arr;
 }
+
+function array1toN(n) {
+    var arr = [];
+
+    for (var i = 1; i <= N; i++) {
+       arr.push(i);
+    }
+
+    return arr;
+}
