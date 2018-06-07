@@ -186,3 +186,21 @@ function twoScoreEncode(score, addtional) {
 
     return r;
 }
+
+function shuffle(original_arr) {
+    var arr = original_arr.slice();
+    var currentIndex = arr.length;
+    var temporaryValue;
+    var randomIndex;
+
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = arr[currentIndex];
+        arr[currentIndex] = arr[randomIndex];
+        arr[randomIndex] = temporaryValue;
+    }
+
+    return arr;
+}
