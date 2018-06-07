@@ -208,7 +208,7 @@ function shuffle(original_arr) {
 function array1toN(n) {
     var arr = [];
 
-    for (var i = 1; i <= N; i++) {
+    for (var i = 1; i <= n; i++) {
        arr.push(i);
     }
 
