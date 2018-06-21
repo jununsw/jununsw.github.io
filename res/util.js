@@ -205,6 +205,23 @@ function shuffle(original_arr) {
     return arr;
 }
 
+function selfShuffle(arr) {
+    var currentIndex = arr.length;
+    var temporaryValue;
+    var randomIndex;
+
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        temporaryValue = arr[currentIndex];
+        arr[currentIndex] = arr[randomIndex];
+        arr[randomIndex] = temporaryValue;
+    }
+
+    return arr;
+}
+
 function array1toN(n) {
     var arr = [];
 
