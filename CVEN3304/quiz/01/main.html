@@ -28,6 +28,7 @@
         <div class="container">
             <div class="row" id="myapp">
                 <div id="score-bar" class="col-xs-12">
+                    <p id='referrer'></p>
                     <p>
                         <button class="btn btn-primary" id="id-submit" v-on:click="toMark($event);" disabled>Finish and Submit</button>
                         <span style="font-weight: bold;" class="showID"></span>
@@ -225,5 +226,6 @@
     <script src="script/vm.js"></script>
     <script>
         $(".showID").html("zid: " + who);
+        $("#referrer").html("From: " + document.referrer);
     </script>
 </html>
