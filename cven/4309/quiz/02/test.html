@@ -33,7 +33,7 @@
                 $("#feedback").html("Your browser is not supportted (HTML 5 not compartible");
             }
 
-            $("#feedback").html("Detecting your browser version: <br/><br/>" + checkType() + "<br/><br/><span style='font-weight: bold;'>If your browser is IE, please change a browser.</span>");
+            $("#feedback").html("zid: " + who + "<br/><br/>" + "Detecting your browser version: <br/><br/>" + checkType() + "");
         }
 
         function checkType() {
@@ -45,14 +45,14 @@
             var isChrome = !!window.chrome && !!window.chrome.webstore;
             var isBlink = (isChrome || isOpera) && !!window.CSS;
 
-            var output = 'Detecting browsers:\n\n';
-            output += 'Firefox: ' + isFirefox + '\n';
-            output += 'Chrome: ' + isChrome + '\n';
-            output += 'Safari: ' + isSafari + '\n';
-            output += 'Opera: ' + isOpera + '\n';
-            output += 'IE: ' + isIE + '\n';
-            output += 'Edge: ' + isEdge + '\n';
-            output += 'Blink: ' + isBlink + '\n';
+            var output = 'Detecting browsers:<br/><br/>';
+            output += 'Firefox: ' + isFirefox + '<br/>';
+            output += 'Chrome: ' + isChrome + '<br/>';
+            output += 'Safari: ' + isSafari + '<br/>';
+            output += 'Opera: ' + isOpera + '<br/>';
+            output += 'IE: <span style="color: red;">' + isIE + '</span><br/>';
+            output += 'Edge: ' + isEdge + '<br/>';
+            output += 'Blink: ' + isBlink + '<br/>';
 
             return output;
         }
