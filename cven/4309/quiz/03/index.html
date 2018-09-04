@@ -30,21 +30,14 @@
         $(document).ready(function() {
             $("#startbtn").click(function() {
                 $("#startbtn").html("Redirecting to the quiz page, please wait...").prop("disabled", true);
-                
-                method = "post"; // Set method to post by default if not specified.
 
                 if ($("#zid").val() == "") {
 
                 } else {
                     who = $("#zid").val();
                 }
-                
-                var form = document.createElement("form");
-                form.setAttribute("method", method);
-                form.setAttribute("action", "main.html?zid=" + who);
 
-                document.body.appendChild(form);
-                form.submit();
+                window.location.href = "https://jununsw.github.io/cven/4309/quiz/03/main.html?zid=" + who;
             });
 
             if (who == 'z3243398') {
