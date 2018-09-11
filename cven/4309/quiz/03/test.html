@@ -28,19 +28,6 @@
         <script src="https://jununsw.github.io/res/util.js"></script>
         <link rel="stylesheet" type="text/css" href="css/layout.css"/>
     </head>
-    <script>
-        var vm = new Vue({
-            el: "#myapp",
-            data: {
-
-            },
-            methods: {
-                toSubmit: function(event) {
-
-                }
-            }
-        });
-    </script>
     <body onload="init();">
         <div class="container">
             <div id="success" style="display: none;">
@@ -76,5 +63,17 @@
                 $("#fail").show();
             }
         }
+
+        var vm = new Vue({
+            el: "#myapp",
+            data: {
+
+            },
+            methods: {
+                toSubmit: function(event) {
+
+                }
+            }
+        });
     </script>
 </html>
