@@ -34,17 +34,17 @@
                 <div id="myapp" class="row">
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <p><strong>zid: {{zid}}</strong></p>
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-primary" role="alert">
                             <p style="font-weight: bold; font-size: 1.1em;">
                                 This is a testing page. Please check the followings are correct in sequence:
                             </p>
-                            <ul>
+                            <ul style="font-weight: bold;">
                                 <li>The timer and clock are correctly shown on the right</li>
                                 <li>Your zid is shown above the clock</li>
                                 <li>Four tabs are shown below. Each tab contains the text 'This is part #'</li>
                                 <li>
-                                    Try type some numbers in the input box below, your input numbers will be copied next to the input box<br/><br/>
-                                    <input size='10' v-model='input'/> {{input}}
+                                    Try type some numbers in the input box below, your input numbers will be copied next to the input box<br/>
+                                    <input size='10' v-model='input'/> &nbsp;&nbsp;&nbsp; <span style='font-weight: bold;'>{{input}}</span><br/>
                                 </li>
                                 <li>Your broswer type is detected as: <span id='btype'></span>. Confirm it is not IE</li>
                                 <li>If everything above are checked correctly, click the 'test submission' button below to test your submission</li>
