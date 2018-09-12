@@ -32,8 +32,8 @@
         <div class="container">
             <div id="success" style="display: none;">
                 <div id="myapp" class="row">
-                    <div class="col-sm-12" style="margin-top: 30px;">
-                        <h2><strong>zid: <span id='zid'></span></strong></h2>
+                    <div class="col-sm-12" style="margin-top: 20px;">
+                        <p><strong>zid: {{zid}}</strong></p>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,8 @@
 
             if (window.where.includes('unsw')) {
                 $("#success").show();
-                $("#zid").html(window.who);
+                $("#myapp").show();
+                vm.zid = window.who;
             } else {
                 $("#fail").show();
             }
@@ -67,7 +68,7 @@
         var vm = new Vue({
             el: "#myapp",
             data: {
-
+                zid: '';
             },
             methods: {
                 toSubmit: function(event) {
