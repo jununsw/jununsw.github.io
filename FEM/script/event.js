@@ -2,7 +2,7 @@ function load(e) {
     window.gui = new gui(new controller(new model()), $("#body"), $("#plot"));
     $("#plot").outerHeight(window.innerHeight - 1.5 * $("nav").outerHeight()).css("min-width", $("#plot").width());
     
-    window.gui.plotSize = [-10, 10, 10 * (gui.$plot.outerHeight() / gui.$plot.outerWidth()), -10 * (gui.$plot.outerHeight() / gui.$plot.outerWidth())];
+    window.gui.plotSize = [-40, 40, 40 * (gui.$plot.outerHeight() / gui.$plot.outerWidth()), -40 * (gui.$plot.outerHeight() / gui.$plot.outerWidth())];
     
     window.gui.setBoard();
     
