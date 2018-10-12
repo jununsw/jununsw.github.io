@@ -38,3 +38,7 @@ body {
 #option-panel {
     font-size: 16px;
 }
+
+#plot:hover {
+    cursor: crosshair;
+}

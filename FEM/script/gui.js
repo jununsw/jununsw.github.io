@@ -75,8 +75,9 @@ function gui(controller, container, plot) {
                     this.snapPoint = board.create('point', [Number(coords.usrCoords[1].toFixed(this.snapSize)), Number(coords.usrCoords[2].toFixed(this.snapSize))], {
                         name: "",
                         highlight: false,
-                        color: "blue",
-                        size: 1,
+                        color: "red",
+                        face: "[]",
+                        size: 4,
                         opacity: 0.5,
                         visible: true
                     });
