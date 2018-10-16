@@ -13,13 +13,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
-        <script src="https://use.fontawesome.com/582f5b6b01.js"></script>
+        <script src="https://jununsw.github.io/res/three.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
         <link rel="stylesheet" href="css/style.css"/>
     </head>
-    <body onload="load(event);" onresize="resize(event);" id="body">
+    <body onload="init(event);">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -55,51 +53,52 @@
             </div>
         </nav>
 
-        <div class="container-fluid">
+        <div class="container-fluid" id="myapp">
             <div class="row">
-                <div class="col-sm-3 panel" id="control-panel">
+                <div class="col-sm-4 panel">
                     <div class="tabs-nohdr" id="control-tabs">
                         <ul>
-                            <li><a href="#tabs-coord">Plot</a></li>
+                            <li><a href="#tabs-geom">Geometry</a></li>
                         </ul>
                         
-                        <div id="tabs-coord">
-                            <ul class="no-bullet">
-                                <li>X-min: <input class="form-control" type="text" size="4" id="xmin"></li>
-                                <li>X-max: <input class="form-control" type="text" size="4" id="xmax"></li>
-                                <li>Y-max: <input class="form-control" type="text" size="4" id="ymax"></li>
-                                <li><button type="button" class="btn btn-sm navbar-btn" onclick="setArea(event);">Set/Reset Plotting Area</button></li>
-                                <li><span></span></li>
-                            </ul>
+                        <div id="tabs-geom">
+                            <form>
+                                <div class="form-group">
+                                    <label>Specimen Shape</label><br/>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio" value="prism" v-model="shape" checked/>Prism
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="optradio" value="cylinder" v-model="shape">Cylinder
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Height:</label>
+                                    <input class="form-control" v-model.number="height"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{(shape == 'prism') ? 'Width:' : 'Radius:'}}</label>
+                                    <input class="form-control" v-model.number="x"/>
+                                </div>
+                                <div class="form-group" v-if="shape == 'prism'">
+                                    <label>Length:</label>
+                                    <input class="form-control" v-model.number="y"/>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" v-on:click="modelPlot">Plot Specimen</button>
+                                    <span class="error">{{plot.error}}</span>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6" id="main-plot" onmouseout="mouseout(event);">
-                    <div id="plot"></div>
-                </div>
-                
-                <div class="col-sm-3 panel" id="option-panel">
-                    <p>
-                        <input type="checkbox" value="" onclick="snap_check(event);"> Snap to Grid:
-                        <select onchange="snap_check(event);">
-                            <option value="0" selected>1</option>
-                            <option value="1">0.1</option>
-                            <option value="2">0.01</option>
-                        </select> Unit
-                    </p>
-                    <ul class="no-bullet">
-                        <li>x: <span id="x-pos"></span></li>
-                        <li>y: <span id="y-pos"></span></li>
-                    </ul>
-                    <p>
-                        To zoom in/out: scroll while holding SHIFT
-                    </p>
+                <div class="col-sm-8">
+                    <canvas id="canvas" width="800" height="800"></canvas>
                 </div>
             </div>
         </div>
     </body>
     <script type="text/javascript" src="script/model.js"></script>
     <script type="text/javascript" src="script/controller.js"></script>
-    <script type="text/javascript" src="script/gui.js"></script>
     <script type="text/javascript" src="script/event.js"></script>
 </html>

@@ -1,49 +1,22 @@
-function load(e) {
-    window.gui = new gui(new controller(new model()), $("#body"), $("#plot"));
-    $("#plot").outerHeight(window.innerHeight - 1.5 * $("nav").outerHeight()).css("min-width", $("#plot").width());
-    
-    window.gui.plotSize = [-40, 40, 40 * (gui.$plot.outerHeight() / gui.$plot.outerWidth()), -40 * (gui.$plot.outerHeight() / gui.$plot.outerWidth())];
-    
-    window.gui.setBoard();
-    
+// function for all HTML events
+function init() {
     $("#control-tabs").tabs();
-    $(".panel").show();
-}
 
-function resize(e) {
-    
-} 
+    vm.plot.canvas = document.getElementById('canvas');
 
-function setArea(e) {
-    var xmin = Number($("#xmin").val());
-    var xmax = Number($("#xmax").val());
-    var ymax = Number($("#ymax").val());
-    
-    window.gui.setSize(xmin, xmax, ymax, e);
-    if (window.gui.board) {
-        window.gui.board.setBoundingBox(gui.plotSize);
-    }
-}
+    vm.plot.scene = new THREE.Scene();
+    vm.plot.camera = new THREE.PerspectiveCamera(45, vm.plot.canvas.clientWidth / vm.plot.canvas.clientHeight, 0.1, 1000);
 
-function snap_check(e) {
-    var checked = $(e.target).closest("p").find("input").prop("checked") ? 1 : 0;
-    var snap = Number($(e.target).closest("p").find("select").find(":selected").attr("value"));
-    
-    window.gui.changeSnap(checked, snap);
-}
+    vm.plot.camera.position.x = 10;
+    vm.plot.camera.position.y = 10;
+    vm.plot.camera.position.z = 10;
+    vm.plot.camera.lookAt(vm.plot.scene.position);
 
-function mouseout(e) {
-    if (window.gui == undefined) {
-        return;
-    } else {
-        $("#x-pos").html("");
-        $("#y-pos").html("");
-        if (window.gui.snapPoint == undefined) {
-            return;
-        } else {
-            window.gui.snapPoint.setAttribute({
-                visible: false
-            });
-        }
-    }
+    vm.plot.renderer = new THREE.WebGLRenderer({canvas: vm.plot.canvas});
+    vm.plot.renderer.setClearColor(0xe0ffff, 1.0);
+    vm.plot.canvas.width  = vm.plot.canvas.clientWidth;
+    vm.plot.canvas.height = vm.plot.canvas.clientHeight;
+    vm.plot.renderer.setViewport(0, 0, vm.plot.canvas.clientWidth, vm.plot.canvas.clientHeight);
+
+    vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
 }
