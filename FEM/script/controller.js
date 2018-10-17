@@ -3,8 +3,8 @@ var vm = new Vue({
     el: "#myapp",
     data: {
         plot: {
-            theta: Math.PI / 4,
-            phi: Math.PI / 3,
+            theta: Math.PI / 3,
+            phi: Math.PI / 4,
             radius: 30,
             canvas: null,
             scene: null,
