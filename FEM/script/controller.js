@@ -4,7 +4,7 @@ var vm = new Vue({
     data: {
         plot: {
             theta: Math.PI / 4,
-            phi: Math.PI / 4,
+            phi: Math.PI / 3,
             radius: 30,
             canvas: null,
             scene: null,
