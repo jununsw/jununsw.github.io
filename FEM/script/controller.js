@@ -40,10 +40,6 @@ var vm = new Vue({
             this.plot.specimen.name = 'specimen';
 
             this.plot.renderer.render(this.plot.scene, this.plot.camera);
-
-            if (this.plot.animation) {
-                cancelAnimationFrame(this.plot.animation);
-            }
         }
     }
 });
