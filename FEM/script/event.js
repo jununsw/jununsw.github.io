@@ -19,4 +19,48 @@ function init() {
     vm.plot.renderer.setViewport(0, 0, vm.plot.canvas.clientWidth, vm.plot.canvas.clientHeight);
 
     vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+
+    document.addEventListener('keydown', (event) => {
+        const keyCode = event.keyCode;
+        switch (keyCode) {
+            case 87:  // w
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisX, -0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            case 83:  // s
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisX, 0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            case 65:  // a
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisY, 0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            case 68:  // d
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisY, -0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            case 81:  // q
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisZ, 0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            case 69:  // e
+                for (let obj of vm.plot.scene.children) {
+                    obj.rotateOnWorldAxis(vm.plot.axisZ, -0.1);
+                }
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                break;
+            default:
+                break;
+        }
+    });
 }
