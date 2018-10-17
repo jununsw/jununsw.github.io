@@ -5,7 +5,7 @@ var vm = new Vue({
         plot: {
             theta: Math.PI / 4,
             phi: Math.PI / 4,
-            radius: 20,
+            radius: 25,
             canvas: null,
             scene: null,
             renderer: null,
@@ -24,22 +24,43 @@ var vm = new Vue({
     methods: {
         modelPlot: function(event) {
             if (this.shape == 'prism') {
-
+                if ((Number(this.height) > 0) && (Number(this.x) > 0) && (Number(this.y) > 0)) {
+                    var ratio = Math.max(Number(this.height), Number(this.x), Number(this.y));
+                    var size = [Number(this.height) / ratio * 10, Number(this.x) / ratio * 10, Number(this.y) / ratio * 10];
+                    this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
+                } else {
+                    this.plot.error = "Input Not Complete!";
+                    return
+                }
             } else {
-
+                if ((Number(this.height) > 0) && (Number(this.x) > 0)) {
+                    var ratio = Math.max(Number(this.height), Number(this.x));
+                    var size = [Number(this.height) / ratio * 5, Number(this.x) / ratio * 5];
+                    this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
+                } else {
+                    this.plot.error = "Input Not Complete!";
+                    return
+                }
             }
-
-            // var geometry = new THREE.CylinderGeometry(2, 2, 10, 64, 8, false);
-            this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(4, 6, 10), new THREE.MeshNormalMaterial());
 
             if (this.plot.scene.getObjectByName('specimen')) {
                 this.plot.scene.remove(this.plot.scene.getObjectByName('specimen'));
+                this.plot.scene.add(this.plot.specimen);
             } else {    
                 this.plot.scene.add(this.plot.specimen);
             }
             this.plot.specimen.name = 'specimen';
 
             this.plot.renderer.render(this.plot.scene, this.plot.camera);
+        },
+
+        checkNumber: function(event) {
+            let num = Number($(event.target).val());
+            if (num >= 0) {
+                this.plot.error = "";
+            } else {
+                this.plot.error = "Invalid Input!";
+            }
         }
     }
 });
