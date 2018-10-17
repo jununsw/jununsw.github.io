@@ -26,9 +26,6 @@ function init() {
 
     document.addEventListener('keydown', (event) => {
         const keyCode = event.keyCode;
-        if (vm.plot.scene.children.length <= 4) {
-            return;
-        }
 
         switch (keyCode) {
             case 87:  // w
