@@ -35,7 +35,7 @@ var vm = new Vue({
             } else {
                 if ((Number(this.height) > 0) && (Number(this.x) > 0)) {
                     var ratio = Math.max(Number(this.height), Number(this.x));
-                    var size = [Number(this.height) / ratio * 5, Number(this.x) / ratio * 5];
+                    var size = [Number(this.height) / ratio * 5, Number(this.x) / ratio * 5 * Math.sqrt(2)];
                     this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
                 } else {
                     this.plot.error = "Input Not Complete!";
