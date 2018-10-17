@@ -3,9 +3,9 @@ var vm = new Vue({
     el: "#myapp",
     data: {
         plot: {
-            axisX: new THREE.Vector3(Math.sqrt(2) / 2, 0, -Math.sqrt(2) / 2),
-            axisY: new THREE.Vector3(-Math.sqrt(3) / 3, Math.sqrt(3) / 3, -Math.sqrt(3) / 3),
-            axisZ: new THREE.Vector3(Math.sqrt(3) / 3, Math.sqrt(3) / 3, Math.sqrt(3) / 3),
+            theta: Math.PI / 4,
+            phi: Math.PI / 4,
+            radius: 15,
             canvas: null,
             scene: null,
             renderer: null,

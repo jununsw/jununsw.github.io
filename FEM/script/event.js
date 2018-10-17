@@ -5,11 +5,12 @@ function init() {
     vm.plot.canvas = document.getElementById('canvas');
 
     vm.plot.scene = new THREE.Scene();
+    vm.plot.scene.add(new THREE.AxesHelper(20));
     vm.plot.camera = new THREE.PerspectiveCamera(45, vm.plot.canvas.clientWidth / vm.plot.canvas.clientHeight, 0.1, 1000);
 
-    vm.plot.camera.position.x = 10;
-    vm.plot.camera.position.y = 10;
-    vm.plot.camera.position.z = 10;
+    vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+    vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+    vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
     vm.plot.camera.lookAt(vm.plot.scene.position);
 
     vm.plot.renderer = new THREE.WebGLRenderer({canvas: vm.plot.canvas});
@@ -22,41 +23,82 @@ function init() {
 
     document.addEventListener('keydown', (event) => {
         const keyCode = event.keyCode;
+        if (vm.plot.scene.children.length == 1) {
+            return;
+        }
+
         switch (keyCode) {
             case 87:  // w
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisX, -0.1);
+                if (vm.plot.theta <= 5 * Math.PI / 180) {
+                    vm.plot.theta = 5 * Math.PI / 180;
+                } else {
+                    vm.plot.theta -= 2 * Math.PI / 180;
                 }
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 83:  // s
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisX, 0.1);
+                if (vm.plot.theta >= 175 * Math.PI / 180) {
+                    vm.plot.theta = 175 * Math.PI / 180;
+                } else {
+                    vm.plot.theta += 2 * Math.PI / 180;
                 }
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 65:  // a
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisY, 0.1);
-                }
+                vm.plot.phi += Math.PI / 180;
+                vm.plot.phi %= 2 * Math.PI * 2;
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 68:  // d
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisY, -0.1);
-                }
+                vm.plot.phi -= Math.PI / 180;
+                vm.plot.phi %= 2 * Math.PI * 2;
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 81:  // q
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisZ, 0.1);
+                if (vm.plot.radius <= 15) {
+                    vm.plot.radius = 15;
+                } else {
+                    vm.plot.radius -= 0.4;
                 }
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 69:  // e
-                for (let obj of vm.plot.scene.children) {
-                    obj.rotateOnWorldAxis(vm.plot.axisZ, -0.1);
+                if (vm.plot.radius >= 40) {
+                    vm.plot.radius = 40;
+                } else {
+                    vm.plot.radius += 0.4;
                 }
+                vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
+                vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
+                vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
+                vm.plot.camera.lookAt(vm.plot.scene.position);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
+                vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             default:
