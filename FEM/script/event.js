@@ -5,9 +5,11 @@ function init() {
     vm.plot.canvas = document.getElementById('canvas');
 
     vm.plot.scene = new THREE.Scene();
-    vm.plot.scene.add(new THREE.AxesHelper(20));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(5, 0, 0), new THREE.Vector3(0, 0, 0), 8, 0xff0000, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 5, 0), new THREE.Vector3(0, 0, 0), 8, 0x00ff00, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 5), new THREE.Vector3(0, 0, 0), 8, 0x0000ff, 0.4, 0.2));
+    
     vm.plot.camera = new THREE.PerspectiveCamera(45, vm.plot.canvas.clientWidth / vm.plot.canvas.clientHeight, 0.1, 1000);
-
     vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
     vm.plot.camera.position.y = vm.plot.radius * Math.cos(vm.plot.theta);
     vm.plot.camera.position.z = vm.plot.radius * Math.sin(vm.plot.theta) * Math.cos(vm.plot.phi);
@@ -23,7 +25,7 @@ function init() {
 
     document.addEventListener('keydown', (event) => {
         const keyCode = event.keyCode;
-        if (vm.plot.scene.children.length == 1) {
+        if (vm.plot.scene.children.length <= 3) {
             return;
         }
 
