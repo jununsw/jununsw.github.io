@@ -5,9 +5,10 @@ function init() {
     vm.plot.canvas = document.getElementById('canvas');
 
     vm.plot.scene = new THREE.Scene();
-    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(5, 0, 0), new THREE.Vector3(0, 0, 0), 8, 0xff0000, 0.4, 0.2));
-    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 5, 0), new THREE.Vector3(0, 0, 0), 8, 0x00ff00, 0.4, 0.2));
-    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 5), new THREE.Vector3(0, 0, 0), 8, 0x0000ff, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(5, 0, 0), new THREE.Vector3(0, 0, 0), 12, 0xff0000, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 5, 0), new THREE.Vector3(0, 0, 0), 12, 0x00ff00, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.ArrowHelper(new THREE.Vector3(0, 0, 5), new THREE.Vector3(0, 0, 0), 12, 0x0000ff, 0.4, 0.2));
+    vm.plot.scene.add(new THREE.GridHelper(20, 10));
     
     vm.plot.camera = new THREE.PerspectiveCamera(45, vm.plot.canvas.clientWidth / vm.plot.canvas.clientHeight, 0.1, 1000);
     vm.plot.camera.position.x = vm.plot.radius * Math.sin(vm.plot.theta) * Math.sin(vm.plot.phi);
@@ -25,7 +26,7 @@ function init() {
 
     document.addEventListener('keydown', (event) => {
         const keyCode = event.keyCode;
-        if (vm.plot.scene.children.length <= 3) {
+        if (vm.plot.scene.children.length <= 4) {
             return;
         }
 
@@ -76,8 +77,8 @@ function init() {
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 81:  // q
-                if (vm.plot.radius <= 15) {
-                    vm.plot.radius = 15;
+                if (vm.plot.radius <= 30) {
+                    vm.plot.radius = 30;
                 } else {
                     vm.plot.radius -= 0.4;
                 }
@@ -90,8 +91,8 @@ function init() {
                 vm.plot.renderer.render(vm.plot.scene, vm.plot.camera);
                 break;
             case 69:  // e
-                if (vm.plot.radius >= 40) {
-                    vm.plot.radius = 40;
+                if (vm.plot.radius >= 80) {
+                    vm.plot.radius = 80;
                 } else {
                     vm.plot.radius += 0.4;
                 }
