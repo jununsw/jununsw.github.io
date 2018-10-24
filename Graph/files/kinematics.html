@@ -56,8 +56,8 @@
             axis: false
         });
 
-        var bottom = board.create('image', ['../images/Cannon_bottom.png', [0, 0.3], [2, 1]], {layer: 1}),
-            muzzle = board.create('image', ['../images/Cannon_muzzle.png', [0, 1.05], [3, 0.75]], {layer: 0}),
+        var bottom = board.create('image', ['../images/Cannon_bottom.png', [0, 0.3], [2, 1]], {layer: 1, fixed: true}),
+            muzzle = board.create('image', ['../images/Cannon_muzzle.png', [0, 1.05], [3, 0.75]], {layer: 0, fixed: true}),
             shoot = board.create('text', [9, 9.5, '<button class="btn btn-sm" id="shoot">Shoot</button>'], {fixed: true}),
             reset = board.create('text', [11, 9.5, '<button class="btn btn-sm" id="reset">Reset</button>'], {fixed: true}),
             rot, rp, cp, cc, cannonball, cbanim, solution, velocity,
