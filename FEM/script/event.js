@@ -1,6 +1,13 @@
 // function for all HTML events
 function init() {
     $("#control-tabs").tabs();
+    $("#prop-accordion").accordion({
+        heightStyle: "content"
+    });
+    
+    $("input[type='text']").focus(function(e) {
+        vm.input = $(e.target).val();
+    });
 
     vm.plot.canvas = document.getElementById('canvas');
 

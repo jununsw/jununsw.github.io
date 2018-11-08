@@ -59,7 +59,8 @@
                 <div class="col-sm-4 panel">
                     <div class="tabs-nohdr" id="control-tabs">
                         <ul>
-                            <li><a href="#tabs-geom">Geometry</a></li>
+                            <li><a href="#tabs-geom" id="geometry-tab">Geometry</a></li>
+                            <li><a href="#tabs-prop" id="property-tab" style="display: none;">Properties</a></li>
                         </ul>
                         
                         <div id="tabs-geom">
@@ -75,24 +76,141 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Height: (mm)</label>
-                                    <input class="form-control" v-model.number="height" v-on:keyup="checkNumber"/>
+                                    <input type="text" class="form-control prism cylinder" v-model.number="height"/>
                                 </div>
                                 <div class="form-group">
                                     <label>{{(shape == 'prism') ? 'Width: (mm)' : 'Radius: (mm)'}}</label>
-                                    <input class="form-control" v-model.number="x" v-on:keyup="checkNumber"/>
+                                    <input type="text" class="form-control prism cylinder" v-model.number="x"/>
                                 </div>
                                 <div class="form-group" v-if="shape == 'prism'">
                                     <label>Length: (mm)</label>
-                                    <input class="form-control" v-model.number="y" v-on:keyup="checkNumber"/>
+                                    <input type="text" class="form-control prism" v-model.number="y"/>
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-primary" v-on:click="modelPlot">Plot Specimen</button>
-                                    <span class="error">{{plot.error}}</span>
                                 </div>
                             </form>
                         </div>
+                        
+                        <div id="tabs-prop">
+                            <p>Type</p>
+                            <div class="radio">
+                                <label><input type="radio" name="type" v-model="property.type" value="basic">Basic</label>
+                                <label><input type="radio" name="type" v-model="property.type" value="fiber">Fiber-reinforced</label>
+                            </div>
+                            <hr/>
+                            <div id="prop-accordion">
+                                <h3>Microstructural-related</h3>
+                                <div>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Aggregate (% by mass)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Density of paste (kg/m<sup>3</sup>)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Porosity of paste (%)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr v-show="property.type=='fiber'">
+                                                <td>Fiber Type</td>
+                                                <td>
+                                                    <select>
+                                                        <option>Natural</option>
+                                                        <option>PVA</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h3>Hydrates (g/kg of the material)</h3>
+                                <div>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Portlandite</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Monosulfate</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>C-S-H</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ettringite</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Calcite</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr v-show="property.type=='fiber'">
+                                                <td>Hydrogarnet</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr v-show="property.type=='fiber'">
+                                                <td>Heavy-metal products<br/>(&times; 10<sup>-2</sup>)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h3>Ionic concentration (mmol/L of the pore solution)</h3>
+                                <div>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>OH<sup>-</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Na<sup>+</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>K<sup>+</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>SO<sub>4</sub><sup>2-</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ca<sup>2+</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Al(OH)<sub>4</sub><sup>-</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>CO<sub>3</sub><sup>2-</sup></td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr v-show="property.type=='fiber'">
+                                                <td>Heavy-metal ion<br/>(&times; 10<sup>-5</sup>)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                            <tr v-show="property.type=='fiber'">
+                                                <td>Organic substances<br/>(&times; 10<sup>-4</sup>)</td>
+                                                <td><input type="text" class="form-control"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="col-sm-8">
                     <canvas id="canvas" width="800" height="800"></canvas>
                 </div>

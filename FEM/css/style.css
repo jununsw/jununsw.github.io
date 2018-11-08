@@ -35,3 +35,13 @@ canvas {
     color: red;
     font-weight: bold;
 }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    font-weight: bold;
+}
+
+.ui-accordion-content {
+    font-size: 16px;
+    background-color: transparent;
+    border: 0;
+}
