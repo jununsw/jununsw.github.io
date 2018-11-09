@@ -20,7 +20,7 @@ var vm = new Vue({
         y: 10,
         property: {
             type: 'basic',
-            boundary: '1',
+            boundary: '1d',
             basic: {
                 aggregate: [50, 70, 80],
                 density: [1650, 1750, 1850],
@@ -42,7 +42,7 @@ var vm = new Vue({
             
             try {
                 this.plot.scene.remove(this.plot.specimen);
-                this.plot.boundary.forEach(function(ele, idx, arr) {
+                this.plot.boundary.forEach((ele, idx, arr) => {
                     this.plot.scene.remove(ele);
                 });
                 this.plot.boundary = [];
@@ -54,15 +54,40 @@ var vm = new Vue({
                 if ((Number(this.height) > 0) && (Number(this.x) > 0) && (Number(this.y) > 0)) {
                     var ratio = Math.max(Number(this.height), Number(this.x), Number(this.y));
                     var size = [Number(this.height) / ratio * 10, Number(this.x) / ratio * 10, Number(this.y) / ratio * 10];
-                    if (this.property.boundary == "1") {
+                    if (this.property.boundary == "1d") {
                         this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
-                    } else if (this.property.boundary == "2") {
-                        this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
-                    } else if (this.property.boundary == "3") {
-                        this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
+                        
+                        /*
                         let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.4, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                         arrow.position.y = -size[1]/2 - 0.4;
                         this.plot.boundary.push(arrow);
+                        */
+                        
+                        // upper face
+                        for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = size[1]/2 + 0.4;
+                                arrow.position.x = x;
+                                arrow.position.z = z;
+                                arrow.rotation.x = Math.PI;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                        // lower face
+                        for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = -size[1]/2 - 0.4;
+                                arrow.position.x = x;
+                                arrow.position.z = z;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                    } else if (this.property.boundary == "3d") {
+                        this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
                     }
                 } else {
                     $(".prism").each(function(idx, ele) {
@@ -78,11 +103,9 @@ var vm = new Vue({
                 if ((Number(this.height) > 0) && (Number(this.x) > 0)) {
                     var ratio = Math.max(Number(this.height), Number(this.x));
                     var size = [Number(this.height) / ratio * 5, Number(this.x) / ratio * 5 * Math.sqrt(2)];
-                    if (this.property.boundary == "1") {
+                    if (this.property.boundary == "1d") {
                         this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
-                    } else if (this.property.boundary == "2") {
-                        this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
-                    } else if (this.property.boundary == "3") {
+                    } else if (this.property.boundary == "3d") {
                         this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
                     }
                 } else {
@@ -98,8 +121,8 @@ var vm = new Vue({
             }
 
             this.plot.scene.add(this.plot.specimen);
-            this.plot.boundary.forEach(function(ele, idx, arr) {
-                vm.plot.scene.add(ele);
+            this.plot.boundary.forEach((ele, idx, arr) => {
+                this.plot.scene.add(ele);
             });
 
             this.plot.renderer.render(this.plot.scene, this.plot.camera);
