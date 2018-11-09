@@ -101,25 +101,29 @@ var vm = new Vue({
                         this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
                         
                         // upper face
-                        for (let theta = 0; theta <= 2 * Math.PI; theta+= Math.PI / 8) {
-                            for (let r = 0; r <= Math.floor(size[1]); r++) {
-                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
-                                arrow.position.y = size[0]/2 + 0.4;
-                                arrow.position.x = r * Math.cos(theta);
-                                arrow.position.z = r * Math.sin(theta);
-                                arrow.rotation.x = Math.PI;
-                                this.plot.boundary.push(arrow);
+                        for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
+                            for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
+                                if (Math.sqrt(x*x + z*z) < size[1]) {
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    arrow.position.y = size[0]/2 + 0.4;
+                                    arrow.position.x = x;
+                                    arrow.position.z = z;
+                                    arrow.rotation.x = Math.PI;
+                                    this.plot.boundary.push(arrow);
+                                }
                             }
                         }
                         
                         // lower face
-                        for (let theta = 0; theta <= 2 * Math.PI; theta+= Math.PI / 8) {
-                            for (let r = 0; r <= Math.floor(size[1]); r++) {
-                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
-                                arrow.position.y = -size[0]/2 - 0.4;
-                                arrow.position.x = r * Math.cos(theta);
-                                arrow.position.z = r * Math.sin(theta);
-                                this.plot.boundary.push(arrow);
+                        for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
+                            for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
+                                if (Math.sqrt(x*x + z*z) < size[1]) {
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    arrow.position.y = -size[0]/2 - 0.4;
+                                    arrow.position.x = x;
+                                    arrow.position.z = z;
+                                    this.plot.boundary.push(arrow);
+                                }
                             }
                         }
                     } else if (this.property.boundary == "3d") {
