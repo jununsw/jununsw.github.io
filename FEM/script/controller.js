@@ -60,7 +60,7 @@ var vm = new Vue({
                         // upper face
                         for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
                             for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
-                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                 arrow.position.y = size[1]/2 + 0.4;
                                 arrow.position.x = x;
                                 arrow.position.z = z;
@@ -72,7 +72,32 @@ var vm = new Vue({
                         // lower face
                         for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
                             for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
-                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = -size[1]/2 - 0.4;
+                                arrow.position.x = x;
+                                arrow.position.z = z;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                    } else if (this.property.boundary == "3d") {
+                        this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
+                        
+                        // upper face
+                        for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = size[1]/2 + 0.4;
+                                arrow.position.x = x;
+                                arrow.position.z = z;
+                                arrow.rotation.x = Math.PI;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                        // lower face
+                        for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                 arrow.position.y = -size[1]/2 - 0.4;
                                 arrow.position.x = x;
                                 arrow.position.z = z;
@@ -80,8 +105,53 @@ var vm = new Vue({
                             }
                         }
                         
-                    } else if (this.property.boundary == "3d") {
-                        this.plot.specimen = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]), new THREE.MeshNormalMaterial());
+                        // left face
+                        for (let y = -Math.floor(size[1] / 2); y <= Math.floor(size[1] / 2); y++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = y;
+                                arrow.position.x = size[0]/2 + 0.4;
+                                arrow.position.z = z;
+                                arrow.rotation.z = Math.PI / 2;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                        // right face
+                        for (let y = -Math.floor(size[1] / 2); y <= Math.floor(size[1] / 2); y++) {
+                            for (let z = -Math.floor(size[2] / 2); z <= Math.floor(size[2] / 2); z++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = y;
+                                arrow.position.x = -size[0]/2 - 0.4;
+                                arrow.position.z = z;
+                                arrow.rotation.z = -Math.PI / 2;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                        // front face
+                        for (let y = -Math.floor(size[1] / 2); y <= Math.floor(size[1] / 2); y++) {
+                            for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = y;
+                                arrow.position.x = x;
+                                arrow.position.z = size[2]/2 + 0.4;
+                                arrow.rotation.x = -Math.PI / 2;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
+                        
+                        // back face
+                        for (let y = -Math.floor(size[1] / 2); y <= Math.floor(size[1] / 2); y++) {
+                            for (let x = -Math.floor(size[0] / 2); x <= Math.floor(size[0] / 2); x++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.position.y = y;
+                                arrow.position.x = x;
+                                arrow.position.z = -size[2]/2 - 0.4;
+                                arrow.rotation.x = Math.PI / 2;
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
                     }
                 } else {
                     $(".prism").each(function(idx, ele) {
@@ -104,7 +174,7 @@ var vm = new Vue({
                         for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
                             for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
                                 if (Math.sqrt(x*x + z*z) < size[1]) {
-                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                     arrow.position.y = size[0]/2 + 0.4;
                                     arrow.position.x = x;
                                     arrow.position.z = z;
@@ -118,7 +188,7 @@ var vm = new Vue({
                         for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
                             for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
                                 if (Math.sqrt(x*x + z*z) < size[1]) {
-                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                     arrow.position.y = -size[0]/2 - 0.4;
                                     arrow.position.x = x;
                                     arrow.position.z = z;
@@ -133,7 +203,7 @@ var vm = new Vue({
                         for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
                             for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
                                 if (Math.sqrt(x*x + z*z) < size[1]) {
-                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                     arrow.position.y = size[0]/2 + 0.4;
                                     arrow.position.x = x;
                                     arrow.position.z = z;
@@ -147,7 +217,7 @@ var vm = new Vue({
                         for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
                             for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
                                 if (Math.sqrt(x*x + z*z) < size[1]) {
-                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                     arrow.position.y = -size[0]/2 - 0.4;
                                     arrow.position.x = x;
                                     arrow.position.z = z;
@@ -160,7 +230,7 @@ var vm = new Vue({
                         let step = Math.PI / Math.ceil((size[1] + 0.4) * Math.PI);
                         for (let theta = 0; theta <= 2 * Math.PI; theta += step) {
                             for (let y = -Math.floor(size[0] / 2); y <= Math.floor(size[0] / 2); y++) {
-                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.15, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
                                 arrow.rotation.x = Math.PI / 2;
                                 arrow.rotation.z = theta + Math.PI/2;
                                 arrow.position.y = y;
