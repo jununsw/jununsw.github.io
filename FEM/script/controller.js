@@ -128,6 +128,47 @@ var vm = new Vue({
                         }
                     } else if (this.property.boundary == "3d") {
                         this.plot.specimen = new THREE.Mesh(new THREE.CylinderGeometry(size[1], size[1], size[0], 64, 8, false), new THREE.MeshNormalMaterial());
+                        
+                        // upper face
+                        for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
+                            for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
+                                if (Math.sqrt(x*x + z*z) < size[1]) {
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    arrow.position.y = size[0]/2 + 0.4;
+                                    arrow.position.x = x;
+                                    arrow.position.z = z;
+                                    arrow.rotation.x = Math.PI;
+                                    this.plot.boundary.push(arrow);
+                                }
+                            }
+                        }
+                        
+                        // lower face
+                        for (let x = -Math.floor(size[1]); x <= Math.floor(size[1]); x++) {
+                            for (let z = -Math.floor(size[1]); z <= Math.floor(size[1]); z++) {
+                                if (Math.sqrt(x*x + z*z) < size[1]) {
+                                    let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                    arrow.position.y = -size[0]/2 - 0.4;
+                                    arrow.position.x = x;
+                                    arrow.position.z = z;
+                                    this.plot.boundary.push(arrow);
+                                }
+                            }
+                        }
+                        
+                        // side face
+                        let step = Math.PI / Math.ceil((size[1] + 0.4) * Math.PI);
+                        for (let theta = 0; theta <= 2 * Math.PI; theta += step) {
+                            for (let y = -Math.floor(size[0] / 2); y <= Math.floor(size[0] / 2); y++) {
+                                let arrow = new THREE.Mesh(new THREE.ConeBufferGeometry(0.2, 0.8, 16, 16), new THREE.MeshBasicMaterial({color: 0x000ff}));
+                                arrow.rotation.x = Math.PI / 2;
+                                arrow.rotation.z = theta + Math.PI/2;
+                                arrow.position.y = y;
+                                arrow.position.x = (size[1] + 0.4) * Math.cos(theta);
+                                arrow.position.z = (size[1] + 0.4) * Math.sin(theta);
+                                this.plot.boundary.push(arrow);
+                            }
+                        }
                     }
                 } else {
                     $(".cylinder").each(function(idx, ele) {
