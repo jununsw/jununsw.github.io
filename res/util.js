@@ -20,6 +20,10 @@ function getPrecision(input, prec, type) {
 	}
 }
 
+function num(txt) {
+        return txt == '' ? NaN : Number(txt);
+}
+
 function isEqual() {
     if (arguments.length != 3) {
         return false
