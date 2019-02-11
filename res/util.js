@@ -28,18 +28,26 @@ function isEqual() {
     if (arguments.length != 3) {
         return false
     } else {
-        var tol = Math.pow(10, -arguments[2]) * 2;
-        var diff = Math.abs(arguments[0] - arguments[1]);
-        if (diff <= tol) {
-            return true;
-        } else {
-            return false;
-        }
+		if (isNaN(arguments[1]) {
+			return false;
+		} else {
+			var tol = Math.pow(10, -arguments[2]) * 2;
+			var diff = Math.abs(arguments[0] - arguments[1]);
+			if (diff <= tol) {
+				return true;
+			} else {
+				return false;
+			}
+		}
     }
 }
 
 function isPrecise(input, answer, exponential) {
     // i.e. input = 1.234e10, answer = 1.233e10, exponential = 3
+	
+	if (isNaN(answer) {
+		return false;
+	}
 
     // obtain answer's exponential value
     if (answer == 0) {
