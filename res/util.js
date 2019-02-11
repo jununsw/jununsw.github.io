@@ -21,14 +21,14 @@ function getPrecision(input, prec, type) {
 }
 
 function num(txt) {
-        return txt == '' ? NaN : Number(txt);
+    return txt == '' ? NaN : Number(txt);
 }
 
 function isEqual() {
     if (arguments.length != 3) {
-        return false
+        return false;
     } else {
-		if (isNaN(arguments[1]) {
+		if (isNaN(arguments[1])) {
 			return false;
 		} else {
 			var tol = Math.pow(10, -arguments[2]) * 2;
