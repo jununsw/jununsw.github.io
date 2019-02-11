@@ -1,23 +1,23 @@
 function getPrecision(input, prec, type) {
-	/*
-		input: numbers in string type,
-		return type: number
-	*/
-	if (input === "") {
-		return NaN;
-	}
+    /*
+        input: numbers in string type,
+        return type: number
+    */
+    if (input === "") {
+        return NaN;
+    }
 
-	if (type === "n") {
-		var num1 = Number(input);
-		var num2 = num1.toFixed(prec);
-		var num3 = Number(num2);
-		return num3;
-	} else if (type === "e") {
-		var num1 = Number(input);
-		var num2 = num1.toExponential(prec);
-		var num3 = Number(num2);
-		return num3;
-	}
+    if (type === "n") {
+        var num1 = Number(input);
+        var num2 = num1.toFixed(prec);
+        var num3 = Number(num2);
+        return num3;
+    } else if (type === "e") {
+        var num1 = Number(input);
+        var num2 = num1.toExponential(prec);
+        var num3 = Number(num2);
+        return num3;
+    }
 }
 
 function num(txt) {
@@ -28,26 +28,26 @@ function isEqual() {
     if (arguments.length != 3) {
         return false;
     } else {
-		if (isNaN(arguments[1])) {
-			return false;
-		} else {
-			var tol = Math.pow(10, -arguments[2]) * 2;
-			var diff = Math.abs(arguments[0] - arguments[1]);
-			if (diff <= tol) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+        if (isNaN(arguments[1])) {
+            return false;
+        } else {
+            var tol = Math.pow(10, -arguments[2]) * 2;
+            var diff = Math.abs(arguments[0] - arguments[1]);
+            if (diff <= tol) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
 
 function isPrecise(input, answer, exponential) {
     // i.e. input = 1.234e10, answer = 1.233e10, exponential = 3
-	
-	if (isNaN(answer) {
-		return false;
-	}
+    
+    if (isNaN(answer)) {
+        return false;
+    }
 
     // obtain answer's exponential value
     if (answer == 0) {
@@ -270,16 +270,16 @@ function toPost(path, params, method) {
 
 function getParameterByName(name, url) {
     if (!url) {
-	    url = window.location.href;
+        url = window.location.href;
     }
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
     var results = regex.exec(url);
     if (!results) {
-	    return null;
+        return null;
     }
     if (!results[2]) {
-	    return '';
+        return '';
     }
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
