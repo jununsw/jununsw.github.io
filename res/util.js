@@ -21,7 +21,8 @@ function getPrecision(input, prec, type) {
 }
 
 function num(txt) {
-    return txt == '' ? NaN : Number(txt);
+    let str = txt.trim();
+    return str == '' ? NaN : Number(txt);
 }
 
 function isEqual() {
