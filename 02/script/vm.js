@@ -299,6 +299,8 @@ $(document).ready(function() {
     
     window.begin = Math.ceil((new Date()).getTime() / 1000);
     window.timer = window.begin + 60*90;
+    
+    window.requestAnimationFrame(clock);
 });
 
 function clock() {
