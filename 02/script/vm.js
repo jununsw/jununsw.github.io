@@ -123,10 +123,6 @@ var vm = new Vue({
             
             window.setTimeout(function() {
                 $(event.target).hide().after("<label>Note this is a sample page. In real case your mark will be sent to Moodle Gradebook.</label>");
-                $("#main-body").css("display", "none");
-                $("#score-bar").css("display", "block");
-                $("#id-bar").css("display", "none");
-                $(".instruction,.timer").css("display", "none");
             }, 500);
         },
         
@@ -301,37 +297,128 @@ $(document).ready(function() {
     $("#score-bar").css("display", "block");
     $("#id-bar").css("display", "none");
     
-    count = setInterval(function() {
-
-        var min = Number($("#min").html());
-        var sec = Number($("#sec").html());
-
-        if (sec === 0) {
-            min -= 1;
-            sec = "59";
-            min = min.toFixed(0);
-        } else if (sec <= 10) {
-            sec -= 1;
-            sec = "0" + sec.toFixed(0);
-            min = min.toFixed(0);
-        } else {
-            sec -= 1;
-            sec = sec.toFixed(0);
-            min = min.toFixed(0);
-        }
-
-        $("#min").html(min);
-        $("#sec").html(sec);
-
-    }, 1000);
-
-    setTimeout(function() {
-        clearInterval(count);
-
-        // TODO disable submit
-        $(".timer").css("display", "none");
-        $("#id-submit").prop("disabled", true);
-
-        // TODO submit result
-    }, 5400000);
+    window.begin = Math.ceil((new Date()).getTime() / 1000);
+    window.timer = window.begin + 60*90;
 });
+
+function clock() {
+    var now = new Date();
+    var ctx = document.getElementById('clock').getContext('2d');
+    ctx.save();
+    ctx.clearRect(0, 0, 150, 150);
+    ctx.translate(75, 75);
+    ctx.scale(0.4, 0.4);
+    ctx.rotate(-Math.PI / 2);
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = 'white';
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+
+    // Hour marks
+    ctx.save();
+    for (var i = 0; i < 12; i++) {
+        ctx.beginPath();
+        ctx.rotate(Math.PI / 6);
+        ctx.moveTo(100, 0);
+        ctx.lineTo(120, 0);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // Minute marks
+    ctx.save();
+    ctx.lineWidth = 5;
+    for (i = 0; i < 60; i++) {
+    if (i % 5!= 0) {
+        ctx.beginPath();
+        ctx.moveTo(117, 0);
+        ctx.lineTo(120, 0);
+        ctx.stroke();
+    }
+    ctx.rotate(Math.PI / 30);
+    }
+    ctx.restore();
+
+    var sec = now.getSeconds();
+    var min = now.getMinutes();
+    var hr  = now.getHours();
+    hr = hr >= 12 ? hr - 12 : hr;
+
+    ctx.fillStyle = 'black';
+
+    // write Hours
+    ctx.save();
+    ctx.rotate(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) *sec);
+    ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(80, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    // write Minutes
+    ctx.save();
+    ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(-28, 0);
+    ctx.lineTo(112, 0);
+    ctx.stroke();
+    ctx.restore();
+
+    // Write seconds
+    ctx.save();
+    ctx.rotate(sec * Math.PI / 30);
+    ctx.strokeStyle = '#D40000';
+    ctx.fillStyle = '#D40000';
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(-30, 0);
+    ctx.lineTo(83, 0);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+    ctx.arc(0, 0, 3, 0, Math.PI * 2, true);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.lineWidth = 14;
+    ctx.strokeStyle = '#325FA2';
+    ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
+    ctx.stroke();
+
+    ctx.restore();
+
+    // timer
+    window.elapse = Math.floor((new Date()).getTime() / 1000) - window.begin;
+    window.remain = window.timer - Math.floor((new Date()).getTime() / 1000);
+
+    window.min = Math.floor(window.remain / 60);
+    window.sec = window.remain % 60;
+
+    if (window.remain <= 0) {
+        $(".timer").css("display", "none");
+        $("#timeup").html("").css("color", "red").html("Your time is up. Please take screenshot of your answers as a record and submit")
+        $("input").prop("disabled", true);
+    }
+
+    if (window.sec === 0) {
+        window.min -= 1;
+        window.sec = 59;
+    } else if (sec <= 10) {
+        window.sec -= 1;
+    } else {
+        window.sec -= 1;
+    }
+            
+    $("#min").html(window.min.toString());
+    $("#sec").html((window.sec < 10) ? '0' + window.sec.toString() : window.sec.toString());
+
+    window.requestAnimationFrame(clock);
+}

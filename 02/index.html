@@ -19,8 +19,99 @@
         <script src="script/mulitple.js?v=1"></script>
         <script src="../res/util.js"></script>
         <link rel="stylesheet" type="text/css" href="css/layout.css?v=0"/>
+        <link rel="stylesheet" type="text/css" href="calculator.css"/>
+        <script src="calculator.js"></script>
     </head>
     <body>
+        <div id="calculator">
+            <table id="cal-frame" style="display: none;">
+                <tr>
+                    <td id="sciout">
+                        <div>
+                            <div id="sciOutPut">0</div>
+                        </div>
+                        <div style="padding-top: 3px; width: 100%;">
+                            <div>
+                                <span onclick="r('sin')" class="scifunc">sin</span>
+                                <span onclick="r('cos')" class="scifunc">cos</span>
+                                <span onclick="r('tan')" class="scifunc">tan</span>
+                                <span class="scird">
+                                    <label for="scirdsettingd"><input id="scirdsettingd" type="radio" name="scirdsetting" value="deg" onClick="degreeRadians='degree';" checked/>Deg</label>
+                                    <label for="scirdsettingr"><input id="scirdsettingr" type="radio" name="scirdsetting" value="rad" onClick="degreeRadians='radians';"/>Rad</label>
+                                </span>
+                            </div>
+                            <div>
+                                <span onclick="r('asin')" class="scifunc">sin<sup>-1</sup></span>
+                                <span onclick="r('acos')" class="scifunc">cos<sup>-1</sup></span>
+                                <span onclick="r('atan')" class="scifunc">tan<sup>-1</sup></span>
+                                <span onclick="r('pi')" class="scifunc">&#960;</span>
+                                <span onclick="r('e')" class="scifunc">e</span>
+                            </div>
+                            <div>
+                                <span onclick="r('pow')" class="scifunc">x<sup>y</sup></span>
+                                <span onclick="r('x3')" class="scifunc">x<sup>3</sup></span>
+                                <span onclick="r('x2')" class="scifunc">x<sup>2</sup></span>
+                                <span onclick="r('ex')" class="scifunc">e<sup>x</sup></span>
+                                <span onclick="r('10x')" class="scifunc">10<sup>x</sup></span>
+                            </div>
+                            <div>
+                                <span onclick="r('apow')" class="scifunc"><sup>y</sup>&#8730;x</span>
+                                <span onclick="r('3x')" class="scifunc"><sup>3</sup>&#8730;x</span>
+                                <span onclick="r('sqrt')" class="scifunc">&#8730;x</span>
+                                <span onclick="r('ln')" class="scifunc">ln</span>
+                                <span onclick="r('log')" class="scifunc">log</span>
+                            </div>
+                            <div>
+                                <span onclick="r('(')" class="scifunc">(</span>
+                                <span onclick="r(')')" class="scifunc">)</span>
+                                <span onclick="r('1/x')" class="scifunc">1/x</span>
+                                <span onclick="r('pc')" class="scifunc">%</span>
+                                <span onclick="r('n!')" class="scifunc">n!</span>
+                            </div>
+                        </div>
+                        <div style="padding-top: 3px;">
+                            <div>
+                                <span onclick="r(7)" class="scinm">7</span>
+                                <span onclick="r(8)" class="scinm">8</span>
+                                <span onclick="r(9)" class="scinm">9</span>
+                                <span onclick="r('+')" class="sciop">+</span>
+                                <span onclick="r('MS')" class="sciop">MS</span>
+                            </div>
+                            <div>
+                                <span onclick="r(4)" class="scinm">4</span>
+                                <span onclick="r(5)" class="scinm">5</span>
+                                <span onclick="r(6)" class="scinm">6</span>
+                                <span onclick="r('-')" class="sciop">&ndash;</span>
+                                <span onclick="r('M+')" class="sciop">M+</span>
+                            </div>
+                            <div>
+                                <span onclick="r(1)" class="scinm">1</span>
+                                <span onclick="r(2)" class="scinm">2</span>
+                                <span onclick="r(3)" class="scinm">3</span>
+                                <span onclick="r('*')" class="sciop">&#215;</span>
+                                <span onclick="r('M-')" class="sciop">M-</span>
+                            </div>
+                            <div>
+                                <span onclick="r(0)" class="scinm">0</span>
+                                <span onclick="r('.')" class="scinm">.</span>
+                                <span onclick="r('EXP')" class="sciop">EXP</span>
+                                <span onclick="r('/')" class="sciop">&#247;</span>
+                                <span onclick="r('MR')" class="sciop">MR</span>
+                            </div>
+                            <div>
+                                <span onclick="r('+/-')" class="sciop">&#177;</span>
+                                <span onclick="r('RND')" class="sciop">RND</span>
+                                <span onclick="r('C')" class="scieq">C</span>
+                                <span onclick="r('=')" class="scieq">=</span>
+                                <span onclick="r('MC')" class="sciop">MC</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr> 
+            </table>
+            <br/>
+            <button id="calbtn" class="btn btn-warning" onclick="toggle_calculator()" style="float: right; display: none;">Show / Hide Calculator</button>
+        </div>
         <div id="myapp">
             <div id="id-bar">
                 <p id="main-score">
@@ -31,14 +122,18 @@
                 </p>
             </div>
             
-            <div id="score-bar">
+            <div id="score-bar" style="display: none;">
                 <p>
                     Question answered: {{answered}} out of 23. &nbsp;&nbsp;<button class="btn btn-primary" id="id-submit" v-on:click="tofinish">Finish and Submit</button>
                 </p>
                 <p class="instruction">
                     <span class="bold">Instruction: </span>There are five parts of questions in this quiz, corresponding to the three tabs below. Some questions are grouped into sections. After a section being answered, click the "Record Answers" button, so that your answer will be recorded. Please double-check your answer before clicking "Record Answers" button because you cannot edit your answer after that. Invalid answers will not be recorded (such as that you answer is not a number where number is required).
                 </p>
-                <div class="h2 timer">Time Left <span id="min">90</span>:<span id="sec">00</span></div>
+                <div class="h2 timer after-hide">
+                    <span style=""> zID: <?php echo $zid;?></span><br/><br/>
+                    Time Left <span id="min"></span>:<span id="sec"></span><br/><br/>
+                    <canvas id="clock" width="150" height="150"></canvas>
+                </div>
             </div>
             
             <div id="main-body">
