@@ -136,7 +136,7 @@ function disableKeyboard() {
             
         } else if ((e.keyCode >= 96) && (e.keyCode <= 105)) {
 
-        } else if ((e.keyCode == 109) && (e.keyCode == 110)) {
+        } else if ((e.keyCode == 109) || (e.keyCode == 110)) {
 
         } else if (e.keyCode == '-'.charCodeAt(0)) {
 
