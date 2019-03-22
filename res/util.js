@@ -134,6 +134,8 @@ function disableKeyboard() {
     document.onkeydown = function(e) {
         if ((event.keyCode >= '0'.charCodeAt(0)) && (event.keyCode <= '9'.charCodeAt(0))) {
             
+        } else if ((event.keyCode >= 96) && (event.keyCode <= 102)) {
+
         } else if (e.keyCode == '-'.charCodeAt(0)) {
 
         } else if (e.keyCode == '.'.charCodeAt(0)) {
