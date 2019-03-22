@@ -132,9 +132,9 @@ function disableInspect(path) {
 
 function disableKeyboard() {
     document.onkeydown = function(e) {
-        if ((event.keyCode >= '0'.charCodeAt(0)) && (event.keyCode <= '9'.charCodeAt(0))) {
+        if ((e.keyCode >= '0'.charCodeAt(0)) && (e.keyCode <= '9'.charCodeAt(0))) {
             
-        } else if ((event.keyCode >= 96) && (event.keyCode <= 102)) {
+        } else if ((e.keyCode >= 96) && (e.keyCode <= 105)) {
 
         } else if (e.keyCode == '-'.charCodeAt(0)) {
 
