@@ -21,7 +21,7 @@ function getPrecision(input, prec, type) {
 }
 
 function num(txt) {
-    let str = txt.toString().trim();
+    let str = txt.trim();
     return str == '' ? NaN : Number(txt);
 }
 
@@ -130,8 +130,6 @@ function disableInspect(path) {
     });
 }
 
-
-
 function disableCopy() {
     document.onkeydown = function(e) {
         if (event.keyCode == 123) {
@@ -159,6 +157,26 @@ function disableCopy() {
         }
 
         if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) {
+            return false;
+        }
+    }
+    
+    $("html").on("contextmenu", function(e) {
+        return false;
+    });
+}
+
+function disableKeyboard() {
+    document.onkeydown = function(e) {
+        if ((event.keyCode >= 30) && (event.keyCode <= 39)) {
+            
+        } else if (e.keyCode == '.'.charCodeAt(0)) {
+
+        } else if (e.keyCode == 'E'.charCodeAt(0)) {
+
+        } else if (e.keyCode == 'e'.charCodeAt(0)) {
+
+        } else {
             return false;
         }
     }
