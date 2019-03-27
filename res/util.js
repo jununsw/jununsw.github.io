@@ -132,19 +132,17 @@ function disableInspect(path) {
 
 function disableKeyboard() {
     document.onkeydown = function(e) {
-        if ((e.keyCode >= '0'.charCodeAt(0)) && (e.keyCode <= '9'.charCodeAt(0))) {
+        if ((e.keyCode >= 48) && (e.keyCode <= 57)) {
             
         } else if ((e.keyCode >= 96) && (e.keyCode <= 105)) {
 
         } else if ((e.keyCode == 109) || (e.keyCode == 110)) {
 
-        } else if (e.keyCode == '-'.charCodeAt(0)) {
+        } else if (e.keyCode == 189) {
 
-        } else if (e.keyCode == '.'.charCodeAt(0)) {
+        } else if (e.keyCode == 190) {
 
-        } else if (e.keyCode == 'E'.charCodeAt(0)) {
-
-        } else if (e.keyCode == 'e'.charCodeAt(0)) {
+        } else if (e.keyCode == 69) {
 
         } else if (e.keyCode == 8) {
 
