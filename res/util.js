@@ -137,6 +137,10 @@ function disableKeyboard() {
         } else {
         
         }
+        
+        if ((e.keyCode == 32) || (e.keyCode == 9)) {
+            return false;
+        }
     }
     
     $("html").on("contextmenu", function(e) {
