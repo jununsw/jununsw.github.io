@@ -138,7 +138,7 @@ function disableKeyboard() {
         
         }
         
-        if ((e.keyCode == 32) || (e.keyCode == 9)) {
+        if (e.keyCode == 32) {
             return false;
         }
     }
