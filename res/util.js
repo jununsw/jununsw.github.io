@@ -141,6 +141,10 @@ function disableKeyboard() {
         if (e.keyCode == 32) {
             return false;
         }
+        
+        if (e.keyCode == 188) {
+            return false;
+        }
     }
     
     $("html").on("contextmenu", function(e) {
