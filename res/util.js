@@ -86,6 +86,14 @@ Array.prototype.random = function() {
     }
 }
 
+String.prototype.toNum = function() {
+    if (this.trim() == "") {
+        return NaN;
+    } else {
+        return Number(this);
+    }
+}
+
 function disableInspect(path) {
     document.onkeydown = function(e) {
         if (event.keyCode == 123) {
