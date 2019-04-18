@@ -94,6 +94,16 @@ String.prototype.toNum = function() {
     }
 }
 
+String.prototype.searchNum = function() {
+    let pattern = RegExp('[0123456789eE\.\+\-]+','g');
+    let fetch = pattern.exec(this);
+    if (fetch) {
+        return Number(fetch[0]);
+    } else {
+        return NaN;
+    }
+}
+
 function disableInspect(path) {
     document.onkeydown = function(e) {
         if (event.keyCode == 123) {
