@@ -156,6 +156,14 @@ function disableKeyboard() {
         
         }
         
+        if ((e.KeyCode >= 65) && (e.KeyCode <= 90)) {
+            return false;
+        }
+        
+        if (e.keyCode == 9) {
+            return false;
+        }
+        
         if (e.keyCode == 32) {
             return false;
         }
