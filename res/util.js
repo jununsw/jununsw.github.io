@@ -74,6 +74,21 @@ function isPrecise(input, answer, exponential) {
     }
 }
 
+Number.prototype.t = function() {
+    if (arguments.length < 2) {
+        return false;
+    } else {
+        let tol = arguments[1];
+        let val = arguments[0];
+        let diff = Math.abs(this - val);
+        if (diff <= tol) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 Array.prototype.random = function() {
     if (arguments.length >= 1) {
         var n = arguments[0];
