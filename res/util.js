@@ -171,26 +171,32 @@ function disableKeyboard() {
         
         }
         
+        // alphabet
         if ((e.KeyCode >= 65) && (e.KeyCode <= 90)) {
             return false;
         }
         
+        // tab
         if (e.keyCode == 9) {
             return false;
         }
         
+        // space
         if (e.keyCode == 32) {
             return false;
         }
         
+        // comma
         if (e.keyCode == 188) {
             return false;
         }
         
+        // dash
         if (e.keyCode == 191) {
             return false;
         }
         
+        // divide
         if (e.keyCode == 111) {
             return false;
         }
@@ -200,6 +206,31 @@ function disableKeyboard() {
         return false;
     });
 }
+
+function onlyText() {
+    document.onkeydown = function(e) {
+        if ((e.ctrlKey) || (e.altKey)) {
+            return false;
+        } else {
+        
+        }
+        
+        // tab
+        if (e.keyCode == 9) {
+            return false;
+        }
+        
+        // enter
+        if (e.keyCode == 13) {
+            return false;
+        }
+    }
+    
+    $("html").on("contextmenu", function(e) {
+        return false;
+    });
+}
+
 function shuffle(original_arr) {
     var arr = original_arr.slice();
     var currentIndex = arr.length;
