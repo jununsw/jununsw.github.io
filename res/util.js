@@ -119,50 +119,6 @@ String.prototype.searchNum = function() {
     }
 }
 
-function disableInspect(path) {
-    document.onkeydown = function(e) {
-        if (event.keyCode == 123) {
-            (new Audio(path)).play();
-            return false;
-        }
-        
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-        
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-        
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-
-        if (e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-
-        if (e.ctrlKey && e.keyCode == 'V'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-
-        if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) {
-            (new Audio(path)).play();
-            return false;
-        }
-    }
-    
-    $("html").on("contextmenu", function(e) {
-        (new Audio(path)).play();
-        return false;
-    });
-}
-
 function disableKeyboard() {
     document.onkeydown = function(e) {
         if ((e.shiftKey) || (e.ctrlKey) || (e.altKey)) {
