@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Soil Classification</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=9"/>
+    </head>
+    <body onload="init();">
+        <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>Soil Classification</strong></div>
+        <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+            E-learning Module for CVEN 9525 Fundamentals of Geomechanics<br/>
+            Course Coordinator: Dr Babak Shahbodaghkhan<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        <div class="container" id="myapp" style="margin-bottom: 20px;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Instruction</h4>
+                    <ul style="font-size: 0.85em;">
+                        <li>The grain size distribution curve is given for a soil in the figure.</li>
+                        <li>The plastic and liquid limits are also given for the fine portion of the soil underneath the figure.  Classify this soil according to the USCS.</li>
+                        <li>You can freely edit the shape of the soil</li>
+                        <li>By holding CTRL key, five control points will be shown in the chart. Move these points horizontally to change the shape of the curve</li>
+                        <li>You should move the red points first and then the purple points</li>
+                        <li>Press the 'Confirm' button to start the classification of the soil.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <div id="distribution-plot" style="width: 812px; height: 580px; margin: 0 auto;"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <button type="button" class="btn btn-primary" onclick="toggle_confirm(event);">Confirm</button>
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        Assume PL = {{prob.pl}}, &nbsp;&nbsp;&nbsp;&nbsp; LL = {{prob.ll}}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row main-body">
+                <div class="col-sm-12">
+                    <p>
+                        <strong>Step 1:</strong> Determine the percentage of fines (0.075 mm sieve) (F)
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-primary" v-on:click="start($event);">Plot line for F</button>
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p>
+                        <button id="btn-half" type="button" class="btn btn-primary" v-on:click="half($event);" style="display: none;">Plot line for F<sub>g</sub></button>
+                    </p>
+                </div>
+                <div class="col-sm-12">
+                    <p>
+                        <button id="btn-second" type="button" class="btn btn-primary" v-on:click="second($event);" style="display: none;">Determine suffix</button>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div id="plot" class="col-sm-12" style="display: none;">
+                    <div id="fine-plot" style="width: 600px; height: 400px; margin: 0 auto;"></div>
+                </div>
+            </div>
+            
+            <div class="row final" style="display: none;">
+                <div class="col-sm-12">
+                    Therefore group name is <span id='final' style='font-weight: bold;'></span>.
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/event.js?v=5"></script>
+    <script type="text/javascript" src="script/model.js?v=5"></script>
+    <script type="text/javascript" src="script/vm.js?v=5"></script>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Flow Net Tutorial</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/layout.css?v=9"/>
+    </head>
+    <body>
+        <div class="text-center h2" style="padding-top: 20px; padding-bottom: 20px;"><strong>Flow Net Tutorial</strong></div>
+        <div class="text-center h5" style="font-weight: bold;font-style: italic; line-height: 120%;">
+            E-learning Module for CVEN 9525 Fundamentals of Geomechanics<br/>
+            Course Coordinator: Dr Babak Shahbodaghkhan<br/>
+            Module Creator: Dr Xiaojun Chen<br/>
+            All Rights Reserved by UNSW<br/>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Instruction</h4>
+                    <ul style="font-size: 0.85em;">
+                        <li>Drag the point to change the shape of the curve</li>
+                        <li>By Ctrl + clicking the curve you can switch between the curves you want to edit (make sure only the curve you want to edit is highlighted)</li>
+                        <li>Use W, S, A, D to move the whole current curve (since up and down key is occupied by scrolling)</li>
+                        <li>You must plot at least 2 flow lines and 3 equipotential lines</li>
+                        <li>Please keep the flow lines and equipotential lines in order (their order number will show when you Ctrl + click them), and
+                            <ul>
+                                <li>As water level is indicated by the <span style="color: green; font-weight: bold;">GREEN</span> triangles, equipotential lines should be arranged so that its potential is from high to low</li>
+                                <li>Two flow lines are drawn in blue as two boundaries. Flow lines should be arranged so that the one in <span style="color: deepskyblue; font-weight: bold;">SKY BlUE</span> is the first and the one in <span style="color: navy; font-weight: bold;">NAVY BlUE</span> is the last</li>
+                            </ul>
+                        </li>
+                        <li>In order to improve the graphic performance, please use as less control points as possible for each flow and equipotential line</li>
+                        <li>Every flow / equipotential line must have one intersection, including with its corresponding boundaries (because they are flow / equipotential lines too)</li>
+                        <li>You can draw the flow / equipotential lines slightly beyound the boundary so that its intersection with the boundary can be clearly visible</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div id="btn-group">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-sm btn-success" onclick="toAddNode();" style="margin-right: 15px;">Add one control point to the current curve</button>
+                        <button type="button" class="btn btn-sm btn-success" onclick="toRemoveNode();" style="margin-left: 15px;">Remove one control point from the current curve</button>
+                        <button type="button" class="btn btn-sm btn-success" onclick="toDelete();" style="margin-left: 15px;">Delete current curve</button>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-primary" onclick="toFeedStream(100, 550, 800, 550);">Feed Flow line</button>
+                        <button type="button" class="btn btn-primary" onclick="toFeedPotential(100, 550, 800, 550);">Feed Equipotential line</button>
+                        <button type="button" class="btn btn-primary" onclick="toDuplicate();">Copy Current Curve</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <div id="main-plot" style="width: 1000px; height: 600px; margin: 0 auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button type="button" class="btn btn-danger btn-lg" onclick="toCalculate();" id="btn-finish">Finish and Check</button>
+                </div>
+                <div class="col-sm-9 text-center" style="margin-top: 10px;">
+                    <span id="feedback" style="margin-left: 1em; color: red; font-weight: bold;"></span>
+                </div>
+                <div class="col-sm-3" style="margin-top: 10px;">
+                    <ul id="record"></ul>
+                </div>
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <div id="result-intersection" style="width: 1000px; height: 150px; margin: 0 auto; display: none;"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div style="text-align: center;">
+                        <div id="result-cell" style="width: 1000px; height: 150px; margin: 0 auto; display: none;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-12">
+                    <div class="text-center" style="border-top: 3px solid black;">
+                        <button class="btn btn-primary btn-lg" onclick="window.location.reload(true);">Refresh Page</button>
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script/controller.js?v=22"></script>
+    <script type="text/javascript" src="script/view01.js?v=2"></script>
+    <script type="text/javascript" src="script/events.js?v=2"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            
+        });
+    </script>
+</html>

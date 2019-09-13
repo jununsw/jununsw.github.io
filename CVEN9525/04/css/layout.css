@@ -1,0 +1,106 @@
+body {
+    background-color: white;
+    font-size: 18px;
+}
+
+.figure {
+    
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ol {
+    list-style-type: lower-alpha;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+#svg-container {
+    max-width: 500px;
+    max-height: 600px;
+}
+
+.inlet {
+    display: none;
+}
+
+.btn-postproc {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.rotation {
+    display: none;
+}
+
+.main-body {
+    display: none;
+}
+
+.accordion {
+    margin: 0;
+}
+
+.accordion .ui-accordion-header {
+    font-size: 16px;
+}
+
+.accordion .ui-accordion-content {
+    font-size: 16px;
+    background-color: transparent;
+    border: 0;
+}
+
+.pointFont {
+    font-weight: bold;
+}
+
+#answer-tabs {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px; 
+    background: transparent; 
+    border-width: 0px; 
+}
+
+#answer-tabs .ui-tabs-nav { 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
+}
+
+#answer-tabs .ui-tabs-panel { 
+    background: transparent; 
+    border-width: 0px 0px 0px 0px; 
+}
+
+#answer-tabs div {
+    font-weight: normal;
+    font-size: 15px;
+}
+
+#answer-tabs .list {
+    font-size: 16px;
+    font-weight: bold;
+}
