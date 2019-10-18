@@ -163,6 +163,50 @@ function disableKeyboard() {
     });
 }
 
+function disableInspect() {
+    document.onkeydown = function(e) {
+        if ((e.shiftKey) || (e.ctrlKey) || (e.altKey)) {
+            return false;
+        } else {
+        
+        }
+        
+        // alphabet
+        if ((e.KeyCode >= 65) && (e.KeyCode <= 90)) {
+            return false;
+        }
+        
+        // tab
+        if (e.keyCode == 9) {
+            return false;
+        }
+        
+        // space
+        if (e.keyCode == 32) {
+            return false;
+        }
+        
+        // comma
+        if (e.keyCode == 188) {
+            return false;
+        }
+        
+        // dash
+        if (e.keyCode == 191) {
+            return false;
+        }
+        
+        // divide
+        if (e.keyCode == 111) {
+            return false;
+        }
+    }
+    
+    $("html").on("contextmenu", function(e) {
+        return false;
+    });
+}
+
 function onlyText() {
     document.onkeydown = function(e) {
         if ((e.ctrlKey) || (e.altKey)) {
