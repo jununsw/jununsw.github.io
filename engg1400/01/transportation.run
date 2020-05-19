@@ -1,0 +1,11 @@
+reset;
+
+model transportation.mod
+data transportation.dat
+
+option solver cplex;
+
+solve;
+
+display x;
+display cost;

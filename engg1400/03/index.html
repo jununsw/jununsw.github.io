@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Teaching and learning module"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Problem</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/favicon.ico" type="image/vnd.microsoft.icon"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+        <script type="text/javascript">
+            $.widget.bridge('uitooltip', $.ui.tooltip);
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://jununsw.github.io/res/util.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraph.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.6/jsxgraphcore.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <link rel="stylesheet" href="../css/style.css"/>
+    </head>
+    <body onload="init();">
+        <div class="text-center h1" style="padding-top: 20px; padding-bottom: 20px;">
+            <strong>The OR Education Repository</strong>
+            <div class="h6 bold" style="margin: 1em auto;">Background Color: <input id="select-color" type="color" value="#e0ffff" onchange="changeColor(event);"/></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <p class="text-center"><strong>
+                        This repository contains a list of selected Operations Research (OR) problems for educational purposes. Each problem is presented with its statement, mathematical formulation and AMPL codes are provided for practice.
+                    </strong></p>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-block" style="background-color: green;" id="btn01">Transportation<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: blue;" id="btn03">Maximum Flow<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: olive;" id="btn05">Facility Location<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: purple;" id="btn07">Capacitated Vehicle<br/>Routing Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: slateblue;" id="btn08">Capacitated Vehicle<br/>Routing Problem</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-block" style="background-color: brown;" id="btn02">Shortest Path<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: chocolate;" id="btn04">Multi-commodity<br/>Network Flow</button>
+                            <button type="button" class="btn btn-block" style="background-color: rebeccapurple;" id="btn06">Traveling Salesman<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: darkgoldenrod;" id="btn08">Scheduling<br/>Problem</button>
+                            <button type="button" class="btn btn-block" style="background-color: forestgreen;" id="btn10">Scheduling<br/>Problem</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-3"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        function init() {
+            
+        }
+        
+        function changeColor(e) {
+            var color = $(e.target).val();
+            $("body").css("background-color", color.toString());
+        }
+    </script>
+</html>

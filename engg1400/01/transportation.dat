@@ -1,0 +1,27 @@
+set Supply := A B C ;
+set Demand := D E F;
+
+param S:=
+A 10
+B 10
+C 80
+
+;
+
+param D := 
+D 50
+E 40
+F 10
+;
+
+param c:=
+A D 5
+A E 3
+A F 2
+B D 3
+B E 1
+B F 4
+C D 2
+C E 6
+C F 3
+;
