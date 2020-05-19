@@ -60,10 +60,10 @@
                         </div>
                     </div>
                     <p class="h3"><strong>AMPL code</strong></p>
-                    <p>
-                        <button type="button" class="btn btn-outline-primary" data-file="transportation.mod"><strong>AMPL .mod file</strong></button>
-                        <button type="button" class="btn btn-outline-success" data-file="transportation.dat"><strong>AMPL .dat file</strong></button>
-                        <button type="button" class="btn btn-outline-info" data-file="transportation.run"><strong>AMPL .run file</strong></button>
+                    <p style="margin-top: 1em;">
+                        <a href="./transportation.mod" target="_blank" class="btn btn-primary btn-lg" role="button">AMPL .mod file</a>
+                        <a href="./transportation.dat" target="_blank" class="btn btn-success btn-lg" role="button">AMPL .dat file</a>
+                        <a href="./transportation.run" target="_blank" class="btn btn-info btn-lg" role="button">AMPL .run file</a>
                     </p>
                 </div>
                 <div class="col-sm-1"></div>
@@ -72,11 +72,6 @@
     </body>
     <script>
         function init() {
-            $("button[data-file]").on("click", function(e){
-                e.preventDefault();
-                let url = $(e.target).attr("data-file");
-                window.location.href = `./${url}`;
-            });
         }
         
         function changeColor(e) {
