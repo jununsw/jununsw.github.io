@@ -1,0 +1,122 @@
+body {
+    background-color: #e0ffff;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.indent {
+    padding-left: 20px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+ol.lower {
+    list-style-type: lower-alpha;
+}
+
+ol.upper {
+    list-style-type: upper-alpha;
+}
+
+ol.monospace {
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
+li {
+    font-family: Helvetica, Arial, Sans-Serif;
+    margin: 5px 0 0 5px;
+}
+
+.list-seperate li {
+    margin: 10px 0;
+}
+
+section {
+    display: none;
+    margin: 1em;
+}
+
+.block {
+    display: block;
+}
+
+.question {
+    font-weight: bold; 
+    margin-bottom: 2em;
+}
+
+img {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#custom-handle {
+    width: 2em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}
+
+.cal {
+    color: red;
+    font-weight: bold;
+}
+
+#answer-tabs {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px; 
+    background: transparent; 
+    border-width: 0px; 
+}
+
+#answer-tabs .ui-tabs-nav { 
+    padding-left: 0px; 
+    background: transparent; 
+    border-width: 0px 0px 1px 0px; 
+    -moz-border-radius: 0px; 
+    -webkit-border-radius: 0px; 
+    border-radius: 0px; 
+}
+
+#answer-tabs .ui-tabs-panel { 
+    background: transparent; 
+    border-width: 0px 0px 0px 0px; 
+}
+
+#answer-tabs div {
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+#answer-tabs .list {
+    font-size: 14px;
+}
+
+button {
+    color: white;
+    font-weight: bold;
+    border-radius: 12px!important;
+    opacity: 0.8;
+}
+
+button:hover {
+    opacity: 1;
+}
+
+a {
+    font-weight: bold;
+    border-radius: 12px!important;
+    opacity: 0.8;
+}
+
+a:hover {
+    opacity: 1;
+}
