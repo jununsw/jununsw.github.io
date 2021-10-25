@@ -1,3 +1,5 @@
+// I have made changes 25/10/2021
+
 function getPrecision(input, prec, type) {
     /*
         input: numbers in string type,
