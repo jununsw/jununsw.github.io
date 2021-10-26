@@ -1,4 +1,4 @@
-// I have made changes 25/10/2021
+// updated
 
 function getPrecision(input, prec, type) {
     /*
