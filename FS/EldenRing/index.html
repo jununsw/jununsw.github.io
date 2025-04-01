@@ -12,7 +12,7 @@
             background-color: black;
             color: white;
         }
-        a {
+        .wiki_link {
             color: #AB966F;
         }
         #menu ul {
@@ -1244,6 +1244,7 @@
                 <p><span style="color: #ffcc00;">BONUS</span>: The <a class="wiki_link" title="Elden Ring Euporia" href="https://eldenring.wiki.fextralife.com/Euporia" target="">Euporia</a> is a brand new Twinblade that can be obtained by accessing a secret room before the Spiral Rise - Site of Grace. You can read the guide on <a class="wiki_link" title="Elden Ring Euporia" href="https://eldenring.wiki.fextralife.com/Euporia">this page</a> to learn the full details (the guide is long but the weapon is totally worth it!)</p> 
                 <p>Once you reach a certain area here, you will be fighting the followers of Miquella the Kind. Different hostile NPCs will get in your way. The enemies who will show up here will largely depend on the choices you have made so far. After eliminating them, you will head up to fight the last boss. Continue to go to the top of the dungeon where you will meet a familiar boss, the <a class="wiki_link" title="Elden Ring Promised Consort Radahn" href="https://eldenring.wiki.fextralife.com/Promised+Consort+Radahn" target="">Promised Consort Radahn</a> and <a class="wiki_link" title="Elden Ring Miquella" href="https://eldenring.wiki.fextralife.com/Miquella" target="">Miquella</a> will also appear here.</p> 
                 <p>If you progressed Thiollier's questline, he can be summoned to fight the final boss, and then you can pick up his items within the arena after the fight. Then, travel to the Garden of Deep Purple and take the <a class="wiki_link" title="Elden Ring St. Trina's Blossom" href="https://eldenring.wiki.fextralife.com/St.+Trina's+Blossom" target="">St. Trina's Blossom</a> from her last position.</p>
+                <p class='wiki_link link' onclick="restart()">BACK TO MENU</p>
             </div>
             <div class="ending">&nbsp;</div>
         </div>
@@ -1260,6 +1261,16 @@
             $("h3.special a.wiki_link").each((idx, ele) => {
                 let title = $(ele).html();
                 menu.push(title);
+
+                $("<p class='wiki_link link'>NEXT PART</p>").appendTo($(ele).closest(".row").find(".col-sm-8")).on("click", ()=>{
+                    $(".row").hide();
+                    $("#" + (idx + 2).toString()).closest(".row").show();
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: "instant"
+                    });
+                });
             });
             menu.push("Quick Guide");
 
