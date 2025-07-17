@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="SICP in Python"/>
+        <meta name="keywords" content=""/>
+        <meta name="author" content="Dr Xiaojun Chen"/>
+        
+        <title>Recursion</title>
+        <link rel="shortcut icon" href="https://jununsw.github.io/res/lambda.ico" type="image/vnd.microsoft.icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script>
+        <style>
+            h1 {
+                font-size: 2em;
+                font-family: "微软雅黑",  Arial,  Helvetica,  sans-serif;
+                font-weight: bold;
+                margin-top: 1.5em;
+                margin-bottom: 1.2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+                font-family: "微软雅黑",  Arial,  Helvetica,  sans-serif;
+                font-weight: bold;
+                margin: 1.1em 0;
+            }
+
+            p {
+                font-size: 1em;
+                font-family: "微软雅黑",  Arial,  Helvetica,  sans-serif;
+                font-weight: normal;
+                margin: 1em 0;
+            }
+
+            span {
+                font-family: 'Courier New', Courier, monospace;
+                font-weight: bold;
+            }
+
+            pre {
+                font-weight: bold;
+            }
+
+            .code {
+                border: solid;
+                border-width: thin;
+                padding: 0.3em;
+                font-style: italic;
+                font-family: "楷体", "楷体_GB2312", sans-serif;
+                font-weight: bold;
+                background-color: white;
+            }
+            
+            .code p {
+                font-family: "楷体", "楷体_GB2312", sans-serif;
+                font-weight: bold;
+            }
+            
+            body {
+                background-color: lightcyan;
+                margin-bottom: 10em;
+            }
+        </style>
+    </head>
+    <body onload="init();">
+        <div class="container">
+            <h1>
+                函数和它们所产生的计算
+            </h1>
+            <p>
+                我们现在已经可以通过在Python中定义函数，来对符合操作进行抽象。但是，即使我们知道了这些，我们还是不能说自己已经了解如何取编写程序，我们还不知道编程领域中的各种有用的常见模式，缺少有关各种程序价值的知识，以及缺少拥有对编写的函数执行之后的效果做一个预期判断的能力。我们需要对函数中各种语句的执行情况做出规划，用一个程序去控制这个过程的进展，我们需要学会熟练得看清各种不同类型得函数会产生怎样的计算过程。只有这样，我们才能说学会了如何去构造可靠的程序，让它们能够表现出我们需要的行为。
+            </p>
+            <p>
+                函数是计算过程局部演化的一种模式。它具体说明了过程的每一个阶段如何建立在前一阶段的基础之上。我们希望能够对一个过程的整体行为(即全局行为)作出描述，而该过程的局部演化是由某一函数所规定的。这在一般情况下是非常困难的，但我们至少可以尝试描述一些典型的过程演化模式。
+            </p>
+            <p>
+                本节中，我们将探讨由简单过程生成的一些常见“形态”。同时，我们还将研究这些过程在时间和空间等重要计算资源上的消耗速率。我们所考虑的过程非常简单，其作用类似于摄影中的测试图案：它们是过于简化的典型模式，而非具有实际应用价值的具体实例。
+            </p>
+            <h2>
+                1. 线性递归和线性迭代
+            </h2>
+            <p>
+                首先让我们观察以下以下表达式定义的数学中的正整数的阶乘:
+            </p>
+            <p>
+                \( n!=n\cdot \left( n-1 \right)\cdot \left( n-2 \right) \cdots 3\cdot 2\cdot 1 \)
+            </p>
+            <p>
+                计算阶乘的方式有许多种，一种最简单的方式就是利用数学中的递推公式：对于一个正整数\( n \)，\( n! \)就等于\( \left( n-1 \right)! \):
+            </p>
+            <p>
+                \( n!=n\cdot \left( n-1 \right)! \)
+            </p>
+            <p>
+                而且我们还注意到\( 1! = 1 \)，这样就可以定义一个函数了：
+            </p>
+            <pre>
+def factorial(n):
+    if n == 1:
+        return 1
+    else:
+        return n * factorial(n - 1)
+            </pre>
+            <p>
+                我们可以观察这一函数如何调用自身计算\( 6! \)的过程如下
+            </p>
+            <pre>
+factorial(6)
+6 * factorial(5)
+6 * (5 * factorial(4))
+6 * (5 * (4 * factorial(3)))
+6 * (5 * (4 * (3 * factorial(2))))
+6 * (5 * (4 * (3 * (2 * factorial(1)))))
+6 * (5 * (4 * (3 * (2 * 1))))
+6 * (5 * (4 * (3 * 2)))
+6 * (5 * (4 * 6))
+6 * (5 * 24)
+6 * 120
+720
+            </pre>
+            <p>
+                现在让我们用另一种不同的观点来计算阶乘。我们可以将计算阶乘\( n! \)的行为描述成：先用\( 1 \)乘以\( 2 \)，然后将结果乘以\( 3 \)，然后乘以\( 4 \)，一直到达\( n \)。或者说，我们有一个变动中乘积变量<span>product</span>，以及一个从\( 1 \)到\( n \)的计数器<span>counter</span>，这一个过程可以描述成<span>counter</span>和<span>product</span>的不断变化，每一次迭代都是对这两个变量的更新，规则如下：
+            </p>
+            <pre>
+produce &lt;- counter * product
+counter &lt;- counter + 1
+            </pre>
+            <p>
+                这里的符合"<span>&lt;-</span>"表示先计算右边的表达式的值，在将它赋值给左边的变量（这不是python的语法，在这里只是做演示用）。如此一来\( n! \)就成了计数器<span>counter</span>超过<span>n</span>的时候<span>product</span>的值。这样我们就可以写一个有三个参数的计算阶乘的函数：
+            </p>
+            <pre>
+def factorial_iteration(product, counter, max_count):
+    if counter > max_count:
+        return product
+    else:
+        return factorial_iteration(counter * product, counter + 1, max_count)
+            </pre>
+            <p>
+                从而计算\( n! \)也就是调用<span>factorial_iteration(1, 1, n)</span>。我们可以观察这一个函数调用自身计算\( 6! \)的过程：
+            </p>
+            <pre>
+factorial_iteration(1, 1, 6)
+factorial_iteration(1, 2, 6)
+factorial_iteration(2, 3, 6)
+factorial_iteration(6, 4, 6)
+factorial_iteration(24, 5, 6)
+factorial_iteration(120, 6, 6)
+factorial_iteration(720, 7, 6)
+720
+720
+720
+720
+720
+720
+720
+            </pre>
+            <p>
+                这里最后写了七行<span>720</span>，原因是在条件分支<span>else</span>里，每次会在<span>return</span>语句处调用自身<span>factorial_iteration</span>，直到最后返回了<span>720</span>，这个返回值需要返回上一级函数，然后再返回上上一级函数，以此类推，直到最上一级的函数返回后整个过程才结束。
+            </p>
+            <p>
+                现在对这两个计算过程做一个比较。从数学的角度来看，它们都是同一个定义域内对同一个函数进行计算，都需要使用和\( n \)成正比的步骤数计算\( n! \)。然而两个计算的形状大有不同。先考虑第一个计算过程，我们一开始表达式在不断增长，在这里我们构建了一种“推迟操作”的许诺，比如当我们需要计算<span>factorial(6)</span>时，我们取出<span>6</span>，然后许诺“现在我们计算<span>factorial(5)</span>，并且在计算完成之后将这个结果乘以<span>6</span>”，这个<span>6</span>也就成了被推迟操作的内容。随后我们对这个过程如法炮制，被推迟的内容越来越多，直到<span>n = 1</span>后函数得到返回值<span>1</span>，收缩阶段是我们对这些推迟运算的执行。这样的计算过程被称为一个线性递归过程。
+            </p>
+            <p>
+                与之相对应的，第二个计算过程里并没有任何表达式的增长。对于任意一个<span>n</span>，在计算的每一步里面，我们所需要的东西都是蕴含在变量<span>product</span>、<span>counter</span>和<span>count</span>里面。这种计算被称为一种迭代计算过程。对于一个迭代计算，我们可以用固定数量的状态变量来描述计算过程中的每一步，并且通过一定的规则，更新这些状态变量从而使得计算步骤从这一步跳到下一步。最后，还有一个或多个检验，用来决定这种状态变化什么时候结束，在计算\( n! \)的时候，所需要的步骤随着\( n \)线性增长，所以这种过程被称为线性迭代的过程。
+            </p>
+            <p>
+                两种过程的对比可以从另一个角度来看。在迭代过程中，程序变量完整描述了任意时刻过程的状态。如果在某个步骤之间暂停计算，只需将三个程序变量的当前值提供给解释器，就可以从暂停处继续计算。但递归过程中并非如此。在递归的过程中，还存在一些额外的“隐藏”信息，这些信息由解释器维护，而不包含在程序变量中，用于指示过程在推迟操作链中的“当前位置”。链条越长，需要维护的额外信息就越多。
+            </p>
+            <p>
+                在比较迭代和递归时，必须注意不要将“递归过程”的概念与“递归过程定义（递归过程式）”的概念混淆。当我们称某个过程定义是递归的，指的是一个语法层面的事实：过程的定义直接或间接引用了自身。但当我们描述一个过程是“线性递归”的，谈的是过程的演化模式，而不是它的语法结构。有时可能会觉得奇怪，比如我们称一个递归定义的过程（如<span>fact_iter</span>）生成的是一个迭代过程。但这个过程确实是迭代的：它的状态完全由三个状态变量表示，解释器只需跟踪这三个变量，就可以执行该过程。
+            </p>
+            <p>
+                最后还需要指出的是，虽然第二个计算过程是一个迭代过程，我们依然要进行“逐次调用内层函数并返回”的操作，虽然返回的返回不需要进行加工就可以继续返回上一级函数，但是由于大多数编程语言都有最大可嵌套函数深度的限制，比如python中默认用户调用只能嵌套1000层函数。对于一些语言，特别是函数式语言诸如Lisp，Haskell等等，都有一种“尾递归”优化的机制，也就是说，当一个函数的最后一步是调用自身（或另一个函数），那么在编译或解释执行时，可以不再为这次调用分配新的栈帧，而是复用当前的栈帧，使得递归过程不会消耗额外的栈空间，从而避免“突破最大调用深度”问题。可惜的是，Python（以及很多常用语言，诸如JavaScript，C，Java等等）没有“尾递归优化”的机制，因为这会增加调试和栈跟踪的困难，以及很难做出优化和检测，而后者对于大多数工业化语言来说显得更重要。Python提供了“循环结构”替代了这一过程，也就是说，在初始化状态参数之后，在一个<span>while</span>循环的循环体内，完成对变量的更新，每一次循环相当于迭代性的调用了自身。同时我们可以将判断循环终止的条件语句放在循环体内，也可以放在while的判断谓词呢。比如<span>factorial_iteration</span>就可以写成：
+            </p>
+            <pre>
+factorial_loop(product, counter, max_count):
+    while True:
+        if counter > max_count:
+            return product
+        else:
+            product, counter, max_count = counter * product, counter + 1, max_count
+            </pre>
+            <p>
+                这里<span>product, counter, max_count = counter * product, counter * 1, max_count</span>是Python多重赋值机制，作用是避免一个变量的变化引发下一个变量的错误赋值，多重赋值是平行进行的。读者可以尝试把判断循环中止的谓词替换<span>while</span>后面的<span>True</span>（不过真假条件要互换一下），并把返回结果放到<span>while</span>语句后面，两个过程是等价的。
+            </p>
+            <p>
+                现在我们仔细来分析，这个所谓的状态变量究竟是什么，从而可以从中状态变量的普遍性的特性，以便我们可以讲一个普遍性的递归过程也写成循环。我们回过头来观察最初的递归过程<span>factorial(n)</span>，对于其中的任意一步，比如说<span>n = k (k != 1)</span>来说，它的返回语句是：<span>return k * factorial(k - 1)</span>。这里有两个任务，第一个是告诉下一个函数：“请计算<span>factorial(k - 1)</span>”，第二个是告诉自己：“等下个函数返回的时候，用<span>k</span>去乘这个返回值”。于此同时，乘得的这个值，需要一并记录，放回给上一级函数。我们用一个二元元组来表示这两个任务：<span>('calculate', p)</span>表示需要计算<span>p</span>的阶乘，用<span>('multiply', p)</span>表示需要将返回值乘以<span>p</span>。然后我们有一个表示栈的数据结构，Python的<span>list</span>就可以胜任这个工作。最后我们需要一个变量<span>result</span>来记录最近一次<span>'multiply'</span>的结果。每次循环的时候，程序从栈中取出最顶上的“任务”，根据“任务”的类型，或者计算“任务”要求的计算结果，或者继续分配任务。这个程序如下：
+            </p>
+            <pre>
+def factorial_state(n):
+    stack = [('calculate', n)]
+    result = None
+
+    while True:
+        if stack == []:
+            return result
+        else:
+            state = stack.pop()
+
+            if state[0] == 'calculate':
+                current_n = state[1]
+                if current_n == 1:
+                    result = current_n
+                else:
+                    stack.append(('multiply', current_n))
+                    stack.append(('calculate', current_n - 1))
+            elif state[0] == 'multiply':
+                factorial_part = result
+                factor = state[1]
+                result = factor * factorial_part
+            else:
+                print("Error -- Unkown State - Factorial")
+            </pre>
+            <p>
+                这里可以看到，对于<span>'calculate'</span>任务，如果不能直接得到结果的话，则将两个任务压入栈，一个是下一个循环需要做的<span>'calculate'</span>任务，一个是当前面<span>'calculate'</span>任务做完之后需要做的<span>'multiply'</span>任务。至此，我们用循环模拟了一个递归过程在计算机里的运行过程。
+            </p>
+            <div class="code">
+                这里有人会问：既然我们已经有了迭代过程的循环语句写法，为什么还要考将虑递归过程写成循环，并且还要麻烦地将每一步的“任务”用栈模拟？这里需要指出，这种手工管理状态的方法，它的主要学习意义在于
+                <ul>
+                    <li>深入了解递归本质，递归本质是依赖调用栈隐式管理“该做什么”和“做到哪里了”。而将其显式的展开在程序里，以便让我们了解“递归不过是一种状态机”；</li>
+                    <li>理解控制流和管理状态：用状态代表程序走到那一步，用显式状态机来模拟函数流。</li>
+                </ul>
+                有了这些，我们可以继续引入下一个概念。
+            </div>
+            <p>
+                现在我们对<span>('multiply', p)</span>做进一步观察，这个状态实则是在告诉程序“下一步我要做什么”，也就是“将返回值乘以<span>p</span>”。之所以一开始的递归程序的“形状”会增长，就是因为当函数调用自身的时候，将这个“下一步要做的事情”留在了自身调用栈上。如果我们换一种思路，如果我们把这个“下一步要做的事情”以某种形式变成自身函数的参数之一，每次当作参数传递给下一个要调用的自身函数，是不是也能做到“当一个函数的最后一步是调用自身”？计算机程序可以将“下一步该执行的剩余计算”抽象化成函数，并将这个函数当作自身参数之一。这个“下一步要执行的计算”被称为“延续”或“续延”(continuation)，将它作为一个函数参数传递下去的方法叫做continuation-passing style（CPS）。
+            </p>
+            <p>
+                我们可以这么说，如果有函数A，它在返回语句处调用函数B（B可以是函数A自身），那么此处的continuation是一个函数，这个函数的参数是B的返回值，这个函数的返回值是A的返回值。放到阶乘函数里，就可以写成这样：
+            </p>
+            <pre>
+def factorial_with_continuation(continuation, current_n):
+    if current_n == 1:
+        return continuation(currrent_n)
+    else:
+        return factorial_with_continuation(
+            lambda x: continuation(x * current_n),              
+            current_n - 1
+        )
+            </pre>
+            <p>
+                由此可见，CPS的递归过程，就是不断更新continuation的过程
+            </p>
+            <p>
+                这样我们就可以使用<span>factorial_with_continuation(lambda x:x, n)</span>来计算\( n! \), 初始化的continuation就是把自己返回。由于Python没有尾优化，这个迭代性的递归程序可以改写成如下循环形式：
+            </p>
+            <pre>
+def factorial_loop_with_continuation_1(n):
+    continuation = lambda x: x
+    current_n = n
+    
+    while True:
+        if current_n == 0:
+            return continuation(1)
+        else:
+            def make_continuation():
+                current_continuation = continuation
+                current_value = current_n
+                return lambda x: current_continuation(x * current_value)
+            continuation = make_continuation()
+            current_n = current_n - 1
+            </pre>
+            <div class="code">
+                两个问题供读者思考：
+                <p>
+                    1. 为什么continuation初始化成<span style="font-style: normal">lambda x:x</span>?
+                </p>
+                <p>
+                    2. 在<span style="font-style: normal">else</span>分支里：
+                </p>
+                <pre style="font-style: normal">
+def make_continuation():
+    current_continuation = continuation
+    current_value = current_n
+    return lambda x: current_continuation(x * current_value)
+continuation = make_continuation()
+                </pre>
+                <p>
+                    能不能写成
+                </p>
+                <pre style="font-style: normal">
+current_continuation = continuation
+current_value = current_n
+continuation = lambda x: current_continuation(x * current_value)
+                </pre>
+                <p>
+                    为什么？
+                </p>
+            </div>
+            <p>
+                正如我们之前用带标签的元组作为对状态的描述，用一个栈来模拟这些状态变化的过程，我们也可以将这些“状态”用<span>continuation</span>替换：
+            </p>
+            <pre>
+def factorial_cps(n):
+    stack = []
+    done_continuation = lambda x: x
+
+    stack.append(('multiply', done_continuation))
+
+    while n > 0:
+        _, continuation = stack.pop()
+        continuation = (
+            lambda current_continuation, current_value: (
+                lambda x: current_continuation(x * current_value)
+            )
+        )(continuation, n)
+
+        stack.append(('multiply', new_continuation))
+        n = n - 1
+        
+    result = 1
+
+    while stack:
+        _, cont = stack.pop()
+        result = cont(result)
+    
+    return result
+            </pre>
+            <h2>
+                2. 树形递归
+            </h2>
+            <p>另一种常见的计算模式称为树形递归。举个例子，斐波那契数列（Fibonacci），从第三项开始的每一项都是前两项的和：</p>
+            <p><span>0, 1, 1, 2, 3, 5, 8, ...</span></p>
+            <p>
+                斐波那契数，即第\( n \)项的值\( \mathrm{fib}(n) \)可以定义为：
+            </p>
+            <p>
+                \( \mathrm{fib}(n)=\left\{\begin{matrix} n & \left ( n \leq 1 \right ) \\ \mathrm{fib} \left ( n - 1 \right ) + \mathrm{fib} \left ( n - 2 \right ) & \left ( n > 1 \right ) \\ \end{matrix}\right. \)
+            </p>
+            <p>
+                这一计算过程很容易用递归过程实现
+            </p>
+            <pre>
+def fib(n):
+    if n &lt;= 1:
+        return n
+    else:
+        return fib(n - 1) + fib(n - 2)
+            </pre>
+            <p>
+                现在考虑这一计算模式，比如为了计算<span>fib(4)</span>，我们就需要计算<span>fib(3)</span>和<span>fib(2)</span>，而为了计算<span>fib(3)</span>，我们有需要计算<span>fib(2)</span>和<span>fib(1)</span>，以此类推，每次计算都会分裂出两个分支，直到遇到<span>fib(1)</span>或<span>fib(0)</span>可以直接得到结果。下图1表示了计算<span>fib(4)</span>时经过的整个计算路径。
+            </p>
+            <svg width="630" height="420" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <defs>
+                    <marker id="mkr_end_svg_31" markerHeight="5" markerUnits="strokeWidth" markerWidth="5" orient="auto" refX="50" refY="50" se_type="leftarrow" viewBox="0 0 100 100">
+                        <path d="m0,50l100,40l-30,-40l30,-40l-100,40z" fill="#000000" id="svg_28" stroke="#000000" stroke-width="10"/>
+                    </marker>
+                </defs>
+                <g class="layer">
+                    <title>Layer 1</title>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_1" stroke="#000000" stroke-width="0" text-anchor="middle" x="288" xml:space="preserve" y="38">fib(4)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_2" stroke="#000000" stroke-width="0" text-anchor="middle" x="195.51" xml:space="preserve" y="103.5">fib(3)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_3" stroke="#000000" stroke-width="0" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="396.5" xml:space="preserve" y="103.5">fib(2)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_4" stroke="#000000" stroke-width="0" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="132.5" xml:space="preserve" y="178.5">fib(2)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_5" stroke="#000000" stroke-width="0" text-anchor="middle" x="249.51" xml:space="preserve" y="179.5">fib(1)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_6" stroke="#000000" stroke-width="0" text-anchor="middle" x="478.5" xml:space="preserve" y="179.5">fib(0)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_7" stroke="#000000" stroke-width="0" text-anchor="middle" transform="matrix(1 0 0 1 0 0)" x="361.5" xml:space="preserve" y="179.5">fib(1)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_8" stroke="#000000" stroke-width="0" text-anchor="middle" x="76.5" xml:space="preserve" y="285.5">fib(1)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_9" stroke="#000000" stroke-width="0" text-anchor="middle" x="175.51" xml:space="preserve" y="285.5">fib(0)</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_10" stroke="#000000" stroke-width="0" text-anchor="middle" x="77.51" xml:space="preserve" y="360.5">1</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_11" stroke="#000000" stroke-width="0" text-anchor="middle" x="275.46" xml:space="preserve" y="257.5">1</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_12" stroke="#000000" stroke-width="0" text-anchor="middle" x="366.46" xml:space="preserve" y="258.5">1</text>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_13" stroke="#000000" stroke-width="0" text-anchor="middle" x="475.46" xml:space="preserve" y="256.5">0</text>
+                    <line fill="none" id="svg_14" stroke="#000000" x1="275" x2="223" y1="46" y2="83"/>
+                    <line fill="none" id="svg_15" stroke="#000000" x1="274" x2="364" y1="47" y2="85"/>
+                    <line fill="none" id="svg_16" stroke="#000000" x1="185" x2="146" y1="113" y2="155"/>
+                    <line fill="none" id="svg_17" stroke="#000000" x1="242" x2="187" y1="161" y2="112"/>
+                    <line fill="none" id="svg_18" stroke="#000000" x1="386" x2="357" y1="112" y2="158"/>
+                    <line fill="none" id="svg_19" stroke="#000000" x1="468" x2="389" y1="161" y2="112"/>
+                    <line fill="none" id="svg_20" stroke="#000000" x1="121" x2="83" y1="184" y2="266"/>
+                    <line fill="none" id="svg_21" stroke="#000000" x1="167" x2="122" y1="264" y2="185"/>
+                    <line fill="none" id="svg_22" stroke="#000000" x1="248" x2="264" y1="189" y2="236"/>
+                    <line fill="none" id="svg_23" stroke="#000000" x1="352" x2="363" y1="190" y2="238"/>
+                    <line fill="none" id="svg_24" stroke="#000000" transform="matrix(1 0 0 1 0 0)" x1="463" x2="474" y1="186" y2="234"/>
+                    <text fill="#000000" font-family="Monospace" font-size="18" id="svg_25" stroke="#000000" stroke-width="0" text-anchor="middle" x="182.46" xml:space="preserve" y="358.5">0</text>
+                    <line fill="none" id="svg_26" stroke="#000000" x1="86" x2="76" y1="295" y2="336"/>
+                    <line fill="none" id="svg_27" stroke="#000000" x1="176" x2="181" y1="291" y2="339"/>
+                    <path d="m246,18l-103,67l-63,68l-49,132l46,124l38,-110l8,-78l16,75l49,92c0,0 33,-110 32,-110c-1,0 -64,-83 -64,-83c0,0 34,-53 34,-53c0,0 25,46 25,46c0,0 58,92 58,92c0,0 30,-74 30,-74c0,0 -50,-94 -50,-94c0,0 23,-39 23,-39c0,0 77,33 77,33c0,0 -40,54 -40,54c0,0 62,136 62,136c0,0 26,-108 26,-108c0,0 -4,-57 -4,-57c0,0 40,46 40,46c0,0 47,121 47,121c0,0 37,-124 37,-125c0,-1 -94,-90 -94,-90c0,0 -97,-56 -97,-57" fill="none" id="svg_42" stroke="#ff0000"/>
+                </g>
+            </svg>
+            <p>
+                图1. 计算<span>fib(4)</span>中产生的树形递归计算过程，红色线条表示从左至右计算的路径
+            </p>
+            <p>
+                这是一个典型的树形递归过程，但是对于斐波那契数列确实非常低效的，因为其中每一个<span>fib(x)</span>都重复计算了多次。可以证明，计算<span>fib(1)</span>和<span>fib(0)</span>的次数为<span>fib(n+1)</span>。该计算随着<span>n</span>的增长，步骤数会指数性得增长，同时空间需求也会随着<span>n</span>线性增长，因此树形递归过程得步骤书正比于数中的结点数，空间需求正比于数的最大深度。
+            </p>
+            <p>
+                另一方面，斐波那契数列的递推公式给了我们一个显而易见的迭代过程。当我们将一对变量<span>a</span>和<span>b</span>分别初始化为<span>fib(1)</span>和<span>fib(0)</span>时，只需要反复通过一下方式变换这两个变量的值
+            </p>
+            <pre>
+a, b = a + b, a
+            </pre>
+            <p>
+                再加上一个控制迭代过程何时结束的变量<span>count</span>，我们很容易就可以得到一个迭代过程，也就自然得可以得到一个循环过程。由于尾递归的形式和循环形式可以简单互换，我们之后提到迭代，通常只会用循环语句表示：
+            </p>
+            <pre>
+def fib_loop(n):
+    a, b, count = 1, 0, n
+    while count == 0:
+        a, b, count = a + b, a, count - 1
+    return b
+            </pre>
+            <p>
+                不难看出，这个循环过程的步骤数随着<span>n</span>线性增长。但是这里我们需要着重指出两点：第一，对于斐波那契数列，它的递推公式的特殊性（每一项之和之前的两项有关），导致我们可以简单地找到一个线性迭代过程，而对于更一般的树形递归过程，这种迭代过程并不具备普遍性；第二，即使有了线性迭代过程，让树形递归的过程显得没有用，但是学习树形递归仍然具有很强的教育意义。树形递归可以帮助我们理解和设计程序，我们在树形递归的过程中我们考虑的时对有层次结构的数据的操作，而不是单单对数的计算。
+            </p>
+            <p>
+                现在，就像我们之前对待阶乘计算过程一样，考虑这样一个问题：“我们能不能记录对斐波那契数列的每一步计算步骤的状态，将一个递归过程写成一个循环，不考虑斐波那契数列的特殊性”。为此，我们需要观察图1中的树形计算过程，我们发现，对于不能直接求值的节点（也就是除了<span>fib(1)</span>和<span>fib(0)</span>），整个过程中它们被访问了3次，比如对于任意一个<span>fib(k)</span>(k > 1)，有：
+            </p>
+            <ol>
+                <li>从父结点访问，此时要计算<span>fib(k-1)</span></li>
+                <li>从左侧子结点返回，此时已经有了<span>fib(k-1)</span>的结果，需要以某种方式保存，并继续计算<span>fib(k-2)</span></li>
+                <li>从右侧子结点返回，此时得到了<span>fib(k-2)</span>的结果，需要取出(2)中保存的结果与之相加，作为返回值返回父结点</li>
+            </ol>
+            <p>
+                针对这三种情况，我们还是使用二元元组的形式，第一个元素为状态名，第二个元素为状态携带的数据，创建了三个描述状态的形式：
+            </p>
+            <ol>
+                <li><span>('calculate', k-1)</span>: 计算第<span>k-1</span>项斐波那契数列的值</li>
+                <li><span>('next_with', k-2)</span>: 得到第<span>k-1</span>项斐波那契数列的值，保存起来，下一步计算第<span>k-2</span>项斐波那契数列的值</li>
+                <li><span>('add', result)</span>: 将计算第<span>k-2</span>项斐波那契数列的值和保存的第<span>k-1</span>项斐波那契数列的值相加，作为返回值</li>
+            </ol>
+            <p>
+                这样我们就可以写一个带有状态的斐波那契数列数的计算过程：
+            </p>
+            <pre>
+def fib_with_state(n):
+    stack = [('calculate', n)]
+    result = None
+
+    while True:
+        if stack == []:
+            return result
+        else:
+            state = stack.pop()
+
+            if state[0] == 'calculate':
+                current_n = state[1]
+                if current_n &lt;= 1:
+                    result = current_n
+                else:
+                    stack.append(('next_with', current_n - 2))
+                    stack.append(('calculate', current_n - 1))            
+            elif state[0] == 'next_with':
+                next_term = state[1]
+                fib_n1 = result
+                stack.append(('add', fib_n1))
+                stack.append(('calculate', next_term))
+            elif state[0] == 'add':
+                fib_n1 = state[1]
+                fib_n2 = result
+                result = fib_n1 + fib_n2         
+            else:
+                print("Error -- Unkown State - Fibonnaci")
+            </pre>
+            <p>
+                这里的变量<span>result</span>用于存放最近一次计算斐波那契值的结果。因为在图1中，每一个向上的步骤，都会携带作为出发点的那个结点的返回值，它就会被保存在<span>result</span>内。那在第(2)和(3)状态中，这个result就可以被保存与取出使用。
+            </p>
+            <p>
+                最后我们思考一个问题，在本节一开始的递归过程中，其中返回语句 <span>return fib(n - 1) + fib(n - 2)</span> 处的continuation是什么？形式上它是<span>continuation(fib(n - 1) + fib(n - 2))</span>，第一个<span>fib(n - 1)</span>是continuation的参数，第二个<span>fib(n - 2)</span>则需要再调用<span>fib</span>一次，只是这次的continuation要作用再两个斐波那契项上。我们可以通过嵌套的lambda表达式表现这一过程。
+            </p>
+            <pre>
+def fib_with_continuation(continuation, current_n):
+    if current_n == 0 or current_n == 1:
+        return continuation(current_n)
+    else:
+        return fib_with_continuation(
+            lambda fib_n1: fib_with_continuation(
+                lambda fib_n2: continuation(fib_n1 + fib_n2),
+                n - 2
+            ),
+            n - 1
+        )
+            </pre>
+            <p>如果要将这个递归形式转换成循环，它将是：</p>
+            <pre>
+def fib_cps(n):
+    stack = []
+    final_answer = {"result": None} 
+    def done(value):
+        final_answer["result"] = value
+        stack.clear() 
+    stack.append(lambda value, continuation=done: continuation(value))
+    current_n = n
+    while stack:
+        if current_n == 0 or current_n == 1:
+            continuation = stack.pop()
+            continuation(current_n)
+        else:
+            parent_continuation = stack.pop()
+            stack.append(lambda value, continuation=parent_continuation: continuation(value))
+            def make_after_fib_n1(n_val, parent_continuation):
+                def after_fib_n1(fib_n1):
+                    def after_fib_n2(fib_n2):
+                        parent_continuation(fib_n1 + fib_n2)
+                    stack.append(after_fib_n2)
+                    nonlocal current_n
+                    current_n = n_val - 2  # 求 fib(n-2)
+                return after_fib_n1
+            stack.append(make_after_fib_n1(current_n, parent_continuation))
+            current_n = current_n - 1
+    return final_answer["result"]
+            </pre>
+            <div class="code">
+                一个问题供读者思考：
+                <p>
+                    在<span style="font-style: normal">else</span>分支里：
+                </p>
+                <pre style="font-style: normal">
+parent_continuation = stack.pop()
+stack.append(lambda value, continuation=parent_continuation: continuation(value))
+                </pre>
+                <p>
+                    能不能写成
+                </p>
+                <pre style="font-style: normal">
+parent_continuation = stack[-1]
+                </pre>
+                <p>
+                    为什么？
+                </p>
+            </div>
+        </div>
+    </body>
+    <script>
+        function init() {
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.textContent = pre.textContent.trimEnd();
+            });
+        }
+    </script>
+</html>
