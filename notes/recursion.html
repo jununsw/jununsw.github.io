@@ -459,14 +459,24 @@ def fib_with_state(n):
                 这里的变量<span>result</span>用于存放最近一次计算斐波那契值的结果。因为在图1中，每一个向上的步骤，都会携带作为出发点的那个结点的返回值，它就会被保存在<span>result</span>内。那在第(2)和(3)状态中，这个result就可以被保存与取出使用。
             </p>
             <p>
-                最后我们思考一个问题，在本节一开始的斐波那契数的递归过程<span>fib(n)</span>中，其中返回语句<span>return fib(n - 1) + fib(n - 2)</span>处的continuation是什么？形式上它好像是<span>continuation(fib(n - 1) + fib(n - 2))</span>，然而<span>continuation</span>只能有一个参数，也就是第一个<span>fib(n - 1)</span>。第二个<span>fib(n - 2)</span>则需要再调用<span>fib</span>一次，只是这次的continuation要做的是将前一个参数和这次的参数相加传递给<span>continuation</span>。我们可以通过嵌套的lambda表达式表现这一过程。
+                最后我们思考一个问题，在本节一开始的斐波那契数的递归过程<span>fib(n)</span>中，其中返回语句处的<span>continuation</span>是什么？换个问法，因为当时的下一步时计算<span>fib(n-1)</span>，那所谓<span>continuation</span>就是当得到<span>fib(n-1)</span>的值后需要做什么。从程序的角度，它要做的事情有：
+            </p>
+            <ul>
+                <li>将这个<span>fib(n-1)</span>作为参数传递给计算<span>fib(n-2)</span>的<span>continuation</span></li>
+                <li>
+                    在计算<span>fib(n-2)</span>处，要给出它的<span>continuation</span>，它的<span>continuation</span>就是要把<span>fib(n-2)</span>和传递过来的<span>fib(n-1)</span>相加，并且：
+                </li>
+                <li>相加之后的结果，需要再被原本的<span>continuation</span>作用一次。</li>
+            </ul>
+            <p>
+                于是就有了：
             </p>
             <pre>
-def fib_with_continuation(continuation, current_n):
+def fib_cps(continuation, current_n):
     if current_n == 0 or current_n == 1:
         return continuation(current_n)
     else:
-        return fib_with_continuation(
+        return fib_cps(
             lambda fib_n1: fib_with_continuation(
                 lambda fib_n2: continuation(fib_n1 + fib_n2),
                 n - 2
@@ -474,9 +484,71 @@ def fib_with_continuation(continuation, current_n):
             n - 1
         )
             </pre>
-            <p>如果要将这个递归形式转换成循环，它将是：</p>
+            <div class="code">
+                思考：
+                <p>
+                    为什么（3）处还要把原来的<span>continuation</span>作用到<span>fib(n-1)</span>和<span>fib(n-2)</span>的和上？
+                </p>
+            </div>
+            <p>
+                注意到这个函数在返回处只调用了自身，那么它能不能写成循环形式呢？答案时肯定的，只不过在<span>continuation</span>的更新的地方需要特别注意，程序如下：
+            </p>
             <pre>
-def fib_cps(n):
+def fib_cps_in_loop(n):
+    def loop(continuation, current_n):
+        while current_n > 1:
+            continuation = (
+                lambda continuation, current_n: lambda v1: loop(lambda v2: continuation(v1 + v2), current_n - 2)
+            )(continuation, current_n)
+            current_n = current_n - 1
+        return continuation(current_n)
+    return loop(lambda n: n, n)
+            </pre>
+            <p>
+                注意到循环里的<span>continuation</span>是这么更新的：
+            </p>
+            <pre>
+<span># Snippet 1</span>
+continuation = (    
+    lambda continuation, current_n: lambda v1: loop(lambda v2: continuation(v1 + v2), current_n - 2)
+)(continuation, current_n)
+            </pre>
+            <p>
+                而不能是
+            </p>
+            <pre>
+<span># Snippet 2</span>
+continuation = lambda v1: loop(lambda v2: continuation(v1 + v2), current_n - 2)
+            </pre>
+            <p>
+                因为<span># Snippet 2</span>中的<span>continuation</span>虽然是一个闭包捕捉了<span>continuation</span>和<span>current_n</span>，但这是变量名，以及它的上下文环境（也就是loop函数的栈帧），但当时没有捕捉它们的值，它们的值直到被诸如<span>continuation(1)</span>的时候回去这个上下文环境中寻找。由于<span>while</span>循环的存在，这两个闭包变量的值是在改变的。
+            </p>
+            <p>
+                而在<span># Snippet 1</span>中，给需要用来赋值的<span>lambda</span>外套一层<span>lambda</span>，并把当时的<span>continuation</span>和<span>current_n</span>传递给了它，相当于这两个的上下文环境变成了外层<span>lambda</span>的环境，它不会随着循环变化，所以就把每次循环需要的<span>continuation</span>和<span>current_n</span>“冻结”了下来。
+            </p>
+            <p>
+                所以这里需要指出，<strong>闭包不是捕获值，而是捕获变量以及定义时的上下文环境。如果变量的值在上下文环境改变，闭包中的函数看到的就是最新值。如果你想捕获“某个时刻的值”，需要用局部变量拷贝值。</strong>通常函数式编程的上下文一般不会经常改变值的内容，但在循环语句里就不同了。另一个经典的例子就是Python教科书经常会提及的：
+            </p>
+            <pre>
+def foreach(lst):
+    for i in iter(lst):
+        i()
+foreach([lambda: print(x, end=", ") for x in [1, 2, 3, 4]])  # 显示 4, 4, 4, 4, 虽然x是闭包变量，但是一直到迭代完毕时才会取值
+            </pre>
+            <p>
+                Python里也可以用默认参数“冻结”这个闭包变量：
+            </p>
+            <pre>
+continuation = lambda v1, continuation=continuation, current_n=current_n: loop(lambda v2: continuation(v1 + v2), current_n - 2)   
+            </pre>
+            <p>
+                作为Python的特性，使用默认参数的效果是相同的，从语言级的分析来看是有所不同，但这不是本文讨论的话题。
+            </p>
+            <p>
+                还需要注意的是，这个循环计算复杂度依然是指数的，而且循环看似避免了像递归中那样添加栈帧，但这是错的。在<span>continuation(1)</span>或<span>continuation(0)</span>处<span>continuation</span>会展开，而它嵌套了大量的递归函数，从而使得原本“避免”的栈帧全部添加上了这只是一种“约定将来会调用”，也就是“延迟递归”的手段。如果是在需要避免栈溢出，这个函数也可以转换成用stack来模拟continuation的存入和取出，让我们也能看得更清楚每一步循环做了什么事情。它将是：
+            </p>
+            <pre>
+def fib_with_continuation_using_stack(n):
     stack = []
     final_answer = {"result": None} 
     def done(value):
@@ -503,6 +575,9 @@ def fib_cps(n):
             current_n = current_n - 1
     return final_answer["result"]
             </pre>
+            <p>
+                这么写只是避免了栈溢出(但stack会很长)，可是不会改变\(o(2^n)\)复杂度。在此需要重申的是，斐波那契数算法的\(o(n)\)（基于迭代方程），甚至\(o(\log n)\)（基于矩阵的幂）和\(o(1)\)（基于矩阵的幂以及特征分解）都是基于数列的特殊性，它对一般树形递归来说是没有普遍意义的。
+            </p>
             <div class="code">
                 一个问题供读者思考：
                 <p>
@@ -520,23 +595,6 @@ parent_continuation = stack[-1]
                 </pre>
                 <p>
                     为什么？
-                </p>
-            </div>
-            <div>
-                <p>
-                    最后一个问题，有同学把<span>fib_with_continuation</span>写成以下循环：
-                </p>
-                <pre>
-def fib(continuation, current_n):
-    while n > 2:
-        continuation, current_n = lambda fib_n1: fib(
-            lambda fib_n2: continuation(fib_n1 + fib_n2),
-            current_n - 2
-        ), current_n - 1
-    return continuation(n)
-                </pre>
-                <p>
-                    能不能运行？请写出每一次循环中变量的取值如何改变，然后观察并做出解释。
                 </p>
             </div>
         </div>
