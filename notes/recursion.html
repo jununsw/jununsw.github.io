@@ -477,7 +477,7 @@ def fib_cps(continuation, current_n):
         return continuation(current_n)
     else:
         return fib_cps(
-            lambda fib_n1: fib_with_continuation(
+            lambda fib_n1: fib_cps(
                 lambda fib_n2: continuation(fib_n1 + fib_n2),
                 n - 2
             ),
